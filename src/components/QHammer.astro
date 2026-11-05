@@ -1,0 +1,29 @@
+---
+/**
+ * Der Hammer aus dem Quirling-Logo – aus den Original-Vektoren freigestellt
+ * (der Griff ist im Logo der Schweif des Q und wird hier gerade fortgeführt).
+ */
+import { mark } from '~/lib/logo-paths';
+
+interface Props {
+  class?: string;
+  color?: string;
+  highlight?: string;
+  title?: string;
+}
+const { class: cls, color = 'currentColor', highlight = '#fff', title } = Astro.props;
+const q = mark[2]!.d;
+const lights = mark.slice(3).map((m) => m.d);
+const id = `qh-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<svg class={cls} viewBox="306 172 96 100" role={title ? 'img' : undefined} aria-label={title} aria-hidden={title ? undefined : 'true'}>
+  <defs>
+    <clipPath id={id}><path d="M310 172 L372 172 L372 200 L382 224 L368 242 L352 234 L338 247 L310 247 Z"></path></clipPath>
+  </defs>
+  <line x1="359" y1="229" x2="392" y2="262" stroke={color} stroke-width="13" stroke-linecap="round"></line>
+  <g clip-path={`url(#${id})`}>
+    <path fill={color} d={q}></path>
+    {lights.map((d) => <path fill={highlight} d={d} />)}
+  </g>
+</svg>

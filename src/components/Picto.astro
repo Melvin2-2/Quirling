@@ -13,7 +13,8 @@ export type PictoName =
   | 'helm'
   | 'standort'
   | 'hammer'
-  | 'kran';
+  | 'kran'
+  | 'siegel';
 
 interface Props {
   name: PictoName;
@@ -32,6 +33,7 @@ const lines: Record<PictoName, string> = {
   standort: 'M24 42s-12-11-12-21a12 12 0 0 1 24 0c0 10-12 21-12 21ZM24 25.5a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Z',
   hammer: 'M21 16.5 37.5 33a2.5 2.5 0 0 1-3.5 3.5L17.5 20M12 9.5l7.5-2.5 6 6-4.5 4.5-3 3-6-6 2.5-7.5Z',
   kran: 'M14 42V8M8 42h12M14 8l24 0M14 14l6-6M14 8 4 13M34 8v12M31 20h6v4h-6z',
+  siegel: 'M24 5 43 24 24 43 5 24ZM16.5 24.5l5 5 10-11',
 };
 
 // Position der Akzent-Raute je Piktogramm
@@ -46,6 +48,7 @@ const accent: Record<PictoName, [number, number]> = {
   standort: [24, 21],
   hammer: [40, 9],
   kran: [44, 34],
+  siegel: [41, 41],
 };
 const [ax, ay] = accent[name];
 const s = 3.2;

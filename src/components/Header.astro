@@ -50,7 +50,7 @@ const mainItems = nav.filter((n) => n.href !== '/kontakt/');
 
     <div class="actions">
       <a class="phone" href={firma.telefonHref}><Icon name="phone" /><span>{firma.telefon}</span></a>
-      <a class="btn cta" href={url('/kontakt/')}><span>Kontakt</span><Icon name="arrow" /></a>
+      <a class="pill solid cta" href={url('/kontakt/')}><span>Kontakt</span><Icon name="arrow" /></a>
       <button class="burger" type="button" aria-expanded="false" aria-controls="mobile-nav" data-burger>
         <span class="visually-hidden">Menü öffnen</span>
         <i></i><i></i>
@@ -164,11 +164,13 @@ const mainItems = nav.filter((n) => n.href !== '/kontakt/');
     display: flex;
     align-items: center;
     gap: 0.3rem;
-    padding: 0.6rem 0.9rem;
+    padding: 0.6rem 0.85rem;
     font-family: var(--font-head);
-    font-stretch: 108%;
-    font-weight: 560;
-    font-size: 0.98rem;
+    font-stretch: 118%;
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     text-decoration: none;
     position: relative;
   }
@@ -282,11 +284,12 @@ const mainItems = nav.filter((n) => n.href !== '/kontakt/');
     height: 1.1rem;
   }
   .cta {
-    padding: 0.8rem 1.15rem;
+    padding: 0.65rem 1.1rem;
   }
   .site-header[data-overlay='true']:not(.is-solid) .cta {
-    --bg: #fff;
-    --fg: var(--navy);
+    background: #fff;
+    border-color: #fff;
+    color: var(--blue);
   }
 
   .burger {

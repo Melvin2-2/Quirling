@@ -102,16 +102,35 @@ h4 {
   text-wrap: balance;
 }
 
-.h-display {
-  font-size: clamp(2.75rem, 7.4vw, 7rem);
+/* Große Überschriften: Versalien, breit, zweistufig (fett/leicht) wie im Bau-Umfeld üblich */
+.h-display,
+.h1,
+.h2 {
+  font-family: var(--font-head);
+  font-stretch: 125%;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
   line-height: 0.98;
-  letter-spacing: -0.025em;
+}
+.h-display {
+  font-size: clamp(2.6rem, 6.6vw, 6.4rem);
 }
 .h1 {
-  font-size: clamp(2.4rem, 5.6vw, 5rem);
+  font-size: clamp(2.2rem, 5vw, 4.4rem);
 }
 .h2 {
-  font-size: clamp(2rem, 4.2vw, 3.6rem);
+  font-size: clamp(1.9rem, 3.8vw, 3.4rem);
+}
+/* leichter Teil einer zweistufigen Überschrift */
+.lt {
+  font-weight: 300;
+}
+.c-blue {
+  color: var(--blue);
+}
+.c-grey {
+  color: var(--grey);
 }
 .h3 {
   font-size: clamp(1.4rem, 2vw, 1.9rem);
@@ -291,6 +310,75 @@ p:last-child {
 }
 .btn.white:hover {
   --bg: var(--stone-200);
+}
+
+/* Pill-Button mit Pfeil (Outline) */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.75rem 1.4rem;
+  border: 1.5px solid currentColor;
+  border-radius: 999px;
+  color: var(--blue);
+  font-family: var(--font-head);
+  font-stretch: 120%;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: transparent;
+  cursor: pointer;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease;
+}
+.pill svg {
+  width: 1.15rem;
+  height: 1.15rem;
+  transition: transform 0.35s var(--ease);
+}
+.pill:hover {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
+}
+.pill:hover svg {
+  transform: translateX(4px);
+}
+.pill.solid {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
+}
+.pill.solid:hover {
+  background: var(--blue-800);
+  border-color: var(--blue-800);
+}
+.pill.light {
+  color: #fff;
+}
+.pill.light:hover {
+  background: #fff;
+  border-color: #fff;
+  color: var(--blue);
+}
+
+/* Riesige Kontur-Schrift als Gestaltungselement */
+.outline-word {
+  font-family: var(--font-head);
+  font-stretch: 125%;
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--stroke, rgb(57 72 164 / 0.35));
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
 }
 
 .link-arrow {

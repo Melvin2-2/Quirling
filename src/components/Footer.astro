@@ -9,8 +9,11 @@ const year = new Date().getFullYear();
 <footer class="site-footer on-dark">
   <div class="container">
     <div class="claim" data-reveal>
-      <p class="accent">{firma.slogan}</p>
-      <a class="btn white" href={url('/kontakt/')}><span>Projekt besprechen</span><Icon name="arrow" /></a>
+      <p class="h2 claim-t">Projekt geplant?<br /><span class="lt">Sprechen wir.</span></p>
+      <div class="claim-ways">
+        <a class="claim-tel" href={firma.telefonHref}>{firma.telefon}</a>
+        <a class="pill light" href={url('/kontakt/')}><span>Kontakt aufnehmen</span><Icon name="arrow" /></a>
+      </div>
     </div>
 
     <div class="cols">
@@ -53,6 +56,7 @@ const year = new Date().getFullYear();
       </div>
     </div>
 
+    <div class="outline-word giant" aria-hidden="true">Quirling</div>
     <div class="bottom">
       <span>© {year} {firma.name} · {firma.registergericht} {firma.hrb}</span>
       <nav aria-label="Rechtliches">
@@ -78,11 +82,29 @@ const year = new Date().getFullYear();
     padding-bottom: clamp(3rem, 6vw, 5rem);
     border-bottom: 1px solid var(--line-light);
   }
-  .claim p {
-    font-size: clamp(2rem, 4.6vw, 4.2rem);
-    line-height: 1.08;
+  .claim-t {
     color: #fff !important;
     margin: 0;
+  }
+  .claim-ways {
+    display: grid;
+    justify-items: start;
+    gap: 1.2rem;
+  }
+  .claim-tel {
+    font-family: var(--font-head);
+    font-stretch: 120%;
+    font-weight: 700;
+    font-size: clamp(1.3rem, 2.2vw, 1.9rem);
+    text-decoration: none;
+  }
+  .claim-tel:hover {
+    text-decoration: underline;
+  }
+  .giant {
+    --stroke: rgb(255 255 255 / 0.18);
+    font-size: clamp(3.2rem, 13.2vw, 11.4rem);
+    margin: 0 0 1.5rem -0.03em;
   }
   .cols {
     display: grid;
