@@ -26,17 +26,14 @@ Alles, was auf der Website **rot gestrichelt** markiert ist, steht auch hier. Pl
   - 1997: Tegelweg 51 a „viele Jahre auch unsere Firmenadresse“
   - 2019: Bergedorf (Kaufhaus & Hotel am Serrahn) und Betriebsgebäude Tilsiter Straße 174 „heute unser Firmensitz“
 - [ ] **Leistungsumfang** auf den drei Leistungsseiten fachlich prüfen (z. B. Mauerwerksarbeiten, Bewehrung) → `src/data/leistungen-inhalt.ts`
-- [ ] **Firmenfilm als Datei** (OneDrive-Link ließ sich nicht automatisch laden): Video per Dropbox-/Google-Drive-Link schicken.
-  Dann: letzte 20 s (Drohnenflug) als Hero- und Film-Hintergrund, kompletter Film selbst gehostet statt YouTube.
-  Bis dahin: Zeitraffer als Hintergrund, „Film ansehen“ öffnet YouTube `Qis47M1qz_E` (bitte prüfen, ob das der richtige Film ist).
 - [ ] **Slogan** „Qualität, die steht.“ freigeben (ersetzt „Gebaut wird immer … bei uns mit Qualität“) → `src/data/site.ts` → `firma.slogan`
 
 ## Medien
 
 - [ ] **Originalbilder** in hoher Auflösung liefern – aktuell werden die Bilder der alten Website (max. ca. 1440–2000 px) verwendet.
   Projektbilder: `src/assets/projects/<projekt>/01.jpg …` (01 = Titelbild)
-- [ ] **Weitere Videos** (z. B. eigenes Imagevideo / Drohnenflug als MP4) – das Hero-Video ist derzeit der Zeitraffer „Lüneburg“ von der alten Website
-  (`public/video/`). Ideal: 10–20 s, ohne Ton, Querformat.
+- [x] **Firmenfilm** eingebunden (SER_Timelapse_Export): Startvideo = Drohnenflug 4:16–4:26, Film-Raute = Ausschnitt ab 3:20,
+  „Film ansehen“ spielt den kompletten Film (720p) direkt von der Website – ohne YouTube.
 - [ ] **Zertifikate** sind die PDFs der alten Website (Stand ca. 2017) → bei Bedarf aktuelle Versionen in `public/downloads/` austauschen
 - [ ] Logo liegt als Vektor vor (aus `Logo_mit_Adressblock.pdf`). Falls es Original-Logodateien gibt (AI/EPS/SVG), gern nachliefern.
 

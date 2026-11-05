@@ -1,37 +1,35 @@
 ---
 import { Image, getImage } from 'astro:assets';
-import { getCollection, getEntry } from 'astro:content';
+import { getEntry } from 'astro:content';
 import Base from '~/layouts/Base.astro';
 import Icon from '~/components/Icon.astro';
 import Picto from '~/components/Picto.astro';
 import QHammer from '~/components/QHammer.astro';
-import Seal from '~/components/Seal.astro';
-import { firma, leistungen, kategorien, youtubeId, GRUENDUNGSJAHR } from '~/data/site';
+import { firma, leistungen, GRUENDUNGSJAHR } from '~/data/site';
 import { url } from '~/lib/url';
-import poster from '~/assets/site/zeitraffer-poster.jpg';
+import heroPoster from '~/assets/site/hero-poster.jpg';
+import filmPoster from '~/assets/site/film-poster.jpg';
 import teamFoto from '~/assets/team/baustellenteam.jpg';
 
-const posterImg = await getImage({ src: poster, width: 1920, format: 'jpg', quality: 70 });
+const heroPosterImg = await getImage({ src: heroPoster, width: 1920, format: 'jpg', quality: 70 });
+const filmPosterImg = await getImage({ src: filmPoster, width: 1600, format: 'jpg', quality: 70 });
 
 /* Leistungen */
-const svcInfo: Record<string, { bild: string; wort: string; a: string; b: string; text: string }> = {
+const svcInfo: Record<string, { bild: string; a: string; b: string; text: string }> = {
   rohbau: {
     bild: 'grosse-johannisstrasse',
-    wort: 'Rohbau',
     a: 'Rohbau &',
     b: 'Stahlbetonbau',
     text: 'Rohbauten in Beton- und Stahlbetonbauweise – vom Fundament über die Tiefgarage bis zur letzten Decke.',
   },
   'schluesselfertiges-bauen': {
     bild: 'steinwegel',
-    wort: 'Schlüsselfertig',
     a: 'Schlüssel­fertiges',
     b: 'Bauen',
     text: 'Vom Rohbau bis zur Übergabe koordinieren wir alle Gewerke – mit einem festen Ansprechpartner.',
   },
   'umbau-sanierung': {
     bild: 'bellevue-50',
-    wort: 'Umbau',
     a: 'Umbau &',
     b: 'Sanierung',
     text: 'Umbauten, Erweiterungen und Sanierungen im Bestand – von der Stadtvilla bis zum Alsterpalais.',
@@ -44,22 +42,23 @@ const services = await Promise.all(
   }),
 );
 
-/* Referenzen */
-const ort = (fakten: { label: string; value: string }[]) => {
-  const adr = fakten.find((f) => f.label === 'Adresse')?.value.split('\n').pop() ?? '';
-  return adr.replace(/^\d{5}\s*/, '');
-};
-const projekte = (await getCollection('projekte')).sort(
-  (a, b) => (a.data.highlight ?? 99) - (b.data.highlight ?? 99) || (b.data.jahr ?? 0) - (a.data.jahr ?? 0),
+/* Drei Projekte zum Durchscrollen */
+const ort = (fakten: { label: string; value: string }[]) =>
+  (fakten.find((f) => f.label === 'Adresse')?.value.split('\n').pop() ?? '').replace(/^\d{5}\s*/, '');
+const showcase = await Promise.all(
+  ['hanseforum', 'kinderwelt', 'horner-landstrasse'].map(async (id) => {
+    const p = (await getEntry('projekte', id))!;
+    return { id, ...p.data, ort: ort(p.data.fakten) };
+  }),
 );
 
-const introBild = (await getEntry('projekte', 'hanseforum'))!.data.bilder[0]!;
+const introBild = (await getEntry('projekte', 'milchgrund'))!.data.bilder[0]!;
 
 const fakten = [
-  { zahl: String(GRUENDUNGSJAHR), count: false, label: 'Gegründet' },
-  { zahl: String(firma.projekteAnzahl), count: true, plus: true, label: 'Projekte' },
-  { zahl: String(firma.mitarbeiter), count: true, label: 'Mitarbeiter' },
-  { zahl: 'HH', count: false, label: 'Hamburg & Umgebung' },
+  { zahl: String(GRUENDUNGSJAHR), label: 'Gegründet' },
+  { zahl: `${firma.projekteAnzahl}+`, label: 'Projekte' },
+  { zahl: String(firma.mitarbeiter), label: 'Mitarbeiter' },
+  { zahl: 'HH', label: 'Hamburg & Umgebung' },
 ];
 
 const werte = [
@@ -67,75 +66,55 @@ const werte = [
   { picto: 'hammer', t: 'Sorgfältig', d: 'Bis zum Schluss – in jedem Detail.' },
   { picto: 'helm', t: 'Partnerschaftlich', d: 'Mit Auftraggebern und im Team.' },
 ] as const;
-
-const ticker = [`Seit ${GRUENDUNGSJAHR}`, 'Rohbau', 'Stahlbetonbau', 'Schlüsselfertig', 'Umbau', 'Hamburg'];
 ---
 
 <Base title="Start">
+  <!-- Blaue Linie, die sich beim Scrollen durch die Seite zieht -->
+  <svg class="flow" data-flow aria-hidden="true"><path data-flow-path></path></svg>
+
   <!-- ======================= HERO ======================= -->
-  <section class="hero" data-home-hero>
+  <section class="hero" data-hero>
     <div class="hero-media">
-      <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster={posterImg.src} data-autoplay aria-hidden="true">
-        <source src={url('/video/zeitraffer-540.mp4')} type="video/mp4" media="(max-width: 767px)" />
-        <source src={url('/video/zeitraffer-1080.mp4')} type="video/mp4" />
+      <video class="hero-video" autoplay muted loop playsinline preload="auto" poster={heroPosterImg.src} data-autoplay aria-hidden="true">
+        <source src={url('/video/hero-540.mp4')} type="video/mp4" media="(max-width: 767px)" />
+        <source src={url('/video/hero-1080.mp4')} type="video/mp4" />
       </video>
     </div>
-    <div class="hero-slab" data-hero-slab aria-hidden="true"></div>
+    <div class="hero-slab" aria-hidden="true"></div>
 
-    <div class="container hero-content" data-hero-content>
-      <p class="hero-eyebrow">Bauunternehmen Quirling · Hamburg</p>
-      <h1 class="h-display hero-title" data-split>Qualität,<br /><span class="lt">die steht.</span></h1>
+    <div class="container hero-content">
+      <p class="hero-eyebrow">Bauunternehmen Quirling · Hamburg · seit {GRUENDUNGSJAHR}</p>
+      <h1 class="h-display hero-title">Qualität,<br /><span class="lt">die steht.</span></h1>
       <a class="pill light" href={url('/leistungen/')}><span>Leistungen entdecken</span><Icon name="arrow" /></a>
     </div>
 
-    <Seal class="hero-seal" tone="white" />
-
-    <div class="hero-ticker" aria-hidden="true">
-      <div class="tk-track">
-        {
-          [0, 1, 2].map(() =>
-            ticker.map((t) => (
-              <span class="tk-item">
-                {t}
-                <QHammer class="tk-hammer" color="#fff" highlight="#3948A4" />
-              </span>
-            )),
-          )
-        }
-      </div>
-    </div>
+    <span class="flow-knot" data-flow-start aria-hidden="true"><QHammer class="knot-hammer" color="#3948A4" /></span>
   </section>
 
   <!-- ======================= INTRO ======================= -->
   <section class="intro">
-    <span class="bline bline-intro" aria-hidden="true"><span data-bline></span></span>
     <div class="container intro-grid">
-      <div class="intro-text">
-        <h2 class="h1 intro-h" data-split>
-          Massiv gebaut.<br /><span class="lt">Sorgfältig</span><br /><span class="c-blue">übergeben.</span>
-        </h2>
+      <div>
+        <h2 class="h1 intro-h">Massiv gebaut.<br /><span class="lt">Sorgfältig</span><br /><span class="c-blue">übergeben.</span></h2>
         <p class="intro-p" data-reveal>
           Seit {GRUENDUNGSJAHR} bauen wir in Hamburg und Umgebung – mit einem eingespielten Team, kurzen Wegen und dem Anspruch, jede Arbeit bis zum
           Schluss sorgfältig auszuführen.
         </p>
-        <a class="pill" href={url('/unternehmen/')} data-reveal><span>Mehr über uns</span><Icon name="arrow" /></a>
+        <a class="pill" href={url('/unternehmen/')}><span>Mehr über uns</span><Icon name="arrow" /></a>
       </div>
-      <div class="intro-visual">
-        <span class="slab slab-intro" data-drift aria-hidden="true"></span>
-        <div class="cut-img intro-img" data-wipe>
-          <Image src={introBild} alt="Hanseforum am Axel-Springer-Platz, Hamburg" widths={[600, 1000, 1400]} sizes="(min-width: 900px) 50vw, 100vw" />
+      <div class="intro-visual" data-reveal>
+        <span class="slab slab-intro" aria-hidden="true"></span>
+        <div class="cut-img intro-img">
+          <Image src={introBild} alt="Wohnanlage Milchgrund, Hamburg" widths={[600, 1000, 1400]} sizes="(min-width: 900px) 50vw, 100vw" />
         </div>
       </div>
     </div>
     <div class="container">
-      <dl class="figures" data-reveal data-reveal-children>
+      <dl class="figures" data-flow-cross>
         {
           fakten.map((f) => (
             <div class="fig">
-              <dd>
-                <span data-count={f.count ? f.zahl : undefined}>{f.zahl}</span>
-                {f.plus && <sup>+</sup>}
-              </dd>
+              <dd>{f.zahl}</dd>
               <dt>{f.label}</dt>
             </div>
           ))
@@ -145,18 +124,18 @@ const ticker = [`Seit ${GRUENDUNGSJAHR}`, 'Rohbau', 'Stahlbetonbau', 'Schlüssel
   </section>
 
   <!-- ======================= LEISTUNGEN ======================= -->
-  <section class="services" aria-labelledby="svc-h">
-    <h2 id="svc-h" class="visually-hidden">Leistungen</h2>
+  <section class="services" data-services aria-labelledby="svc-h">
+    <div class="container svc-head">
+      <p class="eyebrow">Leistungen</p>
+      <h2 id="svc-h" class="h2">Was wir <span class="lt">bauen.</span></h2>
+    </div>
     {
       services.map((s, i) => (
         <article class:list={['svc', { flip: i % 2 === 1 }]}>
-          <div class="outline-word svc-word" data-slide>
-            {s.wort}
-          </div>
           <div class="container svc-grid">
-            <a class="svc-visual" href={url(`/leistungen/${s.slug}/`)} tabindex="-1" aria-hidden="true">
-              <span class="slab slab-svc" data-drift />
-              <span class="cut-img svc-img" data-wipe>
+            <a class="svc-visual" href={url(`/leistungen/${s.slug}/`)} tabindex="-1" aria-hidden="true" data-reveal>
+              <span class="slab slab-svc" />
+              <span class="cut-img svc-img">
                 <Image src={s.img} alt="" widths={[600, 1000, 1400]} sizes="(min-width: 900px) 55vw, 100vw" />
               </span>
             </a>
@@ -164,7 +143,6 @@ const ticker = [`Seit ${GRUENDUNGSJAHR}`, 'Rohbau', 'Stahlbetonbau', 'Schlüssel
               <span class="svc-picto">
                 <Picto name={s.picto} />
               </span>
-              <span class="svc-nr">{s.nr}</span>
               <h3 class="h2 svc-title">
                 <span class="c-blue">{s.a}</span>
                 <br />
@@ -182,77 +160,54 @@ const ticker = [`Seit ${GRUENDUNGSJAHR}`, 'Rohbau', 'Stahlbetonbau', 'Schlüssel
     }
   </section>
 
-  <!-- ======================= BAND ======================= -->
-  <div class="band" aria-hidden="true">
-    <div class="tk-track slow">
-      {
-        [0, 1, 2].map(() =>
-          ticker.map((t) => (
-            <span class="tk-item">
-              {t}
-              <QHammer class="tk-hammer" color="#3948A4" />
-            </span>
-          )),
-        )
-      }
-    </div>
-  </div>
-
-  <!-- ======================= REFERENZEN ======================= -->
-  <section class="refs" data-refs aria-labelledby="refs-h">
-    <div class="container refs-head">
-      <div class="outline-word refs-word" aria-hidden="true">Referenzen</div>
-      <h2 id="refs-h" class="h2 refs-h">Projekte, <span class="lt">die stehen.</span></h2>
-      <div class="refs-filter" role="group" aria-label="Referenzen filtern">
-        <button type="button" class="chip is-active" data-ref-filter="alle" aria-pressed="true">Alle</button>
+  <!-- ======================= PROJEKTE (3 × scrollen) ======================= -->
+  <section class="show" data-show aria-labelledby="show-h">
+    <div class="show-in">
+      <div class="show-text">
+        <p class="eyebrow">Referenzen</p>
+        <h2 id="show-h" class="h2 show-h">Projekte, <span class="lt">die stehen.</span></h2>
+        <div class="show-items">
+          {
+            showcase.map((p, i) => (
+              <div class:list={['show-item', { 'is-active': i === 0 }]} data-show-item>
+                <span class="show-nr">
+                  {String(i + 1).padStart(2, '0')} <span class="lt">/ {String(showcase.length).padStart(2, '0')}</span>
+                </span>
+                <h3 class="show-title">{p.title}</h3>
+                <p class="show-meta">
+                  {p.kategorien[0]} · {p.ort}
+                  {p.jahr && ` · ${p.jahr}`}
+                </p>
+                <p class="show-desc">{p.leistung}</p>
+                <a class="link-arrow" href={url(`/referenzen/${p.id}/`)} tabindex={i === 0 ? undefined : -1}>
+                  Projekt ansehen <Icon name="arrow" />
+                </a>
+              </div>
+            ))
+          }
+        </div>
+        <a class="pill" href={url('/referenzen/')}><span>Alle Referenzen</span><Icon name="arrow" /></a>
+      </div>
+      <div class="show-stage">
         {
-          kategorien.map((k) => (
-            <button type="button" class="chip" data-ref-filter={k} aria-pressed="false">
-              {k}
-            </button>
+          showcase.map((p, i) => (
+            <a class="show-img" href={url(`/referenzen/${p.id}/`)} data-show-img tabindex="-1" style={`z-index:${i + 1}`}>
+              <Image src={p.bilder[0]!} alt={`${p.title} – ${p.leistung}`} widths={[900, 1400, 2000]} sizes="(min-width: 900px) 62vw, 100vw" />
+              <span class="show-cap">
+                <strong>{p.title}</strong>
+                {p.kategorien[0]} · {p.ort}
+              </span>
+            </a>
           ))
         }
-      </div>
-    </div>
-
-    <div class="refs-track" data-refs-track>
-      {
-        projekte.map((p) => (
-          <a class="rcard" href={url(`/referenzen/${p.id}/`)} data-cats={p.data.kategorien.join('|')} draggable="false">
-            <span class="rcard-img">
-              <Image src={p.data.bilder[0]!} alt={p.data.title} widths={[400, 700]} sizes="320px" draggable="false" />
-            </span>
-            <span class="rcard-body">
-              <span class="rcard-cat">Referenz // {p.data.kategorien[0]}</span>
-              <span class="rcard-title">{p.data.title}</span>
-              <span class="rcard-meta">
-                {ort(p.data.fakten)}
-                {p.data.jahr && ` · ${p.data.jahr}`}
-              </span>
-              <span class="rcard-go">
-                <Icon name="arrow" />
-              </span>
-            </span>
-          </a>
-        ))
-      }
-    </div>
-
-    <div class="container refs-foot">
-      <a class="pill solid" href={url('/referenzen/')}><span>Alle Referenzen</span><Icon name="arrow" /></a>
-      <div class="refs-progress"><span data-refs-bar></span></div>
-      <div class="refs-arrows">
-        <button type="button" data-refs-prev aria-label="Zurück"><Icon name="arrow" class="flip" /></button>
-        <button type="button" data-refs-next aria-label="Weiter"><Icon name="arrow" /></button>
       </div>
     </div>
   </section>
 
   <!-- ======================= WERTE ======================= -->
   <section class="values on-blue">
-    <span class="slab slab-values" aria-hidden="true"></span>
     <div class="container">
-      <h2 class="h2 values-h" data-split>Sorgfältig bauen:<br /><span class="lt">unsere Werte</span></h2>
+      <h2 class="h2 values-h">Sorgfältig bauen:<br /><span class="lt">unsere Werte</span></h2>
       <div class="values-grid" data-reveal data-reveal-children>
         {
           werte.map((w) => (
@@ -270,20 +225,17 @@ const ticker = [`Seit ${GRUENDUNGSJAHR}`, 'Rohbau', 'Stahlbetonbau', 'Schlüssel
   <!-- ======================= KARRIERE ======================= -->
   <section class="career">
     <div class="container career-grid">
-      <div class="career-visual">
-        <Seal class="career-seal" text="QUIRLING · QUIRLING · QUIRLING · " />
-        <div class="cut-img career-img" data-wipe>
+      <div class="career-visual" data-reveal>
+        <div class="cut-img career-img">
           <Image src={teamFoto} alt="Das Team der Quirling GmbH" widths={[600, 1000, 1400]} sizes="(min-width: 900px) 50vw, 100vw" />
         </div>
-        <div class="career-label" data-tilt>
-          <span class="cl-a">Mit anpacken</span>
+        <div class="career-label">
+          <span class="cl-a"><QHammer class="cl-hammer" color="#fff" highlight="#3948A4" />Mit anpacken</span>
           <span class="cl-b">bei Quirling</span>
         </div>
       </div>
       <div class="career-text" data-reveal>
-        <p class="career-lead">
-          {firma.mitarbeiter} Profis, ein eingespieltes Team – und Platz für Verstärkung auf der Baustelle und im Büro.
-        </p>
+        <p class="career-lead">{firma.mitarbeiter} Profis, ein eingespieltes Team – und Platz für Verstärkung auf der Baustelle und im Büro.</p>
         <ul class="arrows">
           <li>Vielseitige Bauvorhaben in Hamburg</li>
           <li>Festes, beständiges Team</li>
@@ -298,8 +250,8 @@ const ticker = [`Seit ${GRUENDUNGSJAHR}`, 'Rohbau', 'Stahlbetonbau', 'Schlüssel
   <section class="film" data-film>
     <div class="film-sticky">
       <div class="film-frame" data-film-frame>
-        <video autoplay muted loop playsinline preload="none" poster={posterImg.src} data-autoplay aria-hidden="true">
-          <source src={url('/video/zeitraffer-1080.mp4')} type="video/mp4" />
+        <video autoplay muted loop playsinline preload="none" poster={filmPosterImg.src} data-autoplay aria-hidden="true">
+          <source src={url('/video/film-loop.mp4')} type="video/mp4" />
         </video>
       </div>
       <div class="film-ui" data-film-ui>
@@ -312,22 +264,21 @@ const ticker = [`Seit ${GRUENDUNGSJAHR}`, 'Rohbau', 'Stahlbetonbau', 'Schlüssel
     </div>
   </section>
 
-  <dialog class="film-modal" data-film-modal data-yt={youtubeId} aria-label="Film: Quirling von oben">
-    <div class="fm-box" data-film-box></div>
+  <dialog class="film-modal" data-film-modal aria-label="Film: Quirling von oben">
+    <video class="fm-video" controls playsinline preload="none" poster={filmPosterImg.src} data-film-video>
+      <source src={url('/video/quirling-film-720.mp4')} type="video/mp4" />
+    </video>
     <button type="button" class="fm-close" data-film-close aria-label="Schließen"><Icon name="close" /></button>
-    <p class="fm-note">Das Video wird von YouTube geladen – dabei werden Daten an Google übertragen. <a href={url('/datenschutz/')}>Datenschutz</a></p>
   </dialog>
 </Base>
 
 <style>
-  /* ---------- gemeinsame Bausteine ---------- */
-  /* Schräge Fläche im Winkel der Logo-Raute */
+  /* ---------- Bausteine ---------- */
   .slab {
     position: absolute;
     background: var(--blue);
     pointer-events: none;
   }
-  /* Bild mit schrägem Anschnitt */
   .cut-img {
     display: block;
     position: relative;
@@ -339,28 +290,40 @@ const ticker = [`Seit ${GRUENDUNGSJAHR}`, 'Rohbau', 'Stahlbetonbau', 'Schlüssel
     height: 100%;
     object-fit: cover;
   }
-  /* Bauzeichnungs-Linie */
-  .bline {
+
+  /* ---------- Linie ---------- */
+  .flow {
     position: absolute;
-    width: 1px;
+    top: 0;
+    left: 0;
+    width: 100%;
     pointer-events: none;
+    z-index: 1;
+    overflow: visible;
   }
-  .bline span {
-    position: absolute;
-    inset: 0;
-    background: var(--blue);
-    transform-origin: top;
+  .flow path {
+    fill: none;
+    stroke: var(--blue);
+    stroke-width: 1.5;
+    stroke-linejoin: miter;
   }
-  .bline span::after {
-    content: '';
+  .flow-knot {
     position: absolute;
-    bottom: -1px;
-    left: -5px;
-    width: 9px;
-    height: 9px;
-    border-right: 1px solid var(--blue);
-    border-bottom: 1px solid var(--blue);
-    transform: rotate(45deg);
+    bottom: 0;
+    left: 0;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: #fff;
+    display: grid;
+    place-items: center;
+    transform: translate(-50%, 50%);
+    z-index: 3;
+    box-shadow: 0 0 0 1.5px var(--blue);
+  }
+  .flow-knot :global(.knot-hammer) {
+    width: 30px;
+    height: 30px;
   }
 
   /* ======================= HERO ======================= */
@@ -369,33 +332,25 @@ const ticker = [`Seit ${GRUENDUNGSJAHR}`, 'Rohbau', 'Stahlbetonbau', 'Schlüssel
     height: 100svh;
     min-height: 640px;
     color: #fff;
-    overflow: hidden;
-    isolation: isolate;
     background: var(--navy);
+    z-index: 2;
   }
   .hero-media {
     position: absolute;
     inset: 0;
-    z-index: -2;
+    overflow: hidden;
   }
   .hero-video {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
-  .hero-media::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgb(18 23 53 / 0.55), transparent 35%);
-  }
   .hero-slab {
     position: absolute;
     inset: 0 auto 0 0;
-    width: min(64vw, 1040px);
-    background: rgb(57 72 164 / 0.9);
+    width: min(60vw, 980px);
+    background: rgb(57 72 164 / 0.88);
     clip-path: polygon(0 0, 100% 0, 66% 100%, 0 100%);
-    z-index: -1;
   }
   .hero-content {
     position: relative;
@@ -405,13 +360,12 @@ const ticker = [`Seit ${GRUENDUNGSJAHR}`, 'Rohbau', 'Stahlbetonbau', 'Schlüssel
     justify-content: center;
     align-items: flex-start;
     padding-top: var(--header-h);
-    padding-bottom: 5rem;
   }
   .hero-eyebrow {
     font-family: var(--font-head);
     font-stretch: 120%;
     font-weight: 500;
-    font-size: clamp(0.9rem, 1.2vw, 1.15rem);
+    font-size: clamp(0.85rem, 1.1vw, 1.05rem);
     letter-spacing: 0.06em;
     text-transform: uppercase;
     margin-bottom: 1.4rem;
@@ -420,63 +374,10 @@ const ticker = [`Seit ${GRUENDUNGSJAHR}`, 'Rohbau', 'Stahlbetonbau', 'Schlüssel
   .hero-title {
     margin-bottom: 2.4rem;
   }
-  .hero :global(.hero-seal) {
-    position: absolute;
-    right: clamp(1.5rem, 5vw, 5rem);
-    bottom: 6.5rem;
-    width: clamp(120px, 12vw, 170px);
-  }
-  .hero-ticker {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border-top: 1px solid rgb(255 255 255 / 0.3);
-    padding-block: 0.9rem;
-    overflow: hidden;
-  }
-  .tk-track {
-    display: flex;
-    width: max-content;
-    animation: tk 40s linear infinite;
-  }
-  .tk-track.slow {
-    animation-duration: 55s;
-  }
-  .tk-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 1.6rem;
-    padding-right: 1.6rem;
-    font-family: var(--font-head);
-    font-stretch: 125%;
-    font-weight: 700;
-    font-size: 0.82rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    white-space: nowrap;
-  }
-  .tk-item :global(.tk-hammer) {
-    width: 1.1rem;
-    height: 1.1rem;
-  }
-  @keyframes tk {
-    to {
-      transform: translateX(-33.333%);
-    }
-  }
 
   /* ======================= INTRO ======================= */
   .intro {
-    position: relative;
-    background: #fff;
-    padding-block: clamp(5rem, 10vw, 9rem) clamp(3.5rem, 7vw, 6rem);
-    overflow: hidden;
-  }
-  .bline-intro {
-    left: max(var(--gutter), calc((100vw - var(--container)) / 2));
-    top: 0;
-    height: clamp(3rem, 7vw, 6rem);
+    padding-block: clamp(6rem, 11vw, 10rem) clamp(4rem, 7vw, 6rem);
   }
   .intro-grid {
     display: grid;
@@ -500,22 +401,22 @@ const ticker = [`Seit ${GRUENDUNGSJAHR}`, 'Rohbau', 'Stahlbetonbau', 'Schlüssel
   .slab-intro {
     top: 0;
     bottom: 0;
-    right: -12%;
-    width: 70%;
+    right: 0;
+    width: 55%;
     clip-path: polygon(34% 0, 100% 0, 100% 100%, 0 100%);
   }
   .intro-img {
     aspect-ratio: 4 / 3;
     clip-path: polygon(0 0, 100% 0, 100% 100%, 12% 100%);
+    margin-right: 2.5rem;
   }
   .figures {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    margin: clamp(3.5rem, 7vw, 6rem) 0 0;
-    border-top: 1px solid var(--line);
+    margin: clamp(4rem, 8vw, 7rem) 0 0;
   }
   .fig {
-    padding: 1.6rem 1rem 0 0;
+    padding: 2rem 1rem 0 0;
     display: flex;
     flex-direction: column;
   }
@@ -533,10 +434,6 @@ const ticker = [`Seit ${GRUENDUNGSJAHR}`, 'Rohbau', 'Stahlbetonbau', 'Schlüssel
     line-height: 1;
     color: var(--blue);
   }
-  .fig sup {
-    font-size: 0.5em;
-    vertical-align: top;
-  }
   .fig dt {
     margin-top: 0.5rem;
     font-family: var(--font-head);
@@ -550,28 +447,18 @@ const ticker = [`Seit ${GRUENDUNGSJAHR}`, 'Rohbau', 'Stahlbetonbau', 'Schlüssel
 
   /* ======================= LEISTUNGEN ======================= */
   .services {
-    background: #fff;
-    padding-bottom: clamp(3rem, 6vw, 5rem);
+    padding-block: clamp(3rem, 6vw, 5rem) clamp(5rem, 9vw, 8rem);
+  }
+  .svc-head {
+    margin-bottom: clamp(1rem, 3vw, 2rem);
+  }
+  .svc-head .h2 {
+    color: var(--ink-2);
   }
   .svc {
-    position: relative;
-    padding-block: clamp(3.5rem, 8vw, 7rem);
-    overflow: hidden;
-  }
-  .svc-word {
-    position: absolute;
-    top: clamp(1rem, 3vw, 2.5rem);
-    left: -2vw;
-    font-size: clamp(5rem, 15vw, 15rem);
-    z-index: 0;
-  }
-  .svc.flip .svc-word {
-    left: auto;
-    right: -2vw;
+    padding-block: clamp(3rem, 6vw, 5rem);
   }
   .svc-grid {
-    position: relative;
-    z-index: 1;
     display: grid;
     grid-template-columns: 1.15fr 1fr;
     gap: clamp(2.5rem, 6vw, 6rem);
@@ -585,20 +472,20 @@ const ticker = [`Seit ${GRUENDUNGSJAHR}`, 'Rohbau', 'Stahlbetonbau', 'Schlüssel
     display: block;
     padding: 2rem 0 2rem 2rem;
   }
+  .svc.flip .svc-visual {
+    padding: 2rem 2rem 2rem 0;
+  }
   .slab-svc {
     left: 0;
     top: 0;
     bottom: 0;
-    width: 45%;
+    width: 40%;
     clip-path: polygon(0 0, 100% 0, 60% 100%, 0 100%);
   }
   .svc.flip .slab-svc {
     left: auto;
     right: 0;
     clip-path: polygon(40% 0, 100% 0, 100% 100%, 0 100%);
-  }
-  .svc.flip .svc-visual {
-    padding: 2rem 2rem 2rem 0;
   }
   .svc-img {
     aspect-ratio: 16 / 11;
@@ -611,7 +498,7 @@ const ticker = [`Seit ${GRUENDUNGSJAHR}`, 'Rohbau', 'Stahlbetonbau', 'Schlüssel
     transition: transform 1.2s var(--ease);
   }
   .svc-visual:hover .svc-img :global(img) {
-    transform: scale(1.04);
+    transform: scale(1.03);
   }
   .svc-text {
     max-width: 30rem;
@@ -622,22 +509,11 @@ const ticker = [`Seit ${GRUENDUNGSJAHR}`, 'Rohbau', 'Stahlbetonbau', 'Schlüssel
     width: 56px;
     height: 56px;
     border: 1px solid var(--line);
-    color: var(--ink);
     margin-bottom: 1.6rem;
   }
   .svc-picto :global(svg) {
     width: 34px;
     height: 34px;
-  }
-  .svc-nr {
-    display: block;
-    font-family: var(--font-head);
-    font-stretch: 125%;
-    font-weight: 700;
-    font-size: 0.8rem;
-    letter-spacing: 0.1em;
-    color: var(--grey);
-    margin-bottom: 0.8rem;
   }
   .svc-title {
     margin-bottom: 1.4rem;
@@ -649,260 +525,102 @@ const ticker = [`Seit ${GRUENDUNGSJAHR}`, 'Rohbau', 'Stahlbetonbau', 'Schlüssel
     margin-bottom: 2rem;
   }
 
-  /* ======================= BAND ======================= */
-  .band {
-    overflow: hidden;
-    border-block: 1px solid var(--blue);
-    padding-block: 0.9rem;
-    color: var(--blue);
+  /* ======================= PROJEKTE ======================= */
+  .show {
+    position: relative;
+    z-index: 2;
     background: #fff;
   }
-
-  /* ======================= REFERENZEN ======================= */
-  .refs {
-    background: var(--stone-50);
-    padding-block: clamp(4.5rem, 9vw, 8rem);
-    overflow: hidden;
-  }
-  .refs-head {
-    position: relative;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 1.5rem;
-    padding-top: clamp(3rem, 9vw, 9rem);
-    margin-bottom: 2rem;
-  }
-  .refs-word {
-    position: absolute;
-    left: calc(var(--gutter) - 0.5vw);
-    top: 0;
-    font-size: clamp(3rem, 10.2vw, 9.4rem);
-  }
-  .refs-h {
-    position: relative;
-    color: var(--ink-2);
-  }
-  .refs-filter {
-    position: relative;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-  }
-  .chip {
-    font: inherit;
-    font-family: var(--font-head);
-    font-stretch: 115%;
-    font-weight: 600;
-    font-size: 0.75rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    padding: 0.5rem 0.95rem;
-    border-radius: 999px;
-    border: 1px solid var(--line);
-    background: #fff;
-    color: var(--ink-2);
-    cursor: pointer;
-    transition:
-      background 0.25s ease,
-      color 0.25s ease,
-      border-color 0.25s ease;
-  }
-  .chip:hover {
-    border-color: var(--blue);
-    color: var(--blue);
-  }
-  .chip.is-active {
-    background: var(--blue);
-    border-color: var(--blue);
-    color: #fff;
-  }
-  .refs-track {
-    display: flex;
-    gap: 1rem;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scroll-padding-inline: max(var(--gutter), calc((100vw - var(--container)) / 2));
-    padding-inline: max(var(--gutter), calc((100vw - var(--container)) / 2));
-    padding-bottom: 0.5rem;
-    scrollbar-width: none;
-    cursor: grab;
-  }
-  .refs-track::-webkit-scrollbar {
-    display: none;
-  }
-  .refs-track.is-dragging {
-    cursor: grabbing;
-    scroll-snap-type: none;
-  }
-  .refs-track.is-dragging .rcard {
-    pointer-events: none;
-  }
-  .rcard {
-    flex: none;
-    width: clamp(290px, 34vw, 520px);
+  .show-in {
     display: grid;
-    grid-template-columns: 0.9fr 1fr;
-    min-height: 300px;
-    background: #fff;
-    text-decoration: none;
-    color: var(--ink);
-    scroll-snap-align: start;
-    position: relative;
-    overflow: hidden;
-    isolation: isolate;
+    grid-template-columns: minmax(340px, 0.72fr) 1.6fr;
+    height: 100vh;
+    min-height: 620px;
   }
-  .rcard[hidden] {
-    display: none;
-  }
-  .rcard-img {
-    position: relative;
-    overflow: hidden;
-    clip-path: polygon(0 0, 100% 0, 82% 100%, 0 100%);
-  }
-  .rcard-img :global(img) {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    user-select: none;
-    transition: transform 1s var(--ease);
-  }
-  .rcard:hover .rcard-img :global(img) {
-    transform: scale(1.06);
-  }
-  .rcard-body {
+  .show-text {
     display: flex;
     flex-direction: column;
-    padding: 1.6rem 1.4rem 1.4rem 0.6rem;
+    justify-content: center;
+    padding: calc(var(--header-h) + 1rem) clamp(2rem, 4vw, 4rem) 3rem max(var(--gutter), calc((100vw - var(--container)) / 2));
   }
-  .rcard::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: var(--blue);
-    clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%);
-    transition: clip-path 0.6s var(--ease);
-    z-index: -1;
+  .show-h {
+    font-size: clamp(1.6rem, 2.5vw, 2.4rem);
+    overflow-wrap: normal;
+    hyphens: manual;
+    color: var(--ink-2);
+    margin-bottom: clamp(2rem, 4vw, 3rem);
   }
-  .rcard:hover::before {
-    clip-path: polygon(40% 0, 100% 0, 100% 100%, 30% 100%);
+  .show-items {
+    display: grid;
+    margin-bottom: 2.5rem;
   }
-  .rcard-cat {
+  .show-item {
+    grid-area: 1 / 1;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.5s ease,
+      visibility 0s 0.5s;
+  }
+  .show-item.is-active {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
+  }
+  .show-nr {
+    display: block;
     font-family: var(--font-head);
-    font-stretch: 115%;
-    font-weight: 600;
-    font-size: 0.68rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--grey);
-    margin-bottom: auto;
-    transition: color 0.4s ease;
-  }
-  .rcard-title {
-    font-family: var(--font-head);
-    font-stretch: 120%;
+    font-stretch: 125%;
     font-weight: 800;
-    font-size: clamp(1.05rem, 1.4vw, 1.3rem);
-    line-height: 1.1;
-    text-transform: uppercase;
-    margin-top: 2rem;
-    transition: color 0.4s ease;
+    font-size: 1rem;
+    color: var(--blue);
+    margin-bottom: 1rem;
   }
-  .rcard-meta {
+  .show-title {
+    font-stretch: 125%;
+    font-weight: 800;
+    font-size: clamp(1.5rem, 2.4vw, 2.2rem);
+    text-transform: uppercase;
+    line-height: 1.02;
+  }
+  .show-meta {
     font-family: var(--font-head);
     font-stretch: 115%;
     font-weight: 300;
-    font-size: 0.95rem;
     text-transform: uppercase;
     color: var(--ink-3);
-    margin-top: 0.3rem;
-    transition: color 0.4s ease;
+    margin: 0.5rem 0 1.2rem;
   }
-  .rcard-go {
-    margin-top: 1.2rem;
-    color: var(--blue);
-    transition:
-      color 0.4s ease,
-      transform 0.4s var(--ease);
+  .show-desc {
+    color: var(--ink-3);
+    font-size: 1rem;
+    max-width: 24rem;
+    margin-bottom: 1.4rem;
   }
-  .rcard-go :global(svg) {
-    width: 1.3rem;
-    height: 1.3rem;
-  }
-  .rcard:hover .rcard-title,
-  .rcard:hover .rcard-meta,
-  .rcard:hover .rcard-cat,
-  .rcard:hover .rcard-go {
-    color: #fff;
-  }
-  .rcard:hover .rcard-go {
-    transform: translateX(5px);
-  }
-  .refs-foot {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-    margin-top: 2rem;
-  }
-  .refs-progress {
-    flex: 1;
-    height: 2px;
-    background: var(--line);
+  .show-stage {
+    position: relative;
     overflow: hidden;
+    clip-path: polygon(14% 0, 100% 0, 100% 100%, 0 100%);
   }
-  .refs-progress span {
+  .show-img {
+    position: absolute;
+    inset: 0;
     display: block;
+  }
+  .show-img :global(img) {
+    width: 100%;
     height: 100%;
-    width: 30%;
-    background: var(--blue);
-    transform-origin: left;
+    object-fit: cover;
   }
-  .refs-arrows {
-    display: flex;
-    gap: 0.5rem;
-  }
-  .refs-arrows button {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    border: 1px solid var(--blue);
-    background: transparent;
-    color: var(--blue);
-    display: grid;
-    place-items: center;
-    cursor: pointer;
-    transition:
-      background 0.25s ease,
-      color 0.25s ease;
-  }
-  .refs-arrows button:hover {
-    background: var(--blue);
-    color: #fff;
-  }
-  .refs-arrows :global(svg) {
-    width: 20px;
-    height: 20px;
-  }
-  .refs-arrows :global(.flip) {
-    transform: rotate(180deg);
+  .show-cap {
+    display: none;
   }
 
   /* ======================= WERTE ======================= */
   .values {
     position: relative;
+    z-index: 2;
     padding-block: clamp(4.5rem, 9vw, 8rem);
-    overflow: hidden;
-    isolation: isolate;
-  }
-  .slab-values {
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: 40%;
-    background: rgb(255 255 255 / 0.06);
-    clip-path: polygon(40% 0, 100% 0, 100% 100%, 0 100%);
-    z-index: -1;
   }
   .values-h {
     margin-bottom: clamp(3rem, 6vw, 5rem);
@@ -916,11 +634,11 @@ const ticker = [`Seit ${GRUENDUNGSJAHR}`, 'Rohbau', 'Stahlbetonbau', 'Schlüssel
     border-left: 1px solid rgb(255 255 255 / 0.35);
   }
   .value :global(.value-picto) {
-    width: 64px;
-    height: 64px;
+    width: 60px;
+    height: 60px;
     --accent: #c9d0f5;
     stroke-width: 1.2;
-    margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
   }
   .value h3 {
     font-stretch: 125%;
@@ -937,9 +655,7 @@ const ticker = [`Seit ${GRUENDUNGSJAHR}`, 'Rohbau', 'Stahlbetonbau', 'Schlüssel
 
   /* ======================= KARRIERE ======================= */
   .career {
-    background: #fff;
     padding-block: clamp(5rem, 10vw, 9rem);
-    overflow: hidden;
   }
   .career-grid {
     display: grid;
@@ -949,27 +665,17 @@ const ticker = [`Seit ${GRUENDUNGSJAHR}`, 'Rohbau', 'Stahlbetonbau', 'Schlüssel
   }
   .career-visual {
     position: relative;
-    padding-left: clamp(2rem, 6vw, 5rem);
-  }
-  .career-visual :global(.career-seal) {
-    position: absolute;
-    left: 0;
-    top: -2rem;
-    width: clamp(120px, 13vw, 180px);
-    z-index: 2;
   }
   .career-img {
-    aspect-ratio: 4 / 3.4;
-    clip-path: polygon(0 0, 100% 0, 100% 88%, 86% 100%, 0 100%);
+    aspect-ratio: 4 / 3.2;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 12% 100%);
   }
   .career-label {
     position: absolute;
-    right: -1.5rem;
-    top: 18%;
+    left: -1.5rem;
+    top: 2rem;
     display: grid;
-    justify-items: end;
-    transform: rotate(-4deg);
-    z-index: 2;
+    justify-items: start;
   }
   .cl-a,
   .cl-b {
@@ -981,15 +687,21 @@ const ticker = [`Seit ${GRUENDUNGSJAHR}`, 'Rohbau', 'Stahlbetonbau', 'Schlüssel
     line-height: 1;
   }
   .cl-a {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
     font-weight: 800;
-    font-size: clamp(1.8rem, 3.6vw, 3.2rem);
+    font-size: clamp(1.4rem, 2.6vw, 2.3rem);
     padding: 0.7rem 1.1rem 0.6rem;
+  }
+  .cl-a :global(.cl-hammer) {
+    width: 1.1em;
+    height: 1.1em;
   }
   .cl-b {
     font-weight: 300;
-    font-size: clamp(1rem, 1.8vw, 1.6rem);
+    font-size: clamp(0.95rem, 1.5vw, 1.3rem);
     padding: 0.35rem 1.1rem 0.5rem;
-    margin-right: 1.4rem;
   }
   .career-lead {
     font-size: clamp(1.15rem, 1.5vw, 1.35rem);
@@ -1007,36 +719,24 @@ const ticker = [`Seit ${GRUENDUNGSJAHR}`, 'Rohbau', 'Stahlbetonbau', 'Schlüssel
   }
   .arrows li {
     position: relative;
-    padding-left: 1.8rem;
+    padding-left: 1.6rem;
     color: var(--ink-2);
   }
   .arrows li::before {
     content: '';
     position: absolute;
     left: 0;
-    top: 0.45em;
-    width: 0.7em;
-    height: 0.7em;
-    border-top: 1.5px solid var(--blue);
-    border-right: 1.5px solid var(--blue);
-  }
-  .arrows li::after {
-    content: '';
-    position: absolute;
-    left: -0.05em;
-    top: 0.85em;
-    width: 0.95em;
-    height: 1.5px;
+    top: 0.55em;
+    width: 0.5em;
+    height: 0.5em;
     background: var(--blue);
-    transform: rotate(-45deg);
-    transform-origin: left;
+    transform: rotate(45deg);
   }
 
   /* ======================= FILM ======================= */
   .film {
     position: relative;
     height: 200vh;
-    background: #fff;
   }
   .film-sticky {
     position: sticky;
@@ -1045,6 +745,7 @@ const ticker = [`Seit ${GRUENDUNGSJAHR}`, 'Rohbau', 'Stahlbetonbau', 'Schlüssel
     overflow: hidden;
     display: grid;
     place-items: center;
+    z-index: 2;
   }
   .film-frame {
     position: absolute;
@@ -1085,42 +786,24 @@ const ticker = [`Seit ${GRUENDUNGSJAHR}`, 'Rohbau', 'Stahlbetonbau', 'Schlüssel
     padding: 0;
   }
   .play-ring {
-    position: relative;
-    width: 76px;
-    height: 76px;
+    width: 72px;
+    height: 72px;
     border-radius: 50%;
     display: grid;
     place-items: center;
     background: rgb(255 255 255 / 0.15);
     border: 1px solid rgb(255 255 255 / 0.6);
     backdrop-filter: blur(6px);
-    transition:
-      background 0.3s ease,
-      transform 0.4s var(--ease);
-  }
-  .play-ring::after {
-    content: '';
-    position: absolute;
-    inset: -1px;
-    border-radius: 50%;
-    border: 1px solid rgb(255 255 255 / 0.6);
-    animation: pulse 2.4s var(--ease) infinite;
-  }
-  @keyframes pulse {
-    to {
-      transform: scale(1.6);
-      opacity: 0;
-    }
+    transition: background 0.3s ease;
   }
   .play-ring :global(svg) {
-    width: 26px;
-    height: 26px;
+    width: 24px;
+    height: 24px;
     margin-left: 4px;
   }
   .play:hover .play-ring {
     background: var(--blue);
     border-color: var(--blue);
-    transform: scale(1.06);
   }
   .play-text {
     font-family: var(--font-head);
@@ -1143,18 +826,11 @@ const ticker = [`Seit ${GRUENDUNGSJAHR}`, 'Rohbau', 'Stahlbetonbau', 'Schlüssel
   .film-modal[open] {
     display: grid;
     place-items: center;
-    align-content: center;
-    gap: 1rem;
   }
-  .fm-box {
+  .fm-video {
     width: min(92vw, 160vh);
     aspect-ratio: 16 / 9;
     background: #000;
-  }
-  .fm-box :global(iframe) {
-    width: 100%;
-    height: 100%;
-    border: 0;
   }
   .fm-close {
     position: absolute;
@@ -1174,28 +850,20 @@ const ticker = [`Seit ${GRUENDUNGSJAHR}`, 'Rohbau', 'Stahlbetonbau', 'Schlüssel
     width: 22px;
     height: 22px;
   }
-  .fm-note {
-    color: rgb(255 255 255 / 0.6);
-    font-size: 0.82rem;
-    text-align: center;
-    padding-inline: 1rem;
-  }
 
   /* ======================= RESPONSIVE ======================= */
   @media (max-width: 900px) {
+    .flow,
+    .flow-knot {
+      display: none;
+    }
     .hero-slab {
       width: 100%;
       clip-path: polygon(0 0, 100% 0, 100% 52%, 0 78%);
-      background: rgb(57 72 164 / 0.88);
     }
     .hero-content {
       justify-content: flex-start;
       padding-top: calc(var(--header-h) + 3rem);
-    }
-    .hero :global(.hero-seal) {
-      bottom: 4.5rem;
-      right: 1rem;
-      width: 110px;
     }
     .intro-grid,
     .svc-grid,
@@ -1207,6 +875,7 @@ const ticker = [`Seit ${GRUENDUNGSJAHR}`, 'Rohbau', 'Stahlbetonbau', 'Schlüssel
     }
     .figures {
       grid-template-columns: 1fr 1fr;
+      border-top: 1px solid var(--line);
     }
     .fig:nth-child(3) {
       border-left: 0;
@@ -1214,6 +883,47 @@ const ticker = [`Seit ${GRUENDUNGSJAHR}`, 'Rohbau', 'Stahlbetonbau', 'Schlüssel
     }
     .fig {
       padding-bottom: 1.4rem;
+    }
+    .show-in {
+      grid-template-columns: 1fr;
+      height: auto;
+    }
+    .show-text {
+      padding: var(--section) var(--gutter) 2rem;
+    }
+    .show-items {
+      display: none;
+    }
+    .show-stage {
+      display: grid;
+      gap: 1.5rem;
+      clip-path: none;
+      padding: 0 var(--gutter) var(--section);
+    }
+    .show-img {
+      position: relative;
+      aspect-ratio: 4 / 3;
+      color: #fff;
+      text-decoration: none;
+    }
+    .show-cap {
+      display: block;
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 2.5rem 1rem 1rem;
+      background: linear-gradient(transparent, rgb(18 23 53 / 0.85));
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .show-cap strong {
+      display: block;
+      font-family: var(--font-head);
+      font-stretch: 125%;
+      font-weight: 800;
+      font-size: 1.15rem;
     }
     .values-grid {
       grid-template-columns: 1fr;
@@ -1223,7 +933,7 @@ const ticker = [`Seit ${GRUENDUNGSJAHR}`, 'Rohbau', 'Stahlbetonbau', 'Schlüssel
       margin-bottom: 1.2rem;
     }
     .career-label {
-      right: 0;
+      left: 0;
     }
     .film {
       height: auto;
@@ -1236,28 +946,6 @@ const ticker = [`Seit ${GRUENDUNGSJAHR}`, 'Rohbau', 'Stahlbetonbau', 'Schlüssel
       clip-path: polygon(50% 4%, 100% 50%, 50% 96%, 0% 50%);
     }
   }
-  @media (max-width: 560px) {
-    .rcard {
-      width: 82vw;
-      grid-template-columns: 1fr;
-      grid-template-rows: 190px auto;
-    }
-    .rcard-img {
-      clip-path: polygon(0 0, 100% 0, 100% 86%, 0 100%);
-    }
-    .rcard-body {
-      padding: 1rem 1.2rem 1.3rem;
-    }
-    .rcard-title {
-      margin-top: 0.8rem;
-    }
-    .refs-progress {
-      display: none;
-    }
-    .refs-foot {
-      justify-content: space-between;
-    }
-  }
 </style>
 
 <script>
@@ -1266,70 +954,39 @@ const ticker = [`Seit ${GRUENDUNGSJAHR}`, 'Rohbau', 'Stahlbetonbau', 'Schlüssel
   gsap.registerPlugin(ScrollTrigger);
 
   const mm = gsap.matchMedia();
-  const $$ = (s: string) => Array.from(document.querySelectorAll<HTMLElement>(s));
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  mm.add('(prefers-reduced-motion: no-preference)', () => {
-    /* Hero: Fläche schiebt sich herein, beim Scrollen wieder hinaus */
-    const slab = document.querySelector('[data-hero-slab]');
-    const hero = document.querySelector('[data-home-hero]');
-    if (slab && hero) {
-      gsap.from(slab, { xPercent: -100, duration: 1.4, ease: 'power4.out', delay: 0.1 });
-      gsap.to(slab, { xPercent: -45, ease: 'none', scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true } });
-      gsap.to('[data-hero-content]', { yPercent: -18, autoAlpha: 0, ease: 'none', scrollTrigger: { trigger: hero, start: 'top top', end: '75% top', scrub: true } });
-      gsap.to('.hero-video', { scale: 1.12, ease: 'none', scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true } });
-    }
-
-    /* Bauzeichnungs-Linien zeichnen sich */
-    $$('[data-bline]').forEach((l) =>
-      gsap.fromTo(l, { scaleY: 0 }, { scaleY: 1, ease: 'none', scrollTrigger: { trigger: l.parentElement, start: 'top 90%', end: 'bottom 45%', scrub: true } }),
-    );
-
-    /* Bilder öffnen sich mit schrägem Wisch */
-    $$('[data-wipe]').forEach((el) => {
-      const final = getComputedStyle(el).clipPath;
-      gsap.fromTo(
-        el,
-        { clipPath: 'polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)' },
-        { clipPath: final, duration: 1.3, ease: 'power3.inOut', scrollTrigger: { trigger: el, start: 'top 82%', once: true } },
-      );
-      const img = el.querySelector('img');
-      if (img) gsap.from(img, { scale: 1.25, duration: 1.8, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 82%', once: true } });
-    });
-
-    /* Blaue Flächen driften leicht */
-    $$('[data-drift]').forEach((el) =>
-      gsap.fromTo(el, { yPercent: 8 }, { yPercent: -8, ease: 'none', scrollTrigger: { trigger: el.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } }),
-    );
-
-    /* Kontur-Wörter gleiten seitlich */
-    $$('[data-slide]').forEach((el) => {
-      const dir = el.closest('.flip') ? 1 : -1;
-      gsap.fromTo(
-        el,
-        { xPercent: -8 * dir },
-        { xPercent: 8 * dir, ease: 'none', scrollTrigger: { trigger: el.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } },
-      );
-    });
-    const refsWord = document.querySelector('.refs-word');
-    if (refsWord)
-      gsap.fromTo(refsWord, { xPercent: 6 }, { xPercent: -6, ease: 'none', scrollTrigger: { trigger: '.refs', start: 'top bottom', end: 'bottom top', scrub: true } });
-
-    /* Karriere-Etikett klappt ein */
-    $$('[data-tilt]').forEach((el) =>
-      gsap.from(el, { rotate: -18, scale: 0.7, autoAlpha: 0, duration: 1, ease: 'back.out(1.6)', scrollTrigger: { trigger: el, start: 'top 85%', once: true } }),
-    );
-
-    /* Siegel dreht sich beim Scrollen schneller */
-    const seals = $$('[data-seal] .seal-ring');
-    ScrollTrigger.create({
-      onUpdate: (self) => {
-        const v = Math.min(Math.abs(self.getVelocity()) / 400, 6);
-        seals.forEach((s) => s.getAnimations().forEach((a) => (a.playbackRate = 1 + v)));
+  /* ---------- Projekte: 3 große Bilder, 3 × scrollen (Desktop) ---------- */
+  mm.add('(prefers-reduced-motion: no-preference) and (min-width: 901px)', () => {
+    const show = document.querySelector<HTMLElement>('[data-show]');
+    if (!show) return;
+    const imgs = Array.from(show.querySelectorAll<HTMLElement>('[data-show-img]'));
+    const items = Array.from(show.querySelectorAll<HTMLElement>('[data-show-item]'));
+    const setActive = (i: number) =>
+      items.forEach((it, j) => {
+        it.classList.toggle('is-active', j === i);
+        it.querySelector('a')?.setAttribute('tabindex', j === i ? '0' : '-1');
+      });
+    imgs.forEach((img, i) => i > 0 && gsap.set(img, { clipPath: 'inset(100% 0% 0% 0%)' }));
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: show,
+        start: 'top top',
+        end: () => `+=${imgs.length * window.innerHeight}`,
+        pin: true,
+        scrub: 0.5,
+        invalidateOnRefresh: true,
+        onUpdate: (self) => setActive(Math.min(imgs.length - 1, Math.floor(self.progress * imgs.length * 0.999 + 0.15))),
       },
+    });
+    tl.to({}, { duration: 0.5 });
+    imgs.slice(1).forEach((img) => {
+      tl.to(img, { clipPath: 'inset(0% 0% 0% 0%)', ease: 'power2.inOut', duration: 1 });
+      tl.to({}, { duration: 0.5 });
     });
   });
 
-  /* Film: Raute öffnet sich zum Vollbild */
+  /* ---------- Film: Raute öffnet sich ---------- */
   mm.add('(prefers-reduced-motion: no-preference) and (min-width: 901px)', () => {
     const film = document.querySelector('[data-film]');
     const frame = document.querySelector('[data-film-frame]');
@@ -1337,95 +994,103 @@ const ticker = [`Seit ${GRUENDUNGSJAHR}`, 'Rohbau', 'Stahlbetonbau', 'Schlüssel
     if (!film || !frame) return;
     const tl = gsap.timeline({ scrollTrigger: { trigger: film, start: 'top top', end: 'bottom bottom', scrub: 0.6 } });
     tl.fromTo(frame, { clipPath: 'polygon(50% 22%, 70% 50%, 50% 78%, 30% 50%)' }, { clipPath: 'polygon(50% -60%, 160% 50%, 50% 160%, -60% 50%)', ease: 'none', duration: 1 });
-    if (ui) tl.from(ui, { autoAlpha: 0, y: 40, duration: 0.35 }, 0.55);
+    if (ui) tl.from(ui, { autoAlpha: 0, y: 30, duration: 0.35 }, 0.55);
   });
 
-  /* Referenzen: Ziehen, Pfeile, Fortschritt, Filter */
-  const track = document.querySelector<HTMLElement>('[data-refs-track]');
-  const bar = document.querySelector<HTMLElement>('[data-refs-bar]');
-  if (track) {
-    const update = () => {
-      const max = track.scrollWidth - track.clientWidth;
-      const ratio = track.clientWidth / track.scrollWidth;
-      if (bar) {
-        bar.style.width = `${Math.max(8, ratio * 100)}%`;
-        bar.style.transform = `translateX(${max > 0 ? (track.scrollLeft / max) * (100 / Math.max(ratio, 0.08) - 100) : 0}%)`;
-      }
-    };
-    track.addEventListener('scroll', update, { passive: true });
-    window.addEventListener('resize', update);
-    update();
+  /* ---------- Die blaue Linie ---------- */
+  const svg = document.querySelector<SVGSVGElement>('[data-flow]');
+  const path = svg?.querySelector<SVGPathElement>('[data-flow-path]');
+  const knot = document.querySelector<HTMLElement>('[data-flow-start]');
+  let total = 0;
+  const samples: { len: number; y: number }[] = [];
 
-    const step = () => (track.querySelector<HTMLElement>('.rcard:not([hidden])')?.offsetWidth ?? 400) + 16;
-    document.querySelector('[data-refs-prev]')?.addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
-    document.querySelector('[data-refs-next]')?.addEventListener('click', () => track.scrollBy({ left: step(), behavior: 'smooth' }));
+  const box = (el: Element | null) => {
+    if (!el) return null;
+    const r = el.getBoundingClientRect();
+    return { top: r.top + window.scrollY, bottom: r.bottom + window.scrollY, left: r.left + window.scrollX, right: r.right + window.scrollX };
+  };
 
-    // Mit der Maus ziehen
-    let down = false;
-    let moved = false;
-    let startX = 0;
-    let startLeft = 0;
-    track.addEventListener('pointerdown', (e) => {
-      if (e.pointerType !== 'mouse') return;
-      down = true;
-      moved = false;
-      startX = e.clientX;
-      startLeft = track.scrollLeft;
-    });
-    window.addEventListener('pointermove', (e) => {
-      if (!down) return;
-      const dx = e.clientX - startX;
-      if (Math.abs(dx) > 5) {
-        moved = true;
-        track.classList.add('is-dragging');
-      }
-      track.scrollLeft = startLeft - dx;
-    });
-    window.addEventListener('pointerup', () => {
-      down = false;
-      track.classList.remove('is-dragging');
-    });
-    track.addEventListener('click', (e) => moved && e.preventDefault(), true);
+  const build = () => {
+    if (!svg || !path || window.innerWidth <= 900) return;
+    const doc = document.documentElement;
+    const cont = document.querySelector<HTMLElement>('.intro .container');
+    if (!cont) return;
+    const cb = box(cont)!;
+    const pad = parseFloat(getComputedStyle(cont).paddingLeft);
+    const L = Math.max(34, cb.left + pad - 36);
+    const R = Math.min(doc.clientWidth - 34, cb.right - pad + 36);
+    const hero = box(document.querySelector('[data-hero]'))!;
+    const fig = box(document.querySelector('[data-flow-cross]'))!;
+    const svcs = box(document.querySelector('[data-services]'))!;
+    const film = box(document.querySelector('[data-film]'))!;
+    const vh = window.innerHeight;
+    const cx = doc.clientWidth / 2;
+    const tipY = film.top + vh * 0.22; // obere Spitze der Raute
+    const k = (0.28 * vh) / (0.2 * doc.clientWidth); // gleiche Steigung wie die Kante der Raute
+    const turnY = svcs.bottom - 60;
+    const d = [
+      `M${L} ${hero.bottom}`,
+      `V${fig.top}`,
+      `H${R}`,
+      `V${turnY}`,
+      `H${L}`,
+      `V${film.top + 40}`,
+      `H${cx - (tipY - film.top - 40) / k}`,
+      `L${cx} ${tipY}`,
+    ].join(' ');
+    svg.setAttribute('height', String(doc.scrollHeight));
+    svg.setAttribute('viewBox', `0 0 ${doc.clientWidth} ${doc.scrollHeight}`);
+    path.setAttribute('d', d);
+    if (knot) knot.style.left = `${L}px`;
+    total = path.getTotalLength();
+    samples.length = 0;
+    for (let l = 0; l <= total; l += 24) samples.push({ len: l, y: path.getPointAtLength(l).y });
+    samples.push({ len: total, y: path.getPointAtLength(total).y });
+    path.style.strokeDasharray = `${total}`;
+    draw(true);
+  };
 
-    // Filter
-    const cards = Array.from(track.querySelectorAll<HTMLElement>('.rcard'));
-    document.querySelectorAll<HTMLButtonElement>('[data-ref-filter]').forEach((btn) =>
-      btn.addEventListener('click', () => {
-        const f = btn.dataset.refFilter!;
-        document.querySelectorAll('[data-ref-filter]').forEach((b) => {
-          b.classList.toggle('is-active', b === btn);
-          b.setAttribute('aria-pressed', String(b === btn));
-        });
-        cards.forEach((c) => (c.hidden = !(f === 'alle' || (c.dataset.cats ?? '').split('|').includes(f))));
-        track.scrollTo({ left: 0 });
-        gsap.fromTo(
-          cards.filter((c) => !c.hidden).slice(0, 4),
-          { autoAlpha: 0, x: 40 },
-          { autoAlpha: 1, x: 0, duration: 0.6, stagger: 0.07, ease: 'power3.out' },
-        );
-        update();
-      }),
-    );
+  const draw = (instant = false) => {
+    if (!path || !total) return;
+    if (reduce) {
+      path.style.strokeDashoffset = '0';
+      return;
+    }
+    const target = window.scrollY + window.innerHeight * 0.62;
+    let len = 0;
+    for (const s of samples) {
+      if (s.y <= target) len = s.len;
+      else break;
+    }
+    gsap.to(path, { strokeDashoffset: total - len, duration: instant ? 0 : 0.9, ease: 'power2.out', overwrite: true });
+  };
+
+  if (svg && path) {
+    window.addEventListener('scroll', () => draw(), { passive: true });
+    window.addEventListener('resize', () => build());
+    window.addEventListener('load', () => {
+      ScrollTrigger.refresh();
+      build();
+    });
+    ScrollTrigger.addEventListener('refresh', () => build());
+    build();
   }
 
-  /* Film-Overlay (YouTube erst nach Klick) */
+  /* ---------- Film-Overlay ---------- */
   const modal = document.querySelector<HTMLDialogElement>('[data-film-modal]');
-  const box = modal?.querySelector<HTMLElement>('[data-film-box]');
+  const video = modal?.querySelector<HTMLVideoElement>('[data-film-video]');
   document.querySelectorAll('[data-film-open]').forEach((b) =>
     b.addEventListener('click', () => {
-      if (!modal || !box) return;
-      box.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${modal.dataset.yt}?autoplay=1&rel=0&modestbranding=1" title="Quirling von oben" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
+      if (!modal) return;
       modal.showModal();
+      video?.play().catch(() => {});
       window.dispatchEvent(new CustomEvent('quirling:lock'));
     }),
   );
   modal?.querySelector('[data-film-close]')?.addEventListener('click', () => modal.close());
   modal?.addEventListener('click', (e) => e.target === modal && modal.close());
   modal?.addEventListener('close', () => {
-    if (box) box.innerHTML = '';
+    video?.pause();
     window.dispatchEvent(new CustomEvent('quirling:unlock'));
   });
-
-  ScrollTrigger.sort();
-  window.addEventListener('load', () => ScrollTrigger.refresh());
 </script>

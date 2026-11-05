@@ -52,9 +52,9 @@ mm.add('(prefers-reduced-motion: no-preference)', () => {
   $$('[data-reveal]').forEach((el) => {
     const targets = el.hasAttribute('data-reveal-children') ? Array.from(el.children) : [el];
     gsap.from(targets, {
-      y: 48,
+      y: 24,
       autoAlpha: 0,
-      duration: 1.1,
+      duration: 0.9,
       ease: 'power3.out',
       stagger: 0.1,
       scrollTrigger: { trigger: el, start: 'top 88%', once: true },

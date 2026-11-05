@@ -31,9 +31,6 @@ export const platzhalter = {
   buerozeiten: 'Mo–Fr XX:XX–XX:XX Uhr',
 } as const;
 
-/** YouTube-Video mit Drohnenaufnahmen (von der bisherigen Startseite) */
-export const youtubeId = 'Qis47M1qz_E';
-
 export type NavItem = { label: string; href: string; text?: string; children?: NavItem[] };
 
 export const leistungen = [
