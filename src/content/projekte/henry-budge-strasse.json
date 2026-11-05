@@ -1,0 +1,27 @@
+{
+  "title": "Henry-Budge-Straße",
+  "leistung": "Rohbau eines Mehrfamilienhauses mit 7 Wohneinheiten und Tiefgarage",
+  "kategorien": [
+    "Wohnungsbau"
+  ],
+  "jahr": 2011,
+  "fakten": [
+    {
+      "label": "Adresse",
+      "value": "Henry-Budge-Straße 8\n22297 Hamburg"
+    },
+    {
+      "label": "Fertigstellung",
+      "value": "2011"
+    }
+  ],
+  "bilder": [
+    "../../assets/projects/henry-budge-strasse/01.jpg",
+    "../../assets/projects/henry-budge-strasse/02.jpg",
+    "../../assets/projects/henry-budge-strasse/03.jpg",
+    "../../assets/projects/henry-budge-strasse/04.jpg",
+    "../../assets/projects/henry-budge-strasse/05.jpg",
+    "../../assets/projects/henry-budge-strasse/06.jpg"
+  ],
+  "bereich": "rohbau"
+}

@@ -1,0 +1,27 @@
+{
+  "title": "PRIME Selfstorage (Barmbek)",
+  "leistung": "Rohbau eines mehrgeschossigen Kleinlagergebäudes",
+  "kategorien": [
+    "Industriebau"
+  ],
+  "jahr": 2017,
+  "fakten": [
+    {
+      "label": "Adresse",
+      "value": "Bramfelder Straße 149\n22305 Hamburg"
+    },
+    {
+      "label": "Fertigstellung",
+      "value": "2017"
+    },
+    {
+      "label": "Generalplanung",
+      "value": "Krebs ■ Riedel\nBeratende Ingenieure Architekten\nDipl.-Ing. H. Krebs\nIngenieurbüro für Bauwesen GmbH\nwww.ing-krebs.de\nKoppel 98 20099 Hamburg\nriedel architektur\nwww.riedel-architektur.de\nHoheluftchaussee 40a\n20253 Hamburg"
+    }
+  ],
+  "bilder": [
+    "../../assets/projects/prime-selfstorage-barmbek/01.jpg",
+    "../../assets/projects/prime-selfstorage-barmbek/02.jpg"
+  ],
+  "bereich": "rohbau"
+}

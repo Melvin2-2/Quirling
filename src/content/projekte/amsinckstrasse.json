@@ -1,0 +1,26 @@
+{
+  "title": "Amsinckstraße",
+  "leistung": "Beton- und Stahlbetonbauarbeiten (ohne Fertigteilbau) eines Bürogebäudes mit Tiefgarage",
+  "kategorien": [
+    "Bürogebäude"
+  ],
+  "jahr": 2002,
+  "fakten": [
+    {
+      "label": "Adresse",
+      "value": "Amsinckstraße 32\n20097 Hamburg"
+    },
+    {
+      "label": "Fertigstellung",
+      "value": "2002"
+    }
+  ],
+  "bilder": [
+    "../../assets/projects/amsinckstrasse/01.jpg",
+    "../../assets/projects/amsinckstrasse/02.jpg",
+    "../../assets/projects/amsinckstrasse/03.jpg",
+    "../../assets/projects/amsinckstrasse/04.jpg"
+  ],
+  "bereich": "rohbau",
+  "highlight": 4
+}

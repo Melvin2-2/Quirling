@@ -1,0 +1,27 @@
+{
+  "title": "Eißendorfer Pferdeweg",
+  "leistung": "Rohbau eines Mehrfamilienhauses mit 4 Wohneinheiten",
+  "kategorien": [
+    "Wohnungsbau"
+  ],
+  "jahr": 2015,
+  "fakten": [
+    {
+      "label": "Adresse",
+      "value": "Eißendorfer Pferdestraße 29\n21075 Hamburg"
+    },
+    {
+      "label": "Fertigstellung",
+      "value": "2015"
+    }
+  ],
+  "bilder": [
+    "../../assets/projects/eissendorfer-pferdeweg/01.jpg",
+    "../../assets/projects/eissendorfer-pferdeweg/02.jpg",
+    "../../assets/projects/eissendorfer-pferdeweg/03.jpg",
+    "../../assets/projects/eissendorfer-pferdeweg/04.jpg",
+    "../../assets/projects/eissendorfer-pferdeweg/05.jpg",
+    "../../assets/projects/eissendorfer-pferdeweg/06.jpg"
+  ],
+  "bereich": "rohbau"
+}

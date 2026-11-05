@@ -1,0 +1,9 @@
+---
+/** Roter Platzhalter für fehlende Inhalte – siehe TODO.md */
+interface Props {
+  hint?: string;
+}
+const { hint } = Astro.props;
+---
+
+<span class="todo" data-hint={hint} title="Platzhalter – Inhalt fehlt noch"><slot /></span>

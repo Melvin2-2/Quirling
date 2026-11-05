@@ -1,0 +1,28 @@
+{
+  "title": "Pferdemarkt",
+  "leistung": "Rohbau 25 barrierefreier Wohnungen mit Tiefgarage",
+  "kategorien": [
+    "Wohnungsbau"
+  ],
+  "jahr": 2016,
+  "fakten": [
+    {
+      "label": "Adresse",
+      "value": "Pferdemarkt 18\n23843 Bad Oldesloe"
+    },
+    {
+      "label": "Fertigstellung",
+      "value": "2016"
+    }
+  ],
+  "bilder": [
+    "../../assets/projects/pferdemarkt/01.jpg",
+    "../../assets/projects/pferdemarkt/02.jpg",
+    "../../assets/projects/pferdemarkt/03.jpg",
+    "../../assets/projects/pferdemarkt/04.jpg",
+    "../../assets/projects/pferdemarkt/05.jpg",
+    "../../assets/projects/pferdemarkt/06.jpg",
+    "../../assets/projects/pferdemarkt/07.jpg"
+  ],
+  "bereich": "rohbau"
+}

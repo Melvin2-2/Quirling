@@ -1,0 +1,20 @@
+{
+  "title": "Eißendorfer Grenzweg 24a",
+  "leistung": "Rohbau eines Einfamilienhauses",
+  "kategorien": [
+    "Häuser"
+  ],
+  "jahr": null,
+  "fakten": [
+    {
+      "label": "Adresse",
+      "value": "Eißendorfer Grenzweg 24a\n21077 Hamburg"
+    }
+  ],
+  "bilder": [
+    "../../assets/projects/eissendorfer-grenzweg-24a/01.jpg",
+    "../../assets/projects/eissendorfer-grenzweg-24a/02.jpg",
+    "../../assets/projects/eissendorfer-grenzweg-24a/03.jpg"
+  ],
+  "bereich": "rohbau"
+}

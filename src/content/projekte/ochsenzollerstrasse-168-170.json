@@ -1,0 +1,26 @@
+{
+  "title": "Ochsenzollerstraße 168-170",
+  "leistung": "Rohbau eines Mehrfamilienhauses mit 10 Wohneinheiten und Tiefgarage",
+  "kategorien": [
+    "Wohnungsbau"
+  ],
+  "jahr": 2014,
+  "fakten": [
+    {
+      "label": "Adresse",
+      "value": "Ochsenzollerstraße 168-170\n22848 Norderstedt"
+    },
+    {
+      "label": "Fertigstellung",
+      "value": "2014"
+    }
+  ],
+  "bilder": [
+    "../../assets/projects/ochsenzollerstrasse-168-170/01.jpg",
+    "../../assets/projects/ochsenzollerstrasse-168-170/02.jpg",
+    "../../assets/projects/ochsenzollerstrasse-168-170/03.jpg",
+    "../../assets/projects/ochsenzollerstrasse-168-170/04.jpg",
+    "../../assets/projects/ochsenzollerstrasse-168-170/05.jpg"
+  ],
+  "bereich": "rohbau"
+}

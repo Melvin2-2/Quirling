@@ -1,0 +1,20 @@
+{
+  "title": "Ebeersreye",
+  "leistung": "Rohbau eines Doppelhauses",
+  "kategorien": [
+    "Häuser"
+  ],
+  "jahr": null,
+  "fakten": [
+    {
+      "label": "Adresse",
+      "value": "Ebeersreye 21 a/b\n22159 Hamburg"
+    }
+  ],
+  "bilder": [
+    "../../assets/projects/ebeersreye/01.jpg",
+    "../../assets/projects/ebeersreye/03.jpg",
+    "../../assets/projects/ebeersreye/04.jpg"
+  ],
+  "bereich": "rohbau"
+}

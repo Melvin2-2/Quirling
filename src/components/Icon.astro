@@ -1,0 +1,32 @@
+---
+interface Props {
+  name: 'arrow' | 'arrow-down' | 'phone' | 'mail' | 'pin' | 'download' | 'play' | 'close' | 'plus' | 'chevron' | 'clock';
+  class?: string;
+}
+const { name, class: cls } = Astro.props;
+const paths: Record<Props['name'], string> = {
+  arrow: 'M4 12h15m-6-6 6 6-6 6',
+  'arrow-down': 'M12 4v15m-6-6 6 6 6-6',
+  phone:
+    'M5 4h3.5l1.7 4.3-2.2 1.4a11 11 0 0 0 6.3 6.3l1.4-2.2L20 15.5V19a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1Z',
+  mail: 'M3.5 6.5h17v11h-17zM3.5 7l8.5 6.5L20.5 7',
+  pin: 'M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11Zm0-8.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z',
+  download: 'M12 4v11m-5-5 5 5 5-5M5 19.5h14',
+  play: 'M8 5.5v13l10.5-6.5z',
+  close: 'M6 6l12 12M18 6 6 18',
+  plus: 'M12 5v14M5 12h14',
+  chevron: 'm7 10 5 5 5-5',
+  clock: 'M12 7v5l3 2m6-2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z',
+};
+---
+
+<svg
+  class={cls}
+  viewBox="0 0 24 24"
+  fill={name === 'play' ? 'currentColor' : 'none'}
+  stroke="currentColor"
+  stroke-width="1.6"
+  stroke-linecap="square"
+  stroke-linejoin="miter"
+  aria-hidden="true"><path d={paths[name]}></path></svg
+>

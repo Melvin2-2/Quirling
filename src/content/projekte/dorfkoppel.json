@@ -1,0 +1,28 @@
+{
+  "title": "Dorfkoppel",
+  "leistung": "Rohbau einer Wohnanlage mit 20 Wohneinheiten und Tiefgarage",
+  "kategorien": [
+    "Wohnungsbau"
+  ],
+  "jahr": 2001,
+  "fakten": [
+    {
+      "label": "Adresse",
+      "value": "Dorfkoppel 40-42\n22399 Hamburg"
+    },
+    {
+      "label": "Fertigstellung",
+      "value": "2001"
+    }
+  ],
+  "bilder": [
+    "../../assets/projects/dorfkoppel/01.jpg",
+    "../../assets/projects/dorfkoppel/02.jpg",
+    "../../assets/projects/dorfkoppel/03.jpg",
+    "../../assets/projects/dorfkoppel/04.jpg",
+    "../../assets/projects/dorfkoppel/05.jpg",
+    "../../assets/projects/dorfkoppel/06.jpg",
+    "../../assets/projects/dorfkoppel/07.jpg"
+  ],
+  "bereich": "rohbau"
+}

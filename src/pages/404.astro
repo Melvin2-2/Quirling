@@ -1,0 +1,41 @@
+---
+import Base from '~/layouts/Base.astro';
+import Icon from '~/components/Icon.astro';
+import { url } from '~/lib/url';
+---
+
+<Base title="Seite nicht gefunden" overlay={false}>
+  <section class="nf">
+    <div class="container">
+      <p class="eyebrow">Fehler 404</p>
+      <h1 class="h-display">Hier wird noch gebaut.</h1>
+      <p class="lead">Die gesuchte Seite gibt es leider nicht (mehr). Vielleicht finden Sie hier, was Sie suchen:</p>
+      <div class="links">
+        <a class="btn" href={url('/')}><span>Zur Startseite</span><Icon name="arrow" /></a>
+        <a class="btn ghost" href={url('/referenzen/')}><span>Referenzen</span></a>
+        <a class="btn ghost" href={url('/kontakt/')}><span>Kontakt</span></a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf {
+    padding: calc(var(--header-h) + clamp(4rem, 10vw, 8rem)) 0 var(--section);
+    background: #fff;
+    min-height: 70vh;
+  }
+  .nf h1 {
+    max-width: 12ch;
+    margin-bottom: 1.5rem;
+  }
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-top: 2rem;
+  }
+  .btn.ghost {
+    color: var(--ink);
+  }
+</style>

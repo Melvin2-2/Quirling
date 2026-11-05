@@ -1,0 +1,249 @@
+---
+import { Image } from 'astro:assets';
+import { getEntry } from 'astro:content';
+import Base from '~/layouts/Base.astro';
+import PageHero from '~/components/PageHero.astro';
+import Icon from '~/components/Icon.astro';
+import Todo from '~/components/Todo.astro';
+import { firma } from '~/data/site';
+import team from '~/assets/team/baustellenteam.jpg';
+
+const hero = (await getEntry('projekte', 'sulkyweg'))!.data.bilder[0]!;
+const mailBewerbung = `mailto:${firma.email}?subject=${encodeURIComponent('Bewerbung')}`;
+
+const vorteile = [
+  { t: 'Ein beständiges Team', d: 'Bei uns arbeiten junge und erfahrene Kollegen seit vielen Jahren zusammen – man kennt sich und kann sich aufeinander verlassen.' },
+  { t: 'Vielseitige Bauvorhaben', d: 'Wohnungsbau, Büro- und Gewerbebauten, Umbauten von Stadtvillen: Kein Projekt ist wie das andere.' },
+  { t: 'Kurze Wege', d: 'Als inhabergeführtes Unternehmen entscheiden wir schnell und sprechen direkt miteinander.' },
+  { t: 'Angenehmes Arbeitsklima', d: 'Wir bauen auf eine Partnerschaft mit unseren Mitarbeitern – denn ein zufriedenes Team baut besser.' },
+];
+
+// Offene Stellen – bitte ergänzen (TODO.md)
+const stellen = [
+  { titel: '[Stellenbezeichnung] (m/w/d)', ort: 'Hamburg', art: 'Vollzeit' },
+  { titel: '[Stellenbezeichnung] (m/w/d)', ort: 'Hamburg', art: 'Vollzeit' },
+];
+---
+
+<Base title="Karriere" description="Karriere bei der Quirling GmbH in Hamburg: Werden Sie Teil unseres Teams auf der Baustelle oder im Büro. Bewerbung gerne per E-Mail.">
+  <PageHero
+    eyebrow="Karriere"
+    title="Mit anpacken – bei Quirling."
+    intro="Wir suchen Menschen, die gerne bauen. Ob auf der Baustelle oder im Büro: Bewerben Sie sich unkompliziert per E-Mail."
+    image={hero}
+    crumbs={[{ label: 'Karriere' }]}
+  >
+    <a class="btn white hero-btn" href={mailBewerbung}><span>Jetzt per E-Mail bewerben</span><Icon name="arrow" /></a>
+  </PageHero>
+
+  <section class="section bg-white">
+    <div class="container">
+      <p class="eyebrow">Warum Quirling</p>
+      <h2 class="h2 vh" data-split>Was Sie bei uns erwartet.</h2>
+      <div class="vorteile" data-reveal data-reveal-children>
+        {
+          vorteile.map((v, i) => (
+            <article class="v">
+              <span class="vnr">0{i + 1}</span>
+              <h3 class="h4">{v.t}</h3>
+              <p>{v.d}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-stone">
+    <div class="container jobs-wrap">
+      <div>
+        <p class="eyebrow">Offene Stellen</p>
+        <h2 class="h2" data-split>Aktuelle Angebote.</h2>
+      </div>
+      <div>
+        <ul class="jobs" data-reveal data-reveal-children>
+          {
+            stellen.map((s) => (
+              <li>
+                <a class="job" href={`mailto:${firma.email}?subject=${encodeURIComponent('Bewerbung')}`}>
+                  <span class="job-t">
+                    <Todo hint="Stelle eintragen">{s.titel}</Todo>
+                  </span>
+                  <span class="job-m">
+                    {s.ort} · {s.art}
+                  </span>
+                  <Icon name="arrow" />
+                </a>
+              </li>
+            ))
+          }
+          <li>
+            <a class="job" href={mailBewerbung}>
+              <span class="job-t">Initiativbewerbung</span>
+              <span class="job-m">Keine passende Stelle dabei? Wir freuen uns trotzdem.</span>
+              <Icon name="arrow" />
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-white">
+    <div class="container how">
+      <div class="media how-img" data-clip>
+        <Image src={team} alt="Das Team der Quirling GmbH" widths={[700, 1200]} sizes="(min-width: 1024px) 50vw, 100vw" />
+      </div>
+      <div data-reveal>
+        <p class="eyebrow">So bewerben Sie sich</p>
+        <h2 class="h2">Einfach per E-Mail.</h2>
+        <ol class="steps">
+          <li><strong>Unterlagen zusammenstellen</strong> – kurzes Anschreiben, Lebenslauf und relevante Zeugnisse.</li>
+          <li><strong>Per E-Mail senden</strong> an <a href={mailBewerbung}>{firma.email}</a> – gerne auch per Post oder persönlich.</li>
+          <li><strong>Wir melden uns</strong> – und lernen Sie gerne persönlich kennen.</li>
+        </ol>
+        <address class="post">
+          Per Post: {firma.langname} · {firma.strasse} · {firma.plz} {firma.ort}
+        </address>
+        <a class="btn" href={mailBewerbung}><span>Bewerbung senden</span><Icon name="mail" /></a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero-btn {
+    margin-top: 2rem;
+  }
+  .vh {
+    max-width: 16ch;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+  .vorteile {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(1rem, 2vw, 1.5rem);
+  }
+  .v {
+    padding: 2rem 1.5rem;
+    background: var(--stone-50);
+    border-top: 3px solid var(--blue);
+  }
+  .vnr {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--blue);
+  }
+  .v h3 {
+    margin: 1rem 0 0.6rem;
+  }
+  .v p {
+    color: var(--ink-2);
+    font-size: 1rem;
+  }
+  .jobs-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: clamp(2rem, 6vw, 6rem);
+  }
+  .jobs {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--line);
+  }
+  .job {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.3rem 1rem;
+    align-items: center;
+    padding: 1.6rem 0.5rem;
+    border-bottom: 1px solid var(--line);
+    text-decoration: none;
+    transition: background 0.25s ease;
+  }
+  .job:hover {
+    background: #fff;
+  }
+  .job-t {
+    font-family: var(--font-head);
+    font-stretch: 110%;
+    font-weight: 620;
+    font-size: 1.3rem;
+  }
+  .job-m {
+    grid-row: 2;
+    color: var(--ink-3);
+    font-size: 0.95rem;
+  }
+  .job :global(svg) {
+    grid-row: span 2;
+    width: 1.6rem;
+    height: 1.6rem;
+    color: var(--blue);
+    transition: transform 0.35s var(--ease);
+  }
+  .job:hover :global(svg) {
+    transform: translateX(5px);
+  }
+  .how {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 6vw, 6rem);
+    align-items: center;
+  }
+  .how-img {
+    aspect-ratio: 4 / 3;
+  }
+  .steps {
+    counter-reset: s;
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0;
+  }
+  .steps li {
+    counter-increment: s;
+    position: relative;
+    padding: 0 0 1.2rem 3rem;
+    color: var(--ink-2);
+  }
+  .steps li::before {
+    content: counter(s);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 2rem;
+    height: 2rem;
+    display: grid;
+    place-items: center;
+    background: var(--blue);
+    color: #fff;
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+  .steps strong {
+    color: var(--ink);
+  }
+  .post {
+    font-style: normal;
+    color: var(--ink-3);
+    font-size: 0.95rem;
+    margin-bottom: 1.8rem;
+  }
+  @media (max-width: 1000px) {
+    .vorteile {
+      grid-template-columns: 1fr 1fr;
+    }
+    .jobs-wrap,
+    .how {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 560px) {
+    .vorteile {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

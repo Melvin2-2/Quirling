@@ -1,0 +1,185 @@
+---
+import { Image } from 'astro:assets';
+import { getEntry, getCollection } from 'astro:content';
+import Base from '~/layouts/Base.astro';
+import PageHero from '~/components/PageHero.astro';
+import CtaBand from '~/components/CtaBand.astro';
+import Icon from '~/components/Icon.astro';
+import { leistungenInhalt } from '~/data/leistungen-inhalt';
+import { url } from '~/lib/url';
+
+const hero = (await getEntry('projekte', 'dorfkoppel'))!.data.bilder[0]!;
+const alle = await getCollection('projekte');
+const rows = await Promise.all(
+  leistungenInhalt.map(async (l) => ({
+    ...l,
+    bild: (await getEntry('projekte', l.heroProjekt))!.data.bilder[0]!,
+    anzahl: alle.filter((p) => p.data.bereich === l.slug).length,
+  })),
+);
+
+const werte = [
+  { t: 'Kommunikation', d: 'Wir stehen im ständigen Kontakt mit unseren Auftraggebern. Kommunikation wird bei uns großgeschrieben.' },
+  { t: 'Qualität', d: 'Bei uns werden die Arbeiten bis zum Schluss sorgfältig ausgeführt.' },
+  { t: 'Flexibilität', d: 'Durch sorgfältiges und flexibles Arbeiten stellen wir unsere Kunden zufrieden.' },
+  { t: 'Partnerschaft', d: 'Auch bei komplizierteren Bauten finden wir gemeinsam eine Lösung.' },
+];
+---
+
+<Base title="Leistungen" description="Rohbau und Stahlbetonbau, schlüsselfertiges Bauen sowie Umbau und Sanierung – die Leistungen der Quirling GmbH in Hamburg.">
+  <PageHero
+    eyebrow="Leistungen"
+    title="Vom Fundament bis zur Übergabe."
+    intro="Wir erstellen nicht nur Neubauten, sondern führen auch vielseitige Umbau- und Sanierungsmaßnahmen aus. Schwerpunkt ist die Erstellung von Rohbauten, speziell Beton- und Stahlbetonbau."
+    image={hero}
+    crumbs={[{ label: 'Leistungen' }]}
+  />
+
+  <section class="section bg-white">
+    <div class="container rows">
+      {
+        rows.map((l, i) => (
+          <article class:list={['row', { flip: i % 2 === 1 }]}>
+            <a class="row-img media" href={url(`/leistungen/${l.slug}/`)} data-clip>
+              <Image src={l.bild} alt="" widths={[700, 1100, 1500]} sizes="(min-width: 1024px) 55vw, 100vw" />
+            </a>
+            <div class="row-text" data-reveal>
+              <p class="eyebrow">{l.eyebrow}</p>
+              <h2 class="h2">{l.title}</h2>
+              <p class="lead">{l.intro}</p>
+              <ul class="mini">
+                {l.umfang.slice(0, 4).map((u) => (
+                  <li>{u}</li>
+                ))}
+              </ul>
+              <div class="row-foot">
+                <a class="btn" href={url(`/leistungen/${l.slug}/`)}>
+                  <span>Mehr erfahren</span>
+                  <Icon name="arrow" />
+                </a>
+                <span class="count">{l.anzahl} Referenzen</span>
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="section bg-stone">
+    <div class="container">
+      <p class="eyebrow">Arbeitsweise</p>
+      <h2 class="h2 werte-h" data-split>Eine Basis, auf die Sie bauen können.</h2>
+      <div class="werte" data-reveal data-reveal-children>
+        {
+          werte.map((w, i) => (
+            <div class="wert">
+              <span class="wnr">0{i + 1}</span>
+              <h3 class="h4">{w.t}</h3>
+              <p>{w.d}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .rows {
+    display: grid;
+    gap: clamp(4rem, 9vw, 8rem);
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: center;
+  }
+  .row.flip .row-img {
+    order: 2;
+  }
+  .row-img {
+    aspect-ratio: 5 / 4;
+  }
+  .row-text .lead {
+    margin-top: 1.3rem;
+  }
+  .mini {
+    list-style: none;
+    padding: 0;
+    margin: 1.8rem 0 2.2rem;
+    border-top: 1px solid var(--line);
+  }
+  .mini li {
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink-2);
+  }
+  .row-foot {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .count {
+    color: var(--ink-3);
+    font-size: 0.95rem;
+  }
+  .werte-h {
+    max-width: 18ch;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+  .werte {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid var(--line);
+  }
+  .wert {
+    padding: 2rem 1.5rem 2rem 0;
+  }
+  .wert + .wert {
+    padding-left: 1.5rem;
+    border-left: 1px solid var(--line);
+  }
+  .wnr {
+    font-family: var(--font-head);
+    font-size: 0.8rem;
+    color: var(--blue);
+    font-weight: 600;
+  }
+  .wert h3 {
+    margin: 0.8rem 0 0.6rem;
+  }
+  .wert p {
+    color: var(--ink-2);
+    font-size: 1rem;
+  }
+  @media (max-width: 900px) {
+    .row {
+      grid-template-columns: 1fr;
+    }
+    .row.flip .row-img {
+      order: 0;
+    }
+    .werte {
+      grid-template-columns: 1fr 1fr;
+    }
+    .wert:nth-child(3) {
+      border-left: 0;
+      padding-left: 0;
+    }
+  }
+  @media (max-width: 520px) {
+    .werte {
+      grid-template-columns: 1fr;
+    }
+    .wert + .wert {
+      border-left: 0;
+      padding-left: 0;
+      border-top: 1px solid var(--line);
+    }
+  }
+</style>

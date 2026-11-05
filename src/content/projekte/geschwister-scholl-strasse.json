@@ -1,0 +1,24 @@
+{
+  "title": "Geschwister-Scholl-Straße",
+  "leistung": "Rohbau einer Wohnanlage mit Tiefgarage",
+  "kategorien": [
+    "Wohnungsbau"
+  ],
+  "jahr": 2007,
+  "fakten": [
+    {
+      "label": "Adresse",
+      "value": "Geschwister-Scholl-Straße 126\nEcke Frickestraße 41\n20251 Hamburg"
+    },
+    {
+      "label": "Fertigstellung",
+      "value": "2007"
+    }
+  ],
+  "bilder": [
+    "../../assets/projects/geschwister-scholl-strasse/01.jpg",
+    "../../assets/projects/geschwister-scholl-strasse/02.jpg",
+    "../../assets/projects/geschwister-scholl-strasse/03.jpg"
+  ],
+  "bereich": "rohbau"
+}

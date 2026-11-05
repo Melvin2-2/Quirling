@@ -1,0 +1,29 @@
+{
+  "title": "Große Johannisstraße",
+  "leistung": "Rohbau eines Büro- und Geschäftshauses",
+  "kategorien": [
+    "Bürogebäude"
+  ],
+  "jahr": 2009,
+  "fakten": [
+    {
+      "label": "Adresse",
+      "value": "Große Johannisstraße 17-19\nGroße Bäckerstraße 1\n20457 Hamburg"
+    },
+    {
+      "label": "Fertigstellung",
+      "value": "2009"
+    }
+  ],
+  "bilder": [
+    "../../assets/projects/grosse-johannisstrasse/01.jpg",
+    "../../assets/projects/grosse-johannisstrasse/03.jpg",
+    "../../assets/projects/grosse-johannisstrasse/04.jpg",
+    "../../assets/projects/grosse-johannisstrasse/05.jpg",
+    "../../assets/projects/grosse-johannisstrasse/06.jpg",
+    "../../assets/projects/grosse-johannisstrasse/07.jpg",
+    "../../assets/projects/grosse-johannisstrasse/08.jpg"
+  ],
+  "bereich": "rohbau",
+  "highlight": 2
+}

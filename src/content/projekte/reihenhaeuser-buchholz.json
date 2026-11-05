@@ -1,0 +1,28 @@
+{
+  "title": "Reihenhäuser Buchholz",
+  "leistung": "Rohbau von 35 Reihenhäusern",
+  "kategorien": [
+    "Häuser"
+  ],
+  "jahr": 2006,
+  "fakten": [
+    {
+      "label": "Adresse",
+      "value": "Hamburger Straße\n21244 Buchholz i.d.N."
+    },
+    {
+      "label": "Fertigstellung",
+      "value": "2006"
+    }
+  ],
+  "bilder": [
+    "../../assets/projects/reihenhaeuser-buchholz/01.jpg",
+    "../../assets/projects/reihenhaeuser-buchholz/02.jpg",
+    "../../assets/projects/reihenhaeuser-buchholz/03.jpg",
+    "../../assets/projects/reihenhaeuser-buchholz/04.jpg",
+    "../../assets/projects/reihenhaeuser-buchholz/05.jpg",
+    "../../assets/projects/reihenhaeuser-buchholz/06.jpg",
+    "../../assets/projects/reihenhaeuser-buchholz/07.jpg"
+  ],
+  "bereich": "rohbau"
+}

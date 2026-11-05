@@ -1,0 +1,28 @@
+{
+  "title": "Alte Landstraße",
+  "leistung": "Rohbau mit 5 Wohneinheiten und Tiefgarage",
+  "kategorien": [
+    "Wohnungsbau"
+  ],
+  "jahr": 2000,
+  "fakten": [
+    {
+      "label": "Adresse",
+      "value": "Alte Landstraße 256\n22391 Hamburg"
+    },
+    {
+      "label": "Fertigstellung",
+      "value": "2000"
+    }
+  ],
+  "bilder": [
+    "../../assets/projects/alte-landstrasse/01.jpg",
+    "../../assets/projects/alte-landstrasse/02.jpg",
+    "../../assets/projects/alte-landstrasse/03.jpg",
+    "../../assets/projects/alte-landstrasse/04.jpg",
+    "../../assets/projects/alte-landstrasse/05.jpg",
+    "../../assets/projects/alte-landstrasse/06.jpg",
+    "../../assets/projects/alte-landstrasse/07.jpg"
+  ],
+  "bereich": "rohbau"
+}

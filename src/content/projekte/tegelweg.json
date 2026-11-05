@@ -1,0 +1,22 @@
+{
+  "title": "Tegelweg",
+  "leistung": "Schlüsselfertiger Neubau eines Doppelhauses",
+  "kategorien": [
+    "Häuser"
+  ],
+  "jahr": 1997,
+  "fakten": [
+    {
+      "label": "Adresse",
+      "value": "Tegelweg 51a\n22159 Hamburg"
+    },
+    {
+      "label": "Fertigstellung",
+      "value": "1997"
+    }
+  ],
+  "bilder": [
+    "../../assets/projects/tegelweg/01.jpg"
+  ],
+  "bereich": "schluesselfertiges-bauen"
+}

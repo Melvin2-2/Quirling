@@ -1,0 +1,25 @@
+{
+  "title": "Am Waldschlösschen",
+  "leistung": "Rohbau eines Mehrfamilienhauses mit 6 Wohneinheiten und Tiefgarage",
+  "kategorien": [
+    "Wohnungsbau"
+  ],
+  "jahr": 2010,
+  "fakten": [
+    {
+      "label": "Adresse",
+      "value": "Am Waldschlösschen 26\n21075 Hamburg"
+    },
+    {
+      "label": "Fertigstellung",
+      "value": "2010"
+    }
+  ],
+  "bilder": [
+    "../../assets/projects/am-waldschloesschen/01.jpg",
+    "../../assets/projects/am-waldschloesschen/02.jpg",
+    "../../assets/projects/am-waldschloesschen/03.jpg",
+    "../../assets/projects/am-waldschloesschen/04.jpg"
+  ],
+  "bereich": "rohbau"
+}

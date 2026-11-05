@@ -1,0 +1,71 @@
+---
+import Legal from '~/layouts/Legal.astro';
+import Todo from '~/components/Todo.astro';
+import { firma, platzhalter } from '~/data/site';
+import { url } from '~/lib/url';
+---
+
+<Legal title="Impressum" description="Impressum der Quirling GmbH Bauunternehmen, Hamburg.">
+  <h2>Angaben gemäß § 5 DDG</h2>
+  <address>
+    {firma.langname}<br />
+    {firma.strasse}<br />
+    {`${firma.plz} ${firma.ort}`}<br />
+    Deutschland
+  </address>
+
+  <h2>Vertreten durch</h2>
+  <p>Geschäftsführer: {firma.geschaeftsfuehrer}</p>
+
+  <h2>Kontakt</h2>
+  <p>
+    Telefon: <a href={firma.telefonHref}>{firma.telefon}</a><br />
+    E-Mail: <a href={`mailto:${firma.email}`}>{firma.email}</a>
+  </p>
+
+  <h2>Registereintrag</h2>
+  <p>
+    Eintragung im Handelsregister<br />
+    Registergericht: {firma.registergericht}<br />
+    Registernummer: {firma.hrb}
+  </p>
+
+  <h2>Umsatzsteuer-ID</h2>
+  <p>
+    Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz:<br />
+    <Todo hint="USt-IdNr. eintragen">{platzhalter.ustId}</Todo>
+  </p>
+
+  <h2>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
+  <p>
+    {firma.geschaeftsfuehrer}<br />
+    {firma.strasse}, {`${firma.plz} ${firma.ort}`}
+  </p>
+
+  <h2>Verbraucherstreitbeilegung</h2>
+  <p>Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
+
+  <h2>Haftung für Inhalte</h2>
+  <p>
+    Als Diensteanbieter sind wir für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Wir sind jedoch nicht verpflichtet,
+    übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.
+    Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt.
+  </p>
+
+  <h2>Haftung für Links</h2>
+  <p>
+    Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Für die Inhalte der verlinkten Seiten ist
+    stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Links umgehend
+    entfernen.
+  </p>
+
+  <h2>Urheberrecht</h2>
+  <p>
+    Die durch den Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten – insbesondere Texte und Fotografien – unterliegen dem deutschen
+    Urheberrecht. Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der
+    schriftlichen Zustimmung der {firma.name}.
+  </p>
+  <p>Bildnachweis: <Todo hint="Fotograf/Quelle eintragen">[Fotograf / Quelle]</Todo></p>
+
+  <p><a href={url('/datenschutz/')}>Zur Datenschutzerklärung</a></p>
+</Legal>

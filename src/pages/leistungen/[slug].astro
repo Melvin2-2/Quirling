@@ -1,0 +1,224 @@
+---
+import { Image } from 'astro:assets';
+import { getEntry, getCollection } from 'astro:content';
+import Base from '~/layouts/Base.astro';
+import PageHero from '~/components/PageHero.astro';
+import CtaBand from '~/components/CtaBand.astro';
+import ProjectCard from '~/components/ProjectCard.astro';
+import Icon from '~/components/Icon.astro';
+import { leistungenInhalt } from '~/data/leistungen-inhalt';
+import { leistungen } from '~/data/site';
+import { url } from '~/lib/url';
+
+export function getStaticPaths() {
+  return leistungenInhalt.map((l) => ({ params: { slug: l.slug }, props: { l } }));
+}
+const { l } = Astro.props;
+const hero = (await getEntry('projekte', l.heroProjekt))!.data.bilder[0]!;
+const bild = (await getEntry('projekte', l.bildProjekt))!.data.bilder[0]!;
+const projekte = (await getCollection('projekte', (p) => p.data.bereich === l.slug)).sort(
+  (a, b) => (a.data.highlight ?? 99) - (b.data.highlight ?? 99) || (b.data.jahr ?? 0) - (a.data.jahr ?? 0),
+);
+const andere = leistungen.filter((x) => x.slug !== l.slug);
+---
+
+<Base title={l.title} description={l.intro}>
+  <PageHero eyebrow={l.eyebrow} title={l.title} intro={l.intro} image={hero} crumbs={[{ label: 'Leistungen', href: '/leistungen/' }, { label: l.title }]} />
+
+  <section class="section bg-white">
+    <div class="container detail">
+      <div class="d-text" data-reveal>
+        {l.absaetze.map((a, i) => <p class:list={[{ lead: i === 0 }]}>{a}</p>)}
+      </div>
+      <aside class="d-box" data-reveal>
+        <h2 class="eyebrow">Leistungsumfang</h2>
+        <ul class="umfang">
+          {
+            l.umfang.map((u) => (
+              <li>
+                <i class="tick" />
+                {u}
+              </li>
+            ))
+          }
+        </ul>
+        <h2 class="eyebrow">Gebäudetypen</h2>
+        <ul class="chips">{l.gebaeude.map((g) => <li>{g}</li>)}</ul>
+      </aside>
+    </div>
+  </section>
+
+  <section class="wide-img">
+    <div class="media parallax" data-parallax>
+      <Image src={bild} alt="" widths={[1000, 1600, 2000]} sizes="100vw" />
+    </div>
+  </section>
+
+  {
+    projekte.length > 0 && (
+      <section class="section bg-stone">
+        <div class="container">
+          <div class="p-head">
+            <div>
+              <p class="eyebrow">Referenzen</p>
+              <h2 class="h2" data-split>
+                Projekte im Bereich {l.title}
+              </h2>
+            </div>
+            <a class="link-arrow" href={url('/referenzen/')}>
+              Alle Referenzen <Icon name="arrow" />
+            </a>
+          </div>
+          <div class="p-grid" data-reveal data-reveal-children>
+            {projekte.slice(0, 6).map((p) => (
+              <ProjectCard project={p} />
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section tight bg-white">
+    <div class="container">
+      <p class="eyebrow">Weitere Leistungen</p>
+      <div class="more">
+        {
+          andere.map((a) => (
+            <a class="more-link" href={url(`/leistungen/${a.slug}/`)}>
+              <span class="more-nr">{a.nr}</span>
+              <span class="h3">{a.title}</span>
+              <Icon name="arrow" />
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .detail {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: clamp(2.5rem, 7vw, 7rem);
+    align-items: start;
+  }
+  .d-text p:not(.lead) {
+    color: var(--ink-2);
+  }
+  .d-text .lead {
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+  }
+  .d-box {
+    background: var(--stone-100);
+    padding: clamp(1.75rem, 3vw, 2.5rem);
+    position: sticky;
+    top: calc(var(--header-h) + 1.5rem);
+  }
+  .d-box .eyebrow {
+    font-size: 0.78rem;
+  }
+  .umfang {
+    list-style: none;
+    margin: 0 0 2rem;
+    padding: 0;
+  }
+  .umfang li {
+    display: flex;
+    gap: 0.8rem;
+    align-items: baseline;
+    padding: 0.65rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .tick {
+    width: 0.55rem;
+    height: 0.55rem;
+    background: var(--blue);
+    transform: rotate(45deg);
+    flex: none;
+    position: relative;
+    top: -0.1em;
+  }
+  .chips {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .chips li {
+    padding: 0.35rem 0.8rem;
+    border: 1px solid var(--line);
+    background: #fff;
+    font-size: 0.92rem;
+  }
+  .wide-img .media {
+    height: clamp(320px, 70vh, 760px);
+  }
+  .p-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 1.5rem;
+    margin-bottom: clamp(2rem, 4vw, 3.5rem);
+  }
+  .p-head h2 {
+    max-width: 20ch;
+  }
+  .p-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(2rem, 3vw, 3rem) clamp(1rem, 2vw, 2rem);
+  }
+  .more {
+    display: grid;
+    border-top: 1px solid var(--line);
+  }
+  .more-link {
+    display: grid;
+    grid-template-columns: 4rem 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.6rem 0;
+    border-bottom: 1px solid var(--line);
+    text-decoration: none;
+    transition:
+      padding 0.4s var(--ease),
+      color 0.3s ease;
+  }
+  .more-link:hover {
+    padding-left: 1rem;
+    color: var(--blue);
+  }
+  .more-link :global(svg) {
+    width: 1.6rem;
+    height: 1.6rem;
+  }
+  .more-nr {
+    font-family: var(--font-head);
+    color: var(--blue);
+    font-weight: 600;
+  }
+  @media (max-width: 900px) {
+    .detail {
+      grid-template-columns: 1fr;
+    }
+    .d-box {
+      position: static;
+    }
+    .p-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 560px) {
+    .p-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

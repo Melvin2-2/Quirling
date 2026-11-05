@@ -1,0 +1,33 @@
+{
+  "title": "Rütersbarg",
+  "leistung": "Rohbau eines Mehrfamilienhauses mit 8 Wohneinheiten",
+  "kategorien": [
+    "Wohnungsbau"
+  ],
+  "jahr": 2009,
+  "fakten": [
+    {
+      "label": "Adresse",
+      "value": "Rütersbarg 8a&b\n22529 Hamburg"
+    },
+    {
+      "label": "Fertigstellung",
+      "value": "2009"
+    },
+    {
+      "label": "Planung",
+      "value": "riedel architektur\nwww.riedel-architektur.de\nHoheluftchaussee 40a\n20253 Hamburg"
+    },
+    {
+      "label": "Statik",
+      "value": "Dipl.-Ing. H. Krebs\nIngenieurbüro für Bauwesen GmbH\nwww.ing-krebs.de\nKoppel 98 20099 Hamburg"
+    }
+  ],
+  "bilder": [
+    "../../assets/projects/ruetersbarg/01.jpg",
+    "../../assets/projects/ruetersbarg/02.jpg",
+    "../../assets/projects/ruetersbarg/03.jpg",
+    "../../assets/projects/ruetersbarg/04.jpg"
+  ],
+  "bereich": "rohbau"
+}

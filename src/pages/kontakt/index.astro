@@ -1,0 +1,300 @@
+---
+import { getEntry } from 'astro:content';
+import Base from '~/layouts/Base.astro';
+import PageHero from '~/components/PageHero.astro';
+import Icon from '~/components/Icon.astro';
+import Todo from '~/components/Todo.astro';
+import { firma, platzhalter } from '~/data/site';
+import { url } from '~/lib/url';
+
+const hero = (await getEntry('projekte', 'milchgrund'))!.data.bilder[1]!;
+const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
+---
+
+<Base title="Kontakt" description="Kontakt zur Quirling GmbH Bauunternehmen, Tilsiter Straße 174, 22047 Hamburg. Telefon 040 / 33 46 34 19 0, info@quirling.de.">
+  <PageHero
+    eyebrow="Kontakt"
+    title="Wir sind für Sie da."
+    intro="Wir stehen Ihnen gerne mit Rat und Tat zur Verfügung und hoffen, Ihnen weiterhelfen zu können."
+    image={hero}
+    size="medium"
+    crumbs={[{ label: 'Kontakt' }]}
+  />
+
+  <section class="section bg-white">
+    <div class="container contact">
+      <div class="info" data-reveal>
+        <div class="block">
+          <h2 class="eyebrow">Postanschrift</h2>
+          <address>
+            <strong>{firma.langname}</strong><br />
+            {firma.strasse}<br />
+            {`${firma.plz} ${firma.ort}`}<br />
+            Deutschland
+          </address>
+          <a class="link-arrow" href={firma.mapsUrl} target="_blank" rel="noopener">Route planen <Icon name="arrow" /></a>
+        </div>
+        <div class="block">
+          <h2 class="eyebrow">Kontaktinfo</h2>
+          <a class="big" href={firma.telefonHref}><Icon name="phone" />{firma.telefon}</a>
+          <a class="big" href={`mailto:${firma.email}`}><Icon name="mail" />{firma.email}</a>
+        </div>
+        <div class="block">
+          <h2 class="eyebrow">Bürozeiten</h2>
+          <p><Todo hint="Bürozeiten eintragen">{platzhalter.buerozeiten}</Todo></p>
+        </div>
+        <div class="block note">
+          <h2 class="eyebrow">Bewerbungen</h2>
+          <p>Bewerbungen senden Sie bitte per E-Mail an <a href={`mailto:${firma.email}`}>{firma.email}</a> – oder stellen Sie sich persönlich bei uns vor.</p>
+        </div>
+      </div>
+
+      <form class="form" data-form data-endpoint={endpoint} data-mail={firma.email} novalidate>
+        <h2 class="h3">Kontaktformular</h2>
+        <div class="row2">
+          <label>
+            <span>Name *</span>
+            <input name="name" required autocomplete="name" />
+          </label>
+          <label>
+            <span>Firma</span>
+            <input name="firma" autocomplete="organization" />
+          </label>
+        </div>
+        <div class="row2">
+          <label>
+            <span>E-Mail *</span>
+            <input name="email" type="email" required autocomplete="email" />
+          </label>
+          <label>
+            <span>Telefon</span>
+            <input name="telefon" type="tel" autocomplete="tel" />
+          </label>
+        </div>
+        <label>
+          <span>Ihr Anliegen</span>
+          <select name="anliegen">
+            <option>Anfrage zu einem Bauvorhaben</option>
+            <option>Rohbau &amp; Stahlbetonbau</option>
+            <option>Schlüsselfertiges Bauen</option>
+            <option>Umbau &amp; Sanierung</option>
+            <option>Bewerbung</option>
+            <option>Sonstiges</option>
+          </select>
+        </label>
+        <label>
+          <span>Nachricht *</span>
+          <textarea name="nachricht" rows="6" required></textarea>
+        </label>
+        <label class="check">
+          <input type="checkbox" name="datenschutz" required />
+          <span>Ich habe die <a href={url('/datenschutz/')}>Datenschutzerklärung</a> gelesen und bin mit der Verarbeitung meiner Angaben zur Beantwortung meiner Anfrage einverstanden. *</span>
+        </label>
+        <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+        <div class="submit">
+          <button class="btn" type="submit"><span>Nachricht senden</span><Icon name="arrow" /></button>
+          <p class="status" data-status role="status" aria-live="polite"></p>
+        </div>
+      </form>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .contact {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: clamp(2.5rem, 7vw, 7rem);
+    align-items: start;
+  }
+  .block {
+    padding-bottom: 2rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .block .eyebrow {
+    margin-bottom: 0.9rem;
+  }
+  address {
+    font-style: normal;
+    margin-bottom: 1rem;
+    color: var(--ink-2);
+  }
+  address strong {
+    color: var(--ink);
+  }
+  .big {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-family: var(--font-head);
+    font-stretch: 108%;
+    font-weight: 600;
+    font-size: clamp(1.15rem, 1.8vw, 1.45rem);
+    text-decoration: none;
+    margin-bottom: 0.7rem;
+  }
+  .big:hover {
+    color: var(--blue);
+  }
+  .big :global(svg) {
+    width: 1.4rem;
+    height: 1.4rem;
+    color: var(--blue);
+  }
+  .note p {
+    color: var(--ink-2);
+  }
+  .note {
+    border-bottom: 0;
+  }
+  .form {
+    background: var(--stone-100);
+    padding: clamp(1.75rem, 4vw, 3.25rem);
+    display: grid;
+    gap: 1.2rem;
+  }
+  .form h2 {
+    margin-bottom: 0.5rem;
+  }
+  .row2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+  }
+  label {
+    display: grid;
+    gap: 0.4rem;
+  }
+  label > span {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--ink-2);
+  }
+  input,
+  select,
+  textarea {
+    font: inherit;
+    font-size: 1rem;
+    color: var(--ink);
+    background: #fff;
+    border: 1px solid var(--line);
+    border-bottom: 2px solid var(--grey-300);
+    padding: 0.85rem 0.9rem;
+    border-radius: 2px;
+    width: 100%;
+    transition: border-color 0.2s ease;
+  }
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: none;
+    border-bottom-color: var(--blue);
+  }
+  .was-validated :invalid {
+    border-bottom-color: var(--todo);
+  }
+  textarea {
+    resize: vertical;
+  }
+  .check {
+    grid-template-columns: auto 1fr;
+    align-items: start;
+    gap: 0.8rem;
+  }
+  .check input {
+    width: 1.2rem;
+    height: 1.2rem;
+    margin-top: 0.2rem;
+    accent-color: var(--blue);
+  }
+  .check span {
+    font-weight: 400;
+    font-size: 0.92rem;
+  }
+  .hp {
+    position: absolute;
+    left: -9999px;
+  }
+  .submit {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.2rem;
+    margin-top: 0.5rem;
+  }
+  .status {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--ink-2);
+  }
+  .status.ok {
+    color: #1d7a3e;
+  }
+  .status.err {
+    color: var(--todo);
+  }
+  @media (max-width: 900px) {
+    .contact {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 560px) {
+    .row2 {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-form]');
+  const status = form?.querySelector<HTMLElement>('[data-status]');
+  const say = (msg: string, cls = '') => {
+    if (!status) return;
+    status.textContent = msg;
+    status.className = `status ${cls}`;
+  };
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    form.classList.add('was-validated');
+    if (!form.checkValidity()) {
+      say('Bitte füllen Sie alle Pflichtfelder (*) aus.', 'err');
+      form.querySelector<HTMLElement>(':invalid')?.focus();
+      return;
+    }
+    const data = new FormData(form);
+    if (data.get('_gotcha')) return;
+    const endpoint = form.dataset.endpoint;
+
+    if (endpoint) {
+      // Versand über einen Formulardienst (z. B. Formspree / Web3Forms), siehe TODO.md
+      say('Wird gesendet …');
+      try {
+        const res = await fetch(endpoint, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
+        if (!res.ok) throw new Error(String(res.status));
+        form.reset();
+        form.classList.remove('was-validated');
+        say('Vielen Dank! Ihre Nachricht wurde gesendet. Wir melden uns zeitnah bei Ihnen.', 'ok');
+      } catch {
+        say('Leider ist ein Fehler aufgetreten. Bitte schreiben Sie uns direkt per E-Mail.', 'err');
+      }
+      return;
+    }
+
+    // Ohne Formulardienst: E-Mail-Programm mit vorbereiteter Nachricht öffnen
+    const body = [
+      `Name: ${data.get('name')}`,
+      data.get('firma') ? `Firma: ${data.get('firma')}` : '',
+      `E-Mail: ${data.get('email')}`,
+      data.get('telefon') ? `Telefon: ${data.get('telefon')}` : '',
+      '',
+      String(data.get('nachricht') ?? ''),
+    ]
+      .filter((l, i) => l !== '' || i === 4)
+      .join('\n');
+    const subject = `Kontaktanfrage: ${data.get('anliegen')}`;
+    window.location.href = `mailto:${form.dataset.mail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    say('Ihr E-Mail-Programm wird geöffnet – bitte senden Sie die vorbereitete Nachricht dort ab.', 'ok');
+  });
+</script>

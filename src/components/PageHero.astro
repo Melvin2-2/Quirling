@@ -1,0 +1,106 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { url } from '~/lib/url';
+
+interface Crumb {
+  label: string;
+  href?: string;
+}
+interface Props {
+  eyebrow?: string;
+  title: string;
+  intro?: string;
+  image: ImageMetadata;
+  imageAlt?: string;
+  crumbs?: Crumb[];
+  size?: 'large' | 'medium';
+}
+const { eyebrow, title, intro, image, imageAlt = '', crumbs = [], size = 'large' } = Astro.props;
+---
+
+<section class:list={['page-hero on-dark', size]}>
+  <div class="bg media" data-parallax>
+    <Image src={image} alt={imageAlt} widths={[800, 1400, 2000]} sizes="100vw" loading="eager" fetchpriority="high" />
+  </div>
+  <div class="shade"></div>
+  <div class="container inner">
+    {
+      crumbs.length > 0 && (
+        <nav class="crumbs" aria-label="Brotkrumen">
+          <a href={url('/')}>Start</a>
+          {crumbs.map((c) => (
+            <>
+              <span aria-hidden="true">/</span>
+              {c.href ? <a href={url(c.href)}>{c.label}</a> : <span aria-current="page">{c.label}</span>}
+            </>
+          ))}
+        </nav>
+      )
+    }
+    <div class="text">
+      {eyebrow && <p class="eyebrow light">{eyebrow}</p>}
+      <h1 class="h1" data-split>{title}</h1>
+      {intro && <p class="lead" data-reveal>{intro}</p>}
+      <slot />
+    </div>
+  </div>
+</section>
+
+<style>
+  .page-hero {
+    position: relative;
+    min-height: min(78svh, 820px);
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .page-hero.medium {
+    min-height: min(62svh, 640px);
+  }
+  .bg {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+  }
+  .bg :global(img) {
+    height: 114%;
+    margin-top: -7%;
+  }
+  .shade {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      linear-gradient(to top, rgb(18 23 53 / 0.92) 0%, rgb(18 23 53 / 0.55) 45%, rgb(18 23 53 / 0.25) 100%),
+      linear-gradient(to right, rgb(18 23 53 / 0.5), transparent 70%);
+  }
+  .inner {
+    padding-top: calc(var(--header-h) + 2rem);
+    padding-bottom: clamp(3rem, 7vw, 6rem);
+  }
+  .crumbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    font-size: 0.9rem;
+    color: rgb(255 255 255 / 0.7);
+    margin-bottom: clamp(3rem, 8vw, 7rem);
+  }
+  .crumbs a {
+    text-decoration: none;
+  }
+  .crumbs a:hover {
+    color: #fff;
+    text-decoration: underline;
+  }
+  .text {
+    max-width: 62rem;
+  }
+  .lead {
+    max-width: 44rem;
+    margin-top: 1.6rem;
+    color: rgb(255 255 255 / 0.82) !important;
+  }
+</style>

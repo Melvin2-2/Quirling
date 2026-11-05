@@ -1,0 +1,26 @@
+{
+  "title": "Am Radeland",
+  "leistung": "Beton- und Stahlbetonbauarbeiten eines Mehrfamilienhauses mit 13 Wohnungen und Tiefgarage",
+  "kategorien": [
+    "Wohnungsbau"
+  ],
+  "jahr": 2012,
+  "fakten": [
+    {
+      "label": "Adresse",
+      "value": "Am Radeland 32\n21244 Buchholz i.d.N."
+    },
+    {
+      "label": "Fertigstellung",
+      "value": "2012"
+    }
+  ],
+  "bilder": [
+    "../../assets/projects/am-radeland/01.jpg",
+    "../../assets/projects/am-radeland/02.jpg",
+    "../../assets/projects/am-radeland/03.jpg",
+    "../../assets/projects/am-radeland/04.jpg",
+    "../../assets/projects/am-radeland/05.jpg"
+  ],
+  "bereich": "rohbau"
+}

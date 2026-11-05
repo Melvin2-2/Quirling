@@ -1,0 +1,26 @@
+{
+  "title": "Friedhofstraße",
+  "leistung": "Rohbau eines Mehrfamilienhauses mit 12 Wohneinheiten",
+  "kategorien": [
+    "Wohnungsbau"
+  ],
+  "jahr": 2007,
+  "fakten": [
+    {
+      "label": "Adresse",
+      "value": "Friedhofstraße 12\n21073 Hamburg"
+    },
+    {
+      "label": "Fertigstellung",
+      "value": "2007"
+    }
+  ],
+  "bilder": [
+    "../../assets/projects/friedhofstrasse/01.jpg",
+    "../../assets/projects/friedhofstrasse/02.jpg",
+    "../../assets/projects/friedhofstrasse/03.jpg",
+    "../../assets/projects/friedhofstrasse/04.jpg",
+    "../../assets/projects/friedhofstrasse/05.jpg"
+  ],
+  "bereich": "rohbau"
+}

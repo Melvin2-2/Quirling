@@ -1,0 +1,65 @@
+---
+import { mark, wordmark, subline } from '~/lib/logo-paths';
+
+interface Props {
+  variant?: 'horizontal' | 'stacked' | 'mark';
+  tone?: 'color' | 'light';
+  class?: string;
+  title?: string;
+}
+const { variant = 'horizontal', tone = 'color', class: cls = '', title = 'Quirling Bauunternehmen Hamburg' } = Astro.props;
+
+const textFill = tone === 'light' ? '#ffffff' : '#3948A4';
+const fill = (role: string, isText = false) =>
+  role === 'grey' ? '#868484' : role === 'white' ? '#ffffff' : isText ? textFill : '#3948A4';
+
+// Horizontale Anordnung: Bildmarke links, Schriftzug rechts
+const s = 0.698;
+const markW = 352.7 * s;
+const textX = markW + 22;
+const textY = (171 - 142.4) / 2;
+---
+
+{
+  variant === 'horizontal' && (
+    <svg class={cls} viewBox="0 0 623 171" role="img" aria-label={title} xmlns="http://www.w3.org/2000/svg">
+      <g transform={`scale(${s}) translate(-120.7 -63)`}>
+        {mark.map((p) => (
+          <path fill={fill(p.role)} d={p.d} />
+        ))}
+      </g>
+      <g transform={`translate(${textX} ${textY}) translate(-121.3 -320.1)`}>
+        {wordmark.map((p) => (
+          <path fill={textFill} d={p.d} />
+        ))}
+        {subline.map((p) => (
+          <path fill={textFill} d={p.d} />
+        ))}
+      </g>
+    </svg>
+  )
+}
+{
+  variant === 'stacked' && (
+    <svg class={cls} viewBox="118 60 360 405" role="img" aria-label={title} xmlns="http://www.w3.org/2000/svg">
+      {mark.map((p) => (
+        <path fill={fill(p.role)} d={p.d} />
+      ))}
+      {wordmark.map((p) => (
+        <path fill={textFill} d={p.d} />
+      ))}
+      {subline.map((p) => (
+        <path fill={textFill} d={p.d} />
+      ))}
+    </svg>
+  )
+}
+{
+  variant === 'mark' && (
+    <svg class={cls} viewBox="120 62 354.5 247" role="img" aria-label={title} xmlns="http://www.w3.org/2000/svg">
+      {mark.map((p) => (
+        <path fill={fill(p.role)} d={p.d} />
+      ))}
+    </svg>
+  )
+}

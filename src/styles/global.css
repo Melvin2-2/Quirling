@@ -1,0 +1,378 @@
+/* ==========================================================================
+   Quirling – Designsystem
+   Farben aus dem Logo: Blau #3948A4, Grau #868484
+   Schriften: Archivo (Überschriften, breit geschnitten), Source Sans 3 (Text),
+   Tenor Sans (Akzent/Slogan – humanistisch wie die Hausschrift Optima)
+   ========================================================================== */
+
+@import '@fontsource-variable/archivo/wdth.css';
+@import '@fontsource-variable/source-sans-3/wght.css';
+@import '@fontsource/tenor-sans/400.css';
+
+:root {
+  --blue: #3948a4;
+  --blue-600: #2f3c8c;
+  --blue-800: #1f2861;
+  --navy: #121735;
+  --grey: #868484;
+  --grey-300: #c9c7c3;
+  --stone-50: #f7f6f3;
+  --stone-100: #efede8;
+  --stone-200: #e2dfd8;
+  --ink: #16171b;
+  --ink-2: #4a4b52;
+  --ink-3: #6f7078;
+  --white: #ffffff;
+  --line: rgb(22 23 27 / 0.12);
+  --line-light: rgb(255 255 255 / 0.18);
+  --todo: #d0021b;
+
+  --font-head: 'Archivo Variable', 'Archivo', system-ui, sans-serif;
+  --font-body: 'Source Sans 3 Variable', 'Source Sans 3', system-ui, sans-serif;
+  --font-accent: 'Tenor Sans', Optima, Candara, 'Segoe UI', sans-serif;
+
+  --container: 1320px;
+  --gutter: clamp(1rem, 4vw, 3rem);
+  --section: clamp(4.5rem, 10vw, 9rem);
+  --radius: 4px;
+  --header-h: 84px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: var(--header-h);
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+body {
+  margin: 0;
+  background: var(--stone-50);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: clamp(1.0625rem, 0.3vw + 1rem, 1.1875rem);
+  line-height: 1.6;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
+  overflow-wrap: break-word;
+}
+
+img,
+video,
+svg {
+  display: block;
+  max-width: 100%;
+}
+img {
+  height: auto;
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-head);
+  font-stretch: 112%;
+  font-weight: 650;
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  margin: 0;
+  text-wrap: balance;
+}
+
+.h-display {
+  font-size: clamp(2.75rem, 7.4vw, 7rem);
+  line-height: 0.98;
+  letter-spacing: -0.025em;
+}
+.h1 {
+  font-size: clamp(2.4rem, 5.6vw, 5rem);
+}
+.h2 {
+  font-size: clamp(2rem, 4.2vw, 3.6rem);
+}
+.h3 {
+  font-size: clamp(1.4rem, 2vw, 1.9rem);
+  line-height: 1.15;
+}
+.h4 {
+  font-size: 1.2rem;
+  line-height: 1.25;
+}
+
+p {
+  margin: 0 0 1em;
+}
+p:last-child {
+  margin-bottom: 0;
+}
+
+.lead {
+  font-size: clamp(1.2rem, 1vw + 0.95rem, 1.5rem);
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+.accent {
+  font-family: var(--font-accent);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+/* Kleine Überzeile mit Raute aus dem Logo */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7em;
+  font-family: var(--font-head);
+  font-stretch: 118%;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 1.4rem;
+}
+.eyebrow::before {
+  content: '';
+  width: 0.62em;
+  height: 0.62em;
+  background: currentColor;
+  transform: rotate(45deg) skew(-8deg, -8deg);
+  flex: none;
+}
+.on-dark .eyebrow,
+.eyebrow.light {
+  color: #aab4ea;
+}
+
+.container {
+  width: 100%;
+  max-width: calc(var(--container) + var(--gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  padding-block: var(--section);
+}
+.section.tight {
+  padding-block: calc(var(--section) * 0.6);
+}
+
+.bg-white {
+  background: var(--white);
+}
+.bg-stone {
+  background: var(--stone-100);
+}
+.on-dark {
+  background: var(--navy);
+  color: var(--white);
+}
+.on-dark .lead,
+.on-dark p {
+  color: rgb(255 255 255 / 0.78);
+}
+.on-blue {
+  background: var(--blue);
+  color: var(--white);
+}
+
+.grid-12 {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -100px;
+  z-index: 200;
+  background: var(--blue);
+  color: #fff;
+  padding: 0.75rem 1rem;
+}
+.skip-link:focus {
+  top: 1rem;
+}
+
+:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
+}
+.on-dark :focus-visible,
+.on-blue :focus-visible {
+  outline-color: #fff;
+}
+
+/* ---------- Buttons & Links ---------- */
+.btn {
+  --bg: var(--blue);
+  --fg: #fff;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 1rem 1.5rem;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-head);
+  font-stretch: 110%;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  border: 1px solid var(--bg);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition:
+    background 0.3s var(--ease),
+    color 0.3s var(--ease),
+    border-color 0.3s var(--ease);
+}
+.btn svg {
+  width: 1.1em;
+  height: 1.1em;
+  transition: transform 0.35s var(--ease);
+}
+.btn:hover {
+  --bg: var(--blue-800);
+}
+.btn:hover svg {
+  transform: translateX(4px);
+}
+.btn.ghost {
+  --bg: transparent;
+  --fg: currentColor;
+  border-color: currentColor;
+}
+.btn.ghost:hover {
+  background: currentColor;
+}
+.btn.ghost:hover span,
+.btn.ghost:hover svg {
+  color: var(--navy);
+}
+.btn.white {
+  --bg: #fff;
+  --fg: var(--navy);
+}
+.btn.white:hover {
+  --bg: var(--stone-200);
+}
+
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-head);
+  font-stretch: 110%;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  color: var(--blue);
+}
+.on-dark .link-arrow {
+  color: #fff;
+}
+.link-arrow svg {
+  width: 1.1em;
+  height: 1.1em;
+  transition: transform 0.35s var(--ease);
+}
+.link-arrow:hover svg {
+  transform: translateX(5px);
+}
+
+/* ---------- Platzhalter (rot) ---------- */
+.todo {
+  color: var(--todo) !important;
+  background: rgb(208 2 27 / 0.07);
+  outline: 1px dashed rgb(208 2 27 / 0.55);
+  outline-offset: 2px;
+  border-radius: 2px;
+  padding: 0 0.2em;
+  font-style: normal;
+}
+.todo[data-hint] {
+  display: inline-block;
+}
+.todo[data-hint]::after {
+  content: attr(data-hint);
+  display: block;
+  font-size: 0.8rem;
+  line-height: 1.3;
+  margin-top: 0.2rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* ---------- Bildrahmen ---------- */
+.media {
+  position: relative;
+  overflow: hidden;
+  background: var(--stone-200);
+}
+.media img,
+.media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.media.parallax img {
+  height: 118%;
+  margin-top: -9%;
+}
+
+/* ---------- Raute (Logo-Motiv) ---------- */
+.diamond {
+  position: absolute;
+  aspect-ratio: 352 / 245;
+  clip-path: polygon(49.8% 0, 100% 53.3%, 48% 100%, 0 49.6%);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

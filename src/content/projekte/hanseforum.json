@@ -1,0 +1,28 @@
+{
+  "title": "Hanseforum",
+  "leistung": "Beton- und Stahlbetonbauarbeiten (ohne Fertigteilbau) eines Bürogebäudes mit Tiefgarage",
+  "kategorien": [
+    "Bürogebäude"
+  ],
+  "jahr": 2001,
+  "fakten": [
+    {
+      "label": "Adresse",
+      "value": "Axel-Springer-Platz 3\n20355 Hamburg"
+    },
+    {
+      "label": "Fertigstellung",
+      "value": "2001"
+    }
+  ],
+  "bilder": [
+    "../../assets/projects/hanseforum/01.jpg",
+    "../../assets/projects/hanseforum/02.jpg",
+    "../../assets/projects/hanseforum/03.jpg",
+    "../../assets/projects/hanseforum/04.jpg",
+    "../../assets/projects/hanseforum/05.jpg",
+    "../../assets/projects/hanseforum/06.jpg"
+  ],
+  "bereich": "rohbau",
+  "highlight": 1
+}

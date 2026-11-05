@@ -1,0 +1,101 @@
+---
+/** YouTube mit 2-Klick-Lösung: Erst nach Klick wird eine Verbindung zu YouTube aufgebaut. */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import Icon from './Icon.astro';
+import { url } from '~/lib/url';
+
+interface Props {
+  id: string;
+  title: string;
+  poster: ImageMetadata;
+}
+const { id, title, poster } = Astro.props;
+---
+
+<div class="yt media" data-yt={id} data-yt-title={title}>
+  <Image src={poster} alt="" widths={[800, 1400, 2000]} sizes="100vw" />
+  <div class="yt-ui">
+    <button type="button" class="yt-play" data-yt-play>
+      <Icon name="play" />
+      <span class="visually-hidden">Video abspielen: {title}</span>
+    </button>
+    <p class="yt-note">
+      Mit Klick auf „Abspielen“ wird das Video von YouTube geladen. Dabei werden Daten an Google übertragen – mehr dazu in
+      unserer <a href={url('/datenschutz/')}>Datenschutzerklärung</a>.
+    </p>
+  </div>
+</div>
+
+<style>
+  .yt {
+    aspect-ratio: 16 / 9;
+    background: var(--navy);
+  }
+  .yt :global(img) {
+    filter: brightness(0.6);
+  }
+  .yt-ui {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    color: #fff;
+    text-align: center;
+  }
+  .yt-play {
+    width: clamp(72px, 9vw, 110px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 1px solid rgb(255 255 255 / 0.6);
+    background: rgb(255 255 255 / 0.12);
+    backdrop-filter: blur(6px);
+    color: #fff;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    transition:
+      transform 0.4s var(--ease),
+      background 0.3s ease;
+  }
+  .yt-play:hover {
+    transform: scale(1.08);
+    background: var(--blue);
+    border-color: var(--blue);
+  }
+  .yt-play :global(svg) {
+    width: 40%;
+    height: 40%;
+    margin-left: 6%;
+  }
+  .yt-note {
+    max-width: 32rem;
+    font-size: 0.85rem;
+    color: rgb(255 255 255 / 0.8);
+    margin: 0;
+  }
+  .yt :global(iframe) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-yt]').forEach((box) => {
+    box.querySelector('[data-yt-play]')?.addEventListener('click', () => {
+      const iframe = document.createElement('iframe');
+      iframe.src = `https://www.youtube-nocookie.com/embed/${box.dataset.yt}?autoplay=1&rel=0&modestbranding=1`;
+      iframe.title = box.dataset.ytTitle ?? 'Video';
+      iframe.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen';
+      iframe.allowFullscreen = true;
+      box.querySelector('.yt-ui')?.remove();
+      box.appendChild(iframe);
+    });
+  });
+</script>

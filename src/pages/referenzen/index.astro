@@ -1,0 +1,197 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import Base from '~/layouts/Base.astro';
+import PageHero from '~/components/PageHero.astro';
+import ProjectCard from '~/components/ProjectCard.astro';
+import CtaBand from '~/components/CtaBand.astro';
+import { kategorien, firma, JAHRE_ERFAHRUNG } from '~/data/site';
+
+const projekte = (await getCollection('projekte')).sort(
+  (a, b) => (a.data.highlight ?? 99) - (b.data.highlight ?? 99) || (b.data.jahr ?? 0) - (a.data.jahr ?? 0),
+);
+const hero = (await getEntry('projekte', 'hanseforum'))!.data.bilder[0]!;
+const counts = Object.fromEntries(kategorien.map((k) => [k, projekte.filter((p) => p.data.kategorien.includes(k)).length]));
+---
+
+<Base title="Referenzen" description="Ein Auszug unserer Projekte: Wohnungsbau, Bürogebäude, Industriebau, Häuser und Umbauten in Hamburg und Umgebung.">
+  <PageHero
+    eyebrow="Referenzen"
+    title="Ein Auszug unserer Projekte."
+    intro={`Seit ${JAHRE_ERFAHRUNG} Jahren beschäftigen wir uns überwiegend mit Rohbauarbeiten. Wir konnten uns aber auch mit zahlreichen Umbauarbeiten und Sanierungen qualifizieren. Wir sind Ihr Ansprechpartner, wenn es um Qualität geht.`}
+    image={hero}
+    crumbs={[{ label: 'Referenzen' }]}
+  />
+
+  <section class="section bg-white">
+    <div class="container">
+      <div class="bar">
+        <div class="filters" role="group" aria-label="Projekte filtern" data-filters>
+          <button type="button" class="chip is-active" data-filter="alle" aria-pressed="true">
+            Alle Projekte <sup>{projekte.length}</sup>
+          </button>
+          {
+            kategorien.map((k) => (
+              <button type="button" class="chip" data-filter={k} aria-pressed="false">
+                {k} <sup>{counts[k]}</sup>
+              </button>
+            ))
+          }
+        </div>
+        <p class="note">Mehr als {firma.projekteAnzahl} realisierte Projekte – hier eine Auswahl.</p>
+      </div>
+
+      <div class="grid" data-grid>
+        {
+          projekte.map((p) => (
+            <div class="cell" data-cats={p.data.kategorien.join('|')}>
+              <ProjectCard project={p} />
+            </div>
+          ))
+        }
+      </div>
+      <p class="empty" data-empty hidden>Keine Projekte in dieser Kategorie.</p>
+    </div>
+  </section>
+
+  <CtaBand title="Ihr Projekt als nächste Referenz?" />
+</Base>
+
+<style>
+  .bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .chip {
+    font: inherit;
+    font-family: var(--font-head);
+    font-stretch: 108%;
+    font-weight: 560;
+    font-size: 0.92rem;
+    padding: 0.6rem 1rem;
+    border: 1px solid var(--line);
+    background: #fff;
+    color: var(--ink);
+    border-radius: 999px;
+    cursor: pointer;
+    transition:
+      background 0.25s ease,
+      color 0.25s ease,
+      border-color 0.25s ease;
+  }
+  .chip sup {
+    font-size: 0.7em;
+    color: var(--ink-3);
+    margin-left: 0.15em;
+  }
+  .chip:hover {
+    border-color: var(--blue);
+  }
+  .chip.is-active {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: #fff;
+  }
+  .chip.is-active sup {
+    color: rgb(255 255 255 / 0.75);
+  }
+  .note {
+    color: var(--ink-3);
+    font-size: 0.95rem;
+    margin: 0;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(2.5rem, 4vw, 3.5rem) clamp(1rem, 2vw, 2rem);
+  }
+  .cell[hidden] {
+    display: none;
+  }
+  .empty {
+    color: var(--ink-3);
+  }
+  @media (max-width: 900px) {
+    .grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 560px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+    .filters {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      margin-inline: calc(var(--gutter) * -1);
+      padding-inline: var(--gutter);
+      scrollbar-width: none;
+    }
+    .chip {
+      flex: none;
+    }
+    .note {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { Flip } from 'gsap/Flip';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(Flip, ScrollTrigger);
+
+  const wrap = document.querySelector<HTMLElement>('[data-filters]');
+  const cells = Array.from(document.querySelectorAll<HTMLElement>('[data-grid] .cell'));
+  const empty = document.querySelector<HTMLElement>('[data-empty]');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const apply = (filter: string, animate = true) => {
+    const state = Flip.getState(cells);
+    let visible = 0;
+    cells.forEach((c) => {
+      const show = filter === 'alle' || (c.dataset.cats ?? '').split('|').includes(filter);
+      c.hidden = !show;
+      if (show) visible++;
+    });
+    if (empty) empty.hidden = visible > 0;
+    if (animate && !reduce) {
+      Flip.from(state, {
+        duration: 0.7,
+        ease: 'power3.inOut',
+        absolute: true,
+        onEnter: (els) => gsap.fromTo(els, { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.6 }),
+        onLeave: (els) => gsap.to(els, { opacity: 0, scale: 0.92, duration: 0.4 }),
+        onComplete: () => ScrollTrigger.refresh(),
+      });
+    }
+  };
+
+  wrap?.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-filter]');
+    if (!btn) return;
+    wrap.querySelectorAll('[data-filter]').forEach((b) => {
+      b.classList.toggle('is-active', b === btn);
+      b.setAttribute('aria-pressed', String(b === btn));
+    });
+    const f = btn.dataset.filter ?? 'alle';
+    apply(f);
+    const u = new URL(location.href);
+    if (f === 'alle') u.searchParams.delete('kategorie');
+    else u.searchParams.set('kategorie', f);
+    history.replaceState(null, '', u);
+  });
+
+  // Filter aus der URL übernehmen (?kategorie=Umbau)
+  const initial = new URL(location.href).searchParams.get('kategorie');
+  if (initial) wrap?.querySelector<HTMLButtonElement>(`[data-filter="${CSS.escape(initial)}"]`)?.click();
+</script>

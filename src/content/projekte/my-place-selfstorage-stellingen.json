@@ -1,0 +1,33 @@
+{
+  "title": "My Place Selfstorage (Stellingen)",
+  "leistung": "Rohbau eines mehrgeschossigen Kleinlagergebäudes",
+  "kategorien": [
+    "Industriebau"
+  ],
+  "jahr": 2008,
+  "fakten": [
+    {
+      "label": "Adresse",
+      "value": "Kieler Straße 302\n22525 Hamburg"
+    },
+    {
+      "label": "Fertigstellung",
+      "value": "2008"
+    },
+    {
+      "label": "Generalplanung",
+      "value": "Krebs ■ Riedel\nBeratende Ingenieure Architekten\nDipl.-Ing. H. Krebs\nIngenieurbüro für Bauwesen GmbH\nwww.ing-krebs.de\nKoppel 98 20099 Hamburg\nriedel architektur\nwww.riedel-architektur.de\nHoheluftchaussee 40a\n20253 Hamburg"
+    }
+  ],
+  "bilder": [
+    "../../assets/projects/my-place-selfstorage-stellingen/01.jpg",
+    "../../assets/projects/my-place-selfstorage-stellingen/02.jpg",
+    "../../assets/projects/my-place-selfstorage-stellingen/03.jpg",
+    "../../assets/projects/my-place-selfstorage-stellingen/04.jpg",
+    "../../assets/projects/my-place-selfstorage-stellingen/05.jpg",
+    "../../assets/projects/my-place-selfstorage-stellingen/06.jpg",
+    "../../assets/projects/my-place-selfstorage-stellingen/07.jpg",
+    "../../assets/projects/my-place-selfstorage-stellingen/08.jpg"
+  ],
+  "bereich": "rohbau"
+}

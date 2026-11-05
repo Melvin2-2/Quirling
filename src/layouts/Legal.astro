@@ -1,0 +1,65 @@
+---
+import Base from './Base.astro';
+interface Props {
+  title: string;
+  description?: string;
+}
+const { title, description } = Astro.props;
+---
+
+<Base title={title} description={description} overlay={false}>
+  <section class="legal">
+    <div class="container narrow">
+      <p class="eyebrow">Rechtliches</p>
+      <h1 class="h1">{title}</h1>
+      <div class="prose">
+        <slot />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .legal {
+    padding: calc(var(--header-h) + clamp(3rem, 7vw, 6rem)) 0 var(--section);
+    background: var(--white);
+  }
+  .narrow {
+    max-width: calc(52rem + var(--gutter) * 2);
+  }
+  h1 {
+    margin-bottom: clamp(2rem, 4vw, 3.5rem);
+  }
+  .prose :global(h2) {
+    font-size: 1.35rem;
+    line-height: 1.25;
+    margin: 2.5rem 0 0.8rem;
+  }
+  .prose :global(h3) {
+    font-size: 1.1rem;
+    margin: 1.8rem 0 0.6rem;
+  }
+  .prose :global(a) {
+    overflow-wrap: anywhere;
+  }
+  .prose :global(p),
+  .prose :global(li) {
+    color: var(--ink-2);
+  }
+  .prose :global(ul) {
+    padding-left: 1.2rem;
+    margin: 0 0 1em;
+  }
+  .prose :global(address) {
+    font-style: normal;
+    margin-bottom: 1em;
+    color: var(--ink-2);
+  }
+  .prose :global(.box) {
+    border: 1px dashed var(--todo);
+    background: rgb(208 2 27 / 0.05);
+    color: var(--todo);
+    padding: 1rem 1.2rem;
+    margin-bottom: 2rem;
+  }
+</style>

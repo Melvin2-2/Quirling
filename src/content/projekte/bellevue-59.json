@@ -1,0 +1,24 @@
+{
+  "title": "Bellevue 59",
+  "leistung": "Umbau einer Stadtvilla",
+  "kategorien": [
+    "Umbau"
+  ],
+  "jahr": 2007,
+  "fakten": [
+    {
+      "label": "Adresse",
+      "value": "Bellevue 59\n22301 Hamburg"
+    },
+    {
+      "label": "Fertigstellung",
+      "value": "2007"
+    }
+  ],
+  "bilder": [
+    "../../assets/projects/bellevue-59/01.jpg",
+    "../../assets/projects/bellevue-59/02.jpg",
+    "../../assets/projects/bellevue-59/03.jpg"
+  ],
+  "bereich": "umbau-sanierung"
+}

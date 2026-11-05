@@ -1,0 +1,29 @@
+{
+  "title": "Corduaweg",
+  "leistung": "Rohbau von 2 Doppelhäusern",
+  "kategorien": [
+    "Häuser"
+  ],
+  "jahr": 2016,
+  "fakten": [
+    {
+      "label": "Adresse",
+      "value": "Corduaweg 27+29\n21075 Hamburg"
+    },
+    {
+      "label": "Fertigstellung",
+      "value": "2016"
+    }
+  ],
+  "bilder": [
+    "../../assets/projects/corduaweg/01.jpg",
+    "../../assets/projects/corduaweg/02.jpg",
+    "../../assets/projects/corduaweg/03.jpg",
+    "../../assets/projects/corduaweg/04.jpg",
+    "../../assets/projects/corduaweg/05.jpg",
+    "../../assets/projects/corduaweg/06.jpg",
+    "../../assets/projects/corduaweg/07.jpg",
+    "../../assets/projects/corduaweg/08.jpg"
+  ],
+  "bereich": "rohbau"
+}

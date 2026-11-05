@@ -1,0 +1,30 @@
+{
+  "title": "Richardstraße",
+  "leistung": "Rohbau von einem Mehrfamilienhaus mit 17 Wohneinheiten und einer Tiefgarage",
+  "kategorien": [
+    "Wohnungsbau"
+  ],
+  "jahr": 2018,
+  "fakten": [
+    {
+      "label": "Adresse",
+      "value": "Richardstraße 62\n22089 Hamburg"
+    },
+    {
+      "label": "Fertigstellung",
+      "value": "2018"
+    }
+  ],
+  "bilder": [
+    "../../assets/projects/richardstrasse/01.jpg",
+    "../../assets/projects/richardstrasse/02.jpg",
+    "../../assets/projects/richardstrasse/03.jpg",
+    "../../assets/projects/richardstrasse/04.jpg",
+    "../../assets/projects/richardstrasse/05.jpg",
+    "../../assets/projects/richardstrasse/06.jpg",
+    "../../assets/projects/richardstrasse/07.jpg",
+    "../../assets/projects/richardstrasse/08.jpg",
+    "../../assets/projects/richardstrasse/09.jpg"
+  ],
+  "bereich": "rohbau"
+}

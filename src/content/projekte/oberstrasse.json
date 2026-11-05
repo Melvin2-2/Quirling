@@ -1,0 +1,25 @@
+{
+  "title": "Oberstraße",
+  "leistung": "Umbau einer Stadtvilla",
+  "kategorien": [
+    "Umbau"
+  ],
+  "jahr": 2014,
+  "fakten": [
+    {
+      "label": "Adresse",
+      "value": "Oberstraße 94\n20149 Hamburg"
+    },
+    {
+      "label": "Fertigstellung",
+      "value": "2014"
+    }
+  ],
+  "bilder": [
+    "../../assets/projects/oberstrasse/01.jpg",
+    "../../assets/projects/oberstrasse/02.jpg",
+    "../../assets/projects/oberstrasse/03.jpg",
+    "../../assets/projects/oberstrasse/04.jpg"
+  ],
+  "bereich": "umbau-sanierung"
+}

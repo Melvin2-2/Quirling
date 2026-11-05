@@ -1,0 +1,163 @@
+---
+import { Image } from 'astro:assets';
+import Base from '~/layouts/Base.astro';
+import PageHero from '~/components/PageHero.astro';
+import CtaBand from '~/components/CtaBand.astro';
+import Icon from '~/components/Icon.astro';
+import { firma } from '~/data/site';
+import { url } from '~/lib/url';
+import baustellenteam from '~/assets/team/baustellenteam.jpg';
+import thomas from '~/assets/team/thomas-quirling.jpg';
+import ivonne from '~/assets/team/ivonne-quirling.jpg';
+import michaela from '~/assets/team/michaela-venghaus.jpg';
+
+const personen = [
+  { name: 'Thomas Quirling', rolle: 'Geschäftsführender Gesellschafter', bild: thomas },
+  { name: 'Ivonne Quirling', rolle: 'Assistentin der Geschäftsführung', bild: ivonne },
+  { name: 'Michaela Venghaus', rolle: 'Büroangestellte', bild: michaela },
+];
+---
+
+<Base title="Team" description="Das Team der Quirling GmbH: Geschäftsführung, Büro und unsere Mannschaft auf der Baustelle.">
+  <PageHero
+    eyebrow="Unternehmen · Team"
+    title="Wir stellen uns vor."
+    intro="Hier finden Sie unser eingespieltes und beständiges Team. Wir werden Sie bei Ihrem Vorhaben kompetent und zuverlässig unterstützen."
+    image={baustellenteam}
+    imageAlt="Das Baustellenteam der Quirling GmbH"
+    crumbs={[{ label: 'Unternehmen', href: '/unternehmen/' }, { label: 'Team' }]}
+  />
+
+  <section class="section bg-white">
+    <div class="container">
+      <div class="head">
+        <p class="eyebrow">Geschäftsführung &amp; Büro</p>
+        <h2 class="h2" data-split>Ihre Ansprechpartner.</h2>
+      </div>
+      <div class="people" data-reveal data-reveal-children>
+        {
+          personen.map((p) => (
+            <article class="person">
+              <div class="media pimg">
+                <Image src={p.bild} alt={p.name} widths={[400, 700, 1000]} sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 100vw" />
+              </div>
+              <h3 class="h3">{p.name}</h3>
+              <p>{p.rolle}</p>
+            </article>
+          ))
+        }
+      </div>
+      <div class="reach" data-reveal>
+        <a href={firma.telefonHref}><Icon name="phone" />{firma.telefon}</a>
+        <a href={`mailto:${firma.email}`}><Icon name="mail" />{firma.email}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section on-dark crew">
+    <div class="container crew-in">
+      <div class="crew-text" data-reveal>
+        <p class="eyebrow light">Auf der Baustelle</p>
+        <h2 class="h2">Unsere Mannschaft.</h2>
+        <p class="lead">
+          Das Herz unseres Unternehmens sind unsere Facharbeiter auf der Baustelle – ein eingespieltes Team aus jungen und erfahrenen Kollegen, das
+          seit vielen Jahren zusammenarbeitet.
+        </p>
+        <p>
+          Wir bauen auf eine Partnerschaft mit unseren Mitarbeitern und schaffen so ein angenehmes Arbeitsklima. Ein zufriedenes Team ist auch für den
+          Auftraggeber nicht nur angenehm, sondern auch vielversprechend.
+        </p>
+        <a class="btn white" href={url('/karriere/')}><span>Teil des Teams werden</span><Icon name="arrow" /></a>
+      </div>
+      <div class="media crew-img" data-clip>
+        <Image src={baustellenteam} alt="Gruppenfoto des Baustellenteams vor Schalungselementen" widths={[700, 1100, 1440]} sizes="(min-width: 1024px) 55vw, 100vw" />
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .head {
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+  .people {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1.25rem, 3vw, 2.5rem);
+  }
+  .pimg {
+    aspect-ratio: 4 / 5;
+    margin-bottom: 1.4rem;
+  }
+  .pimg :global(img) {
+    object-position: center 20%;
+    filter: grayscale(0.15);
+    transition:
+      transform 1s var(--ease),
+      filter 0.6s ease;
+  }
+  .person:hover .pimg :global(img) {
+    transform: scale(1.04);
+    filter: grayscale(0);
+  }
+  .person p {
+    color: var(--ink-3);
+    margin-top: 0.4rem;
+  }
+  .reach {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 2.5rem;
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+    padding-top: 2rem;
+    border-top: 1px solid var(--line);
+  }
+  .reach a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-family: var(--font-head);
+    font-stretch: 108%;
+    font-weight: 600;
+    font-size: 1.15rem;
+    text-decoration: none;
+    color: var(--blue);
+  }
+  .reach :global(svg) {
+    width: 1.3rem;
+    height: 1.3rem;
+  }
+  .crew-in {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: clamp(2rem, 6vw, 6rem);
+    align-items: center;
+  }
+  .crew-text h2 {
+    margin-bottom: 1.5rem;
+  }
+  .crew-text .lead {
+    margin-bottom: 1rem;
+  }
+  .crew-text .btn {
+    margin-top: 1.5rem;
+  }
+  .crew-img {
+    aspect-ratio: 3 / 2;
+  }
+  @media (max-width: 900px) {
+    .people {
+      grid-template-columns: 1fr 1fr;
+    }
+    .crew-in {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 560px) {
+    .people {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

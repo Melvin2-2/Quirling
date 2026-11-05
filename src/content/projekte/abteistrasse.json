@@ -1,0 +1,25 @@
+{
+  "title": "Abteistraße",
+  "leistung": "Umbau einer Stadtvilla mit 4 Wohneinheiten",
+  "kategorien": [
+    "Umbau"
+  ],
+  "jahr": 2011,
+  "fakten": [
+    {
+      "label": "Adresse",
+      "value": "Abteistraße 53\n20149 Hamburg"
+    },
+    {
+      "label": "Fertigstellung",
+      "value": "2011"
+    }
+  ],
+  "bilder": [
+    "../../assets/projects/abteistrasse/01.jpg",
+    "../../assets/projects/abteistrasse/02.jpg",
+    "../../assets/projects/abteistrasse/03.jpg",
+    "../../assets/projects/abteistrasse/04.jpg"
+  ],
+  "bereich": "umbau-sanierung"
+}

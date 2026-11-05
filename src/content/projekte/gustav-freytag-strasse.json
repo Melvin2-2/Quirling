@@ -1,0 +1,25 @@
+{
+  "title": "Gustav-Freytag-Straße",
+  "leistung": "Umbau und Erweiterung eines Stadthauses",
+  "kategorien": [
+    "Umbau"
+  ],
+  "jahr": 2012,
+  "fakten": [
+    {
+      "label": "Adresse",
+      "value": "Gustav-Freytag-Straße 5\n22085 Hamburg"
+    },
+    {
+      "label": "Fertigstellung",
+      "value": "2012"
+    }
+  ],
+  "bilder": [
+    "../../assets/projects/gustav-freytag-strasse/01.jpg",
+    "../../assets/projects/gustav-freytag-strasse/02.jpg",
+    "../../assets/projects/gustav-freytag-strasse/03.jpg",
+    "../../assets/projects/gustav-freytag-strasse/04.jpg"
+  ],
+  "bereich": "umbau-sanierung"
+}

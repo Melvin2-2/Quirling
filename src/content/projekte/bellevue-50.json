@@ -1,0 +1,25 @@
+{
+  "title": "Bellevue 50",
+  "leistung": "Umbau einer Stadtvilla",
+  "kategorien": [
+    "Umbau"
+  ],
+  "jahr": 2011,
+  "fakten": [
+    {
+      "label": "Adresse",
+      "value": "Bellevue 50\n22301 Hamburg"
+    },
+    {
+      "label": "Fertigstellung",
+      "value": "2011"
+    }
+  ],
+  "bilder": [
+    "../../assets/projects/bellevue-50/01.jpg",
+    "../../assets/projects/bellevue-50/02.jpg",
+    "../../assets/projects/bellevue-50/03.jpg",
+    "../../assets/projects/bellevue-50/04.jpg"
+  ],
+  "bereich": "umbau-sanierung"
+}

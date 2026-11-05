@@ -1,0 +1,77 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import { url } from '~/lib/url';
+
+interface Props {
+  project: CollectionEntry<'projekte'>;
+  sizes?: string;
+  class?: string;
+}
+const { project, sizes = '(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw', class: cls } = Astro.props;
+const p = project.data;
+---
+
+<a class:list={['pcard', cls]} href={url(`/referenzen/${project.id}/`)}>
+  <div class="media pimg">
+    <Image src={p.bilder[0]} alt={`${p.title} – ${p.leistung}`} widths={[480, 800, 1200]} sizes={sizes} />
+  </div>
+  <div class="pmeta">
+    <span class="ptag">{p.kategorien.join(' · ')}{p.jahr && <> · {p.jahr}</>}</span>
+    <h3 class="ptitle">{p.title}</h3>
+    <p class="pleist">{p.leistung}</p>
+  </div>
+</a>
+
+<style>
+  .pcard {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+  .pimg {
+    aspect-ratio: 4 / 3;
+  }
+  .pimg :global(img) {
+    transition: transform 1.1s var(--ease);
+  }
+  .pcard:hover .pimg :global(img) {
+    transform: scale(1.06);
+  }
+  .pimg::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 4px;
+    background: var(--blue);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.6s var(--ease);
+  }
+  .pcard:hover .pimg::after {
+    transform: scaleX(1);
+  }
+  .pmeta {
+    padding-top: 1.1rem;
+  }
+  .ptag {
+    font-family: var(--font-head);
+    font-stretch: 112%;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--blue);
+  }
+  .ptitle {
+    font-size: 1.35rem;
+    line-height: 1.2;
+    margin-top: 0.4rem;
+  }
+  .pleist {
+    color: var(--ink-3);
+    font-size: 0.98rem;
+    line-height: 1.45;
+    margin-top: 0.35rem;
+  }
+</style>

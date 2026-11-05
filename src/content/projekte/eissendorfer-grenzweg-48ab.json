@@ -1,0 +1,20 @@
+{
+  "title": "Eißendorfer Grenzweg 48 a+b",
+  "leistung": "Rohbau eines Doppelhauses",
+  "kategorien": [
+    "Häuser"
+  ],
+  "jahr": null,
+  "fakten": [
+    {
+      "label": "Adresse",
+      "value": "Eißendorfer Grenzweg 48 a+b\n21077 Hamburg"
+    }
+  ],
+  "bilder": [
+    "../../assets/projects/eissendorfer-grenzweg-48ab/01.jpg",
+    "../../assets/projects/eissendorfer-grenzweg-48ab/02.jpg",
+    "../../assets/projects/eissendorfer-grenzweg-48ab/03.jpg"
+  ],
+  "bereich": "rohbau"
+}

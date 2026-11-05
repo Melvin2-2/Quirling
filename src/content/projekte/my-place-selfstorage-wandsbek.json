@@ -1,0 +1,33 @@
+{
+  "title": "My Place Selfstorage (Wandsbek)",
+  "leistung": "Rohbau eines mehrgeschossigen Kleinlagergebäudes",
+  "kategorien": [
+    "Industriebau"
+  ],
+  "jahr": 2007,
+  "fakten": [
+    {
+      "label": "Adresse",
+      "value": "Friedrich-Ebert-Damm 103\n22047 Hamburg"
+    },
+    {
+      "label": "Fertigstellung",
+      "value": "2007"
+    },
+    {
+      "label": "Generalplanung",
+      "value": "Krebs ■ Riedel\nBeratende Ingenieure Architekten\nDipl.-Ing. H. Krebs\nIngenieurbüro für Bauwesen GmbH\nwww.ing-krebs.de\nKoppel 98 20099 Hamburg\nriedel architektur\nwww.riedel-architektur.de\nHoheluftchaussee 40a\n20253 Hamburg"
+    }
+  ],
+  "bilder": [
+    "../../assets/projects/my-place-selfstorage-wandsbek/01.jpg",
+    "../../assets/projects/my-place-selfstorage-wandsbek/03.jpg",
+    "../../assets/projects/my-place-selfstorage-wandsbek/04.jpg",
+    "../../assets/projects/my-place-selfstorage-wandsbek/05.jpg",
+    "../../assets/projects/my-place-selfstorage-wandsbek/06.jpg",
+    "../../assets/projects/my-place-selfstorage-wandsbek/07.jpg",
+    "../../assets/projects/my-place-selfstorage-wandsbek/08.jpg",
+    "../../assets/projects/my-place-selfstorage-wandsbek/09.jpg"
+  ],
+  "bereich": "rohbau"
+}

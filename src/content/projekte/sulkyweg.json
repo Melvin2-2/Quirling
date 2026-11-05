@@ -1,0 +1,24 @@
+{
+  "title": "Sulkyweg",
+  "leistung": "Rohbau von einem Einfamilienhaus mit Garage",
+  "kategorien": [
+    "Häuser"
+  ],
+  "jahr": 2019,
+  "fakten": [
+    {
+      "label": "Adresse",
+      "value": "Sulkyweg 23\n22159 Hamburg"
+    },
+    {
+      "label": "Fertigstellung",
+      "value": "2019"
+    }
+  ],
+  "bilder": [
+    "../../assets/projects/sulkyweg/01.jpg",
+    "../../assets/projects/sulkyweg/02.jpg",
+    "../../assets/projects/sulkyweg/03.jpg"
+  ],
+  "bereich": "rohbau"
+}

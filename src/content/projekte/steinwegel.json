@@ -1,0 +1,23 @@
+{
+  "title": "Steinwegel",
+  "leistung": "Schlüsselfertiger Neubau zweier Doppelhäuser",
+  "kategorien": [
+    "Häuser"
+  ],
+  "jahr": 2002,
+  "fakten": [
+    {
+      "label": "Adresse",
+      "value": "Steinwegel 19-19c\n22393 Hamburg"
+    },
+    {
+      "label": "Fertigstellung",
+      "value": "2002"
+    }
+  ],
+  "bilder": [
+    "../../assets/projects/steinwegel/01.jpg",
+    "../../assets/projects/steinwegel/02.jpg"
+  ],
+  "bereich": "schluesselfertiges-bauen"
+}
