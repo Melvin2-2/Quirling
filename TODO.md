@@ -19,7 +19,6 @@ Alles, was auf der Website **rot gestrichelt** markiert ist, steht auch hier. Pl
 
 ## Inhalte ergänzen
 
-- [ ] **Mitarbeiterzahl** (Startseite + Über uns) → `platzhalter.mitarbeiter`
 - [ ] **Bürozeiten** (Kontaktseite) → `platzhalter.buerozeiten`
 - [ ] **Offene Stellen** (Karriere) → `src/pages/karriere/index.astro` → Liste `stellen`
 - [ ] **Zeitstrahl prüfen** (Über uns) – rot markierte Stationen bitte bestätigen/korrigieren → `src/pages/unternehmen/index.astro`
@@ -27,7 +26,10 @@ Alles, was auf der Website **rot gestrichelt** markiert ist, steht auch hier. Pl
   - 1997: Tegelweg 51 a „viele Jahre auch unsere Firmenadresse“
   - 2019: Bergedorf (Kaufhaus & Hotel am Serrahn) und Betriebsgebäude Tilsiter Straße 174 „heute unser Firmensitz“
 - [ ] **Leistungsumfang** auf den drei Leistungsseiten fachlich prüfen (z. B. Mauerwerksarbeiten, Bewehrung) → `src/data/leistungen-inhalt.ts`
-- [ ] **YouTube-Video** prüfen: Ist `Qis47M1qz_E` (von der alten Startseite) das gewünschte Drohnen-Video? → `src/data/site.ts` → `youtubeId`
+- [ ] **Firmenfilm als Datei** (OneDrive-Link ließ sich nicht automatisch laden): Video per Dropbox-/Google-Drive-Link schicken.
+  Dann: letzte 20 s (Drohnenflug) als Hero- und Film-Hintergrund, kompletter Film selbst gehostet statt YouTube.
+  Bis dahin: Zeitraffer als Hintergrund, „Film ansehen“ öffnet YouTube `Qis47M1qz_E` (bitte prüfen, ob das der richtige Film ist).
+- [ ] **Slogan** „Qualität, die steht.“ freigeben (ersetzt „Gebaut wird immer … bei uns mit Qualität“) → `src/data/site.ts` → `firma.slogan`
 
 ## Medien
 

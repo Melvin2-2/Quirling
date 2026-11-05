@@ -9,10 +9,7 @@ const year = new Date().getFullYear();
 <footer class="site-footer on-dark">
   <div class="container">
     <div class="claim" data-reveal>
-      <p class="accent">
-        <span>{firma.slogan[0]}</span>
-        <span>{firma.slogan[1]}</span>
-      </p>
+      <p class="accent">{firma.slogan}</p>
       <a class="btn white" href={url('/kontakt/')}><span>Projekt besprechen</span><Icon name="arrow" /></a>
     </div>
 
@@ -86,13 +83,6 @@ const year = new Date().getFullYear();
     line-height: 1.08;
     color: #fff !important;
     margin: 0;
-  }
-  .claim p span {
-    display: block;
-  }
-  .claim p span:last-child {
-    color: #aab4ea;
-    padding-left: clamp(1.5rem, 6vw, 6rem);
   }
   .cols {
     display: grid;

@@ -8,7 +8,8 @@ export const JAHRE_ERFAHRUNG = new Date().getFullYear() - GRUENDUNGSJAHR;
 export const firma = {
   name: 'Quirling GmbH',
   langname: 'Quirling GmbH Bauunternehmen',
-  slogan: ['Gebaut wird immer …', 'bei uns mit Qualität.'],
+  slogan: 'Qualität, die steht.',
+  mitarbeiter: 10,
   strasse: 'Tilsiter Straße 174',
   plz: '22047',
   ort: 'Hamburg',
@@ -27,7 +28,6 @@ export const firma = {
 /** Werte, die noch fehlen – erscheinen rot auf der Seite */
 export const platzhalter = {
   ustId: 'DE XXX XXX XXX',
-  mitarbeiter: 'XX',
   buerozeiten: 'Mo–Fr XX:XX–XX:XX Uhr',
 } as const;
 
@@ -42,18 +42,24 @@ export const leistungen = [
     nr: '01',
     title: 'Rohbau & Stahlbetonbau',
     kurz: 'Unser Schwerpunkt: Rohbauten in Beton- und Stahlbetonbauweise – vom Fundament bis zur letzten Decke.',
+    picto: 'rohbau',
+    stichworte: ['Ortbeton', 'Schalungsbau', 'Tiefgaragen'],
   },
   {
     slug: 'schluesselfertiges-bauen',
     nr: '02',
-    title: 'Schlüsselfertiges Bauen',
+    title: 'Schlüssel\u00adfertiges Bauen',
     kurz: 'Ein Ansprechpartner für das ganze Gebäude: Wir koordinieren alle Gewerke bis zur Übergabe.',
+    picto: 'schluessel',
+    stichworte: ['Ein Ansprechpartner', 'Alle Gewerke', 'Übergabe'],
   },
   {
     slug: 'umbau-sanierung',
     nr: '03',
     title: 'Umbau & Sanierung',
     kurz: 'Erweiterungen, Umbauten und Sanierungen im Bestand – auch bei Stadtvillen und historischen Gebäuden.',
+    picto: 'umbau',
+    stichworte: ['Stadtvillen', 'Erweiterungen', 'Bestand'],
   },
 ] as const;
 

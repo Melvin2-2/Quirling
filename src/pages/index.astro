@@ -3,295 +3,289 @@ import { Image, getImage } from 'astro:assets';
 import { getCollection, getEntry } from 'astro:content';
 import Base from '~/layouts/Base.astro';
 import Icon from '~/components/Icon.astro';
-import Todo from '~/components/Todo.astro';
+import Picto from '~/components/Picto.astro';
 import CtaBand from '~/components/CtaBand.astro';
-import YouTube from '~/components/YouTube.astro';
-import { firma, leistungen, platzhalter, youtubeId, JAHRE_ERFAHRUNG, GRUENDUNGSJAHR } from '~/data/site';
+import { firma, leistungen, youtubeId, GRUENDUNGSJAHR } from '~/data/site';
 import { url } from '~/lib/url';
 import poster from '~/assets/site/zeitraffer-poster.jpg';
 import teamFoto from '~/assets/team/baustellenteam.jpg';
 
-const highlights = (await getCollection('projekte', (p) => p.data.highlight !== undefined)).sort(
-  (a, b) => (a.data.highlight ?? 0) - (b.data.highlight ?? 0),
-);
-const anzahlReferenzen = (await getCollection('projekte')).length;
+const alle = await getCollection('projekte');
+const highlights = alle
+  .filter((p) => p.data.highlight !== undefined)
+  .sort((a, b) => (a.data.highlight ?? 0) - (b.data.highlight ?? 0));
 const posterImg = await getImage({ src: poster, width: 1920, format: 'jpg', quality: 70 });
 
-const leistungsBilder: Record<string, string> = {
-  rohbau: 'lilienstrasse',
+const panelBild: Record<string, string> = {
+  rohbau: 'grosse-johannisstrasse',
   'schluesselfertiges-bauen': 'steinwegel',
   'umbau-sanierung': 'bellevue-50',
 };
-const leistungenMitBild = await Promise.all(
-  leistungen.map(async (l) => {
-    const entry = await getEntry('projekte', leistungsBilder[l.slug]!);
-    return { ...l, bild: entry!.data.bilder[0]!, projekt: entry!.data.title };
-  }),
+const panels = await Promise.all(
+  leistungen.map(async (l) => ({ ...l, bild: (await getEntry('projekte', panelBild[l.slug]!))!.data.bilder[0]! })),
 );
-const videoPoster = (await getEntry('projekte', 'milchgrund'))!.data.bilder[0]!;
+
+const fakten = [
+  { picto: 'kalender', zahl: GRUENDUNGSJAHR, prefix: 'seit', label: 'in Hamburg' },
+  { picto: 'gebaeude', zahl: firma.projekteAnzahl, prefix: 'über', label: 'Projekte realisiert' },
+  { picto: 'helm', zahl: firma.mitarbeiter, prefix: '', label: 'Mitarbeiter im Team' },
+  { picto: 'standort', zahl: null, prefix: '', label: 'Hamburg & Umgebung' },
+] as const;
+
+const ticker = ['Rohbau', 'Stahlbetonbau', 'Schalungsbau', 'Tiefgaragen', 'Schlüsselfertig', 'Umbau', 'Sanierung', 'Hamburg'];
 ---
 
 <Base title="Start">
-  <!-- HERO -->
-  <section class="hero on-dark" data-hero>
+  <!-- ============ HERO ============ -->
+  <section class="hero on-dark" data-home-hero>
     <div class="hero-frame" data-hero-frame>
-      <video
-        class="hero-video"
-        autoplay
-        muted
-        loop
-        playsinline
-        preload="metadata"
-        poster={posterImg.src}
-        data-autoplay
-        aria-hidden="true"
-      >
+      <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster={posterImg.src} data-autoplay aria-hidden="true">
         <source src={url('/video/zeitraffer-540.mp4')} type="video/mp4" media="(max-width: 767px)" />
         <source src={url('/video/zeitraffer-1080.mp4')} type="video/mp4" />
       </video>
       <div class="hero-shade"></div>
     </div>
+
     <div class="container hero-content" data-hero-content>
-      <p class="eyebrow light">Bauunternehmen in Hamburg · seit {GRUENDUNGSJAHR}</p>
-      <h1 class="h-display" data-split>
-        Gebaut wird immer&nbsp;… <span class="accent hero-accent">bei uns mit Qualität.</span>
-      </h1>
-      <div class="hero-bottom">
-        <p class="hero-lead">
-          Rohbau, Beton- und Stahlbetonbau, schlüsselfertiges Bauen sowie Umbau und Sanierung – für Bauherren in Hamburg und
-          Umgebung.
-        </p>
-        <div class="hero-btns">
-          <a class="btn white" href={url('/referenzen/')}><span>Unsere Projekte</span><Icon name="arrow" /></a>
-          <a class="btn ghost" href={url('/kontakt/')}><span>Kontakt aufnehmen</span></a>
-        </div>
+      <p class="eyebrow light">Bauunternehmen · Hamburg · seit {GRUENDUNGSJAHR}</p>
+      <h1 class="hero-title" data-split>Qualität, <span>die steht.</span></h1>
+      <ul class="hero-tags" data-reveal data-reveal-children>
+        <li>Rohbau</li>
+        <li>Stahlbetonbau</li>
+        <li>Schlüsselfertig</li>
+        <li>Umbau</li>
+      </ul>
+      <div class="hero-actions" data-reveal>
+        <a class="btn white" href={url('/referenzen/')}><span>Projekte ansehen</span><Icon name="arrow" /></a>
+        <button class="play" type="button" data-film-open>
+          <span class="play-ring"><Icon name="play" /></span>
+          <span class="play-text">Film ansehen<small>Drohnenaufnahmen</small></span>
+        </button>
       </div>
     </div>
-    <a class="scroll-hint" href="#intro" aria-label="Weiter nach unten">
-      <span>Scrollen</span>
-      <Icon name="arrow-down" />
+
+    <a class="hero-cue" href="#fakten" aria-label="Weiter nach unten">
+      <Picto name="hammer" class="cue-hammer" />
     </a>
   </section>
 
-  <!-- INTRO + ZAHLEN -->
-  <section class="section intro bg-white" id="intro">
-    <div class="container">
-      <p class="eyebrow">Quirling GmbH Bauunternehmen</p>
-      <p class="statement" data-scrub-words>
-        Wir erstellen Neubauten und führen vielseitige Umbau- und Sanierungsmaßnahmen aus. Unser Schwerpunkt: Rohbauten in Beton- und
-        Stahlbetonbauweise. Eine Basis, auf die Sie bauen können.
-      </p>
-
-      <div class="intro-grid">
-        <div class="intro-text" data-reveal>
-          <p>
-            Die Quirling GmbH ist ein dynamisches und flexibles Team, das überwiegend aus jungen und erfahrenen Mitarbeitern besteht.
-            Bereits in der Anfangsphase konnten wir mit zufriedenen und treuen Kunden rechnen. Mit unseren kompetenten Mitarbeitern konnten
-            wir uns an vielseitigen Bauten beweisen.
-          </p>
-          <p>
-            Wir setzen auf partnerschaftliche Beziehungen und stehen im ständigen Kontakt mit unseren Auftraggebern. Kommunikation wird bei
-            uns großgeschrieben. Genauso setzen wir auf Qualität: Bei uns werden die Arbeiten bis zum Schluss sorgfältig ausgeführt.
-          </p>
-          <a class="link-arrow" href={url('/unternehmen/')}>Mehr über uns <Icon name="arrow" /></a>
-        </div>
-
-        <dl class="stats" data-reveal data-reveal-children>
-          <div class="stat">
-            <dt>Jahre Erfahrung</dt>
-            <dd><span data-count={JAHRE_ERFAHRUNG}>{JAHRE_ERFAHRUNG}</span></dd>
-          </div>
-          <div class="stat">
-            <dt>Realisierte Projekte</dt>
-            <dd>
-              <span class="plus">mehr als</span><span data-count={firma.projekteAnzahl}>{firma.projekteAnzahl}</span>
-            </dd>
-          </div>
-          <div class="stat">
-            <dt>Mitarbeiter</dt>
-            <dd><Todo hint="Anzahl fehlt">{platzhalter.mitarbeiter}</Todo></dd>
-          </div>
-          <div class="stat">
-            <dt>Einsatzgebiet</dt>
-            <dd class="small">Hamburg &amp; Umgebung</dd>
-          </div>
-        </dl>
-      </div>
-    </div>
-  </section>
-
-  <!-- LEISTUNGEN (gestapelte Karten) -->
-  <section class="section leistungen bg-stone">
-    <div class="container">
-      <div class="sec-head">
-        <div>
-          <p class="eyebrow">Leistungen</p>
-          <h2 class="h2" data-split>Was wir bauen.</h2>
-        </div>
-        <p class="lead" data-reveal>
-          Vom Fundament bis zur Übergabe: Wir übernehmen den Rohbau, bauen schlüsselfertig oder bringen bestehende Gebäude auf den neuesten
-          Stand.
-        </p>
-      </div>
-
-      <div class="stack" data-stack>
-        {
-          leistungenMitBild.map((l) => (
-            <article class="scard" data-stack-card>
-              <a class="scard-in" href={url(`/leistungen/${l.slug}/`)}>
-                <div class="scard-img media">
-                  <Image src={l.bild} alt={`Projekt ${l.projekt}`} widths={[600, 1000, 1400]} sizes="(min-width: 1024px) 55vw, 100vw" />
-                </div>
-                <div class="scard-text">
-                  <span class="scard-nr">{l.nr}</span>
-                  <h3 class="h3">{l.title}</h3>
-                  <p>{l.kurz}</p>
-                  <span class="link-arrow">
-                    Mehr erfahren <Icon name="arrow" />
-                  </span>
-                </div>
-              </a>
-            </article>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  <!-- PROJEKTE (horizontal) -->
-  <section class="projects on-dark" data-hscroll>
-    <div class="projects-inner">
-      <div class="container proj-head">
-        <div>
-          <p class="eyebrow light">Ausgewählte Referenzen</p>
-          <h2 class="h2" data-split>Projekte, die für uns sprechen.</h2>
-        </div>
-        <a class="btn ghost" href={url('/referenzen/')}><span>Alle Referenzen</span><Icon name="arrow" /></a>
-      </div>
-      <div class="track" data-track>
-        {
-          highlights.map((p, i) => (
-            <a class="slide" href={url(`/referenzen/${p.id}/`)}>
-              <div class="slide-img media">
-                <Image
-                  src={p.data.bilder[0]!}
-                  alt={`${p.data.title} – ${p.data.leistung}`}
-                  widths={[600, 1000, 1400]}
-                  sizes="(min-width: 1024px) 42vw, 85vw"
-                />
-              </div>
-              <div class="slide-meta">
-                <span class="slide-nr">{String(i + 1).padStart(2, '0')}</span>
-                <div>
-                  <h3 class="h4">{p.data.title}</h3>
-                  <p>
-                    {p.data.leistung}
-                    {p.data.jahr && <> · {p.data.jahr}</>}
-                  </p>
-                </div>
-              </div>
-            </a>
-          ))
-        }
-        <a class="slide slide-more" href={url('/referenzen/')}>
-          <span class="more-count">{anzahlReferenzen}</span>
-          <span class="more-text">Referenzen online – und mehr als {firma.projekteAnzahl} Projekte seit {GRUENDUNGSJAHR}.</span>
-          <span class="link-arrow">Zur Übersicht <Icon name="arrow" /></span>
-        </a>
-      </div>
-      <div class="container progress-wrap"><div class="progress"><span data-progress></span></div></div>
-    </div>
-  </section>
-
-  <!-- SLOGAN-LAUFBAND -->
-  <section class="marquee bg-white" data-marquee aria-label={`${firma.slogan[0]} ${firma.slogan[1]}`}>
-    <div class="marquee-track accent" data-marquee-track aria-hidden="true">
+  <!-- ============ FAKTEN ============ -->
+  <section class="facts" id="fakten">
+    <div class="container facts-grid" data-strike-group>
       {
-        Array.from({ length: 4 }).map(() => (
-          <span>
-            Gebaut wird immer … <em>bei uns mit Qualität</em>
-            <i class="mq-diamond" />
-          </span>
+        fakten.map((f) => (
+          <div class="fact" data-strike>
+            <span class="fact-icon">
+              <Picto name={f.picto} />
+            </span>
+            <div class="fact-num">
+              <Picto name="hammer" class="fact-hammer" />
+              {f.prefix && <small>{f.prefix}</small>}
+              {f.zahl !== null ? (
+                <strong data-count={f.zahl === GRUENDUNGSJAHR ? undefined : f.zahl}>{f.zahl}</strong>
+              ) : (
+                <strong class="hh">HH</strong>
+              )}
+            </div>
+            <span class="fact-label">{f.label}</span>
+          </div>
         ))
       }
     </div>
   </section>
 
-  <!-- VIDEO -->
-  <section class="section video-sec bg-white">
+  <!-- ============ STATEMENT ============ -->
+  <section class="statement-sec">
+    <div class="container">
+      <p class="statement" data-scrub-words>
+        Wir bauen <em>massiv</em>, arbeiten <em>sorgfältig</em> und halten <em>Wort</em>.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ LEISTUNGEN ============ -->
+  <section class="services">
     <div class="container">
       <div class="sec-head">
+        <p class="eyebrow">Leistungen</p>
+        <h2 class="h2" data-split>Drei Disziplinen. Ein Anspruch.</h2>
+      </div>
+      <div class="panels" data-reveal data-reveal-children>
+        {
+          panels.map((l) => (
+            <a class="panel" href={url(`/leistungen/${l.slug}/`)}>
+              <div class="panel-bg">
+                <Image src={l.bild} alt="" widths={[600, 1000, 1400]} sizes="(min-width: 1024px) 50vw, 100vw" />
+              </div>
+              <div class="panel-top">
+                <span class="panel-icon">
+                  <Picto name={l.picto} />
+                </span>
+                <span class="panel-nr">{l.nr}</span>
+              </div>
+              <div class="panel-bottom">
+                <h3 class="panel-title">{l.title}</h3>
+                <ul class="panel-tags">
+                  {l.stichworte.map((s) => (
+                    <li>{s}</li>
+                  ))}
+                </ul>
+                <span class="panel-go">
+                  <Icon name="arrow" />
+                </span>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TICKER ============ -->
+  <div class="ticker on-blue" aria-hidden="true">
+    <div class="ticker-track">
+      {
+        [0, 1].map(() => (
+          <ul>
+            {ticker.map((t) => (
+              <li>
+                {t}
+                <i />
+              </li>
+            ))}
+          </ul>
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- ============ PROJEKTE (Rauten-Spotlight) ============ -->
+  <section class="spot on-dark" data-spot>
+    <div class="spot-in">
+      <div class="spot-left">
+        <p class="eyebrow light">Referenzen</p>
+        <h2 class="h2">Projekte, die stehen.</h2>
+        <ol class="spot-list">
+          {
+            highlights.map((p, i) => (
+              <li data-spot-item class:list={[{ 'is-active': i === 0 }]}>
+                <a href={url(`/referenzen/${p.id}/`)}>
+                  <span class="sl-nr">{String(i + 1).padStart(2, '0')}</span>
+                  <span class="sl-title">{p.data.title}</span>
+                  <span class="sl-meta">
+                    {p.data.kategorien[0]}
+                    {p.data.jahr && ` · ${p.data.jahr}`}
+                  </span>
+                  <span class="sl-thumb media">
+                    <Image src={p.data.bilder[0]!} alt="" widths={[500, 800]} sizes="90vw" />
+                  </span>
+                </a>
+              </li>
+            ))
+          }
+        </ol>
+        <a class="link-arrow" href={url('/referenzen/')}>Alle {alle.length} Referenzen <Icon name="arrow" /></a>
+      </div>
+      <div class="spot-stage">
+        {
+          highlights.map((p, i) => (
+            <a class="spot-img" href={url(`/referenzen/${p.id}/`)} data-spot-img style={`z-index:${i + 1}`} tabindex="-1">
+              <Image
+                src={p.data.bilder[0]!}
+                alt={`${p.data.title} – ${p.data.leistung}`}
+                widths={[800, 1200, 1700]}
+                sizes="(min-width: 1024px) 60vw, 100vw"
+              />
+            </a>
+          ))
+        }
+        <div class="spot-count">
+          <span data-spot-num>01</span><span class="sep"></span>{String(highlights.length).padStart(2, '0')}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FILM ============ -->
+  <section class="film" data-film>
+    <div class="film-sticky">
+      <div class="film-frame" data-film-frame>
+        <video autoplay muted loop playsinline preload="none" poster={posterImg.src} data-autoplay aria-hidden="true">
+          <source src={url('/video/zeitraffer-1080.mp4')} type="video/mp4" />
+        </video>
+      </div>
+      <div class="film-ui" data-film-ui>
+        <p class="eyebrow light">Film</p>
+        <h2 class="h1">Quirling von oben.</h2>
+        <button class="play big" type="button" data-film-open>
+          <span class="play-ring"><Icon name="play" /></span>
+          <span class="play-text">Film ansehen<small>Drohnenaufnahmen unserer Baustellen</small></span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TEAM / KARRIERE ============ -->
+  <section class="bento-sec">
+    <div class="container bento" data-reveal data-reveal-children>
+      <a class="tile tile-team" href={url('/unternehmen/team/')}>
+        <Image src={teamFoto} alt="Das Team der Quirling GmbH" widths={[700, 1100, 1500]} sizes="(min-width: 900px) 60vw, 100vw" />
+        <div class="tile-txt">
+          <p class="eyebrow light">Team</p>
+          <h3 class="h2">{firma.mitarbeiter} Profis. Ein Team.</h3>
+        </div>
+        <span class="tile-go"><Icon name="arrow" /></span>
+      </a>
+      <a class="tile tile-job on-blue" href={url('/karriere/')}>
+        <i class="diamond tj-d"></i>
+        <span class="tile-icon"><Picto name="helm" /></span>
         <div>
-          <p class="eyebrow">Aus der Luft</p>
-          <h2 class="h2" data-split>Unsere Baustellen von oben.</h2>
+          <h3 class="h3">Mit anpacken?</h3>
+          <p>Bewerbung gern per E-Mail.</p>
         </div>
-        <p class="lead" data-reveal>Drohnenaufnahmen unserer Bauvorhaben in Hamburg – ein Blick auf das, was wir täglich bauen.</p>
-      </div>
-      <div data-clip class="video-clip">
-        <YouTube id={youtubeId} title="Quirling Bauunternehmen – Drohnenaufnahmen" poster={videoPoster} />
-      </div>
-    </div>
-  </section>
-
-  <!-- TEAM -->
-  <section class="section team-teaser bg-stone">
-    <div class="container team-grid">
-      <div class="team-img media parallax" data-parallax>
-        <Image src={teamFoto} alt="Das Baustellenteam der Quirling GmbH" widths={[700, 1100, 1600]} sizes="(min-width: 1024px) 58vw, 100vw" />
-      </div>
-      <div class="team-text" data-reveal>
-        <p class="eyebrow">Unternehmen</p>
-        <h2 class="h2">Ein eingespieltes, beständiges Team.</h2>
-        <p>
-          Wir bauen auch auf eine Partnerschaft mit unseren Mitarbeitern und schaffen so ein angenehmes Arbeitsklima. Ein zufriedenes Team
-          ist auch für den Auftraggeber nicht nur angenehm, sondern auch vielversprechend.
-        </p>
-        <div class="team-links">
-          <a class="link-arrow" href={url('/unternehmen/team/')}>Unser Team <Icon name="arrow" /></a>
-          <a class="link-arrow" href={url('/unternehmen/zertifikate/')}>Zertifikate &amp; Downloads <Icon name="arrow" /></a>
+        <span class="tile-go"><Icon name="arrow" /></span>
+      </a>
+      <a class="tile tile-cert" href={url('/unternehmen/zertifikate/')}>
+        <span class="tile-icon"><Picto name="bewehrung" /></span>
+        <div>
+          <h3 class="h3">Zertifikate</h3>
+          <p>Nachweise als PDF.</p>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- KARRIERE -->
-  <section class="section career on-dark">
-    <div class="diamond career-diamond" data-spin></div>
-    <div class="container career-inner">
-      <div>
-        <p class="eyebrow light">Karriere</p>
-        <h2 class="h1" data-split>Mit anpacken?</h2>
-      </div>
-      <div data-reveal>
-        <p class="lead">
-          Wir suchen Menschen, die gerne bauen – auf der Baustelle und im Büro. Bewerben Sie sich unkompliziert per E-Mail.
-        </p>
-        <a class="btn white" href={url('/karriere/')}><span>Karriere bei Quirling</span><Icon name="arrow" /></a>
-      </div>
+        <span class="tile-go"><Icon name="arrow" /></span>
+      </a>
     </div>
   </section>
 
   <CtaBand />
+
+  <!-- Film-Overlay -->
+  <dialog class="film-modal" data-film-modal data-yt={youtubeId} aria-label="Film: Quirling von oben">
+    <div class="fm-box" data-film-box></div>
+    <button type="button" class="fm-close" data-film-close aria-label="Schließen"><Icon name="close" /></button>
+    <p class="fm-note">
+      Das Video wird von YouTube geladen – dabei werden Daten an Google übertragen. <a href={url('/datenschutz/')}>Datenschutz</a>
+    </p>
+  </dialog>
 </Base>
 
 <style>
-  /* HERO */
+  /* ================= HERO ================= */
   .hero {
     position: relative;
     min-height: 100svh;
-    min-height: 620px;
     display: flex;
-    align-items: flex-end;
-    background: var(--stone-50);
+    align-items: center;
     isolation: isolate;
+    background: var(--stone-50);
   }
   .hero-frame {
     position: absolute;
     inset: 0;
     overflow: hidden;
     background: var(--navy);
-    clip-path: inset(0% 0% 0% 0% round 0px);
     z-index: -1;
+    /* Unterkante als Rautenspitze – Winkel aus dem Logo */
+    clip-path: polygon(0% 0%, 100% 0%, 100% 84%, 48% 100%, 0% 88%);
   }
   .hero-video {
     width: 100%;
@@ -301,438 +295,1027 @@ const videoPoster = (await getEntry('projekte', 'milchgrund'))!.data.bilder[0]!;
   .hero-shade {
     position: absolute;
     inset: 0;
-    background:
-      linear-gradient(to top, rgb(18 23 53 / 0.85) 0%, rgb(18 23 53 / 0.35) 50%, rgb(18 23 53 / 0.3) 100%),
-      linear-gradient(to right, rgb(18 23 53 / 0.55), transparent 65%);
+    background: linear-gradient(100deg, rgb(18 23 53 / 0.7) 0%, rgb(18 23 53 / 0.3) 48%, rgb(18 23 53 / 0) 78%);
   }
   .hero-content {
     padding-top: calc(var(--header-h) + 2rem);
-    padding-bottom: clamp(4.5rem, 10vh, 8rem);
+    padding-bottom: 14vh;
   }
-  .hero h1 {
-    max-width: 14ch;
+  .hero-title {
+    font-size: clamp(3.2rem, 9.5vw, 9.5rem);
+    line-height: 0.92;
+    letter-spacing: -0.035em;
+    font-stretch: 116%;
+    font-weight: 700;
+    max-width: 10ch;
+    text-shadow: 0 2px 30px rgb(0 0 0 / 0.18);
   }
-  .hero-accent {
-    display: block;
-    font-size: 0.8em;
-    color: #c9d0f5;
-    margin-top: 0.15em;
+  .hero-title span {
+    display: inline-block;
+    position: relative;
   }
-  .hero-bottom {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: flex-end;
-    gap: 2rem;
-    margin-top: clamp(2rem, 5vh, 3.5rem);
-    padding-top: 2rem;
-    border-top: 1px solid var(--line-light);
-  }
-  .hero-lead {
-    max-width: 36rem;
-    font-size: clamp(1.05rem, 1.2vw, 1.25rem);
-    margin: 0;
-  }
-  .hero-btns {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.8rem;
-  }
-  .hero .btn.ghost {
-    color: #fff;
-  }
-  .scroll-hint {
+  .hero-title span::after {
+    content: '';
     position: absolute;
-    left: 50%;
-    bottom: 1.1rem;
-    transform: translateX(-50%);
-    display: none;
+    left: 0.04em;
+    right: 0.2em;
+    bottom: -0.06em;
+    height: 0.09em;
+    background: var(--blue);
+  }
+  .hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0 0;
+  }
+  .hero-tags li {
+    display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    font-size: 0.72rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    text-decoration: none;
-    color: rgb(255 255 255 / 0.75);
-  }
-  .scroll-hint :global(svg) {
-    width: 1.1rem;
-    animation: nudge 2.2s var(--ease) infinite;
-  }
-  @keyframes nudge {
-    0%,
-    100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(8px);
-    }
-  }
-  @media (min-width: 1024px) and (min-height: 760px) {
-    .scroll-hint {
-      display: flex;
-    }
-  }
-
-  /* INTRO */
-  .statement {
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    background: rgb(255 255 255 / 0.12);
+    border: 1px solid rgb(255 255 255 / 0.25);
+    backdrop-filter: blur(8px);
     font-family: var(--font-head);
     font-stretch: 108%;
     font-weight: 560;
-    font-size: clamp(1.7rem, 3.4vw, 3.1rem);
-    line-height: 1.18;
-    letter-spacing: -0.015em;
-    max-width: 30ch;
-    color: var(--ink);
-    margin-bottom: clamp(3rem, 7vw, 6rem);
+    font-size: 0.9rem;
   }
-  .intro-grid {
+  .hero-tags li::before {
+    content: '';
+    width: 0.45rem;
+    height: 0.45rem;
+    background: #8f9cf0;
+    transform: rotate(45deg);
+  }
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.5rem 2rem;
+    margin-top: 2.5rem;
+  }
+
+  .play {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.9rem;
+    background: none;
+    border: 0;
+    color: #fff;
+    cursor: pointer;
+    font: inherit;
+    text-align: left;
+    padding: 0;
+  }
+  .play-ring {
+    position: relative;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
     display: grid;
-    grid-template-columns: 1fr 1.1fr;
-    gap: clamp(2rem, 6vw, 6rem);
-    align-items: start;
+    place-items: center;
+    background: rgb(255 255 255 / 0.15);
+    border: 1px solid rgb(255 255 255 / 0.55);
+    backdrop-filter: blur(6px);
+    transition:
+      background 0.3s ease,
+      transform 0.4s var(--ease);
   }
-  .intro-text {
-    color: var(--ink-2);
-    max-width: 38rem;
+  .play-ring::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 50%;
+    border: 1px solid rgb(255 255 255 / 0.6);
+    animation: pulse 2.4s var(--ease) infinite;
   }
-  .intro-text .link-arrow {
-    margin-top: 1rem;
+  @keyframes pulse {
+    from {
+      transform: scale(1);
+      opacity: 0.9;
+    }
+    to {
+      transform: scale(1.6);
+      opacity: 0;
+    }
   }
-  .stats {
+  .play-ring :global(svg) {
+    width: 22px;
+    height: 22px;
+    margin-left: 3px;
+  }
+  .play:hover .play-ring {
+    background: var(--blue);
+    border-color: var(--blue);
+    transform: scale(1.06);
+  }
+  .play-text {
+    font-family: var(--font-head);
+    font-stretch: 108%;
+    font-weight: 600;
+    font-size: 1rem;
+    line-height: 1.2;
+  }
+  .play-text small {
+    display: block;
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 0.82rem;
+    color: rgb(255 255 255 / 0.7);
+  }
+
+  .hero-cue {
+    position: absolute;
+    left: 48%;
+    bottom: 4.5%;
+    transform: translateX(-50%);
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    margin: 0;
-    border-top: 1px solid var(--line);
+    place-items: center;
+    background: #fff;
+    color: var(--blue);
+    box-shadow: 0 10px 30px -10px rgb(18 23 53 / 0.5);
+    z-index: 2;
   }
-  .stat {
-    padding: 1.6rem 0 1.8rem;
-    border-bottom: 1px solid var(--line);
+  .hero-cue :global(.cue-hammer) {
+    width: 34px;
+    height: 34px;
+    transform-origin: 75% 75%;
+    animation: tap 1.8s var(--ease) infinite;
   }
-  .stat:nth-child(odd) {
-    padding-right: 1.5rem;
-    border-right: 1px solid var(--line);
+  @keyframes tap {
+    0%,
+    55%,
+    100% {
+      transform: rotate(0deg);
+    }
+    30% {
+      transform: rotate(-28deg);
+    }
+    45% {
+      transform: rotate(8deg);
+    }
   }
-  .stat:nth-child(even) {
-    padding-left: 1.5rem;
+
+  /* ================= FAKTEN ================= */
+  .facts {
+    background: var(--stone-50);
+    padding-block: clamp(3rem, 6vw, 5rem) clamp(2rem, 4vw, 3rem);
   }
-  .stat dt {
+  .facts-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(0.75rem, 1.5vw, 1.25rem);
+  }
+  .fact {
+    position: relative;
+    background: #fff;
+    padding: 1.6rem 1.5rem 1.5rem;
+    display: grid;
+    gap: 0.9rem;
+    align-content: start;
+    border-bottom: 3px solid transparent;
+    transition:
+      border-color 0.3s ease,
+      transform 0.4s var(--ease);
+  }
+  .fact:hover {
+    border-color: var(--blue);
+    transform: translateY(-4px);
+  }
+  .fact-icon {
+    width: 52px;
+    height: 52px;
+    display: grid;
+    place-items: center;
+    background: #e9ecf8;
+    color: var(--navy);
+  }
+  .fact-icon :global(svg) {
+    width: 34px;
+    height: 34px;
+  }
+  .fact-num {
+    position: relative;
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    margin-top: 0.4rem;
+  }
+  .fact-num small {
     font-size: 0.95rem;
     color: var(--ink-3);
-    order: 2;
   }
-  .stat dd {
-    margin: 0.3rem 0 0;
+  .fact-num strong {
+    display: inline-block;
     font-family: var(--font-head);
-    font-stretch: 118%;
-    font-weight: 650;
-    font-size: clamp(2.6rem, 5vw, 4.4rem);
+    font-stretch: 120%;
+    font-weight: 700;
+    font-size: clamp(2.4rem, 4vw, 3.6rem);
     line-height: 1;
     color: var(--blue);
     font-variant-numeric: tabular-nums;
   }
-  .stat dd.small {
-    font-size: clamp(1.4rem, 2.2vw, 1.9rem);
-    line-height: 1.15;
-    padding-top: 0.5rem;
+  .fact-num :global(.fact-hammer) {
+    position: absolute;
+    right: 0;
+    top: -1.6rem;
+    width: 34px;
+    height: 34px;
+    color: var(--grey);
+    transform-origin: 78% 78%;
+    opacity: 0;
   }
-  .stat .plus {
-    display: block;
-    font-size: 0.9rem;
-    font-weight: 500;
-    font-family: var(--font-body);
-    color: var(--ink-3);
-    margin-bottom: 0.2rem;
-  }
-
-  /* LEISTUNGEN */
-  .sec-head {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem 4rem;
-    align-items: end;
-    margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
-  }
-  .sec-head .lead {
-    max-width: 36rem;
-  }
-  .stack {
-    display: grid;
-    gap: 1.5rem;
-  }
-  .scard {
-    position: sticky;
-    top: calc(var(--header-h) + 1.5rem);
-    transform-origin: center top;
-  }
-  .scard-in {
-    display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    min-height: min(68vh, 600px);
-    background: #fff;
-    text-decoration: none;
-    color: inherit;
-    box-shadow: 0 30px 60px -40px rgb(18 23 53 / 0.45);
-  }
-  .scard-img {
-    min-height: 300px;
-  }
-  .scard-img :global(img) {
-    transition: transform 1.2s var(--ease);
-  }
-  .scard-in:hover .scard-img :global(img) {
-    transform: scale(1.04);
-  }
-  .scard-text {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    gap: 1.1rem;
-    padding: clamp(1.75rem, 4vw, 3.5rem);
-  }
-  .scard-nr {
-    font-family: var(--font-head);
-    font-stretch: 125%;
-    font-weight: 700;
-    font-size: clamp(3.5rem, 7vw, 6rem);
-    line-height: 1;
-    color: var(--stone-200);
-    margin-bottom: auto;
-  }
-  .scard-text p {
+  .fact-label {
     color: var(--ink-2);
-    max-width: 30rem;
+    font-size: 0.98rem;
   }
 
-  /* PROJEKTE */
-  .projects {
-    overflow: hidden;
+  /* ================= STATEMENT ================= */
+  .statement-sec {
+    background: var(--stone-50);
+    padding-block: clamp(4rem, 9vw, 8rem);
   }
-  .projects-inner {
-    padding-block: clamp(4.5rem, 9vw, 7rem) clamp(3rem, 5vw, 4rem);
-    min-height: 100svh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  .statement {
+    font-family: var(--font-head);
+    font-stretch: 112%;
+    font-weight: 650;
+    font-size: clamp(2.1rem, 5.4vw, 5rem);
+    line-height: 1.04;
+    letter-spacing: -0.025em;
+    max-width: 16ch;
+    margin: 0 auto;
+    text-align: center;
   }
-  .proj-head {
+  .statement em {
+    font-style: normal;
+    color: var(--blue);
+  }
+
+  /* ================= LEISTUNGEN ================= */
+  .services {
+    background: #fff;
+    padding-block: var(--section);
+  }
+  .sec-head {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: flex-end;
-    gap: 1.5rem;
-    margin-bottom: clamp(2rem, 4vw, 3.5rem);
+    gap: 1rem 2rem;
+    margin-bottom: clamp(2rem, 4vw, 3rem);
   }
-  .proj-head h2 {
-    max-width: 16ch;
+  .sec-head .eyebrow {
+    width: 100%;
+    margin-bottom: 0;
   }
-  .proj-head .btn {
-    color: #fff;
-  }
-  .track {
+  .panels {
     display: flex;
-    gap: clamp(1rem, 2vw, 2rem);
-    padding-inline: var(--gutter);
-    padding-inline-start: max(var(--gutter), calc((100vw - var(--container)) / 2));
-    width: max-content;
+    gap: 0.75rem;
+    height: clamp(460px, 72vh, 680px);
   }
-  .slide {
-    width: clamp(280px, 40vw, 640px);
-    flex: none;
+  .panel {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    color: #fff;
     text-decoration: none;
-    color: #fff;
-  }
-  .slide-img {
-    aspect-ratio: 4 / 3;
-    background: #1d2350;
-  }
-  .slide-img :global(img) {
-    transition: transform 1.2s var(--ease);
-  }
-  .slide:hover .slide-img :global(img) {
-    transform: scale(1.05);
-  }
-  .slide-meta {
-    display: flex;
-    gap: 1.2rem;
-    padding-top: 1.2rem;
-  }
-  .slide-nr {
-    font-family: var(--font-head);
-    font-size: 0.85rem;
-    color: #aab4ea;
-    padding-top: 0.2rem;
-  }
-  .slide-meta p {
-    font-size: 0.95rem;
-    margin: 0.3rem 0 0;
-    color: rgb(255 255 255 / 0.7);
-  }
-  .slide-more {
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
-    gap: 1rem;
-    width: clamp(260px, 26vw, 400px);
-    aspect-ratio: 3 / 4;
-    align-self: flex-start;
-    padding: 2rem;
-    border: 1px solid var(--line-light);
-    transition: background 0.3s ease;
+    justify-content: space-between;
+    padding: clamp(1.25rem, 2vw, 2rem);
+    isolation: isolate;
+    transition: flex 0.8s var(--ease);
   }
-  .slide-more:hover {
-    background: var(--blue);
+  .panels:not(:hover):not(:focus-within) .panel:first-child,
+  .panel:hover,
+  .panel:focus-visible {
+    flex: 2.3;
   }
-  .more-count {
+  .panel-bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+  .panel-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgb(18 23 53 / 0.88), rgb(18 23 53 / 0.25) 55%, rgb(18 23 53 / 0.45));
+    transition: background 0.6s ease;
+  }
+  .panel-bg :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.2s var(--ease);
+  }
+  .panel:hover .panel-bg :global(img) {
+    transform: scale(1.05);
+  }
+  .panel-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .panel-icon {
+    width: 64px;
+    height: 64px;
+    display: grid;
+    place-items: center;
+    background: #fff;
+    color: var(--navy);
+  }
+  .panel-icon :global(svg) {
+    width: 40px;
+    height: 40px;
+  }
+  .panel-nr {
     font-family: var(--font-head);
     font-stretch: 125%;
     font-weight: 700;
-    font-size: 5rem;
-    line-height: 1;
-    margin-bottom: auto;
+    font-size: 1rem;
+    opacity: 0.8;
   }
-  .more-text {
-    font-size: 1.1rem;
-    color: rgb(255 255 255 / 0.85);
+  .panel-title {
+    font-size: clamp(1.4rem, 2.2vw, 2.2rem);
+    line-height: 1.05;
+    max-width: 14ch;
+    overflow-wrap: normal;
+    hyphens: manual;
   }
-  .progress-wrap {
-    margin-top: 2.5rem;
+  .panel-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 0;
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(10px);
+    transition:
+      opacity 0.4s ease,
+      transform 0.5s var(--ease),
+      max-height 0.5s var(--ease);
   }
-  .progress {
+  .panel-tags li {
+    padding: 0.3rem 0.7rem;
+    font-size: 0.82rem;
+    border: 1px solid rgb(255 255 255 / 0.4);
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .panels:not(:hover):not(:focus-within) .panel:first-child .panel-tags,
+  .panel:hover .panel-tags,
+  .panel:focus-visible .panel-tags {
+    max-height: 6rem;
+    opacity: 1;
+    transform: none;
+    transition-delay: 0.2s;
+  }
+  .panel-go {
+    position: absolute;
+    right: clamp(1.25rem, 2vw, 2rem);
+    bottom: clamp(1.25rem, 2vw, 2rem);
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--blue);
+    transform: scale(0);
+    transition: transform 0.5s var(--ease);
+  }
+  .panel-go :global(svg) {
+    width: 20px;
+    height: 20px;
+  }
+  .panels:not(:hover):not(:focus-within) .panel:first-child .panel-go,
+  .panel:hover .panel-go,
+  .panel:focus-visible .panel-go {
+    transform: scale(1);
+  }
+
+  /* ================= TICKER ================= */
+  .ticker {
+    overflow: hidden;
+    padding-block: 1.1rem;
+  }
+  .ticker-track {
+    display: flex;
+    width: max-content;
+    animation: ticker 38s linear infinite;
+  }
+  .ticker ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .ticker li {
+    display: flex;
+    align-items: center;
+    gap: 1.6rem;
+    padding-right: 1.6rem;
+    font-family: var(--font-head);
+    font-stretch: 118%;
+    font-weight: 600;
+    font-size: clamp(1rem, 1.6vw, 1.35rem);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .ticker li i {
+    width: 0.55rem;
+    height: 0.55rem;
+    background: #aab4ea;
+    transform: rotate(45deg);
+  }
+  @keyframes ticker {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  /* ================= PROJEKTE ================= */
+  .spot {
+    overflow: hidden;
+  }
+  .spot-in {
+    display: grid;
+    grid-template-columns: minmax(320px, 0.75fr) 1.6fr;
+    min-height: 100svh;
+  }
+  .spot-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: calc(var(--header-h) + 1rem) clamp(1.5rem, 3vw, 3rem) 3rem max(var(--gutter), calc((100vw - var(--container)) / 2));
+  }
+  .spot-left h2 {
+    margin-bottom: 2rem;
+  }
+  .spot-list {
+    list-style: none;
+    margin: 0 0 2rem;
+    padding: 0;
+    border-top: 1px solid var(--line-light);
+  }
+  .spot-list a {
+    display: grid;
+    grid-template-columns: 2.4rem 1fr;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--line-light);
+    text-decoration: none;
+    color: rgb(255 255 255 / 0.5);
+    transition: color 0.3s ease;
+    position: relative;
+  }
+  .spot-list a::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -1px;
     height: 2px;
-    background: var(--line-light);
-  }
-  .progress span {
-    display: block;
-    height: 100%;
+    width: 100%;
     background: #fff;
     transform: scaleX(0);
     transform-origin: left;
+    transition: transform 0.6s var(--ease);
   }
-  @media (max-width: 1023px) {
-    .track {
-      width: auto;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      padding-bottom: 1rem;
-      scrollbar-width: thin;
-    }
-    .slide {
-      width: 82vw;
-      scroll-snap-align: start;
-    }
-    .slide-more {
-      width: 70vw;
-      aspect-ratio: auto;
-      min-height: 320px;
-    }
-    .progress-wrap {
-      display: none;
-    }
+  .spot-list li.is-active a,
+  .spot-list a:hover {
+    color: #fff;
   }
-
-  /* MARQUEE */
-  .marquee {
+  .spot-list li.is-active a::before {
+    transform: scaleX(1);
+  }
+  .sl-nr {
+    font-family: var(--font-head);
+    font-size: 0.8rem;
+    padding-top: 0.25rem;
+  }
+  .sl-title {
+    font-family: var(--font-head);
+    font-stretch: 110%;
+    font-weight: 620;
+    font-size: 1.15rem;
+  }
+  .sl-meta {
+    grid-column: 2;
+    font-size: 0.85rem;
+    max-height: 0;
     overflow: hidden;
-    padding-block: clamp(2.5rem, 5vw, 4.5rem);
-    border-bottom: 1px solid var(--line);
+    opacity: 0;
+    transition:
+      max-height 0.5s var(--ease),
+      opacity 0.4s ease;
   }
-  .marquee-track {
-    display: flex;
-    width: max-content;
-    font-size: clamp(2.6rem, 7vw, 6.5rem);
-    line-height: 1.1;
-    white-space: nowrap;
-    color: var(--ink);
+  .spot-list li.is-active .sl-meta {
+    max-height: 2rem;
+    opacity: 0.75;
   }
-  .marquee-track > span {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4em;
-    padding-right: 0.5em;
+  .sl-thumb {
+    display: none;
   }
-  .marquee-track em {
-    font-style: normal;
-    color: var(--blue);
-  }
-  .mq-diamond {
-    width: 0.5em;
-    aspect-ratio: 352 / 245;
-    background: var(--grey);
-    clip-path: polygon(49.8% 0, 100% 53.3%, 48% 100%, 0 49.6%);
-    margin-left: 0.3em;
-  }
-
-  /* VIDEO */
-  .video-clip {
-    overflow: hidden;
-  }
-
-  /* TEAM */
-  .team-grid {
-    display: grid;
-    grid-template-columns: 1.4fr 1fr;
-    gap: clamp(2rem, 6vw, 6rem);
-    align-items: center;
-  }
-  .team-img {
-    aspect-ratio: 3 / 2;
-  }
-  .team-text p:not(.eyebrow) {
-    color: var(--ink-2);
-    margin-top: 1.4rem;
-  }
-  .team-links {
-    display: grid;
-    gap: 0.8rem;
-    margin-top: 1.8rem;
-  }
-
-  /* KARRIERE */
-  .career {
+  .spot-stage {
     position: relative;
     overflow: hidden;
-    isolation: isolate;
   }
-  .career-diamond {
-    width: min(80vw, 980px);
-    left: -20%;
-    top: -35%;
-    background: linear-gradient(135deg, rgb(57 72 164 / 0.55), rgb(57 72 164 / 0.08));
-    z-index: -1;
+  .spot-img {
+    position: absolute;
+    inset: 0;
+    display: block;
   }
-  .career-inner {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem 4rem;
-    align-items: end;
+  .spot-img :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
-  .career .lead {
-    margin-bottom: 2rem;
-    max-width: 34rem;
+  .spot-count {
+    position: absolute;
+    right: 2rem;
+    bottom: 2rem;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-family: var(--font-head);
+    font-stretch: 120%;
+    font-weight: 700;
+    font-size: 1rem;
+    color: #fff;
+    background: rgb(18 23 53 / 0.55);
+    backdrop-filter: blur(8px);
+    padding: 0.6rem 1rem;
+  }
+  .spot-count [data-spot-num] {
+    font-size: 1.6rem;
+  }
+  .spot-count .sep {
+    width: 1.5rem;
+    height: 1px;
+    background: rgb(255 255 255 / 0.6);
   }
 
-  @media (max-width: 900px) {
-    .intro-grid,
-    .sec-head,
-    .team-grid,
-    .career-inner {
-      grid-template-columns: 1fr;
+  /* ================= FILM ================= */
+  .film {
+    position: relative;
+    height: 200vh;
+    background: var(--stone-50);
+  }
+  .film-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+  }
+  .film-frame {
+    position: absolute;
+    inset: 0;
+    background: var(--navy);
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  }
+  .film-frame video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .film-frame::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgb(18 23 53 / 0.35);
+  }
+  .film-ui {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: #fff;
+    display: grid;
+    justify-items: center;
+    gap: 1.5rem;
+    padding-inline: var(--gutter);
+  }
+  .film-ui .eyebrow {
+    margin: 0;
+  }
+  .play.big .play-ring {
+    width: 84px;
+    height: 84px;
+  }
+  .play.big .play-ring :global(svg) {
+    width: 30px;
+    height: 30px;
+  }
+
+  /* ================= BENTO ================= */
+  .bento-sec {
+    background: var(--stone-50);
+    padding-block: var(--section);
+  }
+  .bento {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 0.75rem;
+    min-height: 560px;
+  }
+  .tile {
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: clamp(1.5rem, 2.5vw, 2.25rem);
+    isolation: isolate;
+  }
+  .tile-job {
+    color: #fff;
+  }
+  .tile-team {
+    grid-row: span 2;
+    color: #fff;
+    justify-content: flex-end;
+  }
+  .tile-team :global(img) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+    transition: transform 1.2s var(--ease);
+  }
+  .tile-team::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(to top, rgb(18 23 53 / 0.85), transparent 60%);
+  }
+  .tile-team .eyebrow {
+    margin-bottom: 0.8rem;
+  }
+  .tile:hover :global(img) {
+    transform: scale(1.04);
+  }
+  .tile-job .diamond {
+    width: 340px;
+    right: -120px;
+    top: -110px;
+    background: rgb(255 255 255 / 0.08);
+    z-index: -1;
+    transition: transform 1s var(--ease);
+  }
+  .tile-job:hover .diamond {
+    transform: rotate(12deg) scale(1.1);
+  }
+  .tile-cert {
+    background: #fff;
+  }
+  .tile-icon {
+    width: 60px;
+    height: 60px;
+    display: grid;
+    place-items: center;
+    background: rgb(255 255 255 / 0.14);
+  }
+  .tile-cert .tile-icon {
+    background: #e9ecf8;
+    color: var(--navy);
+  }
+  .tile-icon :global(svg) {
+    width: 38px;
+    height: 38px;
+  }
+  .tile-job .tile-icon :global(svg) {
+    --accent: #c9d0f5;
+  }
+  .tile p {
+    margin: 0.4rem 0 0;
+    opacity: 0.8;
+  }
+  .tile-go {
+    position: absolute;
+    right: clamp(1.5rem, 2.5vw, 2.25rem);
+    bottom: clamp(1.5rem, 2.5vw, 2.25rem);
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    border: 1px solid currentColor;
+    transition:
+      background 0.3s ease,
+      transform 0.4s var(--ease);
+  }
+  .tile-go :global(svg) {
+    width: 20px;
+    height: 20px;
+  }
+  .tile:hover .tile-go {
+    transform: translateX(4px);
+  }
+  .tile-cert:hover .tile-go {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: #fff;
+  }
+
+  /* ================= FILM-MODAL ================= */
+  .film-modal {
+    width: 100vw;
+    height: 100vh;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: rgb(10 12 28 / 0.95);
+  }
+  .film-modal[open] {
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: 1rem;
+  }
+  .fm-box {
+    width: min(92vw, 160vh);
+    aspect-ratio: 16 / 9;
+    background: #000;
+  }
+  .fm-box :global(iframe) {
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+  .fm-close {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    border: 1px solid rgb(255 255 255 / 0.4);
+    background: transparent;
+    color: #fff;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+  }
+  .fm-close :global(svg) {
+    width: 22px;
+    height: 22px;
+  }
+  .fm-note {
+    color: rgb(255 255 255 / 0.6);
+    font-size: 0.82rem;
+    text-align: center;
+    padding-inline: 1rem;
+  }
+
+  /* ================= RESPONSIVE ================= */
+  @media (max-width: 1023px) {
+    .facts-grid {
+      grid-template-columns: 1fr 1fr;
     }
-    .scard-in {
+    .panels {
+      flex-direction: column;
+      height: auto;
+    }
+    .panel,
+    .panel:hover {
+      flex: none;
+      min-height: 340px;
+    }
+    .panel-tags {
+      max-height: 6rem;
+      opacity: 1;
+      transform: none;
+      padding-right: 3.5rem;
+    }
+    .panel-go {
+      transform: scale(1);
+    }
+    .spot-in {
       grid-template-columns: 1fr;
       min-height: 0;
     }
-    .scard-img {
+    .spot-left {
+      padding: var(--section) var(--gutter);
+    }
+    .spot-stage {
+      display: none;
+    }
+    .spot-list {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: 78vw;
+      gap: 1rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      border-top: 0;
+      margin-inline: calc(var(--gutter) * -1);
+      padding-inline: var(--gutter);
+      scrollbar-width: none;
+    }
+    .spot-list li {
+      scroll-snap-align: start;
+    }
+    .spot-list a {
+      color: #fff;
+      border-bottom: 0;
+    }
+    .spot-list a::before {
+      display: none;
+    }
+    .sl-meta {
+      max-height: none;
+      opacity: 0.75;
+    }
+    .sl-thumb {
+      display: block;
+      grid-column: 1 / -1;
       aspect-ratio: 16 / 10;
-      min-height: 0;
+      margin-top: 0.9rem;
     }
-    .scard {
+    .film {
+      height: auto;
+    }
+    .film-sticky {
       position: relative;
-      top: 0;
+      height: 80svh;
     }
-    .scard-nr {
-      font-size: 3rem;
+    .film-frame {
+      clip-path: none;
+    }
+    .bento {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto;
+    }
+    .tile-team {
+      grid-column: 1 / -1;
+      grid-row: auto;
+      min-height: 380px;
+    }
+    .tile-job,
+    .tile-cert {
+      min-height: 240px;
+    }
+  }
+  @media (max-width: 560px) {
+    .hero-frame {
+      clip-path: polygon(0% 0%, 100% 0%, 100% 92%, 48% 100%, 0% 94%);
+    }
+    .facts-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .fact {
+      padding: 1.2rem 1rem;
+    }
+    .bento {
+      grid-template-columns: 1fr;
     }
   }
 </style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  const mm = gsap.matchMedia();
+
+  mm.add('(prefers-reduced-motion: no-preference)', () => {
+    /* Hero: Rautenspitze fällt beim Laden herab und zieht sich beim Scrollen hoch */
+    const frame = document.querySelector('[data-hero-frame]');
+    const content = document.querySelector('[data-hero-content]');
+    if (frame) {
+      gsap.from(frame, {
+        clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 48% 100%, 0% 100%)',
+        duration: 1.6,
+        ease: 'power3.inOut',
+        delay: 0.2,
+      });
+      gsap.to(frame, {
+        clipPath: 'polygon(0% 0%, 100% 0%, 100% 58%, 48% 86%, 0% 64%)',
+        ease: 'none',
+        scrollTrigger: { trigger: '[data-home-hero]', start: 'top top', end: 'bottom top', scrub: true },
+      });
+      gsap.to(frame.querySelector('video'), {
+        scale: 1.15,
+        ease: 'none',
+        scrollTrigger: { trigger: '[data-home-hero]', start: 'top top', end: 'bottom top', scrub: true },
+      });
+    }
+    if (content) {
+      gsap.to(content, {
+        yPercent: -25,
+        autoAlpha: 0,
+        ease: 'none',
+        scrollTrigger: { trigger: '[data-home-hero]', start: 'top top', end: '70% top', scrub: true },
+      });
+    }
+
+    /* Hammer schlägt auf die Zahlen */
+    document.querySelectorAll<HTMLElement>('[data-strike]').forEach((el, i) => {
+      const hammer = el.querySelector('.fact-hammer');
+      const num = el.querySelector('strong');
+      const tl = gsap.timeline({ scrollTrigger: { trigger: el, start: 'top 85%', once: true }, delay: i * 0.18 });
+      tl.set(hammer, { opacity: 1, rotate: -55 })
+        .to(hammer, { rotate: 18, duration: 0.28, ease: 'power3.in' })
+        .fromTo(num, { scale: 1.18, y: 4 }, { scale: 1, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.45)' }, '>-0.02')
+        .to(hammer, { rotate: -10, duration: 0.35, ease: 'power2.out' }, '<')
+        .to(hammer, { opacity: 0, rotate: 0, duration: 0.4 }, '+=0.2');
+    });
+
+  });
+
+  /* Projekte: Bilder öffnen sich als Raute (Desktop, gepinnt) */
+  mm.add('(prefers-reduced-motion: no-preference) and (min-width: 1024px)', () => {
+    const spot = document.querySelector<HTMLElement>('[data-spot]');
+    if (!spot) return;
+    const imgs = Array.from(spot.querySelectorAll<HTMLElement>('[data-spot-img]'));
+    const items = Array.from(spot.querySelectorAll<HTMLElement>('[data-spot-item]'));
+    const num = spot.querySelector<HTMLElement>('[data-spot-num]');
+    const closed = 'polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%)';
+    const open = 'polygon(50% -55%, 155% 50%, 50% 155%, -55% 50%)';
+    imgs.forEach((img, i) => gsap.set(img, { clipPath: i === 0 ? open : closed }));
+    let active = 0;
+    const setActive = (i: number) => {
+      if (i === active) return;
+      active = i;
+      items.forEach((it, j) => it.classList.toggle('is-active', j === i));
+      if (num) num.textContent = String(i + 1).padStart(2, '0');
+    };
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: spot,
+        start: 'top top',
+        end: () => `+=${(imgs.length - 1) * window.innerHeight * 0.8}`,
+        pin: true,
+        scrub: 0.6,
+        invalidateOnRefresh: true,
+        onUpdate: (self) => setActive(Math.min(imgs.length - 1, Math.round(self.progress * (imgs.length - 1)))),
+      },
+    });
+    imgs.slice(1).forEach((img) => {
+      tl.fromTo(img, { clipPath: closed }, { clipPath: open, ease: 'power1.inOut', duration: 1 });
+      const inner = img.querySelector('img');
+      if (inner) tl.fromTo(inner, { scale: 1.3 }, { scale: 1, ease: 'power1.out', duration: 1 }, '<');
+    });
+  });
+
+  /* Film (nach dem gepinnten Projektbereich anlegen, damit die Positionen stimmen) */
+  mm.add('(prefers-reduced-motion: no-preference)', () => {
+    /* Film: Raute öffnet sich zum Vollbild */
+    const film = document.querySelector('[data-film]');
+    const filmFrame = document.querySelector('[data-film-frame]');
+    const filmUi = document.querySelector('[data-film-ui]');
+    if (film && filmFrame) {
+      const tl = gsap.timeline({ scrollTrigger: { trigger: film, start: 'top top', end: 'bottom bottom', scrub: 0.6 } });
+      tl.fromTo(
+        filmFrame,
+        { clipPath: 'polygon(50% 22%, 70% 50%, 50% 78%, 30% 50%)' },
+        { clipPath: 'polygon(50% -60%, 160% 50%, 50% 160%, -60% 50%)', ease: 'none', duration: 1 },
+      );
+      if (filmUi) tl.from(filmUi, { autoAlpha: 0, y: 40, duration: 0.35 }, 0.55);
+    }
+  });
+  ScrollTrigger.sort();
+  ScrollTrigger.refresh();
+
+  /* Film-Overlay (YouTube erst nach Klick laden) */
+  const modal = document.querySelector<HTMLDialogElement>('[data-film-modal]');
+  const box = modal?.querySelector<HTMLElement>('[data-film-box]');
+  const ytId = modal?.dataset.yt;
+  document.querySelectorAll('[data-film-open]').forEach((b) =>
+    b.addEventListener('click', () => {
+      if (!modal || !box) return;
+      box.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&rel=0&modestbranding=1" title="Quirling von oben" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
+      modal.showModal();
+      window.dispatchEvent(new CustomEvent('quirling:lock'));
+    }),
+  );
+  const close = () => modal?.close();
+  modal?.querySelector('[data-film-close]')?.addEventListener('click', close);
+  modal?.addEventListener('click', (e) => e.target === modal && close());
+  modal?.addEventListener('close', () => {
+    if (box) box.innerHTML = '';
+    window.dispatchEvent(new CustomEvent('quirling:unlock'));
+  });
+</script>

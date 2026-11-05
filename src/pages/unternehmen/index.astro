@@ -6,7 +6,7 @@ import PageHero from '~/components/PageHero.astro';
 import CtaBand from '~/components/CtaBand.astro';
 import Icon from '~/components/Icon.astro';
 import Todo from '~/components/Todo.astro';
-import { firma, platzhalter, JAHRE_ERFAHRUNG, GRUENDUNGSJAHR } from '~/data/site';
+import { firma, JAHRE_ERFAHRUNG, GRUENDUNGSJAHR } from '~/data/site';
 import { url } from '~/lib/url';
 import historisch from '~/assets/site/historisch.jpg';
 import team from '~/assets/team/baustellenteam.jpg';
@@ -122,7 +122,7 @@ const werte = [
         <dl class="nums">
           <div><dt>Gegründet</dt><dd>{GRUENDUNGSJAHR}</dd></div>
           <div><dt>Projekte</dt><dd>&gt;&thinsp;{firma.projekteAnzahl}</dd></div>
-          <div><dt>Mitarbeiter</dt><dd><Todo hint="Anzahl fehlt">{platzhalter.mitarbeiter}</Todo></dd></div>
+          <div><dt>Mitarbeiter</dt><dd>{firma.mitarbeiter}</dd></div>
           <div><dt>Firmensitz</dt><dd class="sm">Hamburg-Wandsbek</dd></div>
         </dl>
         <div class="split-links">
