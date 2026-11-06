@@ -8,6 +8,9 @@
 @import '@fontsource-variable/archivo/wdth.css';
 @import '@fontsource-variable/source-sans-3/wght.css';
 @import '@fontsource/tenor-sans/400.css';
+/* Typografie-Entwurf B (nur aktiv mit html.typo-b) */
+@import '@fontsource-variable/ibm-plex-sans/wght.css';
+@import '@fontsource/ibm-plex-mono/500.css';
 
 :root {
   --blue: #3948a4;
@@ -467,4 +470,36 @@ p:last-child {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* ==========================================================================
+   Typografie-Entwurf B: größere, schwerere Überschriften, kleinere Texte in
+   IBM Plex Sans, technische Beschriftungen in IBM Plex Mono (wie im Bauplan)
+   ========================================================================== */
+html.typo-b {
+  --font-body: 'IBM Plex Sans Variable', 'IBM Plex Sans', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+}
+html.typo-b body {
+  font-size: clamp(0.88rem, 0.12vw + 0.84rem, 0.95rem);
+  line-height: 1.72;
+  letter-spacing: 0.005em;
+}
+html.typo-b .h-display,
+html.typo-b .h1,
+html.typo-b .h2 {
+  font-weight: 900;
+  letter-spacing: -0.025em;
+  line-height: 0.9;
+}
+html.typo-b .lt {
+  font-weight: 250;
+}
+html.typo-b .eyebrow,
+html.typo-b .pill,
+html.typo-b .link-arrow {
+  font-family: var(--font-mono);
+  font-stretch: normal;
+  font-weight: 500;
+  letter-spacing: 0.08em;
 }

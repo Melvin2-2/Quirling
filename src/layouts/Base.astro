@@ -13,6 +13,8 @@ interface Props {
   ogImage?: string;
   /** Entwurfsseiten: nicht in Suchmaschinen */
   noindex?: boolean;
+  /** Typografie-Variante (Entwurf) */
+  typo?: 'a' | 'b';
 }
 const {
   title,
@@ -20,6 +22,7 @@ const {
   overlay = true,
   ogImage,
   noindex = false,
+  typo = 'a',
 } = Astro.props;
 
 const fullTitle = title === 'Start' ? `${firma.langname} Hamburg | Rohbau, Stahlbetonbau, Umbau` : `${title} | ${firma.langname}`;
@@ -45,7 +48,7 @@ const jsonLd = {
 ---
 
 <!doctype html>
-<html lang="de">
+<html lang="de" class:list={[{ "typo-b": typo === "b" }]}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
