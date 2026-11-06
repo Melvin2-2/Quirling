@@ -99,7 +99,7 @@ const werte = [
               <span class="jahr">{s.jahr}</span>
               <div>
                 <h3 class="h4">
-                  {s.link ? <a href={url(`/referenzen/${s.link}/`)}>{s.titel}</a> : s.titel}
+                  {s.link ? <a href={url(`/referenzen/?p=${s.link}`)}>{s.titel}</a> : s.titel}
                 </h3>
                 <p>
                   {s.pruefen ? <Todo hint="bitte prüfen">{s.text}</Todo> : s.text}

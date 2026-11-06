@@ -21,7 +21,7 @@ interface Props {
   noindex?: boolean;
   title?: string;
 }
-const { typo = 'a', svcBg = 'raster', noindex = false, title = 'Start' } = Astro.props;
+const { typo = 'c', svcBg = 'farbe', noindex = false, title = 'Start' } = Astro.props;
 
 const heroPosterImg = await getImage({ src: heroPoster, width: 1920, format: 'jpg', quality: 70 });
 const filmPosterImg = await getImage({ src: filmPoster, width: 1600, format: 'jpg', quality: 70 });
@@ -219,7 +219,7 @@ const werte = [
                   {p.leistung}
                   <span class="show-meta">{p.ort}</span>
                 </p>
-                <a class="link-arrow" href={url(`/referenzen/${p.id}/`)} tabindex={i === 0 ? undefined : -1}>
+                <a class="link-arrow" href={url(`/referenzen/?p=${p.id}`)} tabindex={i === 0 ? undefined : -1}>
                   Projekt ansehen <Icon name="arrow" />
                 </a>
               </div>
@@ -231,7 +231,7 @@ const werte = [
       <div class="show-stage">
         {
           showcase.map((p, i) => (
-            <a class="show-img" href={url(`/referenzen/${p.id}/`)} data-show-img tabindex="-1" style={`z-index:${i + 1}`}>
+            <a class="show-img" href={url(`/referenzen/?p=${p.id}`)} data-show-img tabindex="-1" style={`z-index:${i + 1}`}>
               <Image src={p.bilder[0]!} alt={`${p.title}: ${p.leistung}`} widths={[900, 1400, 2000]} sizes="(min-width: 900px) 62vw, 100vw" />
               <span class="show-cap">
                 <strong>{p.title}</strong>

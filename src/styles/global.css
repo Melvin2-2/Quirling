@@ -519,3 +519,127 @@ html.typo-c .h2 {
 html.typo-c .lt {
   font-weight: 300;
 }
+
+/* ==========================================================================
+   Bausteine für alle Seiten (Stil der Startseite)
+   ========================================================================== */
+/* Mono-Beschriftung (wie Maßangaben im Bauplan) */
+.label {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.74rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--blue);
+}
+.on-dark .label,
+.on-blue .label {
+  color: #aab4ea;
+}
+/* große Sektions-Überschrift: schmal, hoch, blau */
+.h-sec {
+  font-family: var(--font-head);
+  font-stretch: 68%;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: clamp(2.6rem, 6vw, 6.2rem);
+  line-height: 0.88;
+  letter-spacing: -0.005em;
+  color: var(--blue);
+  margin: 0;
+}
+.h-sec .lt {
+  font-weight: 300;
+}
+.on-dark .h-sec,
+.on-blue .h-sec {
+  color: #fff;
+}
+.h-item {
+  font-family: var(--font-head);
+  font-stretch: 68%;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: clamp(1.8rem, 2.8vw, 2.8rem);
+  line-height: 0.92;
+  color: var(--blue);
+  margin: 0;
+}
+.small {
+  font-size: 0.9rem;
+  line-height: 1.72;
+  color: var(--ink-2);
+}
+.on-dark .small,
+.on-blue .small {
+  color: rgb(255 255 255 / 0.82);
+}
+/* Textlink mit Pfeil (wie „Mehr erfahren“) */
+.text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--blue);
+  text-decoration: none;
+}
+.text-link svg {
+  width: 1.15rem;
+  height: 1.15rem;
+  transition: transform 0.35s var(--ease);
+}
+.text-link:hover span {
+  text-decoration: underline;
+  text-underline-offset: 0.35em;
+}
+.text-link:hover svg {
+  transform: translateX(5px);
+}
+.on-dark .text-link {
+  color: #fff;
+}
+/* Bild als Parallelogramm mit Navy-Block dahinter (wie Startseite) */
+.para {
+  position: relative;
+  display: block;
+}
+.para-img {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 16 / 11;
+  clip-path: polygon(9% 0, 100% 0, 91% 100%, 0 100%);
+  background: var(--stone-200);
+}
+.para-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1.2s var(--ease);
+}
+.para:hover .para-img img {
+  transform: scale(1.03);
+}
+.para::before {
+  content: '';
+  position: absolute;
+  left: -7%;
+  top: 14%;
+  bottom: -7%;
+  width: 38%;
+  background: var(--navy);
+  clip-path: polygon(0 0, 60% 0, 100% 100%, 12% 100%);
+}
+.para.flip::before {
+  left: auto;
+  right: -7%;
+  clip-path: polygon(40% 0, 100% 0, 88% 100%, 0 100%);
+}
+.section-tint {
+  background: #e6e9f6;
+}

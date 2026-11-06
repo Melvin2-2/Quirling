@@ -12,7 +12,7 @@ const { project, sizes = '(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100
 const p = project.data;
 ---
 
-<a class:list={['pcard', cls]} href={url(`/referenzen/${project.id}/`)}>
+<a class:list={['pcard', cls]} href={url(`/referenzen/?p=${project.id}`)}>
   <div class="media pimg">
     <Image src={p.bilder[0]} alt={`${p.title}: ${p.leistung}`} widths={[480, 800, 1200]} sizes={sizes} />
   </div>
