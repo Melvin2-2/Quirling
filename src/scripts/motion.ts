@@ -1,12 +1,8 @@
 /**
  * Scroll-Animationen (GSAP + ScrollTrigger + Lenis).
  * Gesteuert über data-Attribute im Markup:
- *   data-reveal             Element blendet beim Hereinscrollen ein
- *   data-reveal-children    … oder seine direkten Kinder nacheinander
- *   data-split              Überschrift zeilenweise aus einer Maske schieben
- *   data-scrub-words        Wörter werden beim Scrollen nach und nach „eingefärbt“
+ *   (Einblend-Effekte für Bilder und Texte wurden bewusst entfernt: Inhalte stehen sofort.)
  *   data-parallax           Bild im Rahmen verschiebt sich langsamer als die Seite
- *   data-clip               Bildrahmen öffnet sich beim Scrollen
  *   data-count="150"        Zahl zählt hoch
  *   data-spin               Raute dreht sich mit dem Scrollen
  *   data-line               Linie wächst mit dem Scrollen (Zeitstrahl)
@@ -14,10 +10,9 @@
  */
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { SplitText } from 'gsap/SplitText';
 import Lenis from 'lenis';
 
-gsap.registerPlugin(ScrollTrigger, SplitText);
+gsap.registerPlugin(ScrollTrigger);
 
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const $$ = <T extends Element = HTMLElement>(sel: string, root: ParentNode = document) =>
@@ -48,53 +43,6 @@ $$<HTMLVideoElement>('video[data-autoplay]').forEach((v) => {
 const mm = gsap.matchMedia();
 
 mm.add('(prefers-reduced-motion: no-preference)', () => {
-  /* Einblenden */
-  $$('[data-reveal]').forEach((el) => {
-    const targets = el.hasAttribute('data-reveal-children') ? Array.from(el.children) : [el];
-    gsap.from(targets, {
-      y: 24,
-      autoAlpha: 0,
-      duration: 0.9,
-      ease: 'power3.out',
-      stagger: 0.1,
-      scrollTrigger: { trigger: el, start: 'top 88%', once: true },
-    });
-  });
-
-  /* Überschriften zeilenweise */
-  $$('[data-split]').forEach((el) => {
-    SplitText.create(el, {
-      type: 'lines',
-      mask: 'lines',
-      autoSplit: true,
-      onSplit(self) {
-        return gsap.from(self.lines, {
-          yPercent: 110,
-          duration: 1.15,
-          ease: 'power4.out',
-          stagger: 0.09,
-          delay: el.closest('[data-home-hero]') ? 0.5 : 0,
-          scrollTrigger: { trigger: el, start: 'top 90%', once: true },
-        });
-      },
-    });
-  });
-
-  /* Wörter einfärben beim Scrollen */
-  $$('[data-scrub-words]').forEach((el) => {
-    const split = SplitText.create(el, { type: 'words' });
-    gsap.fromTo(
-      split.words,
-      { opacity: 0.16 },
-      {
-        opacity: 1,
-        ease: 'none',
-        stagger: 0.1,
-        scrollTrigger: { trigger: el, start: 'top 80%', end: 'bottom 50%', scrub: true },
-      },
-    );
-  });
-
   /* Parallax */
   $$('[data-parallax]').forEach((el) => {
     const img = el.querySelector('img, video') ?? el;
@@ -107,16 +55,6 @@ mm.add('(prefers-reduced-motion: no-preference)', () => {
         scrollTrigger: { trigger: el, start: 'top bottom', end: 'bottom top', scrub: true },
       },
     );
-  });
-
-  /* Bildrahmen öffnen */
-  $$('[data-clip]').forEach((el) => {
-    const img = el.querySelector('img');
-    const tl = gsap.timeline({
-      scrollTrigger: { trigger: el, start: 'top 92%', end: 'top 40%', scrub: 0.6 },
-    });
-    tl.fromTo(el, { clipPath: 'inset(14% 10% 14% 10%)' }, { clipPath: 'inset(0% 0% 0% 0%)', ease: 'none' }, 0);
-    if (img) tl.fromTo(img, { scale: 1.25 }, { scale: 1, ease: 'none' }, 0);
   });
 
   /* Raute drehen */

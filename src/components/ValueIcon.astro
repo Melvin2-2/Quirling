@@ -8,8 +8,10 @@ import QHammer from './QHammer.astro';
 interface Props {
   name: 'familie' | 'dialog' | 'hammer';
   class?: string;
+  /** feine Raute um das Motiv */
+  frame?: boolean;
 }
-const { name, class: cls } = Astro.props;
+const { name, class: cls, frame = true } = Astro.props;
 const paths = {
   familie:
     'M14 22 32 10l18 12M20 31.5a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM12 47v-4.5a8 8 0 0 1 16 0V47M44 31.5a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM36 47v-4.5a8 8 0 0 1 16 0V47M32 38.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7ZM26.5 50v-3a5.5 5.5 0 0 1 11 0v3',
@@ -17,16 +19,20 @@ const paths = {
 };
 ---
 
-<span class:list={['vicon', cls]}>
-  <svg class="vicon-frame" viewBox="0 0 120 84" aria-hidden="true">
-    <path d="M60 1 119 43.5 58 83 1 41.5Z"></path>
-  </svg>
+<span class:list={['vicon', { 'no-frame': !frame }, cls]}>
+  {
+    frame && (
+      <svg class="vicon-frame" viewBox="0 0 120 84" aria-hidden="true">
+        <path d="M60 1 119 43.5 58 83 1 41.5Z" />
+      </svg>
+    )
+  }
   {
     name === 'hammer' ? (
       <QHammer class="vicon-art vicon-hammer" color="currentColor" highlight="var(--vicon-bg, #3948A4)" />
     ) : (
       <svg class="vicon-art" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-linecap="square" aria-hidden="true">
-        <path d={paths[name]} />
+        <path d={paths[name]} pathLength="1" />
       </svg>
     )
   }
@@ -48,6 +54,10 @@ const paths = {
   .vicon-frame path,
   .vicon :global(.vicon-art path) {
     vector-effect: non-scaling-stroke;
+  }
+  .vicon.no-frame {
+    width: auto;
+    aspect-ratio: auto;
   }
   .vicon-frame {
     position: absolute;

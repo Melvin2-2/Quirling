@@ -34,6 +34,8 @@
   --font-accent: 'Tenor Sans', Optima, Candara, 'Segoe UI', sans-serif;
 
   --container: 1320px;
+  /* linke Kante des Inhalts – wächst auf breiten Bildschirmen mit */
+  --content-left: max(var(--gutter), calc((100vw - var(--container)) / 2));
   --gutter: clamp(1rem, 4vw, 3rem);
   --section: clamp(4.5rem, 10vw, 9rem);
   --radius: 0;
