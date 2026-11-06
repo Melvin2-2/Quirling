@@ -90,8 +90,8 @@ const werte = [
         <source src={url('/video/hero-540.mp4')} type="video/mp4" media="(max-width: 767px)" />
         <source src={url('/video/hero-1080.mp4')} type="video/mp4" />
       </video>
+      <div class="hero-slab" aria-hidden="true"></div>
     </div>
-    <div class="hero-slab" aria-hidden="true"></div>
     <div class="container hero-content">
       <h1 class="hero-title">Was wir<br />zusagen,<br /><span class="lt">steht.</span></h1>
       <a class="pill light" href={url('/leistungen/')}><span>Leistungen entdecken</span><Icon name="arrow" /></a>
@@ -100,7 +100,13 @@ const werte = [
 
   <!-- ======================= INTRO ======================= -->
   <section class="intro">
-    <div class="container intro-grid">
+    <div class="container intro-grid" data-intro>
+      <div class="intro-visual">
+        <span class="block block-l" aria-hidden="true"></span>
+        <div class="cut-img intro-img">
+          <Image src={introBild} alt="Wohnanlage Milchgrund, Hamburg" widths={[600, 1000, 1400]} sizes="(min-width: 900px) 50vw, 100vw" />
+        </div>
+      </div>
       <div class="intro-text">
         <h2 class="h1 intro-h">Massiv gebaut.</h2>
         <p class="intro-sub">Sorgfältig übergeben.</p>
@@ -108,13 +114,10 @@ const werte = [
           Seit {GRUENDUNGSJAHR} bauen wir in Hamburg und Umgebung. Familiengeführt, mit einem eingespielten Team und dem Anspruch, jede Arbeit bis
           zum Schluss sorgfältig auszuführen.
         </p>
-        <a class="pill" href={url('/unternehmen/')}><span>Mehr über uns</span><Icon name="arrow" /></a>
-      </div>
-      <div class="intro-visual">
-        <span class="block block-r" aria-hidden="true"></span>
-        <div class="cut-img intro-img">
-          <Image src={introBild} alt="Wohnanlage Milchgrund, Hamburg" widths={[600, 1000, 1400]} sizes="(min-width: 900px) 50vw, 100vw" />
-        </div>
+        <a class="svc-more" href={url('/unternehmen/')} data-follow data-line-link>
+          <span>Mehr über uns</span>
+          <Icon name="arrow" />
+        </a>
       </div>
     </div>
   </section>
@@ -161,7 +164,7 @@ const werte = [
             <div class="svc-text">
               <h3 class="svc-title">{s.title}</h3>
               <p>{s.text}</p>
-              <a class="svc-more" href={url(`/leistungen/${s.slug}/`)} data-follow data-svc-more>
+              <a class="svc-more" href={url(`/leistungen/${s.slug}/`)} data-follow data-line-link>
                 <span>Mehr erfahren</span>
                 <Icon name="arrow" />
               </a>
@@ -335,14 +338,19 @@ const werte = [
     height: 100svh;
     min-height: 640px;
     color: #fff;
-    background: var(--navy);
     z-index: 2;
-    /* Unterkante deutet eine Raute an – Spitze rechts */
-    clip-path: polygon(0 0, 100% 0, 100% 94%, 78% 100%, 0 90%);
+    /* Unterkante deutet eine Raute an, Spitze rechts */
+    --hero-cut: polygon(0 0, 100% 0, 100% 94%, 78% 100%, 0 90%);
   }
+  /* Zuschnitt liegt bewusst auf Video-Ebene und Farbfläche selbst (nicht auf .hero):
+     Chrome zeichnet den Zuschnitt eines Elternelements über einem Video beim Hoch- und
+     Runterscrollen sonst teils veraltet, dann schaut die Farbfläche unter dem Video hervor. */
   .hero-media {
     position: absolute;
     inset: 0;
+    background: var(--navy);
+    clip-path: var(--hero-cut);
+    transform: translateZ(0);
   }
   .hero-video {
     width: 100%;
@@ -387,7 +395,7 @@ const werte = [
   }
   .intro-grid {
     display: grid;
-    grid-template-columns: 1fr 1.05fr;
+    grid-template-columns: 1.05fr 1fr;
     gap: clamp(2.5rem, 6vw, 6rem);
     align-items: center;
   }
@@ -745,7 +753,9 @@ const werte = [
   .values {
     position: relative;
     z-index: 2;
-    padding-block: clamp(5rem, 9vw, 8rem);
+    /* überlappt die Projekt-Sektion minimal: keine helle Haarlinie durch Subpixel-Rundung */
+    margin-top: -2px;
+    padding-block: clamp(6rem, 11vw, 10rem) clamp(8rem, 15vw, 14rem);
   }
   .values-grid {
     display: grid;
@@ -778,22 +788,25 @@ const werte = [
     margin: 0;
     padding: 0;
     display: grid;
-    gap: clamp(1.8rem, 3.5vw, 2.8rem);
+    gap: clamp(3rem, 6vw, 5rem);
   }
   .value {
+    --icon-gap: clamp(3rem, 9vw, 9rem);
     position: relative;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: clamp(1.5rem, 4vw, 3.5rem);
+    justify-content: flex-end;
+    gap: clamp(1.25rem, 2.5vw, 2rem);
+    padding-right: var(--icon-gap);
+    text-align: right;
   }
   /* Abzweig: von der Randlinie zum Piktogramm */
   .value::after {
     content: '';
     position: absolute;
     top: 50%;
-    left: 100%;
-    width: var(--to-rail, 0px);
+    left: calc(100% - var(--icon-gap) + 0.75rem);
+    width: calc(var(--icon-gap) - 0.75rem + var(--to-rail, 0px));
     height: 1.5px;
     background: rgb(255 255 255 / 0.7);
     transform: scaleX(0);
@@ -1008,7 +1021,7 @@ const werte = [
       display: none;
     }
     .hero {
-      clip-path: polygon(0 0, 100% 0, 100% 96%, 78% 100%, 0 94%);
+      --hero-cut: polygon(0 0, 100% 0, 100% 96%, 78% 100%, 0 94%);
     }
     .hero-slab {
       width: 100%;
@@ -1133,6 +1146,7 @@ const werte = [
       font-size: clamp(1.9rem, 8.6vw, 2.6rem);
     }
     .value {
+      --icon-gap: 1.25rem;
       gap: 1rem;
     }
     .value :global(.vicon-art) {
@@ -1306,8 +1320,14 @@ const werte = [
     const head = document.querySelector<HTMLElement>('[data-svc-head]')!;
     const uy = box(head)!.bottom;
     head.dataset.followY = String(uy);
+    // Intro: Bild links, Text rechts. Die Linie läuft von der Hero-Spitze kurz nach unten,
+    // oberhalb des Texts nach rechts und dann am rechten Rand weiter bis zu den Zahlen.
+    const intro = box(document.querySelector('[data-intro]'))!;
+    const iy = intro.top - 56;
     const d = [
       `M${ax} ${hero.bottom}`,
+      `V${iy}`,
+      `H${R}`,
       `V${figs.top}`,
       `L${L} ${figs.bottom}`,
       `V${uy}`,
@@ -1325,7 +1345,7 @@ const werte = [
 
     // Abzweige von der Hauptlinie zu den Kennzahlen (gleiche Linienstärke)
     const defs: { d: string; y: number }[] = [];
-    const xOnDiag = (y: number) => ax + ((y - figs.top) / (figs.bottom - figs.top)) * (L - ax);
+    const xOnDiag = (y: number) => R + ((y - figs.top) / (figs.bottom - figs.top)) * (L - R);
     // Zahlen mit festem Abstand neben die Diagonale setzen (auch auf breiten Bildschirmen nie auf der Linie)
     const field = box(document.querySelector('[data-figs]'))!;
     const fieldW = field.right - field.left;
@@ -1334,8 +1354,9 @@ const werte = [
       const y = (num.top + num.bottom) / 2;
       const x = xOnDiag(y);
       const w = fg.offsetWidth;
-      const gap = 72;
       const rightSide = fg.classList.contains('fg-2') || fg.classList.contains('fg-4');
+      // rechts der Linie mit deutlich mehr Abstand, links mit mindestens 72 px
+      const gap = rightSide ? 150 : 72;
       const left = rightSide ? Math.min(x + gap - field.left, fieldW - w) : Math.max(0, Math.min(fg.offsetLeft, x - gap - w - field.left));
       fg.style.left = `${left}px`;
       const fb = box(fg)!;
@@ -1343,8 +1364,8 @@ const werte = [
       defs.push({ d: `M${x} ${y} H${end}`, y });
       fg.dataset.followY = String(y);
     });
-    // Leistungen: Abzweig von der Linie zu „Mehr erfahren“
-    document.querySelectorAll<HTMLElement>('[data-svc-more]').forEach((a) => {
+    // Abzweig von der Linie zu „Mehr über uns“ und „Mehr erfahren“
+    document.querySelectorAll<HTMLElement>('[data-line-link]').forEach((a) => {
       const b = box(a)!;
       const y = (b.top + b.bottom) / 2;
       defs.push({ d: `M${R} ${y} H${b.right + 18}`, y });
