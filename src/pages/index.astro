@@ -52,17 +52,17 @@ const werte = [
   {
     icon: 'familie',
     t: 'Persönlich',
-    d: 'Familiengeführt mit kurzen Wegen: Sie sprechen direkt mit den Menschen, die entscheiden.',
+    d: 'Sie sprechen direkt mit denen, die entscheiden.',
   },
   {
     icon: 'dialog',
     t: 'Partnerschaftlich',
-    d: 'Wir stehen im ständigen Kontakt mit unseren Auftraggebern – Kommunikation wird bei uns großgeschrieben.',
+    d: 'Im ständigen Austausch – vom ersten Gespräch bis zur Übergabe.',
   },
   {
     icon: 'hammer',
     t: 'Sorgfältig',
-    d: 'Unsere Arbeiten werden bis zum Schluss sorgfältig ausgeführt – eine Basis, auf die Sie bauen können.',
+    d: 'Bis zum Schluss. Bis ins Detail.',
   },
 ] as const;
 ---
@@ -84,7 +84,7 @@ const werte = [
     </div>
     <div class="hero-slab" aria-hidden="true"></div>
     <div class="container hero-content">
-      <h1 class="h-display hero-title">Was wir zusagen,<br /><span class="lt">steht.</span></h1>
+      <h1 class="hero-title">Was wir<br />zusagen,<br /><span class="lt">steht.</span></h1>
       <a class="pill light" href={url('/leistungen/')}><span>Leistungen entdecken</span><Icon name="arrow" /></a>
     </div>
   </section>
@@ -93,7 +93,8 @@ const werte = [
   <section class="intro">
     <div class="container intro-grid">
       <div class="intro-text">
-        <h2 class="h1 intro-h">Massiv gebaut.<br /><span class="lt">Sorgfältig übergeben.</span></h2>
+        <h2 class="h1 intro-h">Massiv gebaut.</h2>
+        <p class="intro-sub">Sorgfältig übergeben.</p>
         <p class="intro-p" data-reveal>
           Seit {GRUENDUNGSJAHR} bauen wir in Hamburg und Umgebung – familiengeführt, mit einem eingespielten Team und dem Anspruch, jede Arbeit bis
           zum Schluss sorgfältig auszuführen.
@@ -166,32 +167,19 @@ const werte = [
   <section class="show" data-show aria-labelledby="show-h">
     <div class="show-in">
       <div class="show-text">
-        <h2 id="show-h" class="h2 show-h">Projekte,<br /><span class="lt">die stehen.</span></h2>
+        <h2 id="show-h" class="show-h">Projekte,<br /><span class="lt">die stehen.</span></h2>
         <div class="show-items">
           {
             showcase.map((p, i) => (
               <div class:list={['show-item', { 'is-active': i === 0 }]} data-show-item>
-                <span class="show-nr">
-                  {String(i + 1).padStart(2, '0')} <span class="lt">/ {String(showcase.length).padStart(2, '0')}</span>
-                </span>
                 <h3 class="show-title">{p.title}</h3>
-                <p class="show-desc">{p.leistung}</p>
-                <dl class="show-facts">
-                  <div>
-                    <dt>Ort</dt>
-                    <dd>{p.ort}</dd>
-                  </div>
-                  {p.jahr && (
-                    <div>
-                      <dt>Fertigstellung</dt>
-                      <dd>{p.jahr}</dd>
-                    </div>
-                  )}
-                  <div>
-                    <dt>Kategorie</dt>
-                    <dd>{p.kategorien[0]}</dd>
-                  </div>
-                </dl>
+                <p class="show-desc">
+                  {p.leistung}
+                  <span class="show-meta">
+                    {p.ort}
+                    {p.jahr && ` · ${p.jahr}`}
+                  </span>
+                </p>
                 <a class="link-arrow" href={url(`/referenzen/${p.id}/`)} tabindex={i === 0 ? undefined : -1}>
                   Projekt ansehen <Icon name="arrow" />
                 </a>
@@ -213,25 +201,33 @@ const werte = [
             </a>
           ))
         }
+        <ol class="show-dots" aria-hidden="true">
+          {showcase.map((_, i) => <li class:list={[{ 'is-on': i === 0 }]} data-show-dot />)}
+        </ol>
       </div>
     </div>
   </section>
 
   <!-- ======================= WERTE ======================= -->
   <section class="values on-blue">
-    <div class="container">
-      <h2 class="h2 values-h">Familienbetrieb.<br /><span class="lt">Seit {GRUENDUNGSJAHR}.</span></h2>
-      <div class="values-grid" data-reveal data-reveal-children>
+    <div class="container values-grid">
+      <div class="values-head">
+        <h2 class="values-h">Familien&shy;betrieb.</h2>
+        <p class="values-core">Hinter jedem Bauvorhaben steht die Familie Quirling – mit Namen und Handschlag.</p>
+      </div>
+      <ul class="values-list" data-reveal data-reveal-children>
         {
           werte.map((w) => (
-            <div class="value">
+            <li class="value">
               <ValueIcon name={w.icon} class="value-icon" />
-              <h3>{w.t}</h3>
-              <p>{w.d}</p>
-            </div>
+              <div>
+                <h3>{w.t}</h3>
+                <p>{w.d}</p>
+              </div>
+            </li>
           ))
         }
-      </div>
+      </ul>
     </div>
   </section>
 
@@ -279,9 +275,13 @@ const werte = [
 
 <style>
   /* ---------- Bausteine ---------- */
+  /* Raute in den Proportionen der Logo-Raute – lugt hinter den Bildern hervor */
   .slab {
     position: absolute;
-    background: var(--blue);
+    width: 46%;
+    aspect-ratio: 352 / 245;
+    background: var(--navy);
+    clip-path: polygon(49.8% 0, 100% 53.3%, 48% 100%, 0 49.6%);
     pointer-events: none;
   }
   .cut-img {
@@ -297,11 +297,15 @@ const werte = [
   }
 
   /* ---------- Linie ---------- */
+  :global(main) {
+    position: relative;
+  }
   .flow {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
+    height: 100%;
     pointer-events: none;
     z-index: 1;
     overflow: visible;
@@ -345,7 +349,7 @@ const werte = [
   .hero-slab {
     position: absolute;
     inset: 0 auto 0 0;
-    width: min(60vw, 980px);
+    width: min(62vw, 1000px);
     background: rgb(57 72 164 / 0.88);
     clip-path: polygon(0 0, 100% 0, 66% 100%, 0 100%);
   }
@@ -360,11 +364,21 @@ const werte = [
     padding-bottom: 4rem;
   }
   .hero-title {
+    font-family: var(--font-head);
+    font-stretch: 125%;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: clamp(2.4rem, 4.9vw, 5.1rem);
+    line-height: 0.98;
+    letter-spacing: -0.01em;
     margin-bottom: 2.6rem;
+    /* bleibt mit Abstand innerhalb der schrägen blauen Fläche */
+    max-width: min(46vw, 760px);
   }
 
   /* ======================= INTRO ======================= */
   .intro {
+    overflow-x: clip;
     padding-block: clamp(7rem, 12vw, 11rem) clamp(3rem, 6vw, 5rem);
   }
   .intro-grid {
@@ -374,6 +388,16 @@ const werte = [
     align-items: center;
   }
   .intro-h {
+    color: var(--blue);
+    margin-bottom: 0.7rem;
+  }
+  .intro-sub {
+    font-family: var(--font-head);
+    font-stretch: 125%;
+    font-weight: 300;
+    font-size: clamp(1.1rem, 1.6vw, 1.5rem);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
     color: var(--blue);
     margin-bottom: 2rem;
   }
@@ -388,16 +412,13 @@ const werte = [
     padding: 2.5rem 0 2.5rem 2.5rem;
   }
   .slab-intro {
-    top: 0;
-    bottom: 0;
-    right: 0;
-    width: 55%;
-    background: var(--navy);
-    clip-path: polygon(34% 0, 100% 0, 100% 100%, 0 100%);
+    right: -4%;
+    bottom: -6%;
   }
   .intro-img {
+    position: relative;
     aspect-ratio: 4 / 3;
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 12% 100%);
+    clip-path: polygon(9% 0, 100% 0, 91% 100%, 0 100%);
     margin-right: 2.5rem;
   }
 
@@ -457,7 +478,6 @@ const werte = [
   }
   .fg-3 strong {
     font-size: clamp(3.8rem, 9vw, 8.4rem);
-    color: var(--navy);
   }
   .fg-4 {
     left: 50%;
@@ -470,6 +490,7 @@ const werte = [
 
   /* ======================= LEISTUNGEN ======================= */
   .services {
+    overflow-x: clip;
     background: var(--stone-100);
     padding-block: clamp(5rem, 9vw, 8rem);
   }
@@ -511,32 +532,22 @@ const werte = [
     position: relative;
     z-index: 2;
     display: block;
-    padding: 1.5rem 0 1.5rem 1.5rem;
-  }
-  .svc-3 .svc-visual {
-    padding: 1.5rem 1.5rem 1.5rem 0;
   }
   .slab-svc {
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 40%;
-    clip-path: polygon(0 0, 100% 0, 60% 100%, 0 100%);
-  }
-  .svc-2 .slab-svc {
-    background: var(--navy);
+    left: -5%;
+    bottom: -12%;
   }
   .svc-3 .slab-svc {
     left: auto;
-    right: 0;
-    clip-path: polygon(40% 0, 100% 0, 100% 100%, 0 100%);
+    right: -5%;
   }
   .svc-img {
+    position: relative;
     aspect-ratio: 16 / 11;
-    clip-path: polygon(0 0, 100% 0, 88% 100%, 0 100%);
+    clip-path: polygon(9% 0, 100% 0, 91% 100%, 0 100%);
   }
   .svc-3 .svc-img {
-    clip-path: polygon(12% 0, 100% 0, 100% 100%, 0 100%);
+    clip-path: polygon(0 0, 91% 0, 100% 100%, 9% 100%);
   }
   .svc-img :global(img) {
     transition: transform 1.2s var(--ease);
@@ -569,7 +580,7 @@ const werte = [
   }
   .show-in {
     display: grid;
-    grid-template-columns: minmax(340px, 0.72fr) 1.6fr;
+    grid-template-columns: minmax(380px, 0.95fr) 1.5fr;
     height: 100vh;
     min-height: 640px;
   }
@@ -580,9 +591,16 @@ const werte = [
     padding: calc(var(--header-h) + 1rem) clamp(2rem, 4vw, 4rem) 3rem max(var(--gutter), calc((100vw - var(--container)) / 2));
   }
   .show-h {
-    font-size: clamp(1.7rem, 2.6vw, 2.5rem);
+    font-family: var(--font-head);
+    font-stretch: 125%;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: clamp(2.2rem, 3.7vw, 3.9rem);
+    line-height: 0.95;
+    overflow-wrap: normal;
+    hyphens: manual;
     color: #9aa6ee;
-    margin-bottom: clamp(2rem, 4vw, 3rem);
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
   }
   .show-items {
     display: grid;
@@ -601,49 +619,24 @@ const werte = [
     visibility: visible;
     transition-delay: 0s;
   }
-  .show-nr {
-    display: block;
-    font-family: var(--font-head);
-    font-stretch: 125%;
-    font-weight: 800;
-    font-size: 0.95rem;
-    color: #9aa6ee;
-    margin-bottom: 1rem;
-  }
   .show-title {
     font-stretch: 125%;
-    font-weight: 800;
-    font-size: clamp(1.5rem, 2.3vw, 2.1rem);
+    font-weight: 700;
+    font-size: clamp(1.3rem, 1.8vw, 1.65rem);
     text-transform: uppercase;
-    line-height: 1.02;
-    margin-bottom: 0.8rem;
+    line-height: 1.1;
+    margin-bottom: 0.7rem;
   }
   .show-desc {
-    color: rgb(255 255 255 / 0.75);
+    color: rgb(255 255 255 / 0.72);
     font-size: 1rem;
     max-width: 24rem;
     margin-bottom: 1.4rem;
   }
-  .show-facts {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.9rem 2rem;
-    margin: 0 0 1.6rem;
-  }
-  .show-facts dt {
-    font-family: var(--font-head);
-    font-stretch: 115%;
-    font-weight: 600;
-    font-size: 0.68rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+  .show-meta {
+    display: block;
+    margin-top: 0.3rem;
     color: #9aa6ee;
-  }
-  .show-facts dd {
-    margin: 0.2rem 0 0;
-    font-family: var(--font-head);
-    font-stretch: 110%;
-    font-weight: 500;
   }
   .show .link-arrow {
     color: #fff;
@@ -666,6 +659,36 @@ const werte = [
   .show-cap {
     display: none;
   }
+  /* Fortschritt als Rauten, die sich füllen */
+  .show-dots {
+    position: absolute;
+    right: clamp(1.5rem, 3vw, 2.5rem);
+    bottom: clamp(1.5rem, 3vw, 2.5rem);
+    z-index: 10;
+    display: flex;
+    gap: 0.6rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .show-dots li {
+    width: 30px;
+    aspect-ratio: 352 / 245;
+    background: #fff;
+    clip-path: polygon(49.8% 0, 100% 53.3%, 48% 100%, 0 49.6%);
+    position: relative;
+  }
+  .show-dots li::after {
+    content: '';
+    position: absolute;
+    inset: 1.5px;
+    background: var(--navy);
+    clip-path: polygon(49.8% 0, 100% 53.3%, 48% 100%, 0 49.6%);
+    transition: opacity 0.4s ease;
+  }
+  .show-dots li.is-on::after {
+    opacity: 0;
+  }
 
   /* ======================= WERTE ======================= */
   .values {
@@ -673,31 +696,61 @@ const werte = [
     z-index: 2;
     padding-block: clamp(5rem, 9vw, 8rem);
   }
-  .values-h {
-    margin-bottom: clamp(3rem, 6vw, 5rem);
-  }
   .values-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: clamp(2rem, 4vw, 4rem);
+    grid-template-columns: 1fr 1.15fr;
+    gap: clamp(3rem, 7vw, 7rem);
+    align-items: center;
+  }
+  .values-h {
+    font-family: var(--font-head);
+    font-stretch: 125%;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: clamp(2.6rem, 5.2vw, 5.4rem);
+    line-height: 0.95;
+    hyphens: manual;
+    margin-bottom: 1.6rem;
+  }
+  .values-core {
+    font-family: var(--font-head);
+    font-stretch: 112%;
+    font-weight: 300;
+    font-size: clamp(1.15rem, 1.6vw, 1.5rem);
+    line-height: 1.35;
+    max-width: 26rem;
+    color: #fff !important;
+    margin: 0;
+  }
+  .values-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid rgb(255 255 255 / 0.3);
+  }
+  .value {
+    display: flex;
+    align-items: center;
+    gap: clamp(1.25rem, 3vw, 2.5rem);
+    padding-block: clamp(1.25rem, 2.4vw, 2rem);
+    border-bottom: 1px solid rgb(255 255 255 / 0.3);
   }
   .value :global(.value-icon) {
+    flex: none;
     color: #fff;
     --vicon-bg: #3948a4;
-    margin-bottom: 2rem;
   }
   .value h3 {
     font-stretch: 125%;
     font-weight: 800;
-    font-size: 1.1rem;
-    letter-spacing: 0.04em;
+    font-size: clamp(1.4rem, 2.2vw, 2rem);
     text-transform: uppercase;
-    margin-bottom: 0.7rem;
+    line-height: 1;
+    margin-bottom: 0.45rem;
   }
   .value p {
-    color: rgb(255 255 255 / 0.85);
+    color: rgb(255 255 255 / 0.82);
     margin: 0;
-    max-width: 22rem;
   }
 
   /* ======================= KARRIERE ======================= */
@@ -754,13 +807,15 @@ const werte = [
     background: var(--navy);
   }
   .career-h {
+    font-size: clamp(2.4rem, 4.6vw, 4.6rem);
     color: var(--blue);
     margin-bottom: 1.6rem;
   }
   .career-lead {
+    font-size: 1rem;
     color: var(--ink-2);
-    margin-bottom: 1.6rem;
-    max-width: 28rem;
+    margin-bottom: 1.4rem;
+    max-width: 26rem;
   }
   .arrows {
     list-style: none;
@@ -840,6 +895,11 @@ const werte = [
       justify-content: flex-start;
       padding-top: calc(var(--header-h) + 4rem);
     }
+    .hero-title {
+      max-width: none;
+      font-size: clamp(2.2rem, 10vw, 3.2rem);
+      overflow-wrap: normal;
+    }
     .intro {
       padding-top: 5rem;
     }
@@ -868,6 +928,12 @@ const werte = [
       grid-column: auto;
       grid-row: auto;
     }
+    .svc-visual {
+      margin-bottom: 2.5rem;
+    }
+    .intro-visual {
+      margin-bottom: 1.5rem;
+    }
     .show-in {
       grid-template-columns: 1fr;
       height: auto;
@@ -875,7 +941,8 @@ const werte = [
     .show-text {
       padding: var(--section) var(--gutter) 2rem;
     }
-    .show-items {
+    .show-items,
+    .show-dots {
       display: none;
     }
     .show-stage {
@@ -912,8 +979,22 @@ const werte = [
     .values-grid {
       grid-template-columns: 1fr;
     }
+    .values-grid > * {
+      min-width: 0;
+    }
     .values-h {
-      font-size: clamp(1.5rem, 7.4vw, 2.2rem);
+      font-size: clamp(1.9rem, 8.6vw, 2.6rem);
+    }
+    .value {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    .value :global(.value-icon) {
+      width: 96px;
+    }
+    .value h3 {
+      font-size: clamp(1.2rem, 5.6vw, 1.5rem);
     }
     .career-label {
       left: 0;
@@ -945,11 +1026,14 @@ const werte = [
     if (!show) return;
     const imgs = Array.from(show.querySelectorAll<HTMLElement>('[data-show-img]'));
     const items = Array.from(show.querySelectorAll<HTMLElement>('[data-show-item]'));
-    const setActive = (i: number) =>
+    const dots = Array.from(show.querySelectorAll<HTMLElement>('[data-show-dot]'));
+    const setActive = (i: number) => {
       items.forEach((it, j) => {
         it.classList.toggle('is-active', j === i);
         it.querySelector('a')?.setAttribute('tabindex', j === i ? '0' : '-1');
       });
+      dots.forEach((d, j) => d.classList.toggle('is-on', j <= i));
+    };
     imgs.forEach((img, i) => i > 0 && gsap.set(img, { clipPath: 'inset(100% 0% 0% 0%)' }));
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -1030,8 +1114,12 @@ const werte = [
       `H${cx + (tipY - film.top - 40) / k}`,
       `L${cx} ${tipY}`,
     ].join(' ');
-    svg.setAttribute('height', String(doc.scrollHeight));
-    svg.setAttribute('viewBox', `0 0 ${W} ${doc.scrollHeight}`);
+    // Koordinaten relativ zu <main>; die Grafik ist so hoch wie <main> und endet damit vor dem Footer
+    const mainEl = svg.parentElement!;
+    const mainTop = box(mainEl)!.top;
+    const H = mainEl.offsetHeight;
+    svg.setAttribute('viewBox', `0 ${mainTop} ${W} ${H}`);
+    svg.setAttribute('preserveAspectRatio', 'none');
     path.setAttribute('d', d);
 
     // Rauten zwischen den Leistungen – auf der Diagonale aufgereiht
