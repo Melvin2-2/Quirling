@@ -4,7 +4,6 @@
  *   (Einblend-Effekte für Bilder und Texte wurden bewusst entfernt: Inhalte stehen sofort.)
  *   data-parallax           Bild im Rahmen verschiebt sich langsamer als die Seite
  *   data-count="150"        Zahl zählt hoch
- *   data-spin               Raute dreht sich mit dem Scrollen
  *   data-line               Linie wächst mit dem Scrollen (Zeitstrahl)
  * Ohne JavaScript bzw. bei „Bewegung reduzieren“ ist alles sofort sichtbar.
  */
@@ -53,20 +52,6 @@ mm.add('(prefers-reduced-motion: no-preference)', () => {
         yPercent: 7,
         ease: 'none',
         scrollTrigger: { trigger: el, start: 'top bottom', end: 'bottom top', scrub: true },
-      },
-    );
-  });
-
-  /* Raute drehen */
-  $$('[data-spin]').forEach((el) => {
-    gsap.fromTo(
-      el,
-      { rotate: -12, yPercent: 10 },
-      {
-        rotate: 18,
-        yPercent: -10,
-        ease: 'none',
-        scrollTrigger: { trigger: el.parentElement, start: 'top bottom', end: 'bottom top', scrub: true },
       },
     );
   });

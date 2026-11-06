@@ -1,5 +1,7 @@
 ---
 import Base from './Base.astro';
+import PageHero from '~/components/PageHero.astro';
+
 interface Props {
   title: string;
   description?: string;
@@ -7,11 +9,10 @@ interface Props {
 const { title, description } = Astro.props;
 ---
 
-<Base title={title} description={description} overlay={false}>
+<Base title={title} description={description}>
+  <PageHero eyebrow="Rechtliches" title={title} crumbs={[{ label: title }]} size="small" />
   <section class="legal">
-    <div class="container narrow">
-      <p class="eyebrow">Rechtliches</p>
-      <h1 class="h1">{title}</h1>
+    <div class="container">
       <div class="prose">
         <slot />
       </div>
@@ -21,30 +22,39 @@ const { title, description } = Astro.props;
 
 <style>
   .legal {
-    padding: calc(var(--header-h) + clamp(3rem, 7vw, 6rem)) 0 var(--section);
-    background: var(--white);
+    padding-block: clamp(2.5rem, 5vw, 4rem) var(--section);
   }
-  .narrow {
-    max-width: calc(52rem + var(--gutter) * 2);
-  }
-  h1 {
-    margin-bottom: clamp(2rem, 4vw, 3.5rem);
+  .prose {
+    max-width: 52rem;
+    font-size: 0.95rem;
   }
   .prose :global(h2) {
-    font-size: 1.35rem;
-    line-height: 1.25;
-    margin: 2.5rem 0 0.8rem;
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: clamp(1.5rem, 2vw, 1.9rem);
+    line-height: 1;
+    color: var(--blue);
+    margin: 2.8rem 0 0.9rem;
   }
   .prose :global(h3) {
-    font-size: 1.1rem;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--blue);
     margin: 1.8rem 0 0.6rem;
   }
   .prose :global(a) {
+    color: var(--blue);
     overflow-wrap: anywhere;
   }
   .prose :global(p),
   .prose :global(li) {
     color: var(--ink-2);
+    line-height: 1.72;
   }
   .prose :global(ul) {
     padding-left: 1.2rem;

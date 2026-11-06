@@ -2,7 +2,6 @@
 import { getEntry } from 'astro:content';
 import Base from '~/layouts/Base.astro';
 import PageHero from '~/components/PageHero.astro';
-import CtaBand from '~/components/CtaBand.astro';
 import Icon from '~/components/Icon.astro';
 import { downloads, firma } from '~/data/site';
 import { url } from '~/lib/url';
@@ -12,30 +11,32 @@ const hero = (await getEntry('projekte', 'amsinckstrasse'))!.data.bilder[0]!;
 
 <Base title="Zertifikate & Downloads" description="Bescheinigungen und Nachweise der Quirling GmbH zum Herunterladen: Freistellungsbescheinigung, BG Bau, SOKA-BAU, Registernachweis und mehr.">
   <PageHero
-    eyebrow="Unternehmen · Downloads"
-    title="Zertifikate & Bescheinigungen."
-    intro="Wir bemühen uns, den Downloadbereich immer aktuell zu halten. Sollten Sie noch weitere Dokumente benötigen, kontaktieren Sie uns bitte."
+    eyebrow="Downloads"
+    title="Zertifikate"
+    titleLight="und Nachweise."
+    intro="Alle Bescheinigungen für Auftraggeber als PDF. Weitere Dokumente senden wir Ihnen gerne auf Anfrage zu."
     image={hero}
-    size="medium"
+    imageAlt="Bürogebäude Amsinckstraße"
+    size="small"
     crumbs={[{ label: 'Unternehmen', href: '/unternehmen/' }, { label: 'Zertifikate & Downloads' }]}
   />
 
-  <section class="section bg-white">
+  <section class="section">
     <div class="container dl-wrap">
       <div class="dl-side">
-        <p class="eyebrow">Downloads</p>
-        <h2 class="h3">Nachweise für Auftraggeber</h2>
-        <p>Alle Dokumente als PDF. Weitere Nachweise senden wir Ihnen gerne auf Anfrage zu.</p>
-        <a class="link-arrow" href={`mailto:${firma.email}?subject=Anfrage%20Nachweise`}>Dokument anfragen <Icon name="arrow" /></a>
+        <span class="label">{downloads.length} Dokumente</span>
+        <h2 class="h-sec">Zum<br /><span class="lt">Download.</span></h2>
+        <p class="small">Wir halten den Downloadbereich aktuell. Fehlt Ihnen ein Nachweis, schreiben Sie uns kurz.</p>
+        <a class="text-link" href={`mailto:${firma.email}?subject=Anfrage%20Nachweise`}><span>Dokument anfragen</span><Icon name="arrow" /></a>
       </div>
-      <ul class="dl-list" data-reveal data-reveal-children>
+      <ul class="dl-list">
         {
-          downloads.map((d) => (
+          downloads.map((d, i) => (
             <li>
               <a href={url(`/downloads/${d.file}`)} download class="dl">
-                <span class="dl-type">PDF</span>
+                <span class="label dl-nr">{String(i + 1).padStart(2, '0')}</span>
                 <span class="dl-title">{d.title}</span>
-                <span class="dl-size">{d.size}</span>
+                <span class="dl-size">PDF · {d.size}</span>
                 <span class="dl-icon">
                   <Icon name="download" />
                 </span>
@@ -46,80 +47,73 @@ const hero = (await getEntry('projekte', 'amsinckstrasse'))!.data.bilder[0]!;
       </ul>
     </div>
   </section>
-
-  <CtaBand />
 </Base>
 
 <style>
   .dl-wrap {
     display: grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.8fr);
     gap: clamp(2rem, 6vw, 6rem);
     align-items: start;
   }
   .dl-side {
     position: sticky;
-    top: calc(var(--header-h) + 2rem);
+    top: 7rem;
+    display: grid;
+    gap: 1.2rem;
+    justify-items: start;
   }
-  .dl-side p:not(.eyebrow) {
-    color: var(--ink-2);
-    margin: 1rem 0 1.5rem;
+  .dl-side .small {
+    margin: 0;
+    max-width: 34ch;
   }
   .dl-list {
     list-style: none;
     margin: 0;
     padding: 0;
-    border-top: 1px solid var(--line);
+    display: grid;
+    gap: 6px;
   }
   .dl {
     display: grid;
-    grid-template-columns: auto 1fr auto auto;
+    grid-template-columns: 2.5rem minmax(0, 1fr) auto auto;
     align-items: center;
     gap: 1.25rem;
-    padding: 1.4rem 0.5rem;
-    border-bottom: 1px solid var(--line);
+    padding: 1.3rem 1.3rem 1.3rem 1.5rem;
+    background: #fff;
     text-decoration: none;
+    color: var(--ink);
     transition: background 0.25s ease;
   }
   .dl:hover {
-    background: var(--stone-50);
-  }
-  .dl-type {
-    font-family: var(--font-head);
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    color: #fff;
-    background: var(--blue);
-    padding: 0.3rem 0.5rem;
+    background: var(--tint);
   }
   .dl-title {
     font-family: var(--font-head);
-    font-stretch: 108%;
-    font-weight: 600;
-    font-size: 1.1rem;
-    line-height: 1.3;
+    font-stretch: 68%;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: clamp(1.2rem, 1.5vw, 1.45rem);
+    line-height: 1.05;
   }
   .dl-size {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
     color: var(--ink-3);
-    font-size: 0.9rem;
     white-space: nowrap;
   }
   .dl-icon {
-    width: 46px;
-    height: 46px;
-    border: 1px solid var(--line);
-    border-radius: 0;
+    width: 44px;
+    height: 44px;
     display: grid;
     place-items: center;
-    color: var(--blue);
-    transition:
-      background 0.3s ease,
-      color 0.3s ease;
+    background: var(--navy);
+    color: #fff;
+    transition: background 0.3s ease;
   }
   .dl:hover .dl-icon {
     background: var(--blue);
-    color: #fff;
   }
   .dl-icon :global(svg) {
     width: 20px;
@@ -127,17 +121,18 @@ const hero = (await getEntry('projekte', 'amsinckstrasse'))!.data.bilder[0]!;
   }
   @media (max-width: 900px) {
     .dl-wrap {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
     .dl-side {
       position: static;
     }
   }
-  @media (max-width: 520px) {
+  @media (max-width: 560px) {
     .dl {
-      grid-template-columns: 1fr auto;
+      grid-template-columns: minmax(0, 1fr) auto;
+      padding: 1rem 1rem 1rem 1.2rem;
     }
-    .dl-type,
+    .dl-nr,
     .dl-size {
       display: none;
     }
