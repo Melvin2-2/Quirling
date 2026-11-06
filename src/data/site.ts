@@ -8,7 +8,7 @@ export const JAHRE_ERFAHRUNG = new Date().getFullYear() - GRUENDUNGSJAHR;
 export const firma = {
   name: 'Quirling GmbH',
   langname: 'Quirling GmbH Bauunternehmen',
-  slogan: 'Qualität, die steht.',
+  slogan: 'Was wir zusagen, steht.',
   mitarbeiter: 10,
   strasse: 'Tilsiter Straße 174',
   plz: '22047',

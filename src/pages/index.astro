@@ -3,8 +3,8 @@ import { Image, getImage } from 'astro:assets';
 import { getEntry } from 'astro:content';
 import Base from '~/layouts/Base.astro';
 import Icon from '~/components/Icon.astro';
-import Picto from '~/components/Picto.astro';
 import QHammer from '~/components/QHammer.astro';
+import ValueIcon from '~/components/ValueIcon.astro';
 import { firma, leistungen, GRUENDUNGSJAHR } from '~/data/site';
 import { url } from '~/lib/url';
 import heroPoster from '~/assets/site/hero-poster.jpg';
@@ -14,24 +14,18 @@ import teamFoto from '~/assets/team/baustellenteam.jpg';
 const heroPosterImg = await getImage({ src: heroPoster, width: 1920, format: 'jpg', quality: 70 });
 const filmPosterImg = await getImage({ src: filmPoster, width: 1600, format: 'jpg', quality: 70 });
 
-/* Leistungen */
-const svcInfo: Record<string, { bild: string; a: string; b: string; text: string }> = {
+/* Leistungen – Bilder folgen der Diagonale der Linie */
+const svcInfo: Record<string, { bild: string; text: string }> = {
   rohbau: {
     bild: 'grosse-johannisstrasse',
-    a: 'Rohbau &',
-    b: 'Stahlbetonbau',
     text: 'Rohbauten in Beton- und Stahlbetonbauweise – vom Fundament über die Tiefgarage bis zur letzten Decke.',
   },
   'schluesselfertiges-bauen': {
     bild: 'steinwegel',
-    a: 'Schlüssel­fertiges',
-    b: 'Bauen',
     text: 'Vom Rohbau bis zur Übergabe koordinieren wir alle Gewerke – mit einem festen Ansprechpartner.',
   },
   'umbau-sanierung': {
-    bild: 'bellevue-50',
-    a: 'Umbau &',
-    b: 'Sanierung',
+    bild: 'bellevue-59',
     text: 'Umbauten, Erweiterungen und Sanierungen im Bestand – von der Stadtvilla bis zum Alsterpalais.',
   },
 };
@@ -43,34 +37,42 @@ const services = await Promise.all(
 );
 
 /* Drei Projekte zum Durchscrollen */
-const ort = (fakten: { label: string; value: string }[]) =>
-  (fakten.find((f) => f.label === 'Adresse')?.value.split('\n').pop() ?? '').replace(/^\d{5}\s*/, '');
+const fakt = (fakten: { label: string; value: string }[], label: string) => fakten.find((f) => f.label === label)?.value;
 const showcase = await Promise.all(
-  ['hanseforum', 'kinderwelt', 'horner-landstrasse'].map(async (id) => {
+  ['hanseforum', 'prime-selfstorage-barmbek', 'bellevue-50'].map(async (id) => {
     const p = (await getEntry('projekte', id))!;
-    return { id, ...p.data, ort: ort(p.data.fakten) };
+    const adresse = fakt(p.data.fakten, 'Adresse')?.split('\n') ?? [];
+    return { id, ...p.data, strasse: adresse[0] ?? '', ort: (adresse[1] ?? '').replace(/^\d{5}\s*/, '') };
   }),
 );
 
 const introBild = (await getEntry('projekte', 'milchgrund'))!.data.bilder[0]!;
 
-const fakten = [
-  { zahl: String(GRUENDUNGSJAHR), label: 'Gegründet' },
-  { zahl: `${firma.projekteAnzahl}+`, label: 'Projekte' },
-  { zahl: String(firma.mitarbeiter), label: 'Mitarbeiter' },
-  { zahl: 'HH', label: 'Hamburg & Umgebung' },
-];
-
 const werte = [
-  { picto: 'siegel', t: 'Verlässlich', d: 'Wir stehen zu unserem Wort.' },
-  { picto: 'hammer', t: 'Sorgfältig', d: 'Bis zum Schluss – in jedem Detail.' },
-  { picto: 'helm', t: 'Partnerschaftlich', d: 'Mit Auftraggebern und im Team.' },
+  {
+    icon: 'familie',
+    t: 'Persönlich',
+    d: 'Familiengeführt mit kurzen Wegen: Sie sprechen direkt mit den Menschen, die entscheiden.',
+  },
+  {
+    icon: 'dialog',
+    t: 'Partnerschaftlich',
+    d: 'Wir stehen im ständigen Kontakt mit unseren Auftraggebern – Kommunikation wird bei uns großgeschrieben.',
+  },
+  {
+    icon: 'hammer',
+    t: 'Sorgfältig',
+    d: 'Unsere Arbeiten werden bis zum Schluss sorgfältig ausgeführt – eine Basis, auf die Sie bauen können.',
+  },
 ] as const;
 ---
 
 <Base title="Start">
-  <!-- Blaue Linie, die sich beim Scrollen durch die Seite zieht -->
-  <svg class="flow" data-flow aria-hidden="true"><path data-flow-path></path></svg>
+  <!-- Blaue Linie: startet an der Spitze des Hero und endet in der Film-Raute -->
+  <svg class="flow" data-flow aria-hidden="true">
+    <g data-flow-marks></g>
+    <path data-flow-path></path>
+  </svg>
 
   <!-- ======================= HERO ======================= -->
   <section class="hero" data-hero>
@@ -81,24 +83,20 @@ const werte = [
       </video>
     </div>
     <div class="hero-slab" aria-hidden="true"></div>
-
     <div class="container hero-content">
-      <p class="hero-eyebrow">Bauunternehmen Quirling · Hamburg · seit {GRUENDUNGSJAHR}</p>
-      <h1 class="h-display hero-title">Qualität,<br /><span class="lt">die steht.</span></h1>
+      <h1 class="h-display hero-title">Was wir zusagen,<br /><span class="lt">steht.</span></h1>
       <a class="pill light" href={url('/leistungen/')}><span>Leistungen entdecken</span><Icon name="arrow" /></a>
     </div>
-
-    <span class="flow-knot" data-flow-start aria-hidden="true"><QHammer class="knot-hammer" color="#3948A4" /></span>
   </section>
 
   <!-- ======================= INTRO ======================= -->
   <section class="intro">
     <div class="container intro-grid">
-      <div>
-        <h2 class="h1 intro-h">Massiv gebaut.<br /><span class="lt">Sorgfältig</span><br /><span class="c-blue">übergeben.</span></h2>
+      <div class="intro-text">
+        <h2 class="h1 intro-h">Massiv gebaut.<br /><span class="lt">Sorgfältig übergeben.</span></h2>
         <p class="intro-p" data-reveal>
-          Seit {GRUENDUNGSJAHR} bauen wir in Hamburg und Umgebung – mit einem eingespielten Team, kurzen Wegen und dem Anspruch, jede Arbeit bis zum
-          Schluss sorgfältig auszuführen.
+          Seit {GRUENDUNGSJAHR} bauen wir in Hamburg und Umgebung – familiengeführt, mit einem eingespielten Team und dem Anspruch, jede Arbeit bis
+          zum Schluss sorgfältig auszuführen.
         </p>
         <a class="pill" href={url('/unternehmen/')}><span>Mehr über uns</span><Icon name="arrow" /></a>
       </div>
@@ -109,45 +107,49 @@ const werte = [
         </div>
       </div>
     </div>
+  </section>
+
+  <!-- ======================= KENNZAHLEN (diagonal) ======================= -->
+  <section class="figs" aria-label="Quirling in Zahlen">
     <div class="container">
-      <dl class="figures" data-flow-cross>
-        {
-          fakten.map((f) => (
-            <div class="fig">
-              <dd>{f.zahl}</dd>
-              <dt>{f.label}</dt>
-            </div>
-          ))
-        }
-      </dl>
+      <div class="figs-field" data-figs>
+        <div class="fg fg-1" data-reveal>
+          <strong>{GRUENDUNGSJAHR}</strong>
+          <span>Gegründet in Hamburg</span>
+        </div>
+        <div class="fg fg-2" data-reveal>
+          <strong>{firma.mitarbeiter}</strong>
+          <span>Profis im Team</span>
+        </div>
+        <div class="fg fg-3" data-reveal>
+          <strong>{firma.projekteAnzahl}<sup>+</sup></strong>
+          <span>Projekte realisiert</span>
+        </div>
+        <div class="fg fg-4" data-reveal>
+          <strong>Hamburg &amp; Umgebung</strong>
+          <span>Unser Einsatzgebiet</span>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- ======================= LEISTUNGEN ======================= -->
   <section class="services" data-services aria-labelledby="svc-h">
-    <div class="container svc-head">
-      <p class="eyebrow">Leistungen</p>
-      <h2 id="svc-h" class="h2">Was wir <span class="lt">bauen.</span></h2>
+    <div class="container">
+      <h2 id="svc-h" class="h2 svc-head">Was wir bauen.</h2>
     </div>
     {
       services.map((s, i) => (
-        <article class:list={['svc', { flip: i % 2 === 1 }]}>
+        <article class:list={['svc', `svc-${i + 1}`]} data-svc>
           <div class="container svc-grid">
             <a class="svc-visual" href={url(`/leistungen/${s.slug}/`)} tabindex="-1" aria-hidden="true" data-reveal>
               <span class="slab slab-svc" />
               <span class="cut-img svc-img">
-                <Image src={s.img} alt="" widths={[600, 1000, 1400]} sizes="(min-width: 900px) 55vw, 100vw" />
+                <Image src={s.img} alt="" widths={[600, 1000, 1400]} sizes="(min-width: 900px) 50vw, 100vw" />
               </span>
             </a>
             <div class="svc-text" data-reveal>
-              <span class="svc-picto">
-                <Picto name={s.picto} />
-              </span>
-              <h3 class="h2 svc-title">
-                <span class="c-blue">{s.a}</span>
-                <br />
-                <span class="lt">{s.b}</span>
-              </h3>
+              <h3 class="svc-title">{s.title}</h3>
               <p>{s.text}</p>
               <a class="pill" href={url(`/leistungen/${s.slug}/`)}>
                 <span>Mehr erfahren</span>
@@ -164,8 +166,7 @@ const werte = [
   <section class="show" data-show aria-labelledby="show-h">
     <div class="show-in">
       <div class="show-text">
-        <p class="eyebrow">Referenzen</p>
-        <h2 id="show-h" class="h2 show-h">Projekte, <span class="lt">die stehen.</span></h2>
+        <h2 id="show-h" class="h2 show-h">Projekte,<br /><span class="lt">die stehen.</span></h2>
         <div class="show-items">
           {
             showcase.map((p, i) => (
@@ -174,11 +175,23 @@ const werte = [
                   {String(i + 1).padStart(2, '0')} <span class="lt">/ {String(showcase.length).padStart(2, '0')}</span>
                 </span>
                 <h3 class="show-title">{p.title}</h3>
-                <p class="show-meta">
-                  {p.kategorien[0]} · {p.ort}
-                  {p.jahr && ` · ${p.jahr}`}
-                </p>
                 <p class="show-desc">{p.leistung}</p>
+                <dl class="show-facts">
+                  <div>
+                    <dt>Ort</dt>
+                    <dd>{p.ort}</dd>
+                  </div>
+                  {p.jahr && (
+                    <div>
+                      <dt>Fertigstellung</dt>
+                      <dd>{p.jahr}</dd>
+                    </div>
+                  )}
+                  <div>
+                    <dt>Kategorie</dt>
+                    <dd>{p.kategorien[0]}</dd>
+                  </div>
+                </dl>
                 <a class="link-arrow" href={url(`/referenzen/${p.id}/`)} tabindex={i === 0 ? undefined : -1}>
                   Projekt ansehen <Icon name="arrow" />
                 </a>
@@ -186,7 +199,7 @@ const werte = [
             ))
           }
         </div>
-        <a class="pill" href={url('/referenzen/')}><span>Alle Referenzen</span><Icon name="arrow" /></a>
+        <a class="pill light" href={url('/referenzen/')}><span>Alle Referenzen</span><Icon name="arrow" /></a>
       </div>
       <div class="show-stage">
         {
@@ -207,12 +220,12 @@ const werte = [
   <!-- ======================= WERTE ======================= -->
   <section class="values on-blue">
     <div class="container">
-      <h2 class="h2 values-h">Sorgfältig bauen:<br /><span class="lt">unsere Werte</span></h2>
+      <h2 class="h2 values-h">Familienbetrieb.<br /><span class="lt">Seit {GRUENDUNGSJAHR}.</span></h2>
       <div class="values-grid" data-reveal data-reveal-children>
         {
           werte.map((w) => (
             <div class="value">
-              <Picto name={w.picto} class="value-picto" />
+              <ValueIcon name={w.icon} class="value-icon" />
               <h3>{w.t}</h3>
               <p>{w.d}</p>
             </div>
@@ -227,7 +240,7 @@ const werte = [
     <div class="container career-grid">
       <div class="career-visual" data-reveal>
         <div class="cut-img career-img">
-          <Image src={teamFoto} alt="Das Team der Quirling GmbH" widths={[600, 1000, 1400]} sizes="(min-width: 900px) 50vw, 100vw" />
+          <Image src={teamFoto} alt="Das Team der Quirling GmbH mit Geschäftsführer Thomas Quirling" widths={[700, 1100, 1440]} sizes="(min-width: 900px) 55vw, 100vw" />
         </div>
         <div class="career-label">
           <span class="cl-a"><QHammer class="cl-hammer" color="#fff" highlight="#3948A4" />Mit anpacken</span>
@@ -235,11 +248,14 @@ const werte = [
         </div>
       </div>
       <div class="career-text" data-reveal>
-        <p class="career-lead">{firma.mitarbeiter} Profis, ein eingespieltes Team – und Platz für Verstärkung auf der Baustelle und im Büro.</p>
+        <h2 class="h2 career-h">Werde Teil<br /><span class="lt">des Teams.</span></h2>
+        <p class="career-lead">
+          Wir sind ein familiengeführtes Team aus erfahrenen Profis und jungen Kollegen – und suchen Verstärkung auf der Baustelle und im Büro.
+        </p>
         <ul class="arrows">
           <li>Vielseitige Bauvorhaben in Hamburg</li>
-          <li>Festes, beständiges Team</li>
-          <li>Kurze Wege, direkte Ansprache</li>
+          <li>Festes, eingespieltes Team</li>
+          <li>Kurze Wege zur Geschäftsführung</li>
         </ul>
         <a class="pill" href={url('/karriere/')}><span>Jetzt bewerben</span><Icon name="arrow" /></a>
       </div>
@@ -256,20 +272,9 @@ const werte = [
       </div>
       <div class="film-ui" data-film-ui>
         <h2 class="h-display">Quirling<br /><span class="lt">von oben.</span></h2>
-        <button class="play" type="button" data-film-open>
-          <span class="play-ring"><Icon name="play" /></span>
-          <span class="play-text">Film ansehen</span>
-        </button>
       </div>
     </div>
   </section>
-
-  <dialog class="film-modal" data-film-modal aria-label="Film: Quirling von oben">
-    <video class="fm-video" controls playsinline preload="none" poster={filmPosterImg.src} data-film-video>
-      <source src={url('/video/quirling-film-720.mp4')} type="video/mp4" />
-    </video>
-    <button type="button" class="fm-close" data-film-close aria-label="Schließen"><Icon name="close" /></button>
-  </dialog>
 </Base>
 
 <style>
@@ -301,29 +306,20 @@ const werte = [
     z-index: 1;
     overflow: visible;
   }
-  .flow path {
+  .flow :global(path) {
     fill: none;
     stroke: var(--blue);
     stroke-width: 1.5;
-    stroke-linejoin: miter;
   }
-  .flow-knot {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    background: #fff;
-    display: grid;
-    place-items: center;
-    transform: translate(-50%, 50%);
-    z-index: 3;
-    box-shadow: 0 0 0 1.5px var(--blue);
+  .flow :global(.mark) {
+    fill: var(--tint);
+    stroke: var(--blue);
+    stroke-width: 1;
+    opacity: 0;
+    transition: opacity 0.8s ease;
   }
-  .flow-knot :global(.knot-hammer) {
-    width: 30px;
-    height: 30px;
+  .flow :global(.mark.is-on) {
+    opacity: 1;
   }
 
   /* ======================= HERO ======================= */
@@ -334,11 +330,12 @@ const werte = [
     color: #fff;
     background: var(--navy);
     z-index: 2;
+    /* Unterkante deutet eine Raute an – Spitze rechts */
+    clip-path: polygon(0 0, 100% 0, 100% 94%, 78% 100%, 0 90%);
   }
   .hero-media {
     position: absolute;
     inset: 0;
-    overflow: hidden;
   }
   .hero-video {
     width: 100%;
@@ -360,24 +357,15 @@ const werte = [
     justify-content: center;
     align-items: flex-start;
     padding-top: var(--header-h);
-  }
-  .hero-eyebrow {
-    font-family: var(--font-head);
-    font-stretch: 120%;
-    font-weight: 500;
-    font-size: clamp(0.85rem, 1.1vw, 1.05rem);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    margin-bottom: 1.4rem;
-    color: rgb(255 255 255 / 0.85);
+    padding-bottom: 4rem;
   }
   .hero-title {
-    margin-bottom: 2.4rem;
+    margin-bottom: 2.6rem;
   }
 
   /* ======================= INTRO ======================= */
   .intro {
-    padding-block: clamp(6rem, 11vw, 10rem) clamp(4rem, 7vw, 6rem);
+    padding-block: clamp(7rem, 12vw, 11rem) clamp(3rem, 6vw, 5rem);
   }
   .intro-grid {
     display: grid;
@@ -386,16 +374,17 @@ const werte = [
     align-items: center;
   }
   .intro-h {
-    color: var(--ink-2);
+    color: var(--blue);
     margin-bottom: 2rem;
   }
   .intro-p {
     max-width: 30rem;
-    color: var(--ink-3);
+    color: var(--ink-2);
     margin-bottom: 2rem;
   }
   .intro-visual {
     position: relative;
+    z-index: 2;
     padding: 2.5rem 0 2.5rem 2.5rem;
   }
   .slab-intro {
@@ -403,6 +392,7 @@ const werte = [
     bottom: 0;
     right: 0;
     width: 55%;
+    background: var(--navy);
     clip-path: polygon(34% 0, 100% 0, 100% 100%, 0 100%);
   }
   .intro-img {
@@ -410,70 +400,121 @@ const werte = [
     clip-path: polygon(0 0, 100% 0, 100% 100%, 12% 100%);
     margin-right: 2.5rem;
   }
-  .figures {
+
+  /* ======================= KENNZAHLEN ======================= */
+  .figs {
+    padding-block: clamp(2rem, 4vw, 3rem) clamp(4rem, 7vw, 6rem);
+  }
+  .figs-field {
+    position: relative;
+    height: clamp(560px, 56vw, 760px);
+  }
+  .fg {
+    position: absolute;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    margin: clamp(4rem, 8vw, 7rem) 0 0;
+    gap: 0.6rem;
   }
-  .fig {
-    padding: 2rem 1rem 0 0;
-    display: flex;
-    flex-direction: column;
-  }
-  .fig + .fig {
-    padding-left: 1.5rem;
-    border-left: 1px solid var(--line);
-  }
-  .fig dd {
-    order: -1;
-    margin: 0;
+  .fg strong {
     font-family: var(--font-head);
     font-stretch: 125%;
     font-weight: 800;
-    font-size: clamp(2rem, 3.6vw, 3.2rem);
-    line-height: 1;
+    line-height: 0.9;
     color: var(--blue);
+    letter-spacing: -0.02em;
   }
-  .fig dt {
-    margin-top: 0.5rem;
+  .fg sup {
+    font-size: 0.45em;
+    vertical-align: top;
+    margin-left: 0.05em;
+  }
+  .fg span {
     font-family: var(--font-head);
     font-stretch: 115%;
     font-weight: 600;
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--ink-3);
+    color: var(--ink-2);
+  }
+  /* Zickzack entlang der Diagonale: links oben → rechts → links → rechts unten */
+  .fg-1 {
+    left: 0;
+    top: 0;
+  }
+  .fg-1 strong {
+    font-size: clamp(4.5rem, 12vw, 11rem);
+  }
+  .fg-2 {
+    left: 64%;
+    top: 24%;
+  }
+  .fg-2 strong {
+    font-size: clamp(3.4rem, 8vw, 7.4rem);
+  }
+  .fg-3 {
+    left: 3%;
+    top: 46%;
+  }
+  .fg-3 strong {
+    font-size: clamp(3.8rem, 9vw, 8.4rem);
+    color: var(--navy);
+  }
+  .fg-4 {
+    left: 50%;
+    top: 78%;
+  }
+  .fg-4 strong {
+    font-size: clamp(1.4rem, 2.6vw, 2.3rem);
+    text-transform: uppercase;
   }
 
   /* ======================= LEISTUNGEN ======================= */
   .services {
-    padding-block: clamp(3rem, 6vw, 5rem) clamp(5rem, 9vw, 8rem);
+    background: var(--stone-100);
+    padding-block: clamp(5rem, 9vw, 8rem);
   }
   .svc-head {
-    margin-bottom: clamp(1rem, 3vw, 2rem);
-  }
-  .svc-head .h2 {
-    color: var(--ink-2);
+    color: var(--blue);
+    margin-bottom: clamp(2rem, 4vw, 3rem);
   }
   .svc {
-    padding-block: clamp(3rem, 6vw, 5rem);
+    padding-block: clamp(3.5rem, 6vw, 5.5rem);
   }
   .svc-grid {
     display: grid;
-    grid-template-columns: 1.15fr 1fr;
-    gap: clamp(2.5rem, 6vw, 6rem);
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: clamp(1.25rem, 3vw, 2.5rem);
     align-items: center;
   }
-  .svc.flip .svc-visual {
-    order: 2;
+  /* Bilder treppen sich entlang der Diagonale nach rechts unten */
+  .svc-1 .svc-visual {
+    grid-column: 1 / 7;
+  }
+  .svc-1 .svc-text {
+    grid-column: 8 / 13;
+  }
+  .svc-2 .svc-visual {
+    grid-column: 2 / 8;
+  }
+  .svc-2 .svc-text {
+    grid-column: 9 / 13;
+  }
+  .svc-3 .svc-visual {
+    grid-column: 7 / 13;
+    grid-row: 1;
+  }
+  .svc-3 .svc-text {
+    grid-column: 1 / 6;
+    grid-row: 1;
   }
   .svc-visual {
     position: relative;
+    z-index: 2;
     display: block;
-    padding: 2rem 0 2rem 2rem;
+    padding: 1.5rem 0 1.5rem 1.5rem;
   }
-  .svc.flip .svc-visual {
-    padding: 2rem 2rem 2rem 0;
+  .svc-3 .svc-visual {
+    padding: 1.5rem 1.5rem 1.5rem 0;
   }
   .slab-svc {
     left: 0;
@@ -482,7 +523,10 @@ const werte = [
     width: 40%;
     clip-path: polygon(0 0, 100% 0, 60% 100%, 0 100%);
   }
-  .svc.flip .slab-svc {
+  .svc-2 .slab-svc {
+    background: var(--navy);
+  }
+  .svc-3 .slab-svc {
     left: auto;
     right: 0;
     clip-path: polygon(40% 0, 100% 0, 100% 100%, 0 100%);
@@ -491,7 +535,7 @@ const werte = [
     aspect-ratio: 16 / 11;
     clip-path: polygon(0 0, 100% 0, 88% 100%, 0 100%);
   }
-  .svc.flip .svc-img {
+  .svc-3 .svc-img {
     clip-path: polygon(12% 0, 100% 0, 100% 100%, 0 100%);
   }
   .svc-img :global(img) {
@@ -500,42 +544,34 @@ const werte = [
   .svc-visual:hover .svc-img :global(img) {
     transform: scale(1.03);
   }
-  .svc-text {
-    max-width: 30rem;
-  }
-  .svc-picto {
-    display: inline-grid;
-    place-items: center;
-    width: 56px;
-    height: 56px;
-    border: 1px solid var(--line);
-    margin-bottom: 1.6rem;
-  }
-  .svc-picto :global(svg) {
-    width: 34px;
-    height: 34px;
-  }
   .svc-title {
-    margin-bottom: 1.4rem;
+    font-family: var(--font-head);
+    font-stretch: 125%;
+    font-weight: 800;
+    font-size: clamp(1.5rem, 2.4vw, 2.2rem);
+    line-height: 1.05;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 1.2rem;
     hyphens: manual;
-    overflow-wrap: normal;
   }
   .svc-text p {
-    color: var(--ink-3);
-    margin-bottom: 2rem;
+    color: var(--ink-2);
+    margin-bottom: 1.8rem;
   }
 
   /* ======================= PROJEKTE ======================= */
   .show {
     position: relative;
     z-index: 2;
-    background: #fff;
+    background: var(--navy);
+    color: #fff;
   }
   .show-in {
     display: grid;
     grid-template-columns: minmax(340px, 0.72fr) 1.6fr;
     height: 100vh;
-    min-height: 620px;
+    min-height: 640px;
   }
   .show-text {
     display: flex;
@@ -544,10 +580,8 @@ const werte = [
     padding: calc(var(--header-h) + 1rem) clamp(2rem, 4vw, 4rem) 3rem max(var(--gutter), calc((100vw - var(--container)) / 2));
   }
   .show-h {
-    font-size: clamp(1.6rem, 2.5vw, 2.4rem);
-    overflow-wrap: normal;
-    hyphens: manual;
-    color: var(--ink-2);
+    font-size: clamp(1.7rem, 2.6vw, 2.5rem);
+    color: #9aa6ee;
     margin-bottom: clamp(2rem, 4vw, 3rem);
   }
   .show-items {
@@ -572,30 +606,47 @@ const werte = [
     font-family: var(--font-head);
     font-stretch: 125%;
     font-weight: 800;
-    font-size: 1rem;
-    color: var(--blue);
+    font-size: 0.95rem;
+    color: #9aa6ee;
     margin-bottom: 1rem;
   }
   .show-title {
     font-stretch: 125%;
     font-weight: 800;
-    font-size: clamp(1.5rem, 2.4vw, 2.2rem);
+    font-size: clamp(1.5rem, 2.3vw, 2.1rem);
     text-transform: uppercase;
     line-height: 1.02;
-  }
-  .show-meta {
-    font-family: var(--font-head);
-    font-stretch: 115%;
-    font-weight: 300;
-    text-transform: uppercase;
-    color: var(--ink-3);
-    margin: 0.5rem 0 1.2rem;
+    margin-bottom: 0.8rem;
   }
   .show-desc {
-    color: var(--ink-3);
+    color: rgb(255 255 255 / 0.75);
     font-size: 1rem;
     max-width: 24rem;
     margin-bottom: 1.4rem;
+  }
+  .show-facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem 2rem;
+    margin: 0 0 1.6rem;
+  }
+  .show-facts dt {
+    font-family: var(--font-head);
+    font-stretch: 115%;
+    font-weight: 600;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #9aa6ee;
+  }
+  .show-facts dd {
+    margin: 0.2rem 0 0;
+    font-family: var(--font-head);
+    font-stretch: 110%;
+    font-weight: 500;
+  }
+  .show .link-arrow {
+    color: #fff;
   }
   .show-stage {
     position: relative;
@@ -620,7 +671,7 @@ const werte = [
   .values {
     position: relative;
     z-index: 2;
-    padding-block: clamp(4.5rem, 9vw, 8rem);
+    padding-block: clamp(5rem, 9vw, 8rem);
   }
   .values-h {
     margin-bottom: clamp(3rem, 6vw, 5rem);
@@ -628,29 +679,25 @@ const werte = [
   .values-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    gap: clamp(2rem, 4vw, 4rem);
   }
-  .value {
-    padding: 0 2rem 0.5rem;
-    border-left: 1px solid rgb(255 255 255 / 0.35);
-  }
-  .value :global(.value-picto) {
-    width: 60px;
-    height: 60px;
-    --accent: #c9d0f5;
-    stroke-width: 1.2;
-    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  .value :global(.value-icon) {
+    color: #fff;
+    --vicon-bg: #3948a4;
+    margin-bottom: 2rem;
   }
   .value h3 {
     font-stretch: 125%;
     font-weight: 800;
-    font-size: 1.05rem;
+    font-size: 1.1rem;
     letter-spacing: 0.04em;
     text-transform: uppercase;
-    margin-bottom: 0.6rem;
+    margin-bottom: 0.7rem;
   }
   .value p {
-    color: rgb(255 255 255 / 0.82);
+    color: rgb(255 255 255 / 0.85);
     margin: 0;
+    max-width: 22rem;
   }
 
   /* ======================= KARRIERE ======================= */
@@ -659,21 +706,23 @@ const werte = [
   }
   .career-grid {
     display: grid;
-    grid-template-columns: 1.1fr 1fr;
+    grid-template-columns: 1.15fr 1fr;
     gap: clamp(3rem, 7vw, 7rem);
     align-items: center;
   }
   .career-visual {
     position: relative;
+    z-index: 2;
   }
   .career-img {
-    aspect-ratio: 4 / 3.2;
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 12% 100%);
+    aspect-ratio: 3 / 2;
+    /* nur die obere linke Ecke anschneiden – dort steht niemand */
+    clip-path: polygon(9% 0, 100% 0, 100% 100%, 0 100%, 0 14%);
   }
   .career-label {
     position: absolute;
-    left: -1.5rem;
-    top: 2rem;
+    left: -1.25rem;
+    bottom: -1.5rem;
     display: grid;
     justify-items: start;
   }
@@ -691,7 +740,7 @@ const werte = [
     align-items: center;
     gap: 0.6rem;
     font-weight: 800;
-    font-size: clamp(1.4rem, 2.6vw, 2.3rem);
+    font-size: clamp(1.3rem, 2.4vw, 2.1rem);
     padding: 0.7rem 1.1rem 0.6rem;
   }
   .cl-a :global(.cl-hammer) {
@@ -700,14 +749,17 @@ const werte = [
   }
   .cl-b {
     font-weight: 300;
-    font-size: clamp(0.95rem, 1.5vw, 1.3rem);
+    font-size: clamp(0.9rem, 1.4vw, 1.2rem);
     padding: 0.35rem 1.1rem 0.5rem;
+    background: var(--navy);
+  }
+  .career-h {
+    color: var(--blue);
+    margin-bottom: 1.6rem;
   }
   .career-lead {
-    font-size: clamp(1.15rem, 1.5vw, 1.35rem);
-    line-height: 1.5;
     color: var(--ink-2);
-    margin-bottom: 1.8rem;
+    margin-bottom: 1.6rem;
     max-width: 28rem;
   }
   .arrows {
@@ -715,12 +767,12 @@ const werte = [
     padding: 0;
     margin: 0 0 2.2rem;
     display: grid;
-    gap: 0.7rem;
+    gap: 0.6rem;
   }
   .arrows li {
     position: relative;
     padding-left: 1.6rem;
-    color: var(--ink-2);
+    color: var(--ink);
   }
   .arrows li::before {
     content: '';
@@ -762,100 +814,23 @@ const werte = [
     content: '';
     position: absolute;
     inset: 0;
-    background: rgb(18 23 53 / 0.4);
+    background: rgb(18 23 53 / 0.35);
   }
   .film-ui {
     position: relative;
     z-index: 2;
     text-align: center;
     color: #fff;
-    display: grid;
-    justify-items: center;
-    gap: 2rem;
     padding-inline: var(--gutter);
-  }
-  .play {
-    display: inline-flex;
-    align-items: center;
-    gap: 1rem;
-    background: none;
-    border: 0;
-    color: #fff;
-    cursor: pointer;
-    font: inherit;
-    padding: 0;
-  }
-  .play-ring {
-    width: 72px;
-    height: 72px;
-    border-radius: 50%;
-    display: grid;
-    place-items: center;
-    background: rgb(255 255 255 / 0.15);
-    border: 1px solid rgb(255 255 255 / 0.6);
-    backdrop-filter: blur(6px);
-    transition: background 0.3s ease;
-  }
-  .play-ring :global(svg) {
-    width: 24px;
-    height: 24px;
-    margin-left: 4px;
-  }
-  .play:hover .play-ring {
-    background: var(--blue);
-    border-color: var(--blue);
-  }
-  .play-text {
-    font-family: var(--font-head);
-    font-stretch: 120%;
-    font-weight: 700;
-    font-size: 0.85rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-  .film-modal {
-    width: 100vw;
-    height: 100vh;
-    max-width: none;
-    max-height: none;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    background: rgb(10 12 28 / 0.95);
-  }
-  .film-modal[open] {
-    display: grid;
-    place-items: center;
-  }
-  .fm-video {
-    width: min(92vw, 160vh);
-    aspect-ratio: 16 / 9;
-    background: #000;
-  }
-  .fm-close {
-    position: absolute;
-    top: 1.25rem;
-    right: 1.25rem;
-    width: 54px;
-    height: 54px;
-    border-radius: 50%;
-    border: 1px solid rgb(255 255 255 / 0.4);
-    background: transparent;
-    color: #fff;
-    display: grid;
-    place-items: center;
-    cursor: pointer;
-  }
-  .fm-close :global(svg) {
-    width: 22px;
-    height: 22px;
   }
 
   /* ======================= RESPONSIVE ======================= */
   @media (max-width: 900px) {
-    .flow,
-    .flow-knot {
+    .flow {
       display: none;
+    }
+    .hero {
+      clip-path: polygon(0 0, 100% 0, 100% 96%, 78% 100%, 0 94%);
     }
     .hero-slab {
       width: 100%;
@@ -863,26 +838,35 @@ const werte = [
     }
     .hero-content {
       justify-content: flex-start;
-      padding-top: calc(var(--header-h) + 3rem);
+      padding-top: calc(var(--header-h) + 4rem);
+    }
+    .intro {
+      padding-top: 5rem;
     }
     .intro-grid,
-    .svc-grid,
     .career-grid {
       grid-template-columns: 1fr;
     }
-    .svc.flip .svc-visual {
-      order: 0;
+    .figs-field {
+      height: auto;
+      display: grid;
+      gap: 2.5rem;
     }
-    .figures {
-      grid-template-columns: 1fr 1fr;
-      border-top: 1px solid var(--line);
+    .fg {
+      position: static;
     }
-    .fig:nth-child(3) {
-      border-left: 0;
-      padding-left: 0;
+    .fg-2,
+    .fg-4 {
+      justify-self: end;
+      text-align: right;
     }
-    .fig {
-      padding-bottom: 1.4rem;
+    .svc-grid {
+      grid-template-columns: 1fr;
+    }
+    .svc .svc-visual,
+    .svc .svc-text {
+      grid-column: auto;
+      grid-row: auto;
     }
     .show-in {
       grid-template-columns: 1fr;
@@ -927,10 +911,9 @@ const werte = [
     }
     .values-grid {
       grid-template-columns: 1fr;
-      gap: 2.5rem;
     }
-    .value :global(.value-picto) {
-      margin-bottom: 1.2rem;
+    .values-h {
+      font-size: clamp(1.5rem, 7.4vw, 2.2rem);
     }
     .career-label {
       left: 0;
@@ -1000,48 +983,70 @@ const werte = [
   /* ---------- Die blaue Linie ---------- */
   const svg = document.querySelector<SVGSVGElement>('[data-flow]');
   const path = svg?.querySelector<SVGPathElement>('[data-flow-path]');
-  const knot = document.querySelector<HTMLElement>('[data-flow-start]');
+  const marksG = svg?.querySelector<SVGGElement>('[data-flow-marks]');
   let total = 0;
   const samples: { len: number; y: number }[] = [];
+  let marks: { el: SVGPolygonElement; y: number }[] = [];
 
   const box = (el: Element | null) => {
     if (!el) return null;
     const r = el.getBoundingClientRect();
     return { top: r.top + window.scrollY, bottom: r.bottom + window.scrollY, left: r.left + window.scrollX, right: r.right + window.scrollX };
   };
+  // Raute in Logo-Proportion (352 × 245) um einen Mittelpunkt
+  const rhomb = (x: number, y: number, w: number) => {
+    const h = w * (245 / 352);
+    return `${x - 0.002 * w},${y - h / 2} ${x + w / 2},${y + 0.033 * h} ${x - 0.02 * w},${y + h / 2} ${x - w / 2},${y - 0.004 * h}`;
+  };
 
   const build = () => {
-    if (!svg || !path || window.innerWidth <= 900) return;
+    if (!svg || !path || !marksG || window.innerWidth <= 900) return;
     const doc = document.documentElement;
+    const W = doc.clientWidth;
     const cont = document.querySelector<HTMLElement>('.intro .container');
     if (!cont) return;
     const cb = box(cont)!;
     const pad = parseFloat(getComputedStyle(cont).paddingLeft);
     const L = Math.max(34, cb.left + pad - 36);
-    const R = Math.min(doc.clientWidth - 34, cb.right - pad + 36);
+    const R = Math.min(W - 34, cb.right - pad + 36);
     const hero = box(document.querySelector('[data-hero]'))!;
-    const fig = box(document.querySelector('[data-flow-cross]'))!;
-    const svcs = box(document.querySelector('[data-services]'))!;
+    const figs = box(document.querySelector('[data-figs]'))!;
+    const rows = Array.from(document.querySelectorAll('[data-svc]')).map((r) => box(r)!);
     const film = box(document.querySelector('[data-film]'))!;
     const vh = window.innerHeight;
-    const cx = doc.clientWidth / 2;
-    const tipY = film.top + vh * 0.22; // obere Spitze der Raute
-    const k = (0.28 * vh) / (0.2 * doc.clientWidth); // gleiche Steigung wie die Kante der Raute
-    const turnY = svcs.bottom - 60;
+    const ax = W * 0.78; // Spitze der Hero-Unterkante
+    const cx = W / 2;
+    const tipY = film.top + vh * 0.22;
+    const k = (0.28 * vh) / (0.2 * W); // Steigung der Rautenkante
+    const sTop = rows[0]!.top + 40;
+    const sBot = rows[rows.length - 1]!.bottom - 40;
     const d = [
-      `M${L} ${hero.bottom}`,
-      `V${fig.top}`,
-      `H${R}`,
-      `V${turnY}`,
-      `H${L}`,
+      `M${ax} ${hero.bottom}`,
+      `V${figs.top}`,
+      `L${L} ${figs.bottom}`,
+      `V${sTop}`,
+      `L${R} ${sBot}`,
       `V${film.top + 40}`,
-      `H${cx - (tipY - film.top - 40) / k}`,
+      `H${cx + (tipY - film.top - 40) / k}`,
       `L${cx} ${tipY}`,
     ].join(' ');
     svg.setAttribute('height', String(doc.scrollHeight));
-    svg.setAttribute('viewBox', `0 0 ${doc.clientWidth} ${doc.scrollHeight}`);
+    svg.setAttribute('viewBox', `0 0 ${W} ${doc.scrollHeight}`);
     path.setAttribute('d', d);
-    if (knot) knot.style.left = `${L}px`;
+
+    // Rauten zwischen den Leistungen – auf der Diagonale aufgereiht
+    marksG.innerHTML = '';
+    marks = [];
+    const xAt = (y: number) => L + ((y - sTop) / (sBot - sTop)) * (R - L);
+    for (let i = 0; i < rows.length - 1; i++) {
+      const y = (rows[i]!.bottom + rows[i + 1]!.top) / 2;
+      const p = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+      p.setAttribute('points', rhomb(xAt(y), y, 104));
+      p.setAttribute('class', 'mark');
+      marksG.appendChild(p);
+      marks.push({ el: p, y });
+    }
+
     total = path.getTotalLength();
     samples.length = 0;
     for (let l = 0; l <= total; l += 24) samples.push({ len: l, y: path.getPointAtLength(l).y });
@@ -1052,11 +1057,12 @@ const werte = [
 
   const draw = (instant = false) => {
     if (!path || !total) return;
+    const target = reduce ? Infinity : window.scrollY + window.innerHeight * 0.62;
+    marks.forEach((m) => m.el.classList.toggle('is-on', m.y <= target));
     if (reduce) {
       path.style.strokeDashoffset = '0';
       return;
     }
-    const target = window.scrollY + window.innerHeight * 0.62;
     let len = 0;
     for (const s of samples) {
       if (s.y <= target) len = s.len;
@@ -1075,22 +1081,4 @@ const werte = [
     ScrollTrigger.addEventListener('refresh', () => build());
     build();
   }
-
-  /* ---------- Film-Overlay ---------- */
-  const modal = document.querySelector<HTMLDialogElement>('[data-film-modal]');
-  const video = modal?.querySelector<HTMLVideoElement>('[data-film-video]');
-  document.querySelectorAll('[data-film-open]').forEach((b) =>
-    b.addEventListener('click', () => {
-      if (!modal) return;
-      modal.showModal();
-      video?.play().catch(() => {});
-      window.dispatchEvent(new CustomEvent('quirling:lock'));
-    }),
-  );
-  modal?.querySelector('[data-film-close]')?.addEventListener('click', () => modal.close());
-  modal?.addEventListener('click', (e) => e.target === modal && modal.close());
-  modal?.addEventListener('close', () => {
-    video?.pause();
-    window.dispatchEvent(new CustomEvent('quirling:unlock'));
-  });
 </script>
