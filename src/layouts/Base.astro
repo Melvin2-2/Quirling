@@ -14,12 +14,12 @@ interface Props {
 }
 const {
   title,
-  description = 'Quirling GmbH – Bauunternehmen in Hamburg seit 1992. Rohbau, Beton- und Stahlbetonbau, schlüsselfertiges Bauen sowie Umbau und Sanierung in Hamburg und Umgebung.',
+  description = 'Quirling GmbH, Bauunternehmen in Hamburg seit 1992. Rohbau, Beton- und Stahlbetonbau, schlüsselfertiges Bauen sowie Umbau und Sanierung in Hamburg und Umgebung.',
   overlay = true,
   ogImage,
 } = Astro.props;
 
-const fullTitle = title === 'Start' ? `${firma.langname} Hamburg – Rohbau, Stahlbetonbau, Umbau` : `${title} | ${firma.langname}`;
+const fullTitle = title === 'Start' ? `${firma.langname} Hamburg | Rohbau, Stahlbetonbau, Umbau` : `${title} | ${firma.langname}`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 
 const jsonLd = {

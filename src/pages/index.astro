@@ -14,19 +14,25 @@ import teamFoto from '~/assets/team/baustellenteam.jpg';
 const heroPosterImg = await getImage({ src: heroPoster, width: 1920, format: 'jpg', quality: 70 });
 const filmPosterImg = await getImage({ src: filmPoster, width: 1600, format: 'jpg', quality: 70 });
 
-/* Leistungen – Bilder folgen der Diagonale der Linie */
-const svcInfo: Record<string, { bild: string; text: string }> = {
+/* Leistungen: Bilder folgen der Diagonale der Linie */
+const svcInfo: Record<string, { bild: string; a: string; b: string; text: string }> = {
   rohbau: {
     bild: 'grosse-johannisstrasse',
-    text: 'Rohbauten in Beton- und Stahlbetonbauweise – vom Fundament über die Tiefgarage bis zur letzten Decke.',
+    a: 'Rohbau &',
+    b: 'Stahlbetonbau',
+    text: 'Rohbauten in Beton- und Stahlbetonbauweise. Vom Fundament über die Tiefgarage bis zur letzten Decke.',
   },
   'schluesselfertiges-bauen': {
     bild: 'steinwegel',
-    text: 'Vom Rohbau bis zur Übergabe koordinieren wir alle Gewerke – mit einem festen Ansprechpartner.',
+    a: 'Schlüssel\u00adfertiges',
+    b: 'Bauen',
+    text: 'Vom Rohbau bis zur Übergabe koordinieren wir alle Gewerke. Mit einem festen Ansprechpartner.',
   },
   'umbau-sanierung': {
     bild: 'bellevue-59',
-    text: 'Umbauten, Erweiterungen und Sanierungen im Bestand – von der Stadtvilla bis zum Alsterpalais.',
+    a: 'Umbau &',
+    b: 'Sanierung',
+    text: 'Umbauten, Erweiterungen und Sanierungen im Bestand. Von der Stadtvilla bis zum Alsterpalais.',
   },
 };
 const services = await Promise.all(
@@ -39,7 +45,7 @@ const services = await Promise.all(
 /* Drei Projekte zum Durchscrollen */
 const fakt = (fakten: { label: string; value: string }[], label: string) => fakten.find((f) => f.label === label)?.value;
 const showcase = await Promise.all(
-  ['hanseforum', 'prime-selfstorage-barmbek', 'bellevue-50'].map(async (id) => {
+  ['hanseforum', 'prime-selfstorage-harburg', 'bellevue-50'].map(async (id) => {
     const p = (await getEntry('projekte', id))!;
     const adresse = fakt(p.data.fakten, 'Adresse')?.split('\n') ?? [];
     return { id, ...p.data, strasse: adresse[0] ?? '', ort: (adresse[1] ?? '').replace(/^\d{5}\s*/, '') };
@@ -57,7 +63,7 @@ const werte = [
   {
     icon: 'dialog',
     t: 'Partnerschaftlich',
-    d: 'Im ständigen Austausch – vom ersten Gespräch bis zur Übergabe.',
+    d: 'Im ständigen Austausch, vom ersten Gespräch bis zur Übergabe.',
   },
   {
     icon: 'hammer',
@@ -70,8 +76,8 @@ const werte = [
 <Base title="Start">
   <!-- Blaue Linie: startet an der Spitze des Hero und endet in der Film-Raute -->
   <svg class="flow" data-flow aria-hidden="true">
-    <g data-flow-marks></g>
     <path data-flow-path></path>
+    <g data-flow-branches></g>
   </svg>
 
   <!-- ======================= HERO ======================= -->
@@ -96,13 +102,13 @@ const werte = [
         <h2 class="h1 intro-h">Massiv gebaut.</h2>
         <p class="intro-sub">Sorgfältig übergeben.</p>
         <p class="intro-p" data-reveal>
-          Seit {GRUENDUNGSJAHR} bauen wir in Hamburg und Umgebung – familiengeführt, mit einem eingespielten Team und dem Anspruch, jede Arbeit bis
+          Seit {GRUENDUNGSJAHR} bauen wir in Hamburg und Umgebung. Familiengeführt, mit einem eingespielten Team und dem Anspruch, jede Arbeit bis
           zum Schluss sorgfältig auszuführen.
         </p>
         <a class="pill" href={url('/unternehmen/')}><span>Mehr über uns</span><Icon name="arrow" /></a>
       </div>
-      <div class="intro-visual" data-reveal>
-        <span class="slab slab-intro" aria-hidden="true"></span>
+      <div class="intro-visual" data-reveal data-frame="bl">
+        <span class="slab from-right" aria-hidden="true"></span>
         <div class="cut-img intro-img">
           <Image src={introBild} alt="Wohnanlage Milchgrund, Hamburg" widths={[600, 1000, 1400]} sizes="(min-width: 900px) 50vw, 100vw" />
         </div>
@@ -114,19 +120,19 @@ const werte = [
   <section class="figs" aria-label="Quirling in Zahlen">
     <div class="container">
       <div class="figs-field" data-figs>
-        <div class="fg fg-1" data-reveal>
+        <div class="fg fg-1" data-follow>
           <strong>{GRUENDUNGSJAHR}</strong>
           <span>Gegründet in Hamburg</span>
         </div>
-        <div class="fg fg-2" data-reveal>
+        <div class="fg fg-2" data-follow>
           <strong>{firma.mitarbeiter}</strong>
           <span>Profis im Team</span>
         </div>
-        <div class="fg fg-3" data-reveal>
+        <div class="fg fg-3" data-follow>
           <strong>{firma.projekteAnzahl}<sup>+</sup></strong>
           <span>Projekte realisiert</span>
         </div>
-        <div class="fg fg-4" data-reveal>
+        <div class="fg fg-4" data-follow>
           <strong>Hamburg &amp; Umgebung</strong>
           <span>Unser Einsatzgebiet</span>
         </div>
@@ -137,20 +143,24 @@ const werte = [
   <!-- ======================= LEISTUNGEN ======================= -->
   <section class="services" data-services aria-labelledby="svc-h">
     <div class="container">
-      <h2 id="svc-h" class="h2 svc-head">Was wir bauen.</h2>
+      <h2 id="svc-h" class="h2 svc-head">Was wir <span class="lt">bauen.</span></h2>
     </div>
     {
       services.map((s, i) => (
         <article class:list={['svc', `svc-${i + 1}`]} data-svc>
           <div class="container svc-grid">
-            <a class="svc-visual" href={url(`/leistungen/${s.slug}/`)} tabindex="-1" aria-hidden="true" data-reveal>
-              <span class="slab slab-svc" />
+            <a class="svc-visual" href={url(`/leistungen/${s.slug}/`)} tabindex="-1" aria-hidden="true" data-reveal data-frame={i === 2 ? 'tl' : 'tr'}>
+              <span class:list={["slab", i === 2 ? "from-right" : "from-left"]} />
               <span class="cut-img svc-img">
                 <Image src={s.img} alt="" widths={[600, 1000, 1400]} sizes="(min-width: 900px) 50vw, 100vw" />
               </span>
             </a>
             <div class="svc-text" data-reveal>
-              <h3 class="svc-title">{s.title}</h3>
+              <h3 class="svc-title">
+                <span class="c-blue">{s.a}</span>
+                <br />
+                {s.b}
+              </h3>
               <p>{s.text}</p>
               <a class="pill" href={url(`/leistungen/${s.slug}/`)}>
                 <span>Mehr erfahren</span>
@@ -175,10 +185,7 @@ const werte = [
                 <h3 class="show-title">{p.title}</h3>
                 <p class="show-desc">
                   {p.leistung}
-                  <span class="show-meta">
-                    {p.ort}
-                    {p.jahr && ` · ${p.jahr}`}
-                  </span>
+                  <span class="show-meta">{p.ort}</span>
                 </p>
                 <a class="link-arrow" href={url(`/referenzen/${p.id}/`)} tabindex={i === 0 ? undefined : -1}>
                   Projekt ansehen <Icon name="arrow" />
@@ -193,7 +200,7 @@ const werte = [
         {
           showcase.map((p, i) => (
             <a class="show-img" href={url(`/referenzen/${p.id}/`)} data-show-img tabindex="-1" style={`z-index:${i + 1}`}>
-              <Image src={p.bilder[0]!} alt={`${p.title} – ${p.leistung}`} widths={[900, 1400, 2000]} sizes="(min-width: 900px) 62vw, 100vw" />
+              <Image src={p.bilder[0]!} alt={`${p.title}: ${p.leistung}`} widths={[900, 1400, 2000]} sizes="(min-width: 900px) 62vw, 100vw" />
               <span class="show-cap">
                 <strong>{p.title}</strong>
                 {p.kategorien[0]} · {p.ort}
@@ -213,12 +220,12 @@ const werte = [
     <div class="container values-grid">
       <div class="values-head">
         <h2 class="values-h">Familien&shy;betrieb.</h2>
-        <p class="values-core">Hinter jedem Bauvorhaben steht die Familie Quirling – mit Namen und Handschlag.</p>
+        <p class="values-core">Hinter jedem Bauvorhaben steht die Familie Quirling. Mit Namen und Handschlag.</p>
       </div>
-      <ul class="values-list" data-reveal data-reveal-children>
+      <ul class="values-list">
         {
           werte.map((w) => (
-            <li class="value">
+            <li class="value" data-follow>
               <ValueIcon name={w.icon} class="value-icon" />
               <div>
                 <h3>{w.t}</h3>
@@ -234,7 +241,7 @@ const werte = [
   <!-- ======================= KARRIERE ======================= -->
   <section class="career">
     <div class="container career-grid">
-      <div class="career-visual" data-reveal>
+      <div class="career-visual" data-reveal data-frame="br">
         <div class="cut-img career-img">
           <Image src={teamFoto} alt="Das Team der Quirling GmbH mit Geschäftsführer Thomas Quirling" widths={[700, 1100, 1440]} sizes="(min-width: 900px) 55vw, 100vw" />
         </div>
@@ -243,16 +250,25 @@ const werte = [
           <span class="cl-b">bei Quirling</span>
         </div>
       </div>
-      <div class="career-text" data-reveal>
-        <h2 class="h2 career-h">Werde Teil<br /><span class="lt">des Teams.</span></h2>
-        <p class="career-lead">
-          Wir sind ein familiengeführtes Team aus erfahrenen Profis und jungen Kollegen – und suchen Verstärkung auf der Baustelle und im Büro.
+      <div class="career-text">
+        <h2 class="h2 career-h" data-reveal>Werde Teil<br /><span class="lt">des Teams.</span></h2>
+        <p class="career-lead" data-reveal>
+          Ein familiengeführtes Team aus erfahrenen Profis und jungen Kollegen. Wir suchen Verstärkung auf der Baustelle und im Büro.
         </p>
-        <ul class="arrows">
-          <li>Vielseitige Bauvorhaben in Hamburg</li>
-          <li>Festes, eingespieltes Team</li>
-          <li>Kurze Wege zur Geschäftsführung</li>
-        </ul>
+        <dl class="career-box" data-follow>
+          <div>
+            <dt>Bauvorhaben</dt>
+            <dd>Vielseitig, in ganz Hamburg</dd>
+          </div>
+          <div>
+            <dt>Team</dt>
+            <dd>Fest und eingespielt</dd>
+          </div>
+          <div>
+            <dt>Wege</dt>
+            <dd>Kurz, direkt zur Geschäftsführung</dd>
+          </div>
+        </dl>
         <a class="pill" href={url('/karriere/')}><span>Jetzt bewerben</span><Icon name="arrow" /></a>
       </div>
     </div>
@@ -275,14 +291,23 @@ const werte = [
 
 <style>
   /* ---------- Bausteine ---------- */
-  /* Raute in den Proportionen der Logo-Raute – lugt hinter den Bildern hervor */
+  /* Großes Navy-Band hinter den Bildern: am Bildschirmrand verankert,
+     zur Bildmitte hin mit derselben Schräge wie die Bildkanten */
   .slab {
     position: absolute;
-    width: 46%;
-    aspect-ratio: 352 / 245;
+    top: 24%;
+    bottom: -9%;
+    width: calc(50vw + 58%);
     background: var(--navy);
-    clip-path: polygon(49.8% 0, 100% 53.3%, 48% 100%, 0 49.6%);
     pointer-events: none;
+  }
+  .slab.from-left {
+    right: 42%;
+    clip-path: polygon(0 0, 100% 0, calc(100% - 64px) 100%, 0 100%);
+  }
+  .slab.from-right {
+    left: 42%;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 64px 100%);
   }
   .cut-img {
     display: block;
@@ -315,15 +340,8 @@ const werte = [
     stroke: var(--blue);
     stroke-width: 1.5;
   }
-  .flow :global(.mark) {
-    fill: var(--tint);
-    stroke: var(--blue);
+  .flow :global(.branch) {
     stroke-width: 1;
-    opacity: 0;
-    transition: opacity 0.8s ease;
-  }
-  .flow :global(.mark.is-on) {
-    opacity: 1;
   }
 
   /* ======================= HERO ======================= */
@@ -388,7 +406,7 @@ const werte = [
     align-items: center;
   }
   .intro-h {
-    color: var(--blue);
+    color: var(--navy);
     margin-bottom: 0.7rem;
   }
   .intro-sub {
@@ -411,10 +429,7 @@ const werte = [
     z-index: 2;
     padding: 2.5rem 0 2.5rem 2.5rem;
   }
-  .slab-intro {
-    right: -4%;
-    bottom: -6%;
-  }
+
   .intro-img {
     position: relative;
     aspect-ratio: 4 / 3;
@@ -455,7 +470,25 @@ const werte = [
     font-size: 0.78rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--ink-2);
+    color: var(--navy);
+  }
+  /* Einblenden, sobald die Linie die Stelle erreicht */
+  [data-follow] {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity 0.9s ease,
+      transform 0.9s var(--ease);
+  }
+  [data-follow].is-in {
+    opacity: 1;
+    transform: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-follow] {
+      opacity: 1;
+      transform: none;
+    }
   }
   /* Zickzack entlang der Diagonale: links oben → rechts → links → rechts unten */
   .fg-1 {
@@ -486,6 +519,7 @@ const werte = [
   .fg-4 strong {
     font-size: clamp(1.4rem, 2.6vw, 2.3rem);
     text-transform: uppercase;
+    color: var(--navy);
   }
 
   /* ======================= LEISTUNGEN ======================= */
@@ -494,8 +528,12 @@ const werte = [
     background: var(--stone-100);
     padding-block: clamp(5rem, 9vw, 8rem);
   }
-  .svc-head {
+  .svc-head .lt,
+  .career-h .lt {
     color: var(--blue);
+  }
+  .svc-head {
+    color: var(--navy);
     margin-bottom: clamp(2rem, 4vw, 3rem);
   }
   .svc {
@@ -533,14 +571,7 @@ const werte = [
     z-index: 2;
     display: block;
   }
-  .slab-svc {
-    left: -5%;
-    bottom: -12%;
-  }
-  .svc-3 .slab-svc {
-    left: auto;
-    right: -5%;
-  }
+
   .svc-img {
     position: relative;
     aspect-ratio: 16 / 11;
@@ -559,10 +590,11 @@ const werte = [
     font-family: var(--font-head);
     font-stretch: 125%;
     font-weight: 800;
-    font-size: clamp(1.5rem, 2.4vw, 2.2rem);
-    line-height: 1.05;
+    font-size: clamp(1.8rem, 2.6vw, 2.7rem);
+    line-height: 0.98;
     text-transform: uppercase;
-    color: var(--blue);
+    overflow-wrap: normal;
+    color: var(--navy);
     margin-bottom: 1.2rem;
     hyphens: manual;
   }
@@ -808,7 +840,7 @@ const werte = [
   }
   .career-h {
     font-size: clamp(2.4rem, 4.6vw, 4.6rem);
-    color: var(--blue);
+    color: var(--navy);
     margin-bottom: 1.6rem;
   }
   .career-lead {
@@ -817,27 +849,37 @@ const werte = [
     margin-bottom: 1.4rem;
     max-width: 26rem;
   }
-  .arrows {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 2.2rem;
+  .career-box {
     display: grid;
-    gap: 0.6rem;
+    margin: 0 0 2rem;
+    padding: 1.4rem 1.6rem;
+    max-width: 26rem;
+    background: var(--navy);
+    color: #fff;
   }
-  .arrows li {
-    position: relative;
-    padding-left: 1.6rem;
-    color: var(--ink);
+  .career-box div {
+    display: grid;
+    grid-template-columns: 9rem 1fr;
+    gap: 1rem;
+    padding-block: 0.7rem;
   }
-  .arrows li::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0.55em;
-    width: 0.5em;
-    height: 0.5em;
-    background: var(--blue);
-    transform: rotate(45deg);
+  .career-box div + div {
+    border-top: 1px solid rgb(255 255 255 / 0.18);
+  }
+  .career-box dt {
+    white-space: nowrap;
+    font-family: var(--font-head);
+    font-stretch: 120%;
+    font-weight: 700;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #9aa6ee;
+    padding-top: 0.2rem;
+  }
+  .career-box dd {
+    margin: 0;
+    font-size: 0.92rem;
   }
 
   /* ======================= FILM ======================= */
@@ -930,6 +972,20 @@ const werte = [
     }
     .svc-visual {
       margin-bottom: 2.5rem;
+    }
+    .svc-grid > *,
+    .career-grid > *,
+    .intro-grid > * {
+      min-width: 0;
+    }
+    .svc-title {
+      font-size: clamp(1.35rem, 7.2vw, 1.9rem);
+    }
+    .cl-a {
+      font-size: clamp(1.05rem, 5.6vw, 1.4rem);
+    }
+    .career {
+      overflow-x: clip;
     }
     .intro-visual {
       margin-bottom: 1.5rem;
@@ -1039,18 +1095,21 @@ const werte = [
       scrollTrigger: {
         trigger: show,
         start: 'top top',
-        end: () => `+=${imgs.length * window.innerHeight}`,
+        end: () => `+=${(imgs.length - 1) * window.innerHeight * 1.05}`,
         pin: true,
-        scrub: 0.5,
+        scrub: 1.2,
         invalidateOnRefresh: true,
-        onUpdate: (self) => setActive(Math.min(imgs.length - 1, Math.floor(self.progress * imgs.length * 0.999 + 0.15))),
+        onUpdate: (self) => setActive(Math.min(imgs.length - 1, Math.round(self.progress * (imgs.length - 1)))),
       },
     });
-    tl.to({}, { duration: 0.5 });
-    imgs.slice(1).forEach((img) => {
-      tl.to(img, { clipPath: 'inset(0% 0% 0% 0%)', ease: 'power2.inOut', duration: 1 });
-      tl.to({}, { duration: 0.5 });
+    tl.to({}, { duration: 0.12 });
+    imgs.slice(1).forEach((img, i) => {
+      tl.to(img, { clipPath: 'inset(0% 0% 0% 0%)', ease: 'power1.inOut', duration: 1 });
+      const inner = img.querySelector('img');
+      if (inner) tl.fromTo(inner, { scale: 1.12 }, { scale: 1, ease: 'power1.out', duration: 1 }, '<');
+      if (i < imgs.length - 2) tl.to({}, { duration: 0.12 });
     });
+    tl.to({}, { duration: 0.12 });
   });
 
   /* ---------- Film: Raute öffnet sich ---------- */
@@ -1067,24 +1126,20 @@ const werte = [
   /* ---------- Die blaue Linie ---------- */
   const svg = document.querySelector<SVGSVGElement>('[data-flow]');
   const path = svg?.querySelector<SVGPathElement>('[data-flow-path]');
-  const marksG = svg?.querySelector<SVGGElement>('[data-flow-marks]');
+  const branchG = svg?.querySelector<SVGGElement>('[data-flow-branches]');
   let total = 0;
   const samples: { len: number; y: number }[] = [];
-  let marks: { el: SVGPolygonElement; y: number }[] = [];
+  let branches: { el: SVGPathElement; len: number; y: number; shown: boolean }[] = [];
 
   const box = (el: Element | null) => {
     if (!el) return null;
     const r = el.getBoundingClientRect();
     return { top: r.top + window.scrollY, bottom: r.bottom + window.scrollY, left: r.left + window.scrollX, right: r.right + window.scrollX };
   };
-  // Raute in Logo-Proportion (352 × 245) um einen Mittelpunkt
-  const rhomb = (x: number, y: number, w: number) => {
-    const h = w * (245 / 352);
-    return `${x - 0.002 * w},${y - h / 2} ${x + w / 2},${y + 0.033 * h} ${x - 0.02 * w},${y + h / 2} ${x - w / 2},${y - 0.004 * h}`;
-  };
+  const target = () => (reduce ? Infinity : window.scrollY + window.innerHeight * 0.62);
 
   const build = () => {
-    if (!svg || !path || !marksG || window.innerWidth <= 900) return;
+    if (!svg || !path || !branchG || window.innerWidth <= 900) return;
     const doc = document.documentElement;
     const W = doc.clientWidth;
     const cont = document.querySelector<HTMLElement>('.intro .container');
@@ -1095,7 +1150,9 @@ const werte = [
     const R = Math.min(W - 34, cb.right - pad + 36);
     const hero = box(document.querySelector('[data-hero]'))!;
     const figs = box(document.querySelector('[data-figs]'))!;
+    const services = box(document.querySelector('[data-services]'))!;
     const rows = Array.from(document.querySelectorAll('[data-svc]')).map((r) => box(r)!);
+    const career = box(document.querySelector('.career'))!;
     const film = box(document.querySelector('[data-film]'))!;
     const vh = window.innerHeight;
     const ax = W * 0.78; // Spitze der Hero-Unterkante
@@ -1117,23 +1174,36 @@ const werte = [
     // Koordinaten relativ zu <main>; die Grafik ist so hoch wie <main> und endet damit vor dem Footer
     const mainEl = svg.parentElement!;
     const mainTop = box(mainEl)!.top;
-    const H = mainEl.offsetHeight;
-    svg.setAttribute('viewBox', `0 ${mainTop} ${W} ${H}`);
+    svg.setAttribute('viewBox', `0 ${mainTop} ${W} ${mainEl.offsetHeight}`);
     svg.setAttribute('preserveAspectRatio', 'none');
     path.setAttribute('d', d);
 
-    // Rauten zwischen den Leistungen – auf der Diagonale aufgereiht
-    marksG.innerHTML = '';
-    marks = [];
-    const xAt = (y: number) => L + ((y - sTop) / (sBot - sTop)) * (R - L);
-    for (let i = 0; i < rows.length - 1; i++) {
-      const y = (rows[i]!.bottom + rows[i + 1]!.top) / 2;
-      const p = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-      p.setAttribute('points', rhomb(xAt(y), y, 104));
-      p.setAttribute('class', 'mark');
-      marksG.appendChild(p);
-      marks.push({ el: p, y });
-    }
+    // Querlinien: Abschnittstrenner und Bildecken, die beim Scrollen entstehen
+    const defs: { d: string; y: number }[] = [
+      { d: `M${L} ${services.top} H${R}`, y: services.top },
+      { d: `M${R} ${career.top + 48} H${L}`, y: career.top + 48 },
+    ];
+    document.querySelectorAll<HTMLElement>('[data-frame]').forEach((el) => {
+      const b = box(el.querySelector('.cut-img') ?? el)!;
+      const o = 16;
+      const a = Math.min(150, (b.right - b.left) * 0.3);
+      const c = el.dataset.frame;
+      if (c === 'tr') defs.push({ d: `M${b.right + o} ${b.top + a} V${b.top - o} H${b.right - a}`, y: b.top });
+      if (c === 'tl') defs.push({ d: `M${b.left - o} ${b.top + a} V${b.top - o} H${b.left + a}`, y: b.top });
+      if (c === 'bl') defs.push({ d: `M${b.left - o} ${b.bottom - a} V${b.bottom + o} H${b.left + a}`, y: b.bottom - a });
+      if (c === 'br') defs.push({ d: `M${b.right + o} ${b.bottom - a} V${b.bottom + o} H${b.right - a}`, y: b.bottom - a });
+    });
+    branchG.innerHTML = '';
+    branches = defs.map(({ d: bd, y }) => {
+      const el = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      el.setAttribute('d', bd);
+      el.setAttribute('class', 'branch');
+      branchG.appendChild(el);
+      const len = el.getTotalLength();
+      el.style.strokeDasharray = `${len}`;
+      el.style.strokeDashoffset = `${len}`;
+      return { el, len, y, shown: false };
+    });
 
     total = path.getTotalLength();
     samples.length = 0;
@@ -1145,28 +1215,46 @@ const werte = [
 
   const draw = (instant = false) => {
     if (!path || !total) return;
-    const target = reduce ? Infinity : window.scrollY + window.innerHeight * 0.62;
-    marks.forEach((m) => m.el.classList.toggle('is-on', m.y <= target));
+    const t = target();
+    branches.forEach((b) => {
+      const show = b.y <= t;
+      if (show === b.shown) return;
+      b.shown = show;
+      gsap.to(b.el, { strokeDashoffset: show ? 0 : b.len, duration: instant || reduce ? 0 : 1.4, ease: 'power2.inOut', overwrite: true });
+    });
     if (reduce) {
       path.style.strokeDashoffset = '0';
       return;
     }
     let len = 0;
     for (const s of samples) {
-      if (s.y <= target) len = s.len;
+      if (s.y <= t) len = s.len;
       else break;
     }
     gsap.to(path, { strokeDashoffset: total - len, duration: instant ? 0 : 0.9, ease: 'power2.out', overwrite: true });
   };
 
-  if (svg && path) {
-    window.addEventListener('scroll', () => draw(), { passive: true });
-    window.addEventListener('resize', () => build());
-    window.addEventListener('load', () => {
-      ScrollTrigger.refresh();
-      build();
+  /* Inhalte blenden ein, sobald die Linie (bzw. der Scrollstand) sie erreicht – auch mobil ohne Linie */
+  const followers = Array.from(document.querySelectorAll<HTMLElement>('[data-follow]'));
+  const follow = () => {
+    const t = target();
+    followers.forEach((el) => {
+      if (!el.classList.contains('is-in') && box(el)!.top + 24 <= t) el.classList.add('is-in');
     });
-    ScrollTrigger.addEventListener('refresh', () => build());
+  };
+
+  const onScroll = () => {
+    draw();
+    follow();
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', () => build());
+  window.addEventListener('load', () => {
+    ScrollTrigger.refresh();
     build();
-  }
+    follow();
+  });
+  ScrollTrigger.addEventListener('refresh', () => build());
+  build();
+  follow();
 </script>

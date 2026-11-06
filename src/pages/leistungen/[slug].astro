@@ -35,10 +35,7 @@ const andere = leistungen.filter((x) => x.slug !== l.slug);
         <ul class="umfang">
           {
             l.umfang.map((u) => (
-              <li>
-                <i class="tick" />
-                {u}
-              </li>
+              <li>{u}</li>
             ))
           }
         </ul>

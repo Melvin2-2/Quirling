@@ -16,14 +16,14 @@ const bild = (await getEntry('projekte', 'horner-landstrasse'))!.data.bilder[0]!
 type Station = { jahr: string; titel: string; text: string; link?: string; pruefen?: boolean };
 const stationen: Station[] = [
   { jahr: String(GRUENDUNGSJAHR), titel: 'Gründung in Hamburg', text: 'Thomas Quirling gründet das Bauunternehmen. Bereits in der Anfangsphase können wir mit zufriedenen und treuen Kunden rechnen.', pruefen: true },
-  { jahr: '1997', titel: 'Schlüsselfertig am Tegelweg', text: 'Schlüsselfertiger Neubau eines Doppelhauses am Tegelweg 51 a in Hamburg-Farmsen-Berne – viele Jahre auch unsere Firmenadresse.', link: 'tegelweg', pruefen: true },
+  { jahr: '1997', titel: 'Schlüsselfertig am Tegelweg', text: 'Schlüsselfertiger Neubau eines Doppelhauses am Tegelweg 51 a in Hamburg-Farmsen-Berne, viele Jahre auch unsere Firmenadresse.', link: 'tegelweg', pruefen: true },
   { jahr: '2001', titel: 'Hanseforum am Axel-Springer-Platz', text: 'Beton- und Stahlbetonbauarbeiten eines Bürogebäudes mit Tiefgarage mitten in Hamburg.', link: 'hanseforum' },
   { jahr: '2006', titel: '35 Reihenhäuser in Buchholz', text: 'Rohbau von 35 Reihenhäusern in Buchholz in der Nordheide.', link: 'reihenhaeuser-buchholz' },
   { jahr: '2009', titel: 'Große Johannisstraße', text: 'Rohbau eines Büro- und Geschäftshauses in der Hamburger Altstadt.', link: 'grosse-johannisstrasse' },
   { jahr: '2010', titel: 'Alsterpalais', text: 'Umbau und Erweiterung des Alsterpalais in der Alsterdorfer Straße.', link: 'kinderwelt' },
   { jahr: '2016', titel: 'Wohnen in Bad Oldesloe', text: 'Rohbau von 25 barrierefreien Wohnungen mit Tiefgarage am Pferdemarkt.', link: 'pferdemarkt' },
   { jahr: '2018', titel: 'Horner Landstraße', text: 'Rohbau eines Mehrfamilienhauses mit 20 Wohneinheiten.', link: 'horner-landstrasse' },
-  { jahr: '2019', titel: 'Bergedorf & Tilsiter Straße', text: 'Rohbau für Kaufhaus und Hotel am Serrahnhafen in Bergedorf. Schlüsselfertiger Neubau des Betriebsgebäudes in der Tilsiter Straße 174 – heute unser Firmensitz.', pruefen: true },
+  { jahr: '2019', titel: 'Bergedorf & Tilsiter Straße', text: 'Rohbau für Kaufhaus und Hotel am Serrahnhafen in Bergedorf. Schlüsselfertiger Neubau des Betriebsgebäudes in der Tilsiter Straße 174, heute unser Firmensitz.', pruefen: true },
   { jahr: 'Heute', titel: `Mehr als ${firma.projekteAnzahl} Projekte`, text: `${JAHRE_ERFAHRUNG} Jahre Erfahrung, ein eingespieltes Team und Bauvorhaben in Hamburg und Umgebung.` },
 ];
 
@@ -34,7 +34,7 @@ const werte = [
 ];
 ---
 
-<Base title="Über uns" description={`Die Quirling GmbH ist seit ${GRUENDUNGSJAHR} als Bauunternehmen in Hamburg tätig – mit Schwerpunkt Rohbau, Beton- und Stahlbetonbau.`}>
+<Base title="Über uns" description={`Die Quirling GmbH ist seit ${GRUENDUNGSJAHR} als Bauunternehmen in Hamburg tätig, mit Schwerpunkt Rohbau, Beton- und Stahlbetonbau.`}>
   <PageHero
     eyebrow="Unternehmen"
     title={`Bauen in Hamburg. Seit ${GRUENDUNGSJAHR}.`}
@@ -87,7 +87,7 @@ const werte = [
     <div class="container tl-wrap">
       <div class="tl-head">
         <p class="eyebrow">Geschichte</p>
-        <h2 class="h2" data-split>Stein auf Stein – unser Weg.</h2>
+        <h2 class="h2" data-split>Stein auf Stein. Unser Weg.</h2>
         <p class="tl-note">Eine Auswahl von Stationen aus {JAHRE_ERFAHRUNG} Jahren Firmengeschichte.</p>
       </div>
       <ol class="timeline">

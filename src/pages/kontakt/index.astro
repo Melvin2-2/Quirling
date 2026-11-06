@@ -45,7 +45,7 @@ const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
         </div>
         <div class="block note">
           <h2 class="eyebrow">Bewerbungen</h2>
-          <p>Bewerbungen senden Sie bitte per E-Mail an <a href={`mailto:${firma.email}`}>{firma.email}</a> – oder stellen Sie sich persönlich bei uns vor.</p>
+          <p>Bewerbungen senden Sie bitte per E-Mail an <a href={`mailto:${firma.email}`}>{firma.email}</a> oder stellen Sie sich persönlich bei uns vor.</p>
         </div>
       </div>
 
@@ -295,6 +295,6 @@ const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
       .join('\n');
     const subject = `Kontaktanfrage: ${data.get('anliegen')}`;
     window.location.href = `mailto:${form.dataset.mail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    say('Ihr E-Mail-Programm wird geöffnet – bitte senden Sie die vorbereitete Nachricht dort ab.', 'ok');
+    say('Ihr E-Mail-Programm wird geöffnet. Bitte senden Sie die vorbereitete Nachricht dort ab.', 'ok');
   });
 </script>

@@ -14,10 +14,10 @@ const p = project.data;
 
 <a class:list={['pcard', cls]} href={url(`/referenzen/${project.id}/`)}>
   <div class="media pimg">
-    <Image src={p.bilder[0]} alt={`${p.title} – ${p.leistung}`} widths={[480, 800, 1200]} sizes={sizes} />
+    <Image src={p.bilder[0]} alt={`${p.title}: ${p.leistung}`} widths={[480, 800, 1200]} sizes={sizes} />
   </div>
   <div class="pmeta">
-    <span class="ptag">{p.kategorien.join(' · ')}{p.jahr && <> · {p.jahr}</>}</span>
+    <span class="ptag">{p.kategorien.join(' · ')}</span>
     <h3 class="ptitle">{p.title}</h3>
     <p class="pleist">{p.leistung}</p>
   </div>

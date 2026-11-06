@@ -12,10 +12,10 @@ const hero = (await getEntry('projekte', 'sulkyweg'))!.data.bilder[0]!;
 const mailBewerbung = `mailto:${firma.email}?subject=${encodeURIComponent('Bewerbung')}`;
 
 const vorteile = [
-  { t: 'Ein beständiges Team', d: 'Bei uns arbeiten junge und erfahrene Kollegen seit vielen Jahren zusammen – man kennt sich und kann sich aufeinander verlassen.' },
+  { t: 'Ein beständiges Team', d: 'Bei uns arbeiten junge und erfahrene Kollegen seit vielen Jahren zusammen. Man kennt sich und kann sich aufeinander verlassen.' },
   { t: 'Vielseitige Bauvorhaben', d: 'Wohnungsbau, Büro- und Gewerbebauten, Umbauten von Stadtvillen: Kein Projekt ist wie das andere.' },
   { t: 'Kurze Wege', d: 'Als inhabergeführtes Unternehmen entscheiden wir schnell und sprechen direkt miteinander.' },
-  { t: 'Angenehmes Arbeitsklima', d: 'Wir bauen auf eine Partnerschaft mit unseren Mitarbeitern – denn ein zufriedenes Team baut besser.' },
+  { t: 'Angenehmes Arbeitsklima', d: 'Wir bauen auf eine Partnerschaft mit unseren Mitarbeitern, denn ein zufriedenes Team baut besser.' },
 ];
 
 // Offene Stellen – bitte ergänzen (TODO.md)
@@ -28,7 +28,7 @@ const stellen = [
 <Base title="Karriere" description="Karriere bei der Quirling GmbH in Hamburg: Werden Sie Teil unseres Teams auf der Baustelle oder im Büro. Bewerbung gerne per E-Mail.">
   <PageHero
     eyebrow="Karriere"
-    title="Mit anpacken – bei Quirling."
+    title="Mit anpacken bei Quirling."
     intro="Wir suchen Menschen, die gerne bauen. Ob auf der Baustelle oder im Büro: Bewerben Sie sich unkompliziert per E-Mail."
     image={hero}
     crumbs={[{ label: 'Karriere' }]}
@@ -98,9 +98,9 @@ const stellen = [
         <p class="eyebrow">So bewerben Sie sich</p>
         <h2 class="h2">Einfach per E-Mail.</h2>
         <ol class="steps">
-          <li><strong>Unterlagen zusammenstellen</strong> – kurzes Anschreiben, Lebenslauf und relevante Zeugnisse.</li>
-          <li><strong>Per E-Mail senden</strong> an <a href={mailBewerbung}>{firma.email}</a> – gerne auch per Post oder persönlich.</li>
-          <li><strong>Wir melden uns</strong> – und lernen Sie gerne persönlich kennen.</li>
+          <li><strong>Unterlagen zusammenstellen:</strong> kurzes Anschreiben, Lebenslauf und relevante Zeugnisse.</li>
+          <li><strong>Per E-Mail senden</strong> an <a href={mailBewerbung}>{firma.email}</a>, gerne auch per Post oder persönlich.</li>
+          <li><strong>Wir melden uns</strong> und lernen Sie gerne persönlich kennen.</li>
         </ol>
         <address class="post">
           Per Post: {firma.langname} · {firma.strasse} · {firma.plz} {firma.ort}

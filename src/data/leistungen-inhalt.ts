@@ -21,12 +21,12 @@ export const leistungenInhalt: LeistungInhalt[] = [
     eyebrow: 'Leistung 01',
     title: 'Rohbau & Stahlbetonbau',
     intro:
-      'Die Erstellung von Rohbauten ist unser Schwerpunkt – speziell im Beton- und Stahlbetonbau mit Schalungsbau. Hier liegt seit 1992 unser Handwerk.',
+      'Die Erstellung von Rohbauten ist unser Schwerpunkt, speziell im Beton- und Stahlbetonbau mit Schalungsbau. Hier liegt seit 1992 unser Handwerk.',
     heroProjekt: 'grosse-johannisstrasse',
     bildProjekt: 'beim-alten-schuetzenhof',
     absaetze: [
       'Seit über drei Jahrzehnten beschäftigen wir uns überwiegend mit Rohbauarbeiten. Wir haben in Hamburg und Umgebung Rohbauten für Mehrfamilienhäuser und Wohnanlagen mit Tiefgaragen, für Büro- und Geschäftshäuser, für mehrgeschossige Lagergebäude sowie für Ein-, Doppel- und Reihenhäuser erstellt.',
-      'Wir setzen auf partnerschaftliche Beziehungen und stehen im ständigen Kontakt mit Bauherren, Architekten und Tragwerksplanern. Die Arbeiten werden bei uns bis zum Schluss sorgfältig ausgeführt – auch bei komplizierteren Bauten finden wir gemeinsam eine Lösung.',
+      'Wir setzen auf partnerschaftliche Beziehungen und stehen im ständigen Kontakt mit Bauherren, Architekten und Tragwerksplanern. Die Arbeiten werden bei uns bis zum Schluss sorgfältig ausgeführt. Auch bei komplizierteren Bauten finden wir gemeinsam eine Lösung.',
     ],
     umfang: [
       'Fundamente, Bodenplatten und Gründungen',
@@ -43,11 +43,11 @@ export const leistungenInhalt: LeistungInhalt[] = [
     eyebrow: 'Leistung 02',
     title: 'Schlüsselfertiges Bauen',
     intro:
-      'Auf Wunsch erstellen wir Ihr Gebäude schlüsselfertig – vom Rohbau bis zur Übergabe, mit einem festen Ansprechpartner.',
+      'Auf Wunsch erstellen wir Ihr Gebäude schlüsselfertig. Vom Rohbau bis zur Übergabe, mit einem festen Ansprechpartner.',
     heroProjekt: 'steinwegel',
     bildProjekt: 'tegelweg',
     absaetze: [
-      'Bei einem schlüsselfertigen Bauvorhaben haben Sie mit uns einen Ansprechpartner für das ganze Gebäude. Den Rohbau führen wir selbst aus, die weiteren Gewerke koordinieren wir – und halten Sie als Bauherren dabei laufend auf dem Stand.',
+      'Bei einem schlüsselfertigen Bauvorhaben haben Sie mit uns einen Ansprechpartner für das ganze Gebäude. Den Rohbau führen wir selbst aus, die weiteren Gewerke koordinieren wir und halten Sie als Bauherren laufend auf dem Stand.',
       'So sind unter anderem Doppelhäuser am Tegelweg und am Steinwegel sowie ein Betriebsgebäude in der Tilsiter Straße in Hamburg entstanden. Kommunikation wird dabei großgeschrieben: Wir stehen im ständigen Kontakt mit unseren Auftraggebern.',
     ],
     umfang: [
@@ -64,12 +64,12 @@ export const leistungenInhalt: LeistungInhalt[] = [
     eyebrow: 'Leistung 03',
     title: 'Umbau & Sanierung',
     intro:
-      'Mit unserem engagierten Team führen wir vielseitige Umbau- und Sanierungsmaßnahmen aus – von der Stadtvilla bis zum historischen Gebäude.',
+      'Mit unserem engagierten Team führen wir vielseitige Umbau- und Sanierungsmaßnahmen aus, von der Stadtvilla bis zum historischen Gebäude.',
     heroProjekt: 'kinderwelt',
     bildProjekt: 'oberstrasse',
     absaetze: [
       'Bauen im Bestand verlangt Erfahrung und Sorgfalt. Wir haben Stadtvillen an der Bellevue, in der Oberstraße und in der Abteistraße umgebaut, ein Stadthaus in der Gustav-Freytag-Straße erweitert und das Alsterpalais in Alsterdorf umgebaut und erweitert.',
-      'Gerade bei Umbauten zählt die enge Abstimmung mit Eigentümern, Architekten und Nachbarn. Wir arbeiten flexibel, sauber und bis zum Schluss sorgfältig – damit aus dem Bestand wieder ein Gebäude wird, auf das Sie bauen können.',
+      'Gerade bei Umbauten zählt die enge Abstimmung mit Eigentümern, Architekten und Nachbarn. Wir arbeiten flexibel, sauber und bis zum Schluss sorgfältig. So wird aus dem Bestand wieder ein Gebäude, auf das Sie bauen können.',
     ],
     umfang: [
       'Umbauten und Erweiterungen',

@@ -25,7 +25,7 @@ const paths = {
     name === 'hammer' ? (
       <QHammer class="vicon-art vicon-hammer" color="currentColor" highlight="var(--vicon-bg, #3948A4)" />
     ) : (
-      <svg class="vicon-art" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" aria-hidden="true">
+      <svg class="vicon-art" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-linecap="square" aria-hidden="true">
         <path d={paths[name]} />
       </svg>
     )
@@ -40,6 +40,15 @@ const paths = {
     width: 150px;
     aspect-ratio: 120 / 84;
   }
+  /* Raute und Piktogramm mit identischer Linienstärke, unabhängig von der Skalierung */
+  .vicon-frame,
+  .vicon :global(.vicon-art) {
+    stroke-width: 1.5px;
+  }
+  .vicon-frame path,
+  .vicon :global(.vicon-art path) {
+    vector-effect: non-scaling-stroke;
+  }
   .vicon-frame {
     position: absolute;
     inset: 0;
@@ -47,8 +56,6 @@ const paths = {
     height: 100%;
     fill: none;
     stroke: currentColor;
-    stroke-width: 1;
-    opacity: 0.45;
   }
   .vicon :global(.vicon-art) {
     position: relative;

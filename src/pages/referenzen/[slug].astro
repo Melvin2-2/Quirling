@@ -32,10 +32,10 @@ const aehnlich = alle.filter((x) => x.id !== p.id && x.data.kategorien.some((k) 
 const fakten = d.fakten.filter((f) => f.label.toLowerCase() !== 'fertigstellung');
 ---
 
-<Base title={d.title} description={`${d.leistung} – Referenzprojekt der Quirling GmbH Bauunternehmen, Hamburg.`}>
+<Base title={d.title} description={`${d.leistung}. Referenzprojekt der Quirling GmbH Bauunternehmen, Hamburg.`}>
   <section class="p-hero on-dark">
     <div class="p-hero-img media" data-parallax>
-      <Image src={cover!} alt={`${d.title} – ${d.leistung}`} widths={[900, 1500, 2000]} sizes="100vw" loading="eager" fetchpriority="high" />
+      <Image src={cover!} alt={`${d.title}: ${d.leistung}`} widths={[900, 1500, 2000]} sizes="100vw" loading="eager" fetchpriority="high" />
     </div>
     <div class="shade"></div>
     <div class="container p-hero-in">
@@ -83,7 +83,7 @@ const fakten = d.fakten.filter((f) => f.label.toLowerCase() !== 'fertigstellung'
         {
           galerie.map((b, i) => (
             <button type="button" class="g-item media" data-index={i + 1} data-reveal aria-label={`Bild ${i + 2} von ${d.bilder.length} vergrößern`}>
-              <Image src={b} alt={`${d.title} – Bild ${i + 2}`} widths={[500, 900, 1300]} sizes="(min-width: 1024px) 30vw, 50vw" />
+              <Image src={b} alt={`${d.title}, Bild ${i + 2}`} widths={[500, 900, 1300]} sizes="(min-width: 1024px) 30vw, 50vw" />
             </button>
           ))
         }
