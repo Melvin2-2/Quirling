@@ -10,7 +10,7 @@ import { url } from '~/lib/url';
 import heroPoster from '~/assets/site/hero-poster.jpg';
 import filmPoster from '~/assets/site/film-poster.jpg';
 import teamFoto from '~/assets/team/baustellenteam.jpg';
-import rohbauFoto from '~/assets/site/rohbau-tilsiter-strasse.jpg';
+import rohbauFoto from '~/assets/site/rohbau-wandsbek.jpg';
 
 const heroPosterImg = await getImage({ src: heroPoster, width: 1920, format: 'jpg', quality: 70 });
 const filmPosterImg = await getImage({ src: filmPoster, width: 1600, format: 'jpg', quality: 70 });
@@ -39,7 +39,7 @@ const svcInfo: Record<string, { bild: string; a: string; b: string; text: string
 const services = await Promise.all(
   leistungen.map(async (l) => {
     const info = svcInfo[l.slug]!;
-    // Rohbau zeigt ein Foto aus der Rohbauphase (Tilsiter Straße)
+    // Rohbau zeigt ein Foto aus der Rohbauphase (My Place Selfstorage Wandsbek)
     const img = l.slug === 'rohbau' ? rohbauFoto : (await getEntry('projekte', info.bild))!.data.bilder[0]!;
     return { ...l, ...info, img };
   }),
@@ -174,7 +174,6 @@ const werte = [
 
   <!-- ======================= PROJEKTE (3 × scrollen) ======================= -->
   <section class="show" data-show aria-labelledby="show-h">
-    <span class="show-bar" aria-hidden="true"><span data-show-bar></span></span>
     <div class="show-in">
       <div class="show-text">
         <h2 id="show-h" class="show-h">Projekte,<br /><span class="lt">die stehen.</span></h2>
@@ -238,14 +237,15 @@ const werte = [
 
   <!-- ======================= KARRIERE ======================= -->
   <section class="career">
+    <div class="career-stamp" data-follow aria-hidden="true">
+      <span class="cl-a"><QHammer class="cl-hammer" color="#fff" highlight="#3948A4" />Mit anpacken</span>
+      <span class="cl-b">bei Quirling</span>
+    </div>
     <div class="container career-grid">
       <div class="career-visual" data-reveal>
+        <span class="block block-l" aria-hidden="true"></span>
         <div class="cut-img career-img">
           <Image src={teamFoto} alt="Das Team der Quirling GmbH mit Geschäftsführer Thomas Quirling" widths={[700, 1100, 1440]} sizes="(min-width: 900px) 55vw, 100vw" />
-        </div>
-        <div class="career-label">
-          <span class="cl-a"><QHammer class="cl-hammer" color="#fff" highlight="#3948A4" />Mit anpacken</span>
-          <span class="cl-b">bei Quirling</span>
         </div>
       </div>
       <div class="career-text">
@@ -253,11 +253,6 @@ const werte = [
         <p class="career-lead" data-reveal>
           Ein familiengeführtes Team aus erfahrenen Profis und jungen Kollegen. Wir suchen Verstärkung auf der Baustelle und im Büro.
         </p>
-        <ul class="cpoints">
-          <li data-follow data-to-rail>Vielseitige Bauvorhaben</li>
-          <li data-follow data-to-rail>Ein festes Team</li>
-          <li data-follow data-to-rail>Kurze Wege</li>
-        </ul>
         <a class="pill" href={url('/karriere/')}><span>Jetzt bewerben</span><Icon name="arrow" /></a>
       </div>
     </div>
@@ -281,27 +276,25 @@ const werte = [
 
 <style>
   /* ---------- Bausteine ---------- */
-  /* Navy-Parallelogramm hinter dem Bild: steht oben, seitlich und unten über
-     und neigt sich wie das Bild selbst */
+  /* Navy-Parallelogramm hinter dem Bild: neigt sich wie das Bild,
+     steht nur leicht über (überall gleich, links hinter dem Bild) */
   .block {
     position: absolute;
-    width: 42%;
+    width: 40%;
     background: var(--navy);
     pointer-events: none;
-    clip-path: polygon(40% 0, 100% 0, 88% 100%, 0 100%);
-  }
-  .block-r {
-    right: -9%;
-    top: -11%;
-    bottom: -17%;
+    clip-path: polygon(0 0, 60% 0, 100% 100%, 12% 100%);
   }
   .block-l {
     left: -8%;
-    top: 16%;
-    bottom: -16%;
+    top: 12%;
+    bottom: -7%;
   }
-  .svc-3 .block-l {
-    clip-path: polygon(0 0, 60% 0, 100% 100%, 12% 100%);
+  .block-r {
+    right: -7%;
+    top: -5%;
+    bottom: -6%;
+    clip-path: polygon(40% 0, 100% 0, 88% 100%, 0 100%);
   }
   .cut-img {
     display: block;
@@ -360,7 +353,7 @@ const werte = [
     position: absolute;
     inset: 0 auto 0 0;
     width: min(62vw, 1000px);
-    background: rgb(18 23 53 / 0.84);
+    background: rgb(18 23 53 / 0.74);
     clip-path: polygon(0 0, 100% 0, 66% 100%, 0 100%);
   }
   .hero-content {
@@ -477,7 +470,7 @@ const werte = [
     transform: none;
   }
   .fg[data-follow].is-in {
-    transition-delay: 0.45s;
+    transition-delay: 0.12s;
   }
   @media (prefers-reduced-motion: reduce) {
     [data-follow] {
@@ -700,25 +693,6 @@ const werte = [
     transform: scaleY(0);
     transform-origin: top;
   }
-  /* Projekte: dezenter Fortschrittsbalken unten, läuft von links bis zur Linie der nächsten Sektion */
-  .show-bar {
-    position: absolute;
-    left: var(--rail-l, 34px);
-    right: var(--rail-r, 34px);
-    bottom: 0;
-    height: 1.5px;
-    background: rgb(255 255 255 / 0.18);
-    z-index: 20;
-    pointer-events: none;
-  }
-  .show-bar span {
-    position: absolute;
-    inset: 0;
-    background: #fff;
-    transform: scaleX(0);
-    transform-origin: left;
-  }
-
   /* ======================= WERTE ======================= */
   .values {
     position: relative;
@@ -828,16 +802,32 @@ const werte = [
     z-index: 2;
   }
   .career-img {
+    position: relative;
     aspect-ratio: 3 / 2;
-    /* nur die obere linke Ecke anschneiden – dort steht niemand */
+    /* nur die obere linke Ecke anschneiden, dort steht niemand */
     clip-path: polygon(9% 0, 100% 0, 100% 100%, 0 100%, 0 14%);
   }
-  .career-label {
+  .career {
+    position: relative;
+  }
+  /* Stempel an der Linie: hängt mit der rechten Kante an der Linie */
+  .career-stamp {
     position: absolute;
-    left: -1.25rem;
-    bottom: -1.5rem;
+    right: var(--rail-r, 34px);
+    bottom: clamp(3rem, 7vw, 5.5rem);
+    z-index: 3;
     display: grid;
-    justify-items: start;
+    justify-items: end;
+    pointer-events: none;
+  }
+  .career-stamp[data-follow] {
+    transform: rotate(-4deg) scale(1.25);
+    transition:
+      opacity 0.35s ease,
+      transform 0.55s cubic-bezier(0.3, 1.6, 0.5, 1);
+  }
+  .career-stamp[data-follow].is-in {
+    transform: rotate(-4deg) scale(1);
   }
   .cl-a,
   .cl-b {
@@ -877,45 +867,6 @@ const werte = [
     margin-bottom: 1.4rem;
     max-width: 26rem;
   }
-  .cpoints {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 2.2rem;
-    display: grid;
-    gap: 0.9rem;
-  }
-  .cpoints li {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-right: calc(-1 * var(--to-rail, 0px));
-    font-family: var(--font-head);
-    font-stretch: 120%;
-    font-weight: 700;
-    font-size: 0.82rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--blue);
-    white-space: nowrap;
-  }
-  /* Abzweig von der Linie zum Punkt */
-  .cpoints li::after {
-    content: '';
-    flex: 1;
-    height: 1.5px;
-    background: var(--blue);
-    transform: scaleX(0);
-    transform-origin: right;
-    transition: transform 0.7s var(--ease);
-  }
-  .cpoints li.is-in::after {
-    transform: scaleX(1);
-  }
-  .cpoints li[data-follow] {
-    transform: none;
-    transition: opacity 0.6s ease 0.4s;
-  }
-
   /* ======================= FILM ======================= */
   .film {
     position: relative;
@@ -1025,9 +976,6 @@ const werte = [
     .rail-values {
       right: 8px;
     }
-    .cpoints li::after {
-      display: none;
-    }
     .values {
       --rail-gap: 8px;
     }
@@ -1045,6 +993,11 @@ const werte = [
     .career {
       overflow-x: clip;
     }
+    .career-stamp {
+      position: static;
+      justify-items: start;
+      margin: 0 var(--gutter) 3rem;
+    }
     .intro-visual {
       margin-bottom: 1.5rem;
     }
@@ -1055,8 +1008,7 @@ const werte = [
     .show-text {
       padding: var(--section) var(--gutter) 2rem;
     }
-    .show-items,
-    .show-bar {
+    .show-items {
       display: none;
     }
     .show-stage {
@@ -1110,9 +1062,6 @@ const werte = [
     .value h3 {
       font-size: clamp(1.2rem, 5.6vw, 1.5rem);
     }
-    .career-label {
-      left: 0;
-    }
     .film {
       height: auto;
     }
@@ -1143,7 +1092,6 @@ const werte = [
     if (!show) return;
     const imgs = Array.from(show.querySelectorAll<HTMLElement>('[data-show-img]'));
     const items = Array.from(show.querySelectorAll<HTMLElement>('[data-show-item]'));
-    const bar = show.querySelector<HTMLElement>('[data-show-bar]');
     const setActive = (i: number) =>
       items.forEach((it, j) => {
         it.classList.toggle('is-active', j === i);
@@ -1160,7 +1108,6 @@ const werte = [
         invalidateOnRefresh: true,
         onUpdate: (self) => {
           setActive(Math.min(imgs.length - 1, Math.round(self.progress * (imgs.length - 1))));
-          if (bar) bar.style.transform = `scaleX(${self.progress})`;
         },
       },
     });
@@ -1222,7 +1169,27 @@ const werte = [
     const r = el.getBoundingClientRect();
     return { top: r.top + window.scrollY, bottom: r.bottom + window.scrollY, left: r.left + window.scrollX, right: r.right + window.scrollX };
   };
-  const target = () => (reduce ? Infinity : window.scrollY + window.innerHeight * 0.62);
+  // Vorlauf der Linie vor dem Scrollstand. Im Zahlenbereich läuft sie weiter voraus,
+  // damit die Kennzahlen früh erscheinen. Die Rampen sind flach genug, dass die Linie nie zurückläuft.
+  let figsTop = Infinity;
+  let figsBottom = Infinity;
+  const lead = (y: number, vh: number) => {
+    const base = 0.62;
+    const extra = 0.3;
+    const upStart = figsTop - vh * 1.25;
+    const upEnd = figsTop - vh * 0.95;
+    const downStart = figsBottom - vh * 0.55;
+    const downEnd = downStart + vh * 0.7;
+    if (y <= upStart || y >= downEnd) return base;
+    if (y < upEnd) return base + (extra * (y - upStart)) / (upEnd - upStart);
+    if (y <= downStart) return base + extra;
+    return base + extra * (1 - (y - downStart) / (downEnd - downStart));
+  };
+  const target = () => {
+    if (reduce) return Infinity;
+    const vh = window.innerHeight;
+    return window.scrollY + vh * lead(window.scrollY, vh);
+  };
 
   const build = () => {
     if (!svg || !path || !branchG || window.innerWidth <= 900) return;
@@ -1236,31 +1203,22 @@ const werte = [
     const R = Math.min(W - 34, cb.right - pad + 36);
     const hero = box(document.querySelector('[data-hero]'))!;
     const figs = box(document.querySelector('[data-figs]'))!;
+    figsTop = figs.top;
+    figsBottom = figs.bottom;
     const film = box(document.querySelector('[data-film]'))!;
     const vh = window.innerHeight;
     const ax = W * 0.78; // Spitze der Hero-Unterkante
     const cx = W / 2;
     const tipY = film.top + vh * 0.22;
-    // Rahmen um jedes Leistungsbild: obere Kante und schräge rechte Kante, 16 px Abstand
-    const o = 16;
-    const frames: string[] = [];
-    let lastY = figs.bottom;
-    document.querySelectorAll<HTMLElement>('[data-svc]').forEach((row) => {
-      const b = box(row.querySelector('.svc-img'))!;
-      const w = b.right - b.left;
-      const leansRight = !row.classList.contains('svc-3'); // svc-1/2: oben nach rechts versetzt
-      const tl = leansRight ? b.left + 0.09 * w : b.left;
-      const tr = leansRight ? b.right : b.right - 0.09 * w;
-      const br = leansRight ? b.right - 0.09 * w : b.right;
-      frames.push(`L${tl - o} ${b.top - o}`, `H${tr + o}`, `L${br + o} ${b.bottom + o}`);
-      lastY = b.bottom + o;
-    });
+    // Leistungen: die Linie wechselt an der Abschnittskante einmal waagrecht nach rechts
+    // und läuft dann ruhig senkrecht am rechten Rand weiter – keine Bildrahmen, keine Diagonalen
+    const services = box(document.querySelector('[data-services]'))!;
     const d = [
       `M${ax} ${hero.bottom}`,
       `V${figs.top}`,
       `L${L} ${figs.bottom}`,
-      ...frames,
-      `L${R} ${lastY + 40}`,
+      `V${services.top}`,
+      `H${R}`,
       `V${film.top + 40}`,
       `H${cx}`,
       `V${tipY}`,
