@@ -10,6 +10,7 @@ import { url } from '~/lib/url';
 import heroPoster from '~/assets/site/hero-poster.jpg';
 import filmPoster from '~/assets/site/film-poster.jpg';
 import teamFoto from '~/assets/team/baustellenteam.jpg';
+import rohbauFoto from '~/assets/site/rohbau-tilsiter-strasse.jpg';
 
 const heroPosterImg = await getImage({ src: heroPoster, width: 1920, format: 'jpg', quality: 70 });
 const filmPosterImg = await getImage({ src: filmPoster, width: 1600, format: 'jpg', quality: 70 });
@@ -38,7 +39,9 @@ const svcInfo: Record<string, { bild: string; a: string; b: string; text: string
 const services = await Promise.all(
   leistungen.map(async (l) => {
     const info = svcInfo[l.slug]!;
-    return { ...l, ...info, img: (await getEntry('projekte', info.bild))!.data.bilder[0]! };
+    // Rohbau zeigt ein Foto aus der Rohbauphase (Tilsiter Straße)
+    const img = l.slug === 'rohbau' ? rohbauFoto : (await getEntry('projekte', info.bild))!.data.bilder[0]!;
+    return { ...l, ...info, img };
   }),
 );
 
@@ -150,7 +153,7 @@ const werte = [
         <article class:list={['svc', `svc-${i + 1}`]} data-svc>
           <div class="container svc-grid">
             <a class="svc-visual" href={url(`/leistungen/${s.slug}/`)} tabindex="-1" aria-hidden="true" data-reveal>
-              <span class:list={['block', i === 2 ? 'block-r' : 'block-l']} />
+              <span class="block block-l" />
               <span class="cut-img svc-img">
                 <Image src={s.img} alt="" widths={[600, 1000, 1400]} sizes="(min-width: 900px) 50vw, 100vw" />
               </span>
@@ -171,6 +174,7 @@ const werte = [
 
   <!-- ======================= PROJEKTE (3 × scrollen) ======================= -->
   <section class="show" data-show aria-labelledby="show-h">
+    <span class="show-bar" aria-hidden="true"><span data-show-bar></span></span>
     <div class="show-in">
       <div class="show-text">
         <h2 id="show-h" class="show-h">Projekte,<br /><span class="lt">die stehen.</span></h2>
@@ -204,7 +208,6 @@ const werte = [
             </a>
           ))
         }
-        <span class="rail rail-show" aria-hidden="true"><span data-show-bar></span></span>
       </div>
     </div>
   </section>
@@ -220,7 +223,7 @@ const werte = [
       <ul class="values-list">
         {
           werte.map((w) => (
-            <li class="value" data-follow>
+            <li class="value" data-follow data-to-rail>
               <ValueIcon name={w.icon} class="value-icon" />
               <div>
                 <h3>{w.t}</h3>
@@ -250,20 +253,11 @@ const werte = [
         <p class="career-lead" data-reveal>
           Ein familiengeführtes Team aus erfahrenen Profis und jungen Kollegen. Wir suchen Verstärkung auf der Baustelle und im Büro.
         </p>
-        <dl class="career-facts" data-reveal>
-          <div>
-            <dt>Bauvorhaben</dt>
-            <dd>Vielseitig, in ganz Hamburg</dd>
-          </div>
-          <div>
-            <dt>Team</dt>
-            <dd>Fest und eingespielt</dd>
-          </div>
-          <div>
-            <dt>Wege</dt>
-            <dd>Kurz, direkt zur Geschäftsführung</dd>
-          </div>
-        </dl>
+        <ul class="cpoints">
+          <li data-follow data-to-rail>Vielseitige Bauvorhaben</li>
+          <li data-follow data-to-rail>Ein festes Team</li>
+          <li data-follow data-to-rail>Kurze Wege</li>
+        </ul>
         <a class="pill" href={url('/karriere/')}><span>Jetzt bewerben</span><Icon name="arrow" /></a>
       </div>
     </div>
@@ -287,21 +281,27 @@ const werte = [
 
 <style>
   /* ---------- Bausteine ---------- */
-  /* Dezenter, rechtwinkliger Navy-Block an einer Bildecke.
-     Bewusst ohne Schräge: der rechte Winkel setzt einen ruhigen Kontrast zu den schrägen Bildkanten. */
+  /* Navy-Parallelogramm hinter dem Bild: steht oben, seitlich und unten über
+     und neigt sich wie das Bild selbst */
   .block {
     position: absolute;
-    bottom: -22px;
-    width: 30%;
-    height: 42%;
+    width: 42%;
     background: var(--navy);
     pointer-events: none;
-  }
-  .block-l {
-    left: -22px;
+    clip-path: polygon(40% 0, 100% 0, 88% 100%, 0 100%);
   }
   .block-r {
-    right: -22px;
+    right: -9%;
+    top: -11%;
+    bottom: -17%;
+  }
+  .block-l {
+    left: -8%;
+    top: 16%;
+    bottom: -16%;
+  }
+  .svc-3 .block-l {
+    clip-path: polygon(0 0, 60% 0, 100% 100%, 12% 100%);
   }
   .cut-img {
     display: block;
@@ -360,7 +360,7 @@ const werte = [
     position: absolute;
     inset: 0 auto 0 0;
     width: min(62vw, 1000px);
-    background: rgb(57 72 164 / 0.88);
+    background: rgb(18 23 53 / 0.84);
     clip-path: polygon(0 0, 100% 0, 66% 100%, 0 100%);
   }
   .hero-content {
@@ -412,6 +412,7 @@ const werte = [
     margin-bottom: 2rem;
   }
   .intro-p {
+    font-size: 0.95rem;
     max-width: 30rem;
     color: var(--ink-2);
     margin-bottom: 2rem;
@@ -588,6 +589,7 @@ const werte = [
     hyphens: manual;
   }
   .svc-text p {
+    font-size: 0.95rem;
     color: var(--ink-2);
     margin-bottom: 1.8rem;
   }
@@ -650,7 +652,7 @@ const werte = [
   }
   .show-desc {
     color: rgb(255 255 255 / 0.72);
-    font-size: 1rem;
+    font-size: 0.9rem;
     max-width: 24rem;
     margin-bottom: 1.4rem;
   }
@@ -698,10 +700,23 @@ const werte = [
     transform: scaleY(0);
     transform-origin: top;
   }
-  /* auf hellen Fotos sichtbar bleiben */
-  .rail-show {
-    background: rgb(18 23 53 / 0.35);
-    box-shadow: 0 0 0 1px rgb(18 23 53 / 0.22);
+  /* Projekte: dezenter Fortschrittsbalken unten, läuft von links bis zur Linie der nächsten Sektion */
+  .show-bar {
+    position: absolute;
+    left: var(--rail-l, 34px);
+    right: var(--rail-r, 34px);
+    bottom: 0;
+    height: 1.5px;
+    background: rgb(255 255 255 / 0.18);
+    z-index: 20;
+    pointer-events: none;
+  }
+  .show-bar span {
+    position: absolute;
+    inset: 0;
+    background: #fff;
+    transform: scaleX(0);
+    transform-origin: left;
   }
 
   /* ======================= WERTE ======================= */
@@ -730,9 +745,9 @@ const werte = [
     font-family: var(--font-head);
     font-stretch: 112%;
     font-weight: 300;
-    font-size: clamp(1.15rem, 1.6vw, 1.5rem);
-    line-height: 1.35;
-    max-width: 26rem;
+    font-size: clamp(1rem, 1.25vw, 1.2rem);
+    line-height: 1.4;
+    max-width: 24rem;
     color: #fff !important;
     margin: 0;
   }
@@ -754,7 +769,7 @@ const werte = [
     position: absolute;
     top: 0;
     left: 0;
-    right: calc(-1 * var(--rail-gap, 36px));
+    right: calc(-1 * var(--to-rail, 0px));
     height: 1.5px;
     background: rgb(255 255 255 / 0.55);
     transform: scaleX(0);
@@ -793,6 +808,7 @@ const werte = [
     margin-bottom: 0.45rem;
   }
   .value p {
+    font-size: 0.92rem;
     color: rgb(255 255 255 / 0.82);
     margin: 0;
   }
@@ -856,39 +872,48 @@ const werte = [
     margin-bottom: 1.6rem;
   }
   .career-lead {
-    font-size: 1rem;
+    font-size: 0.95rem;
     color: var(--ink-2);
     margin-bottom: 1.4rem;
     max-width: 26rem;
   }
-  .career-facts {
+  .cpoints {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2.2rem;
     display: grid;
-    margin: 0 0 2rem;
-    max-width: 26rem;
-    border-top: 1px solid var(--line);
+    gap: 0.9rem;
   }
-  .career-facts div {
-    display: grid;
-    grid-template-columns: 8.5rem 1fr;
+  .cpoints li {
+    display: flex;
+    align-items: center;
     gap: 1rem;
-    padding-block: 0.65rem;
-    border-bottom: 1px solid var(--line);
-  }
-  .career-facts dt {
-    white-space: nowrap;
+    margin-right: calc(-1 * var(--to-rail, 0px));
     font-family: var(--font-head);
     font-stretch: 120%;
     font-weight: 700;
-    font-size: 0.68rem;
-    letter-spacing: 0.12em;
+    font-size: 0.82rem;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--blue);
-    padding-top: 0.2rem;
+    white-space: nowrap;
   }
-  .career-facts dd {
-    margin: 0;
-    font-size: 0.92rem;
-    color: var(--ink-2);
+  /* Abzweig von der Linie zum Punkt */
+  .cpoints li::after {
+    content: '';
+    flex: 1;
+    height: 1.5px;
+    background: var(--blue);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.7s var(--ease);
+  }
+  .cpoints li.is-in::after {
+    transform: scaleX(1);
+  }
+  .cpoints li[data-follow] {
+    transform: none;
+    transition: opacity 0.6s ease 0.4s;
   }
 
   /* ======================= FILM ======================= */
@@ -915,9 +940,9 @@ const werte = [
   .film-feed {
     position: absolute;
     left: calc(50% - 0.75px);
-    top: 0;
+    top: 40px;
     width: 1.5px;
-    height: 22%;
+    height: calc(22% - 40px);
     background: var(--blue);
     z-index: 3;
     opacity: 0;
@@ -1000,6 +1025,9 @@ const werte = [
     .rail-values {
       right: 8px;
     }
+    .cpoints li::after {
+      display: none;
+    }
     .values {
       --rail-gap: 8px;
     }
@@ -1028,7 +1056,7 @@ const werte = [
       padding: var(--section) var(--gutter) 2rem;
     }
     .show-items,
-    .rail-show {
+    .show-bar {
       display: none;
     }
     .show-stage {
@@ -1132,7 +1160,7 @@ const werte = [
         invalidateOnRefresh: true,
         onUpdate: (self) => {
           setActive(Math.min(imgs.length - 1, Math.round(self.progress * (imgs.length - 1))));
-          if (bar) bar.style.transform = `scaleY(${self.progress})`;
+          if (bar) bar.style.transform = `scaleX(${self.progress})`;
         },
       },
     });
@@ -1156,7 +1184,10 @@ const werte = [
     tl.fromTo(frame, { clipPath: 'polygon(50% 22%, 70% 50%, 50% 78%, 30% 50%)' }, { clipPath: 'polygon(50% -60%, 160% 50%, 50% 160%, -60% 50%)', ease: 'none', duration: 1 });
     // Spitze wandert von 22 % nach oben aus dem Bild: bei 22/82 der Strecke erreicht sie den Rand
     const feed = document.querySelector('[data-film-feed]');
-    if (feed) tl.fromTo(feed, { height: '22%' }, { height: '0%', ease: 'none', duration: 22 / 82 }, 0);
+    if (feed) {
+      const h0 = window.innerHeight * 0.22 - 40;
+      tl.fromTo(feed, { height: h0 }, { height: 0, ease: 'none', duration: Math.max(0.01, h0 / (window.innerHeight * 0.82)) }, 0);
+    }
     if (ui) {
       gsap.set(ui, { autoAlpha: 0, y: 30 });
       tl.to(ui, { autoAlpha: 1, y: 0, duration: 0.35 }, 0.55);
@@ -1171,6 +1202,20 @@ const werte = [
   const samples: { len: number; y: number }[] = [];
   let branches: { el: SVGPathElement; len: number; y: number; shown: boolean }[] = [];
   let tipEnd = Infinity;
+  let railX = 0;
+  // Abzweige (Werte, Karriere) enden exakt an der Linie
+  const toRail = () => {
+    const valuesRail = document.querySelector('.rail-values');
+    const vx = valuesRail ? valuesRail.getBoundingClientRect().left + 0.75 : railX;
+    document.querySelectorAll<HTMLElement>('[data-to-rail]').forEach((el) => {
+      const inValues = !!el.closest('[data-values]');
+      const x = inValues ? vx : railX;
+      if (!x) return;
+      // bei den Karriere-Punkten verlängert der Wert das Element selbst, daher an der Liste messen
+      const ref = inValues ? el : el.parentElement!;
+      el.style.setProperty('--to-rail', `${Math.max(0, x - ref.getBoundingClientRect().right)}px`);
+    });
+  };
 
   const box = (el: Element | null) => {
     if (!el) return null;
@@ -1191,20 +1236,31 @@ const werte = [
     const R = Math.min(W - 34, cb.right - pad + 36);
     const hero = box(document.querySelector('[data-hero]'))!;
     const figs = box(document.querySelector('[data-figs]'))!;
-    const rows = Array.from(document.querySelectorAll('[data-svc]')).map((r) => box(r)!);
     const film = box(document.querySelector('[data-film]'))!;
     const vh = window.innerHeight;
     const ax = W * 0.78; // Spitze der Hero-Unterkante
     const cx = W / 2;
     const tipY = film.top + vh * 0.22;
-    const sTop = rows[0]!.top + 40;
-    const sBot = rows[rows.length - 1]!.bottom - 40;
+    // Rahmen um jedes Leistungsbild: obere Kante und schräge rechte Kante, 16 px Abstand
+    const o = 16;
+    const frames: string[] = [];
+    let lastY = figs.bottom;
+    document.querySelectorAll<HTMLElement>('[data-svc]').forEach((row) => {
+      const b = box(row.querySelector('.svc-img'))!;
+      const w = b.right - b.left;
+      const leansRight = !row.classList.contains('svc-3'); // svc-1/2: oben nach rechts versetzt
+      const tl = leansRight ? b.left + 0.09 * w : b.left;
+      const tr = leansRight ? b.right : b.right - 0.09 * w;
+      const br = leansRight ? b.right - 0.09 * w : b.right;
+      frames.push(`L${tl - o} ${b.top - o}`, `H${tr + o}`, `L${br + o} ${b.bottom + o}`);
+      lastY = b.bottom + o;
+    });
     const d = [
       `M${ax} ${hero.bottom}`,
       `V${figs.top}`,
       `L${L} ${figs.bottom}`,
-      `V${sTop}`,
-      `L${R} ${sBot}`,
+      ...frames,
+      `L${R} ${lastY + 40}`,
       `V${film.top + 40}`,
       `H${cx}`,
       `V${tipY}`,
@@ -1230,7 +1286,9 @@ const werte = [
     });
     // Randlinie in Projekten und Werten auf derselben Höhe wie die Hauptlinie
     doc.style.setProperty('--rail-r', `${W - R}px`);
-    doc.style.setProperty('--rail-gap', `${R - (cb.right - pad)}px`);
+    doc.style.setProperty('--rail-l', `${L}px`);
+    railX = R;
+    toRail();
     tipEnd = tipY;
     branchG.innerHTML = '';
     branches = defs.map(({ d: bd, y }) => {
@@ -1297,7 +1355,10 @@ const werte = [
     follow();
   };
   window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', () => build());
+  window.addEventListener('resize', () => {
+    build();
+    toRail();
+  });
   window.addEventListener('load', () => {
     ScrollTrigger.refresh();
     build();
@@ -1305,5 +1366,6 @@ const werte = [
   });
   ScrollTrigger.addEventListener('refresh', () => build());
   build();
+  toRail();
   follow();
 </script>
