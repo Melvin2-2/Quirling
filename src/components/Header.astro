@@ -229,6 +229,16 @@ const mainItems = nav.filter((n) => n.href !== '/kontakt/');
     transform: translate(-50%, 0);
     transition-delay: 0s;
   }
+  /* „Unternehmen“ steht weit rechts: Untermenü rechtsbündig, damit es nie über den Rand ragt */
+  .main-nav > ul > li:nth-child(3) .sub {
+    left: auto;
+    right: 0;
+    transform: translate(0, 10px);
+  }
+  .main-nav > ul > li:nth-child(3):hover .sub,
+  .main-nav > ul > li:nth-child(3):focus-within .sub {
+    transform: translate(0, 0);
+  }
   .sub-inner {
     display: grid;
     grid-template-columns: repeat(3, 15rem);

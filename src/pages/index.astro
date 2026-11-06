@@ -11,7 +11,7 @@ import heroPoster from '~/assets/site/hero-poster.jpg';
 import filmPoster from '~/assets/site/film-poster.jpg';
 import teamFoto from '~/assets/team/baustellenteam.jpg';
 import rohbauFoto from '~/assets/site/rohbau-wandsbek.jpg';
-import handwerkFoto from '~/assets/site/handwerk-schalung.jpg';
+import handwerkFoto from '~/assets/site/handwerk-kranlast.jpg';
 
 const heroPosterImg = await getImage({ src: heroPoster, width: 1920, format: 'jpg', quality: 70 });
 const filmPosterImg = await getImage({ src: filmPoster, width: 1600, format: 'jpg', quality: 70 });
@@ -109,17 +109,17 @@ const werte = [
           <div class="cut-img intro-img">
             <Image
               src={handwerkFoto}
-              alt="Schalung mit Quirling-Logo und Bewehrung auf einer Baustelle"
+              alt="Mitarbeiter der Quirling GmbH führen eine Kranlast in die Baugrube"
               widths={[600, 1000, 1400]}
               sizes="(min-width: 900px) 45vw, 100vw"
             />
           </div>
         </div>
         <div class="intro-text">
-          <h2 class="h1 intro-h">Wir bauen das,<br /><span class="lt">was trägt.</span></h2>
+          <h2 class="h1 intro-h">Eine Basis,<br /><span class="lt">auf die Sie<br />bauen können.</span></h2>
           <p class="intro-p">
-            Rohbau ist unser Handwerk. Seit {GRUENDUNGSJAHR} erstellen wir in Hamburg Fundamente, Wände und Decken in Beton und Stahlbeton.
-            Familiengeführt und bis zum Schluss sorgfältig.
+            Rohbau ist unser Handwerk. Seit {GRUENDUNGSJAHR} erstellen wir mit einem eingespielten Team Fundamente, Wände und Decken in Beton
+            und Stahlbeton. Familiengeführt und bis zum Schluss sorgfältig.
           </p>
           <a class="svc-more" href={url('/unternehmen/')} data-follow data-line-link>
             <span>Mehr über uns</span>
