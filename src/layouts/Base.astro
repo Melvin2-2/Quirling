@@ -14,7 +14,7 @@ interface Props {
   /** Entwurfsseiten: nicht in Suchmaschinen */
   noindex?: boolean;
   /** Typografie-Variante (Entwurf) */
-  typo?: 'a' | 'b';
+  typo?: 'a' | 'b' | 'c';
 }
 const {
   title,
@@ -48,7 +48,7 @@ const jsonLd = {
 ---
 
 <!doctype html>
-<html lang="de" class:list={[{ "typo-b": typo === "b" }]}>
+<html lang="de" class:list={[{ "typo-b": typo === "b" || typo === "c", "typo-c": typo === "c" }]}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />

@@ -14,12 +14,14 @@ import rohbauFoto from '~/assets/site/rohbau-wandsbek.jpg';
 import handwerkFoto from '~/assets/site/handwerk-schalung.jpg';
 
 interface Props {
-  /** Typografie-Variante: 'a' (Standard) oder 'b' (Entwurf) */
-  typo?: 'a' | 'b';
+  /** Typografie-Variante: 'a' (Standard), 'b' oder 'c' (Entwürfe) */
+  typo?: 'a' | 'b' | 'c';
+  /** Hintergrund der Leistungen: Raster, nur Farbe oder Rauten-Komposition */
+  svcBg?: 'raster' | 'farbe' | 'rauten';
   noindex?: boolean;
   title?: string;
 }
-const { typo = 'a', noindex = false, title = 'Start' } = Astro.props;
+const { typo = 'a', svcBg = 'raster', noindex = false, title = 'Start' } = Astro.props;
 
 const heroPosterImg = await getImage({ src: heroPoster, width: 1920, format: 'jpg', quality: 70 });
 const filmPosterImg = await getImage({ src: filmPoster, width: 1600, format: 'jpg', quality: 70 });
@@ -164,7 +166,18 @@ const werte = [
 
   <!-- ======================= LEISTUNGEN ======================= -->
   <section class="services" data-services aria-labelledby="svc-h">
-    <div class="svc-bg" data-svc-bg aria-hidden="true"></div>
+    <div class:list={['svc-bg', `svc-bg-${svcBg}`]} data-svc-bg aria-hidden="true">
+      {
+        svcBg === 'rauten' && (
+          <>
+            <span class="rh rh-1" data-rh="-160" />
+            <span class="rh rh-2" data-rh="120" />
+            <span class="rh rh-3" data-rh="-80" />
+            <span class="rh rh-4" data-rh="200" />
+          </>
+        )
+      }
+    </div>
     <div class="container">
       <h2 id="svc-h" class="svc-head" data-follow data-svc-head>Was wir <span class="lt">bauen.</span></h2>
     </div>
@@ -384,7 +397,7 @@ const werte = [
     position: absolute;
     inset: 0 auto 0 0;
     width: calc(var(--content-left) + min(58vw, 1000px));
-    background: rgb(18 23 53 / 0.74);
+    background: rgb(18 23 53 / 0.82);
     clip-path: polygon(0 0, 100% 0, 66% 100%, 0 100%);
   }
   .hero-content {
@@ -561,6 +574,48 @@ const werte = [
     -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 22vh, #000 calc(100% - 22vh), transparent 100%);
     mask-image: linear-gradient(to bottom, transparent 0, #000 22vh, #000 calc(100% - 22vh), transparent 100%);
     opacity: 0;
+  }
+  /* Variante „nur Farbe“: ruhige Fläche ohne Textur */
+  .svc-bg-farbe {
+    background-image: none;
+    background-color: #e6e9f6;
+  }
+  /* Variante „Rauten“: große, transparente Rauten in Logo-Proportion, die beim Scrollen
+     unterschiedlich schnell wandern (Tiefenwirkung) */
+  .svc-bg-rauten {
+    background-image: none;
+    background-color: #e9ecf8;
+    overflow: hidden;
+  }
+  .rh {
+    position: absolute;
+    aspect-ratio: 352 / 245;
+    clip-path: polygon(49.8% 0, 100% 53.3%, 48% 100%, 0 49.6%);
+    will-change: transform;
+  }
+  .rh-1 {
+    width: 74vw;
+    left: -24vw;
+    top: 14%;
+    background: rgb(57 72 164 / 0.08);
+  }
+  .rh-2 {
+    width: 46vw;
+    right: -10vw;
+    top: 30%;
+    background: rgb(57 72 164 / 0.11);
+  }
+  .rh-3 {
+    width: 30vw;
+    left: 30vw;
+    top: 62%;
+    background: rgb(18 23 53 / 0.06);
+  }
+  .rh-4 {
+    width: 58vw;
+    right: -18vw;
+    top: 66%;
+    background: rgb(57 72 164 / 0.06);
   }
   @media (prefers-reduced-motion: reduce) {
     .svc-bg {
@@ -830,8 +885,9 @@ const werte = [
   }
   .values-grid {
     display: grid;
-    grid-template-columns: 0.9fr 1.1fr;
-    gap: clamp(4rem, 10vw, 11rem);
+    /* minmax(0, …): die Spalten dürfen nie über das Raster hinauswachsen */
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(3rem, 8vw, 9rem);
     align-items: center;
   }
   .values-h {
@@ -876,8 +932,9 @@ const werte = [
     content: '';
     position: absolute;
     top: 50%;
-    left: calc(100% - var(--icon-gap) + 0.9rem);
-    right: calc(-1 * var(--to-rail, 0px));
+    /* Lage und Länge werden per Skript gemessen: vom Piktogramm bis exakt zur Linie */
+    left: var(--branch-left, 100%);
+    width: var(--branch-w, 0px);
     height: 1.5px;
     background: rgb(255 255 255 / 0.7);
     transform: scaleX(0);
@@ -892,6 +949,8 @@ const werte = [
     transform: none;
   }
   .value-text {
+    min-width: 0;
+    overflow-wrap: break-word;
     opacity: 0;
     transition: opacity 0.6s ease 0.9s;
   }
@@ -1123,7 +1182,7 @@ const werte = [
   }
   :global(html.typo-b) .value h3 {
     font-weight: 900;
-    font-size: clamp(1.8rem, 3vw, 2.9rem);
+    font-size: clamp(1.6rem, 2.4vw, 2.5rem);
   }
   :global(html.typo-b) .career-h {
     font-weight: 900;
@@ -1161,6 +1220,84 @@ const werte = [
   }
   :global(html.typo-b) .fg span {
     font-size: 0.72rem;
+  }
+  :global(html.typo-b) .fg span,
+  :global(html.typo-b) .svc-more,
+  :global(html.typo-b) .show-meta,
+  :global(html.typo-b) .cl-b {
+    letter-spacing: 0.04em;
+  }
+
+  /* ======================= TYPOGRAFIE-ENTWURF C ======================= */
+  /* schmale, hohe Überschriften – größer gesetzt */
+  :global(html.typo-c) .hero-title,
+  :global(html.typo-c) .intro-h,
+  :global(html.typo-c) .svc-head,
+  :global(html.typo-c) .svc-title,
+  :global(html.typo-c) .show-h,
+  :global(html.typo-c) .show-title,
+  :global(html.typo-c) .values-h,
+  :global(html.typo-c) .value h3,
+  :global(html.typo-c) .career-h,
+  :global(html.typo-c) .fg strong,
+  :global(html.typo-c) .cl-a {
+    font-stretch: 68%;
+    letter-spacing: -0.005em;
+  }
+  :global(html.typo-c) .hero-title {
+    font-weight: 800;
+    font-size: clamp(3.2rem, 7vw, 7.4rem);
+    line-height: 0.86;
+  }
+  :global(html.typo-c) .intro-h {
+    font-weight: 800;
+    font-size: clamp(2.4rem, 3.9vw, 4.4rem);
+    line-height: 0.9;
+  }
+  :global(html.typo-c) .svc-head {
+    font-weight: 800;
+    font-size: clamp(3.6rem, 9vw, 9.6rem);
+    line-height: 0.86;
+  }
+  :global(html.typo-c) .svc-title {
+    font-weight: 800;
+    font-size: clamp(2.2rem, 3.4vw, 3.6rem);
+    line-height: 0.9;
+  }
+  :global(html.typo-c) .show-h {
+    font-weight: 800;
+    font-size: clamp(2.8rem, 4.6vw, 5.2rem);
+    line-height: 0.86;
+  }
+  :global(html.typo-c) .show-title {
+    font-weight: 800;
+    font-size: clamp(1.7rem, 2.6vw, 2.5rem);
+  }
+  :global(html.typo-c) .values-h {
+    font-weight: 800;
+    font-size: clamp(3.6rem, 7.4vw, 8rem);
+    line-height: 0.86;
+  }
+  :global(html.typo-c) .value h3 {
+    font-weight: 800;
+    font-size: clamp(2rem, 3.2vw, 3.2rem);
+  }
+  :global(html.typo-c) .career-h {
+    font-weight: 800;
+    font-size: clamp(3rem, 5.6vw, 6rem);
+    line-height: 0.86;
+  }
+  :global(html.typo-c) .fg strong {
+    font-weight: 800;
+  }
+  :global(html.typo-c) .fg-1 strong {
+    font-size: clamp(5.5rem, 15vw, 14rem);
+  }
+  :global(html.typo-c) .fg-3 strong {
+    font-size: clamp(4.6rem, 11vw, 10.4rem);
+  }
+  :global(html.typo-c) .fg-2 strong {
+    font-size: clamp(4rem, 9.5vw, 9rem);
   }
 
   /* ======================= RESPONSIVE ======================= */
@@ -1386,6 +1523,11 @@ const werte = [
     gsap.fromTo(bg, { opacity: 0 }, { opacity: 1, ease: 'none', scrollTrigger: { trigger: sec, start: 'top 95%', end: 'top 30%', scrub: true } });
     gsap.fromTo(bg, { opacity: 1 }, { opacity: 0, ease: 'none', immediateRender: false, scrollTrigger: { trigger: sec, start: 'bottom 75%', end: 'bottom 10%', scrub: true } });
     gsap.fromTo(bg, { backgroundPosition: '0px 0px' }, { backgroundPosition: '0px -140px', ease: 'none', scrollTrigger: { trigger: sec, start: 'top bottom', end: 'bottom top', scrub: true } });
+    // Rauten-Variante: jede Raute wandert unterschiedlich weit (Parallaxe)
+    bg.querySelectorAll<HTMLElement>('[data-rh]').forEach((r) => {
+      const dy = Number(r.dataset.rh);
+      gsap.fromTo(r, { y: -dy / 2, rotate: 0 }, { y: dy, rotate: dy > 0 ? 4 : -4, ease: 'none', scrollTrigger: { trigger: sec, start: 'top bottom', end: 'bottom top', scrub: true } });
+    });
   });
 
   /* ---------- Film: Raute öffnet sich ---------- */
@@ -1421,6 +1563,15 @@ const werte = [
   const toRail = () => {
     const valuesRail = document.querySelector('.rail-values');
     const vx = valuesRail ? valuesRail.getBoundingClientRect().left + 0.75 : railX;
+    // Werte: Abzweig beginnt rechts neben dem Piktogramm und endet genau auf der Linie
+    document.querySelectorAll<HTMLElement>('.value').forEach((el) => {
+      const icon = el.querySelector('.value-icon');
+      if (!icon || !vx) return;
+      const r = el.getBoundingClientRect();
+      const start = icon.getBoundingClientRect().right + 14;
+      el.style.setProperty('--branch-left', `${start - r.left}px`);
+      el.style.setProperty('--branch-w', `${Math.max(0, vx - start)}px`);
+    });
     document.querySelectorAll<HTMLElement>('[data-to-rail]').forEach((el) => {
       const inValues = !!el.closest('[data-values]');
       const x = inValues ? vx : railX;
@@ -1616,4 +1767,8 @@ const werte = [
   build();
   toRail();
   follow();
+  document.fonts?.ready.then(() => {
+    build();
+    toRail();
+  });
 </script>
