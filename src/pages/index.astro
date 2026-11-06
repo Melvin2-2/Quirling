@@ -225,7 +225,7 @@ const werte = [
   <!-- ======================= WERTE ======================= -->
   <section class="values on-blue" data-values>
     <span class="rail rail-values" aria-hidden="true"><span data-values-bar></span></span>
-    <div class="container values-grid values-wide">
+    <div class="container values-grid">
       <div class="values-head">
         <h2 class="values-h">Familien&shy;betrieb.</h2>
         <p class="values-core">Hinter jedem Bauvorhaben steht die Familie Quirling. Mit Namen und Handschlag.</p>
@@ -529,7 +529,7 @@ const werte = [
   /* ======================= LEISTUNGEN ======================= */
   .services {
     overflow-x: clip;
-    padding-block: clamp(5rem, 9vw, 8rem);
+    padding-block: clamp(4rem, 7vw, 6rem);
   }
   .svc-head {
     position: relative;
@@ -556,7 +556,7 @@ const werte = [
     clip-path: inset(0 -2% 0 0);
   }
   .svc {
-    padding-block: clamp(3.5rem, 6vw, 5.5rem);
+    padding-block: clamp(2rem, 3.5vw, 3.25rem);
   }
   .svc-grid {
     display: grid;
@@ -566,22 +566,22 @@ const werte = [
   }
   /* Bilder treppen sich entlang der Diagonale nach rechts unten */
   .svc-1 .svc-visual {
-    grid-column: 1 / 7;
+    grid-column: 1 / 6;
   }
   .svc-1 .svc-text {
-    grid-column: 8 / 13;
+    grid-column: 7 / 13;
   }
   .svc-2 .svc-visual {
-    grid-column: 2 / 8;
+    grid-column: 2 / 7;
   }
   .svc-2 .svc-text {
-    grid-column: 9 / 13;
+    grid-column: 8 / 13;
   }
   .svc-3 .svc-visual {
-    grid-column: 1 / 7;
+    grid-column: 1 / 6;
   }
   .svc-3 .svc-text {
-    grid-column: 8 / 13;
+    grid-column: 7 / 13;
   }
   .svc-visual {
     position: relative;
@@ -591,7 +591,7 @@ const werte = [
 
   .svc-img {
     position: relative;
-    aspect-ratio: 16 / 11;
+    aspect-ratio: 16 / 10;
     clip-path: polygon(9% 0, 100% 0, 91% 100%, 0 100%);
   }
 
@@ -808,7 +808,7 @@ const werte = [
     gap: clamp(3rem, 6vw, 5rem);
   }
   .value {
-    --icon-gap: clamp(3rem, 9vw, 9rem);
+    --icon-gap: clamp(4rem, 11vw, 11rem);
     position: relative;
     display: flex;
     align-items: center;
@@ -822,8 +822,8 @@ const werte = [
     content: '';
     position: absolute;
     top: 50%;
-    left: calc(100% - var(--icon-gap) + 0.75rem);
-    width: calc(var(--icon-gap) - 0.75rem + var(--to-rail, 0px));
+    left: calc(100% - var(--icon-gap) + 0.9rem);
+    right: calc(-1 * var(--to-rail, 0px));
     height: 1.5px;
     background: rgb(255 255 255 / 0.7);
     transform: scaleX(0);
@@ -850,8 +850,8 @@ const werte = [
     --vicon-bg: #3948a4;
   }
   .value :global(.vicon-art) {
-    width: 64px;
-    height: 64px;
+    width: 76px;
+    height: 76px;
   }
   /* Piktogramm zeichnet sich, wenn der Abzweig ankommt */
   .value :global(.vicon-art path) {
@@ -863,8 +863,8 @@ const werte = [
     stroke-dashoffset: 0;
   }
   .value :global(.vicon-hammer) {
-    width: 56px;
-    height: 56px;
+    width: 66px;
+    height: 66px;
     clip-path: inset(0 0 0 100%);
     transition: clip-path 1s ease 0.5s;
   }
@@ -885,20 +885,15 @@ const werte = [
   .value h3 {
     font-stretch: 125%;
     font-weight: 800;
-    font-size: clamp(1.4rem, 2.2vw, 2rem);
+    font-size: clamp(1.6rem, 2.6vw, 2.5rem);
     text-transform: uppercase;
     line-height: 1;
     margin-bottom: 0.45rem;
   }
   .value p {
-    font-size: 0.92rem;
+    font-size: 1.02rem;
     color: rgb(255 255 255 / 0.82);
     margin: 0;
-  }
-
-  /* auf breiten Bildschirmen etwas breiter als das übrige Raster: Überschrift weiter links */
-  .values-wide {
-    max-width: calc(1560px + var(--gutter) * 2);
   }
 
   /* ======================= KARRIERE ======================= */

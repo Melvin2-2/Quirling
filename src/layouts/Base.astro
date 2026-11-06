@@ -11,12 +11,15 @@ interface Props {
   /** Kopfzeile transparent über dunklem Hero */
   overlay?: boolean;
   ogImage?: string;
+  /** Entwurfsseiten: nicht in Suchmaschinen */
+  noindex?: boolean;
 }
 const {
   title,
   description = 'Quirling GmbH, Bauunternehmen in Hamburg seit 1992. Rohbau, Beton- und Stahlbetonbau, schlüsselfertiges Bauen sowie Umbau und Sanierung in Hamburg und Umgebung.',
   overlay = true,
   ogImage,
+  noindex = false,
 } = Astro.props;
 
 const fullTitle = title === 'Start' ? `${firma.langname} Hamburg | Rohbau, Stahlbetonbau, Umbau` : `${title} | ${firma.langname}`;
@@ -49,6 +52,7 @@ const jsonLd = {
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="icon" type="image/svg+xml" href={url('/favicon.svg')} />
     <meta name="theme-color" content="#3948A4" />
     <meta property="og:type" content="website" />

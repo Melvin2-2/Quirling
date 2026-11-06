@@ -50,7 +50,7 @@ const mainItems = nav.filter((n) => n.href !== '/kontakt/');
 
     <div class="actions">
       <a class="phone" href={firma.telefonHref}><Icon name="phone" /><span>{firma.telefon}</span></a>
-      <a class="pill solid cta" href={url('/kontakt/')}><span>Kontakt</span><Icon name="arrow" /></a>
+      <a class="phone cta" href={url('/kontakt/')}><Icon name="mail" /><span>Kontakt</span></a>
       <button class="burger" type="button" aria-expanded="false" aria-controls="mobile-nav" data-burger>
         <span class="visually-hidden">Menü öffnen</span>
         <i></i><i></i>
@@ -290,13 +290,9 @@ const mainItems = nav.filter((n) => n.href !== '/kontakt/');
     width: 1.1rem;
     height: 1.1rem;
   }
-  .cta {
-    padding: 0.65rem 1.1rem;
-  }
-  .site-header[data-overlay='true']:not(.is-solid) .cta {
-    background: #fff;
-    border-color: #fff;
-    color: var(--blue);
+  .phone:hover span {
+    text-decoration: underline;
+    text-underline-offset: 0.3em;
   }
 
   .burger {

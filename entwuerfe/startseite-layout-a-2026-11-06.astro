@@ -1,0 +1,1484 @@
+---
+// ENTWURF (gesichert am 06.11.2026): Startseite mit Zahlen-Diagonale und „Was wir bauen“ (Linie unter der Überschrift von links nach rechts). Wird nicht gebaut.
+import { Image, getImage } from 'astro:assets';
+import { getEntry } from 'astro:content';
+import Base from '~/layouts/Base.astro';
+import Icon from '~/components/Icon.astro';
+import QHammer from '~/components/QHammer.astro';
+import ValueIcon from '~/components/ValueIcon.astro';
+import { firma, leistungen, GRUENDUNGSJAHR } from '~/data/site';
+import { url } from '~/lib/url';
+import heroPoster from '~/assets/site/hero-poster.jpg';
+import filmPoster from '~/assets/site/film-poster.jpg';
+import teamFoto from '~/assets/team/baustellenteam.jpg';
+import rohbauFoto from '~/assets/site/rohbau-wandsbek.jpg';
+import handwerkFoto from '~/assets/site/handwerk-schalung.jpg';
+
+const heroPosterImg = await getImage({ src: heroPoster, width: 1920, format: 'jpg', quality: 70 });
+const filmPosterImg = await getImage({ src: filmPoster, width: 1600, format: 'jpg', quality: 70 });
+
+/* Leistungen: Bilder folgen der Diagonale der Linie */
+const svcInfo: Record<string, { bild: string; a: string; b: string; text: string }> = {
+  rohbau: {
+    bild: 'grosse-johannisstrasse',
+    a: 'Rohbau &',
+    b: 'Stahlbetonbau',
+    text: 'Rohbauten in Beton- und Stahlbetonbauweise. Vom Fundament über die Tiefgarage bis zur letzten Decke.',
+  },
+  'schluesselfertiges-bauen': {
+    bild: 'steinwegel',
+    a: 'Schlüssel\u00adfertiges',
+    b: 'Bauen',
+    text: 'Vom Rohbau bis zur Übergabe koordinieren wir alle Gewerke. Mit einem festen Ansprechpartner.',
+  },
+  'umbau-sanierung': {
+    bild: 'bellevue-59',
+    a: 'Umbau &',
+    b: 'Sanierung',
+    text: 'Umbauten, Erweiterungen und Sanierungen im Bestand. Von der Stadtvilla bis zum Alsterpalais.',
+  },
+};
+const services = await Promise.all(
+  leistungen.map(async (l) => {
+    const info = svcInfo[l.slug]!;
+    // Rohbau zeigt ein Foto aus der Rohbauphase (My Place Selfstorage Wandsbek)
+    const img = l.slug === 'rohbau' ? rohbauFoto : (await getEntry('projekte', info.bild))!.data.bilder[0]!;
+    return { ...l, ...info, img };
+  }),
+);
+
+/* Drei Projekte zum Durchscrollen */
+const fakt = (fakten: { label: string; value: string }[], label: string) => fakten.find((f) => f.label === label)?.value;
+const showcase = await Promise.all(
+  ['hanseforum', 'prime-selfstorage-harburg', 'bellevue-50'].map(async (id) => {
+    const p = (await getEntry('projekte', id))!;
+    const adresse = fakt(p.data.fakten, 'Adresse')?.split('\n') ?? [];
+    return { id, ...p.data, strasse: adresse[0] ?? '', ort: (adresse[1] ?? '').replace(/^\d{5}\s*/, '') };
+  }),
+);
+
+
+
+const werte = [
+  {
+    icon: 'familie',
+    t: 'Persönlich',
+    d: 'Sie sprechen direkt mit denen, die entscheiden.',
+  },
+  {
+    icon: 'dialog',
+    t: 'Verbindlich',
+    d: 'Klare Absprachen, feste Termine.',
+  },
+  {
+    icon: 'hammer',
+    t: 'Sorgfältig',
+    d: 'Bis zum Schluss. Bis ins Detail.',
+  },
+] as const;
+---
+
+<Base title="Start">
+  <!-- Blaue Linie: startet an der Spitze des Hero und endet in der Film-Raute -->
+  <svg class="flow" data-flow aria-hidden="true">
+    <path data-flow-path></path>
+    <g data-flow-branches></g>
+  </svg>
+
+  <!-- ======================= HERO ======================= -->
+  <section class="hero" data-hero>
+    <div class="hero-media">
+      <video class="hero-video" autoplay muted loop playsinline preload="auto" poster={heroPosterImg.src} data-autoplay aria-hidden="true">
+        <source src={url('/video/hero-540.mp4')} type="video/mp4" media="(max-width: 767px)" />
+        <source src={url('/video/hero-1080.mp4')} type="video/mp4" />
+      </video>
+      <div class="hero-slab" aria-hidden="true"></div>
+    </div>
+    <div class="hero-cut" aria-hidden="true"></div>
+    <div class="container hero-content">
+      <h1 class="hero-title">Was wir<br />zusagen,<br /><span class="lt">steht.</span></h1>
+      <a class="pill light" href={url('/leistungen/')}><span>Leistungen entdecken</span><Icon name="arrow" /></a>
+    </div>
+  </section>
+
+  <!-- ======================= HANDWERK ======================= -->
+  <section class="intro">
+    <div class="container">
+      <div class="intro-grid" data-intro>
+        <div class="intro-visual">
+          <span class="block block-l" aria-hidden="true"></span>
+          <div class="cut-img intro-img">
+            <Image
+              src={handwerkFoto}
+              alt="Schalung mit Quirling-Logo und Bewehrung auf einer Baustelle"
+              widths={[600, 1000, 1400]}
+              sizes="(min-width: 900px) 45vw, 100vw"
+            />
+          </div>
+        </div>
+        <div class="intro-text">
+          <h2 class="h1 intro-h">Wir bauen das,<br /><span class="lt">was trägt.</span></h2>
+          <p class="intro-p">
+            Rohbau ist unser Handwerk. Seit {GRUENDUNGSJAHR} erstellen wir in Hamburg Fundamente, Wände und Decken in Beton und Stahlbeton.
+            Familiengeführt und bis zum Schluss sorgfältig.
+          </p>
+          <a class="svc-more" href={url('/unternehmen/')} data-follow data-line-link>
+            <span>Mehr über uns</span>
+            <Icon name="arrow" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= KENNZAHLEN (diagonal) ======================= -->
+  <section class="figs" aria-label="Quirling in Zahlen">
+    <div class="container">
+      <div class="figs-field" data-figs>
+        <div class="fg fg-1" data-follow>
+          <strong>{GRUENDUNGSJAHR}</strong>
+          <span>Gegründet in Hamburg</span>
+        </div>
+        <div class="fg fg-2" data-follow>
+          <strong>{firma.mitarbeiter}</strong>
+          <span>Profis im Team</span>
+        </div>
+        <div class="fg fg-3" data-follow>
+          <strong>{firma.projekteAnzahl}<sup>+</sup></strong>
+          <span>Projekte realisiert</span>
+        </div>
+        <div class="fg fg-4" data-follow>
+          <strong>Hamburg &amp; Umgebung</strong>
+          <span>Unser Einsatzgebiet</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= LEISTUNGEN ======================= -->
+  <section class="services" data-services aria-labelledby="svc-h">
+    <div class="container">
+      <h2 id="svc-h" class="svc-head" data-follow data-svc-head>Was wir <span class="lt">bauen.</span></h2>
+    </div>
+    {
+      services.map((s, i) => (
+        <article class:list={['svc', `svc-${i + 1}`]} data-svc>
+          <div class="container svc-grid">
+            <a class="svc-visual" href={url(`/leistungen/${s.slug}/`)} tabindex="-1" aria-hidden="true">
+              <span class="block block-l" />
+              <span class="cut-img svc-img">
+                <Image src={s.img} alt="" widths={[600, 1000, 1400]} sizes="(min-width: 900px) 50vw, 100vw" />
+              </span>
+            </a>
+            <div class="svc-text">
+              <h3 class="svc-title">{s.title}</h3>
+              <p>{s.text}</p>
+              <a class="svc-more" href={url(`/leistungen/${s.slug}/`)} data-follow data-line-link>
+                <span>Mehr erfahren</span>
+                <Icon name="arrow" />
+              </a>
+            </div>
+          </div>
+        </article>
+      ))
+    }
+  </section>
+
+  <!-- ======================= PROJEKTE (3 × scrollen) ======================= -->
+  <section class="show" data-show aria-labelledby="show-h">
+    <div class="show-in">
+      <div class="show-text">
+        <h2 id="show-h" class="show-h">Projekte,<br /><span class="lt">die stehen.</span></h2>
+        <div class="show-items">
+          {
+            showcase.map((p, i) => (
+              <div class:list={['show-item', { 'is-active': i === 0 }]} data-show-item>
+                <h3 class="show-title">{p.title}</h3>
+                <p class="show-desc">
+                  {p.leistung}
+                  <span class="show-meta">{p.ort}</span>
+                </p>
+                <a class="link-arrow" href={url(`/referenzen/${p.id}/`)} tabindex={i === 0 ? undefined : -1}>
+                  Projekt ansehen <Icon name="arrow" />
+                </a>
+              </div>
+            ))
+          }
+        </div>
+        <a class="pill light" href={url('/referenzen/')}><span>Alle Referenzen</span><Icon name="arrow" /></a>
+      </div>
+      <div class="show-stage">
+        {
+          showcase.map((p, i) => (
+            <a class="show-img" href={url(`/referenzen/${p.id}/`)} data-show-img tabindex="-1" style={`z-index:${i + 1}`}>
+              <Image src={p.bilder[0]!} alt={`${p.title}: ${p.leistung}`} widths={[900, 1400, 2000]} sizes="(min-width: 900px) 62vw, 100vw" />
+              <span class="show-cap">
+                <strong>{p.title}</strong>
+                {p.kategorien[0]} · {p.ort}
+              </span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= WERTE ======================= -->
+  <section class="values on-blue" data-values>
+    <span class="rail rail-values" aria-hidden="true"><span data-values-bar></span></span>
+    <div class="container values-grid values-wide">
+      <div class="values-head">
+        <h2 class="values-h">Familien&shy;betrieb.</h2>
+        <p class="values-core">Hinter jedem Bauvorhaben steht die Familie Quirling. Mit Namen und Handschlag.</p>
+      </div>
+      <ul class="values-list">
+        {
+          werte.map((w) => (
+            <li class="value" data-follow data-to-rail>
+              <div class="value-text">
+                <h3>{w.t}</h3>
+                <p>{w.d}</p>
+              </div>
+              <ValueIcon name={w.icon} class="value-icon" frame={false} />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- ======================= KARRIERE ======================= -->
+  <section class="career">
+    <div class="career-stamp" data-follow aria-hidden="true">
+      <span class="cl-a"><QHammer class="cl-hammer" color="#fff" highlight="#3948A4" />Mit anpacken</span>
+      <span class="cl-b">bei Quirling</span>
+    </div>
+    <div class="container career-grid">
+      <div class="career-visual">
+        <span class="block block-l" aria-hidden="true"></span>
+        <div class="cut-img career-img">
+          <Image src={teamFoto} alt="Das Team der Quirling GmbH mit Geschäftsführer Thomas Quirling" widths={[700, 1100, 1440]} sizes="(min-width: 900px) 55vw, 100vw" />
+        </div>
+      </div>
+      <div class="career-text">
+        <h2 class="h2 career-h">Werde Teil<br /><span class="lt">des Teams.</span></h2>
+        <p class="career-lead">
+          Ein familiengeführtes Team aus erfahrenen Profis und jungen Kollegen. Wir suchen Verstärkung auf der Baustelle und im Büro.
+        </p>
+        <a class="pill" href={url('/karriere/')}><span>Jetzt bewerben</span><Icon name="arrow" /></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= FILM (Raute) ======================= -->
+  <section class="film" data-film>
+    <div class="film-sticky">
+      <span class="film-feed" data-film-feed aria-hidden="true"></span>
+      <div class="film-frame" data-film-frame>
+        <video autoplay muted loop playsinline preload="none" poster={filmPosterImg.src} data-autoplay aria-hidden="true">
+          <source src={url('/video/film-loop.mp4')} type="video/mp4" />
+        </video>
+      </div>
+      <div class="film-ui" data-film-ui>
+        <h2 class="h-display">Quirling<br /><span class="lt">von oben.</span></h2>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* ---------- Bausteine ---------- */
+  /* Navy-Parallelogramm hinter dem Bild: neigt sich wie das Bild,
+     steht nur leicht über (überall gleich, links hinter dem Bild) */
+  .block {
+    position: absolute;
+    width: 40%;
+    background: var(--navy);
+    pointer-events: none;
+    clip-path: polygon(0 0, 60% 0, 100% 100%, 12% 100%);
+  }
+  .block-l {
+    left: -8%;
+    top: 12%;
+    bottom: -7%;
+  }
+  .block-r {
+    right: -7%;
+    top: -5%;
+    bottom: -6%;
+    clip-path: polygon(40% 0, 100% 0, 88% 100%, 0 100%);
+  }
+  .cut-img {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    background: var(--stone-200);
+  }
+  .cut-img :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* ---------- Linie ---------- */
+  :global(main) {
+    position: relative;
+  }
+  .flow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    overflow: visible;
+  }
+  .flow :global(path) {
+    fill: none;
+    stroke: var(--blue);
+    stroke-width: 1.5;
+  }
+
+
+  /* ======================= HERO ======================= */
+  .hero {
+    position: relative;
+    height: 100svh;
+    min-height: 640px;
+    color: #fff;
+    z-index: 2;
+    /* Unterkante deutet eine Raute an, Spitze rechts */
+    --hero-cut: polygon(0 90%, 78% 100%, 100% 94%, 100% 101%, 0 101%);
+  }
+  /* Das Video selbst wird bewusst NICHT zugeschnitten: Chrome zeichnet zugeschnittene
+     Video-Ebenen beim Hoch- und Runterscrollen teils unvollständig. Die schräge Unterkante
+     entsteht durch eine Fläche in Seitenfarbe, die über dem unteren Videorand liegt. */
+  .hero-media {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    background: var(--navy);
+  }
+  .hero-cut {
+    position: absolute;
+    inset: 0;
+    background: var(--stone-50);
+    clip-path: var(--hero-cut);
+    pointer-events: none;
+  }
+  .hero-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .hero-slab {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: calc(var(--content-left) + min(58vw, 1000px));
+    background: rgb(18 23 53 / 0.74);
+    clip-path: polygon(0 0, 100% 0, 66% 100%, 0 100%);
+  }
+  .hero-content {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: var(--header-h);
+    padding-bottom: 4rem;
+  }
+  .hero-title {
+    font-family: var(--font-head);
+    font-stretch: 125%;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: clamp(2.4rem, 4.6vw, 4.6rem);
+    line-height: 0.98;
+    letter-spacing: -0.01em;
+    margin-bottom: 2.6rem;
+    /* bleibt mit Abstand innerhalb der schrägen blauen Fläche */
+    max-width: min(42vw, 660px);
+    white-space: nowrap;
+  }
+
+  /* ======================= INTRO ======================= */
+  .intro {
+    overflow-x: clip;
+    padding-block: clamp(7rem, 12vw, 11rem) clamp(6rem, 10vw, 9rem);
+  }
+  .intro-grid {
+    /* endet mit Abstand vor der Linie, die bei 78 % der Breite senkrecht nach unten läuft */
+    width: min(100%, calc(78vw - var(--content-left) - 4.5rem));
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: clamp(2.5rem, 6vw, 6rem);
+    align-items: center;
+  }
+  .intro-h {
+    color: var(--blue);
+    font-size: clamp(1.8rem, 2.8vw, 3rem);
+    white-space: nowrap;
+    margin-bottom: 1.6rem;
+  }
+  .intro-p {
+    font-size: 0.95rem;
+    max-width: 30rem;
+    color: var(--ink-2);
+    margin-bottom: 2rem;
+  }
+  .intro-visual {
+    position: relative;
+    z-index: 2;
+    padding: 2.5rem 0 2.5rem 2.5rem;
+  }
+
+  .intro-img {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    clip-path: polygon(9% 0, 100% 0, 91% 100%, 0 100%);
+  }
+
+  /* ======================= KENNZAHLEN ======================= */
+  .figs {
+    padding-block: clamp(2rem, 4vw, 3rem) clamp(4rem, 7vw, 6rem);
+  }
+  .figs-field {
+    position: relative;
+    height: clamp(560px, 56vw, 760px);
+  }
+  .fg {
+    position: absolute;
+    display: grid;
+    gap: 0.6rem;
+  }
+  .fg strong {
+    font-family: var(--font-head);
+    font-stretch: 125%;
+    font-weight: 800;
+    line-height: 0.9;
+    color: var(--blue);
+    letter-spacing: -0.02em;
+  }
+  .fg sup {
+    font-size: 0.45em;
+    vertical-align: top;
+    margin-left: 0.05em;
+  }
+  .fg span {
+    font-family: var(--font-head);
+    font-stretch: 115%;
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  /* Einblenden, sobald die Linie die Stelle erreicht */
+  [data-follow] {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity 0.9s ease,
+      transform 0.9s var(--ease);
+  }
+  [data-follow].is-in {
+    opacity: 1;
+    transform: none;
+  }
+  .fg[data-follow].is-in {
+    transition-delay: 0.12s;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-follow] {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  /* Zickzack entlang der Diagonale: links oben → rechts → links → rechts unten */
+  .fg-1 {
+    left: 0;
+    top: 0;
+  }
+  .fg-1 strong {
+    font-size: clamp(4.5rem, 12vw, 11rem);
+  }
+  .fg-2 {
+    left: 64%;
+    top: 24%;
+  }
+  .fg-2 strong {
+    font-size: clamp(3.4rem, 8vw, 7.4rem);
+  }
+  .fg-3 {
+    left: 3%;
+    top: 46%;
+  }
+  .fg-3 strong {
+    font-size: clamp(3.8rem, 9vw, 8.4rem);
+  }
+  .fg-4 {
+    left: 50%;
+    top: 78%;
+  }
+  .fg-4 strong {
+    font-size: clamp(1.4rem, 2.6vw, 2.3rem);
+    text-transform: uppercase;
+  }
+
+  /* ======================= LEISTUNGEN ======================= */
+  .services {
+    overflow-x: clip;
+    padding-block: clamp(5rem, 9vw, 8rem);
+  }
+  .svc-head {
+    position: relative;
+    font-family: var(--font-head);
+    font-stretch: 125%;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: clamp(2.3rem, 4.8vw, 4.8rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+    color: var(--blue);
+    padding-bottom: clamp(1rem, 2vw, 1.6rem);
+    margin-bottom: clamp(1rem, 3vw, 2rem);
+  }
+  /* wird von links nach rechts aufgedeckt, während die Linie darunter entlangläuft */
+  .svc-head[data-follow] {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 1.3s cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  .svc-head[data-follow].is-in {
+    clip-path: inset(0 -2% 0 0);
+  }
+  .svc {
+    padding-block: clamp(3.5rem, 6vw, 5.5rem);
+  }
+  .svc-grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: clamp(1.25rem, 3vw, 2.5rem);
+    align-items: center;
+  }
+  /* Bilder treppen sich entlang der Diagonale nach rechts unten */
+  .svc-1 .svc-visual {
+    grid-column: 1 / 7;
+  }
+  .svc-1 .svc-text {
+    grid-column: 8 / 13;
+  }
+  .svc-2 .svc-visual {
+    grid-column: 2 / 8;
+  }
+  .svc-2 .svc-text {
+    grid-column: 9 / 13;
+  }
+  .svc-3 .svc-visual {
+    grid-column: 1 / 7;
+  }
+  .svc-3 .svc-text {
+    grid-column: 8 / 13;
+  }
+  .svc-visual {
+    position: relative;
+    z-index: 2;
+    display: block;
+  }
+
+  .svc-img {
+    position: relative;
+    aspect-ratio: 16 / 11;
+    clip-path: polygon(9% 0, 100% 0, 91% 100%, 0 100%);
+  }
+
+  .svc-img :global(img) {
+    transition: transform 1.2s var(--ease);
+  }
+  .svc-visual:hover .svc-img :global(img) {
+    transform: scale(1.03);
+  }
+  .svc-title {
+    font-family: var(--font-head);
+    font-stretch: 125%;
+    font-weight: 800;
+    font-size: clamp(1.8rem, 2.6vw, 2.7rem);
+    line-height: 0.98;
+    text-transform: uppercase;
+    overflow-wrap: normal;
+    color: var(--blue);
+    margin-bottom: 1.2rem;
+    hyphens: manual;
+  }
+  .svc-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-family: var(--font-head);
+    font-stretch: 120%;
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--blue);
+    text-decoration: none;
+  }
+  .svc-more :global(svg) {
+    width: 1.15rem;
+    height: 1.15rem;
+    transition: transform 0.35s var(--ease);
+  }
+  .svc-more:hover :global(svg) {
+    transform: translateX(5px);
+  }
+  .svc-more:hover span {
+    text-decoration: underline;
+    text-underline-offset: 0.35em;
+  }
+  /* auf dem Desktop übernimmt die Linie den Pfeil */
+  @media (min-width: 901px) {
+    .svc-more :global(svg) {
+      display: none;
+    }
+  }
+  .svc-more[data-follow] {
+    transform: translateX(14px);
+    transition:
+      opacity 0.5s ease 0.35s,
+      transform 0.6s var(--ease) 0.35s;
+  }
+  .svc-more[data-follow].is-in {
+    transform: none;
+  }
+  .svc-text p {
+    font-size: 0.95rem;
+    color: var(--ink-2);
+    margin-bottom: 1.8rem;
+  }
+
+  /* ======================= PROJEKTE ======================= */
+  .show {
+    position: relative;
+    z-index: 2;
+    background: var(--navy);
+    color: #fff;
+  }
+  .show-in {
+    display: grid;
+    grid-template-columns: calc(var(--content-left) + clamp(330px, 30vw, 540px)) 1fr;
+    height: 100vh;
+    min-height: 640px;
+  }
+  .show-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: calc(var(--header-h) + 1rem) clamp(2rem, 4vw, 4rem) 3rem var(--content-left);
+  }
+  .show-h {
+    font-family: var(--font-head);
+    font-stretch: 125%;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: clamp(2.1rem, 3.3vw, 3.6rem);
+    line-height: 0.95;
+    white-space: nowrap;
+    overflow-wrap: normal;
+    hyphens: manual;
+    color: #9aa6ee;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+  .show-items {
+    display: grid;
+    margin-bottom: 2.5rem;
+  }
+  .show-item {
+    grid-area: 1 / 1;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.5s ease,
+      visibility 0s 0.5s;
+  }
+  .show-item.is-active {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
+  }
+  .show-title {
+    font-stretch: 125%;
+    font-weight: 700;
+    font-size: clamp(1.3rem, 1.8vw, 1.65rem);
+    text-transform: uppercase;
+    line-height: 1.1;
+    margin-bottom: 0.7rem;
+  }
+  .show-desc {
+    color: rgb(255 255 255 / 0.72);
+    font-size: 0.9rem;
+    max-width: 24rem;
+    margin-bottom: 1.4rem;
+  }
+  .show-meta {
+    display: block;
+    margin-top: 0.3rem;
+    color: #9aa6ee;
+  }
+  .show .link-arrow {
+    color: #fff;
+  }
+  .show-stage {
+    position: relative;
+    overflow: hidden;
+    clip-path: polygon(14% 0, 100% 0, 100% 100%, 0 100%);
+  }
+  .show-img {
+    position: absolute;
+    inset: 0;
+    display: block;
+  }
+  .show-img :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .show-cap {
+    display: none;
+  }
+  /* Linie am Rand: nimmt die Hauptlinie in den farbigen Flächen auf (gleiche Stärke) */
+  .rail {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: var(--rail-r, 34px);
+    width: 1.5px;
+    background: rgb(255 255 255 / 0.2);
+    z-index: 20;
+    pointer-events: none;
+  }
+  .rail span {
+    position: absolute;
+    inset: 0;
+    background: #fff;
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  /* ======================= WERTE ======================= */
+  .values {
+    position: relative;
+    z-index: 2;
+    /* überlappt die Projekt-Sektion minimal: keine helle Haarlinie durch Subpixel-Rundung */
+    margin-top: -2px;
+    padding-block: clamp(6rem, 11vw, 10rem) clamp(8rem, 15vw, 14rem);
+  }
+  .values-grid {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: clamp(4rem, 10vw, 11rem);
+    align-items: center;
+  }
+  .values-h {
+    font-family: var(--font-head);
+    font-stretch: 125%;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: clamp(2.6rem, 5.2vw, 5.4rem);
+    line-height: 0.95;
+    hyphens: manual;
+    margin-bottom: 1.6rem;
+  }
+  .values-core {
+    font-family: var(--font-head);
+    font-stretch: 112%;
+    font-weight: 300;
+    font-size: clamp(1rem, 1.25vw, 1.2rem);
+    line-height: 1.4;
+    max-width: 24rem;
+    color: #fff !important;
+    margin: 0;
+  }
+  .values-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: clamp(3rem, 6vw, 5rem);
+  }
+  .value {
+    --icon-gap: clamp(3rem, 9vw, 9rem);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: clamp(1.25rem, 2.5vw, 2rem);
+    padding-right: var(--icon-gap);
+    text-align: right;
+  }
+  /* Abzweig: von der Randlinie zum Piktogramm */
+  .value::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: calc(100% - var(--icon-gap) + 0.75rem);
+    width: calc(var(--icon-gap) - 0.75rem + var(--to-rail, 0px));
+    height: 1.5px;
+    background: rgb(255 255 255 / 0.7);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.6s var(--ease);
+  }
+  .value.is-in::after {
+    transform: scaleX(1);
+  }
+  .values[data-values] .value[data-follow] {
+    opacity: 1;
+    transform: none;
+  }
+  .value-text {
+    opacity: 0;
+    transition: opacity 0.6s ease 0.9s;
+  }
+  .value.is-in .value-text {
+    opacity: 1;
+  }
+  .value :global(.value-icon) {
+    flex: none;
+    color: #fff;
+    --vicon-bg: #3948a4;
+  }
+  .value :global(.vicon-art) {
+    width: 64px;
+    height: 64px;
+  }
+  /* Piktogramm zeichnet sich, wenn der Abzweig ankommt */
+  .value :global(.vicon-art path) {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    transition: stroke-dashoffset 1.2s ease 0.5s;
+  }
+  .value.is-in :global(.vicon-art path) {
+    stroke-dashoffset: 0;
+  }
+  .value :global(.vicon-hammer) {
+    width: 56px;
+    height: 56px;
+    clip-path: inset(0 0 0 100%);
+    transition: clip-path 1s ease 0.5s;
+  }
+  .value.is-in :global(.vicon-hammer) {
+    clip-path: inset(0 0 0 0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .value-text {
+      opacity: 1;
+    }
+    .value :global(.vicon-art path) {
+      stroke-dashoffset: 0;
+    }
+    .value :global(.vicon-hammer) {
+      clip-path: none;
+    }
+  }
+  .value h3 {
+    font-stretch: 125%;
+    font-weight: 800;
+    font-size: clamp(1.4rem, 2.2vw, 2rem);
+    text-transform: uppercase;
+    line-height: 1;
+    margin-bottom: 0.45rem;
+  }
+  .value p {
+    font-size: 0.92rem;
+    color: rgb(255 255 255 / 0.82);
+    margin: 0;
+  }
+
+  /* auf breiten Bildschirmen etwas breiter als das übrige Raster: Überschrift weiter links */
+  .values-wide {
+    max-width: calc(1560px + var(--gutter) * 2);
+  }
+
+  /* ======================= KARRIERE ======================= */
+  .career {
+    padding-block: clamp(5rem, 10vw, 9rem);
+  }
+  .career-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: clamp(3rem, 7vw, 7rem);
+    align-items: center;
+  }
+  .career-visual {
+    position: relative;
+    z-index: 2;
+  }
+  .career-img {
+    position: relative;
+    aspect-ratio: 3 / 2;
+    /* dezent geneigte Seitenkanten, niemand wird angeschnitten */
+    clip-path: polygon(0 0, 93% 0, 100% 100%, 7% 100%);
+  }
+  .career {
+    position: relative;
+    overflow-x: clip;
+  }
+  /* Stempel an der Linie: hängt mit der rechten Kante an der Linie */
+  .career-stamp {
+    position: absolute;
+    right: var(--rail-r, 34px);
+    bottom: clamp(3rem, 7vw, 5.5rem);
+    z-index: 3;
+    display: grid;
+    justify-items: end;
+    pointer-events: none;
+  }
+  .career-stamp[data-follow] {
+    transform: rotate(-4deg) scale(1.25);
+    transition:
+      opacity 0.35s ease,
+      transform 0.55s cubic-bezier(0.3, 1.6, 0.5, 1);
+  }
+  .career-stamp[data-follow].is-in {
+    transform: rotate(-4deg) scale(1);
+  }
+  .cl-a,
+  .cl-b {
+    background: var(--blue);
+    color: #fff;
+    font-family: var(--font-head);
+    font-stretch: 125%;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+  .cl-a {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 800;
+    font-size: clamp(1.3rem, 2.4vw, 2.1rem);
+    padding: 0.7rem 1.1rem 0.6rem;
+  }
+  .cl-a :global(.cl-hammer) {
+    width: 1.1em;
+    height: 1.1em;
+  }
+  .cl-b {
+    font-weight: 300;
+    font-size: clamp(0.9rem, 1.4vw, 1.2rem);
+    padding: 0.35rem 1.1rem 0.5rem;
+    background: var(--navy);
+  }
+  .career-h {
+    font-size: clamp(2.2rem, 4vw, 4rem);
+    white-space: nowrap;
+    color: var(--blue);
+    margin-bottom: 1.6rem;
+  }
+  .career-lead {
+    font-size: 0.95rem;
+    color: var(--ink-2);
+    margin-bottom: 1.4rem;
+    max-width: 26rem;
+  }
+  /* ======================= FILM ======================= */
+  .film {
+    position: relative;
+    height: 200vh;
+  }
+  .film-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+    z-index: 2;
+  }
+  .film-frame {
+    position: absolute;
+    inset: 0;
+    background: var(--navy);
+    clip-path: polygon(50% 22%, 70% 50%, 50% 78%, 30% 50%);
+  }
+  /* Linienende im stehenden Bereich: läuft von oben genau in die Rautenspitze */
+  .film-feed {
+    position: absolute;
+    left: calc(50% - 0.75px);
+    top: 40px;
+    width: 1.5px;
+    height: calc(22% - 40px);
+    background: var(--blue);
+    z-index: 3;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .film-feed.is-on {
+    opacity: 1;
+  }
+  .film-frame video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .film-frame::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgb(18 23 53 / 0.35);
+  }
+  .film-ui {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: #fff;
+    padding-inline: var(--gutter);
+  }
+
+  /* ======================= RESPONSIVE ======================= */
+  @media (max-width: 900px) {
+    .flow {
+      display: none;
+    }
+    .hero {
+      --hero-cut: polygon(0 94%, 78% 100%, 100% 96%, 100% 101%, 0 101%);
+    }
+    .hero-slab {
+      width: 100%;
+      clip-path: polygon(0 0, 100% 0, 100% 52%, 0 78%);
+    }
+    .hero-content {
+      justify-content: flex-start;
+      padding-top: calc(var(--header-h) + 4rem);
+    }
+    .hero-title {
+      max-width: none;
+      font-size: clamp(2.2rem, 10vw, 3.2rem);
+      overflow-wrap: normal;
+    }
+    .intro {
+      padding-top: 5rem;
+    }
+    .intro-grid,
+    .career-grid {
+      grid-template-columns: 1fr;
+    }
+    .figs-field {
+      height: auto;
+      display: grid;
+      gap: 2.5rem;
+    }
+    .fg {
+      position: static;
+    }
+    .fg-2,
+    .fg-4 {
+      justify-self: end;
+      text-align: right;
+    }
+    .svc-grid {
+      grid-template-columns: 1fr;
+    }
+    .svc .svc-visual,
+    .svc .svc-text {
+      grid-column: auto;
+      grid-row: auto;
+    }
+    .svc-visual {
+      margin-bottom: 2.5rem;
+    }
+    .rail-values {
+      right: 8px;
+    }
+    .values {
+      --rail-gap: 8px;
+    }
+    .svc-grid > *,
+    .career-grid > *,
+    .intro-grid > * {
+      min-width: 0;
+    }
+    .svc-title {
+      font-size: clamp(1.35rem, 7.2vw, 1.9rem);
+    }
+    .cl-a {
+      font-size: clamp(1.05rem, 5.6vw, 1.4rem);
+    }
+    .career {
+      overflow-x: clip;
+    }
+    .career-stamp {
+      position: static;
+      justify-items: start;
+      margin: 0 var(--gutter) 3rem;
+    }
+    .intro-visual {
+      margin-bottom: 1.5rem;
+    }
+    .show-in {
+      grid-template-columns: 1fr;
+      height: auto;
+    }
+    .show-text {
+      padding: var(--section) var(--gutter) 2rem;
+    }
+    .show-items {
+      display: none;
+    }
+    .show-stage {
+      display: grid;
+      gap: 1.5rem;
+      clip-path: none;
+      padding: 0 var(--gutter) var(--section);
+    }
+    .show-img {
+      position: relative;
+      aspect-ratio: 4 / 3;
+      color: #fff;
+      text-decoration: none;
+    }
+    .show-cap {
+      display: block;
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 2.5rem 1rem 1rem;
+      background: linear-gradient(transparent, rgb(18 23 53 / 0.85));
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .show-cap strong {
+      display: block;
+      font-family: var(--font-head);
+      font-stretch: 125%;
+      font-weight: 800;
+      font-size: 1.15rem;
+    }
+    .values-grid {
+      grid-template-columns: 1fr;
+    }
+    .values-grid > * {
+      min-width: 0;
+    }
+    .values-h {
+      font-size: clamp(1.9rem, 8.6vw, 2.6rem);
+    }
+    .value {
+      --icon-gap: 1.25rem;
+      gap: 1rem;
+    }
+    .value :global(.vicon-art) {
+      width: 48px;
+      height: 48px;
+    }
+    .svc-head {
+      white-space: normal;
+    }
+    .hero-title,
+    .show-h,
+    .career-h,
+    .intro-h {
+      white-space: normal;
+    }
+    .intro-grid {
+      width: 100%;
+    }
+    .value h3 {
+      font-size: clamp(0.95rem, 4.6vw, 1.5rem);
+    }
+    .value-text {
+      min-width: 0;
+    }
+    .film {
+      height: auto;
+    }
+    .film-sticky {
+      position: relative;
+      height: 80svh;
+    }
+    .film-frame {
+      clip-path: polygon(50% 4%, 100% 50%, 50% 96%, 0% 50%);
+    }
+    .film-feed {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  const mm = gsap.matchMedia();
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- Projekte: 3 große Bilder, 3 × scrollen (Desktop) ---------- */
+  mm.add('(prefers-reduced-motion: no-preference) and (min-width: 901px)', () => {
+    const show = document.querySelector<HTMLElement>('[data-show]');
+    if (!show) return;
+    const imgs = Array.from(show.querySelectorAll<HTMLElement>('[data-show-img]'));
+    const items = Array.from(show.querySelectorAll<HTMLElement>('[data-show-item]'));
+    const setActive = (i: number) =>
+      items.forEach((it, j) => {
+        it.classList.toggle('is-active', j === i);
+        it.querySelector('a')?.setAttribute('tabindex', j === i ? '0' : '-1');
+      });
+    imgs.forEach((img, i) => i > 0 && gsap.set(img, { clipPath: 'inset(100% 0% 0% 0%)' }));
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: show,
+        start: 'top top',
+        end: () => `+=${(imgs.length - 1) * window.innerHeight * 1.05}`,
+        pin: true,
+        scrub: 1.2,
+        invalidateOnRefresh: true,
+        onUpdate: (self) => {
+          setActive(Math.min(imgs.length - 1, Math.round(self.progress * (imgs.length - 1))));
+        },
+      },
+    });
+    tl.to({}, { duration: 0.12 });
+    imgs.slice(1).forEach((img, i) => {
+      tl.to(img, { clipPath: 'inset(0% 0% 0% 0%)', ease: 'power1.inOut', duration: 1 });
+      const inner = img.querySelector('img');
+      if (inner) tl.fromTo(inner, { scale: 1.12 }, { scale: 1, ease: 'power1.out', duration: 1 }, '<');
+      if (i < imgs.length - 2) tl.to({}, { duration: 0.12 });
+    });
+    tl.to({}, { duration: 0.12 });
+  });
+
+  /* ---------- Film: Raute öffnet sich ---------- */
+  mm.add('(prefers-reduced-motion: no-preference) and (min-width: 901px)', () => {
+    const film = document.querySelector('[data-film]');
+    const frame = document.querySelector('[data-film-frame]');
+    const ui = document.querySelector('[data-film-ui]');
+    if (!film || !frame) return;
+    const tl = gsap.timeline({ scrollTrigger: { trigger: film, start: 'top top', end: 'bottom bottom', scrub: 0.6 } });
+    tl.fromTo(frame, { clipPath: 'polygon(50% 22%, 70% 50%, 50% 78%, 30% 50%)' }, { clipPath: 'polygon(50% -60%, 160% 50%, 50% 160%, -60% 50%)', ease: 'none', duration: 1 });
+    // Spitze wandert von 22 % nach oben aus dem Bild: bei 22/82 der Strecke erreicht sie den Rand
+    const feed = document.querySelector('[data-film-feed]');
+    if (feed) {
+      const h0 = window.innerHeight * 0.22 - 40;
+      tl.fromTo(feed, { height: h0 }, { height: 0, ease: 'none', duration: Math.max(0.01, h0 / (window.innerHeight * 0.82)) }, 0);
+    }
+    if (ui) {
+      gsap.set(ui, { autoAlpha: 0, y: 30 });
+      tl.to(ui, { autoAlpha: 1, y: 0, duration: 0.35 }, 0.55);
+    }
+  });
+
+  /* ---------- Die blaue Linie ---------- */
+  const svg = document.querySelector<SVGSVGElement>('[data-flow]');
+  const path = svg?.querySelector<SVGPathElement>('[data-flow-path]');
+  const branchG = svg?.querySelector<SVGGElement>('[data-flow-branches]');
+  let total = 0;
+  const samples: { len: number; y: number }[] = [];
+  let branches: { el: SVGPathElement; len: number; y: number; shown: boolean }[] = [];
+  let tipEnd = Infinity;
+  let railX = 0;
+  // Abzweige (Werte, Karriere) enden exakt an der Linie
+  const toRail = () => {
+    const valuesRail = document.querySelector('.rail-values');
+    const vx = valuesRail ? valuesRail.getBoundingClientRect().left + 0.75 : railX;
+    document.querySelectorAll<HTMLElement>('[data-to-rail]').forEach((el) => {
+      const inValues = !!el.closest('[data-values]');
+      const x = inValues ? vx : railX;
+      if (!x) return;
+      // bei den Karriere-Punkten verlängert der Wert das Element selbst, daher an der Liste messen
+      const ref = inValues ? el : el.parentElement!;
+      el.style.setProperty('--to-rail', `${Math.max(0, x - ref.getBoundingClientRect().right)}px`);
+    });
+  };
+
+  const box = (el: Element | null) => {
+    if (!el) return null;
+    const r = el.getBoundingClientRect();
+    return { top: r.top + window.scrollY, bottom: r.bottom + window.scrollY, left: r.left + window.scrollX, right: r.right + window.scrollX };
+  };
+  // Vorlauf der Linie vor dem Scrollstand. Im Zahlenbereich läuft sie weiter voraus,
+  // damit die Kennzahlen früh erscheinen. Die Rampen sind flach genug, dass die Linie nie zurückläuft.
+  let figsTop = Infinity;
+  let figsBottom = Infinity;
+  const lead = (y: number, vh: number) => {
+    const base = 0.62;
+    const extra = 0.3;
+    const upStart = figsTop - vh * 1.25;
+    const upEnd = figsTop - vh * 0.95;
+    const downStart = figsBottom - vh * 0.55;
+    const downEnd = downStart + vh * 0.7;
+    if (y <= upStart || y >= downEnd) return base;
+    if (y < upEnd) return base + (extra * (y - upStart)) / (upEnd - upStart);
+    if (y <= downStart) return base + extra;
+    return base + extra * (1 - (y - downStart) / (downEnd - downStart));
+  };
+  const target = () => {
+    if (reduce) return Infinity;
+    const vh = window.innerHeight;
+    return window.scrollY + vh * lead(window.scrollY, vh);
+  };
+
+  const build = () => {
+    if (!svg || !path || !branchG || window.innerWidth <= 900) return;
+    const doc = document.documentElement;
+    const W = doc.clientWidth;
+    const cont = document.querySelector<HTMLElement>('.intro .container');
+    if (!cont) return;
+    const cb = box(cont)!;
+    const pad = parseFloat(getComputedStyle(cont).paddingLeft);
+    const L = Math.max(34, cb.left + pad - 36);
+    const R = Math.min(W - 34, cb.right - pad + 36);
+    const hero = box(document.querySelector('[data-hero]'))!;
+    const figs = box(document.querySelector('[data-figs]'))!;
+    figsTop = figs.top;
+    figsBottom = figs.bottom;
+    const film = box(document.querySelector('[data-film]'))!;
+    const vh = window.innerHeight;
+    const ax = W * 0.78; // Spitze der Hero-Unterkante
+    const cx = W / 2;
+    const tipY = film.top + vh * 0.22;
+    // Leistungen: die Linie läuft unter der großen Überschrift entlang (und deckt sie dabei auf),
+    // danach ruhig senkrecht am rechten Rand weiter
+    const head = document.querySelector<HTMLElement>('[data-svc-head]')!;
+    const uy = box(head)!.bottom;
+    head.dataset.followY = String(uy);
+    // Handwerk: die Linie läuft von der Hero-Spitze senkrecht nach unten, rechts am Inhalt vorbei
+    const d = [
+      `M${ax} ${hero.bottom}`,
+      `V${figs.top}`,
+      `L${L} ${figs.bottom}`,
+      `V${uy}`,
+      `H${R}`,
+      `V${film.top + 40}`,
+      `H${cx}`,
+      `V${tipY}`,
+    ].join(' ');
+    // Koordinaten relativ zu <main>; die Grafik ist so hoch wie <main> und endet damit vor dem Footer
+    const mainEl = svg.parentElement!;
+    const mainTop = box(mainEl)!.top;
+    svg.setAttribute('viewBox', `0 ${mainTop} ${W} ${mainEl.offsetHeight}`);
+    svg.setAttribute('preserveAspectRatio', 'none');
+    path.setAttribute('d', d);
+
+    // Abzweige von der Hauptlinie zu den Kennzahlen (gleiche Linienstärke)
+    const defs: { d: string; y: number }[] = [];
+    const xOnDiag = (y: number) => ax + ((y - figs.top) / (figs.bottom - figs.top)) * (L - ax);
+    // Zahlen mit festem Abstand neben die Diagonale setzen (auch auf breiten Bildschirmen nie auf der Linie)
+    const field = box(document.querySelector('[data-figs]'))!;
+    const fieldW = field.right - field.left;
+    document.querySelectorAll<HTMLElement>('.fg').forEach((fg) => {
+      const num = box(fg.querySelector('strong'))!;
+      const y = (num.top + num.bottom) / 2;
+      const x = xOnDiag(y);
+      const w = fg.offsetWidth;
+      const rightSide = fg.classList.contains('fg-2') || fg.classList.contains('fg-4');
+      // rechts der Linie mit deutlich mehr Abstand, links mit mindestens 72 px
+      const gap = rightSide ? 150 : 72;
+      const left = rightSide ? Math.min(x + gap - field.left, fieldW - w) : Math.max(0, Math.min(fg.offsetLeft, x - gap - w - field.left));
+      fg.style.left = `${left}px`;
+      const fb = box(fg)!;
+      const end = fb.right < x ? fb.right + 24 : fb.left - 24;
+      defs.push({ d: `M${x} ${y} H${end}`, y });
+      fg.dataset.followY = String(y);
+    });
+    // Abzweig von der Linie zu „Mehr über uns“ und „Mehr erfahren“
+    document.querySelectorAll<HTMLElement>('[data-line-link]').forEach((a) => {
+      const b = box(a)!;
+      const y = (b.top + b.bottom) / 2;
+      const e = b.right + 16;
+      // Abzweig von der Linie (Handwerk: senkrechte Linie bei ax, Leistungen: rechter Rand)
+      const from = a.closest('[data-intro]') ? ax : R;
+      // Linie endet mit einer Pfeilspitze, die auf den Link zeigt
+      defs.push({ d: `M${from} ${y} H${e} M${e + 8} ${y - 7} L${e} ${y} L${e + 8} ${y + 7}`, y });
+      a.dataset.followY = String(y);
+    });
+    // Randlinie in Projekten und Werten auf derselben Höhe wie die Hauptlinie
+    doc.style.setProperty('--rail-r', `${W - R}px`);
+    doc.style.setProperty('--rail-l', `${L}px`);
+    railX = R;
+    toRail();
+    tipEnd = tipY;
+    branchG.innerHTML = '';
+    branches = defs.map(({ d: bd, y }) => {
+      const el = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      el.setAttribute('d', bd);
+      el.setAttribute('class', 'branch');
+      branchG.appendChild(el);
+      const len = el.getTotalLength();
+      el.style.strokeDasharray = `${len}`;
+      el.style.strokeDashoffset = `${len}`;
+      return { el, len, y, shown: false };
+    });
+
+    total = path.getTotalLength();
+    samples.length = 0;
+    for (let l = 0; l <= total; l += 24) samples.push({ len: l, y: path.getPointAtLength(l).y });
+    samples.push({ len: total, y: path.getPointAtLength(total).y });
+    path.style.strokeDasharray = `${total}`;
+    draw(true);
+  };
+
+  const draw = (instant = false) => {
+    if (!path || !total) return;
+    const t = target();
+    branches.forEach((b) => {
+      const show = b.y <= t;
+      if (show === b.shown) return;
+      b.shown = show;
+      gsap.to(b.el, { strokeDashoffset: show ? 0 : b.len, duration: instant || reduce ? 0 : 0.5, ease: 'power2.out', overwrite: true });
+    });
+    document.querySelector('[data-film-feed]')?.classList.toggle('is-on', t >= tipEnd);
+    if (reduce) {
+      path.style.strokeDashoffset = '0';
+      return;
+    }
+    let len = 0;
+    for (const s of samples) {
+      if (s.y <= t) len = s.len;
+      else break;
+    }
+    gsap.to(path, { strokeDashoffset: total - len, duration: instant ? 0 : 0.9, ease: 'power2.out', overwrite: true });
+  };
+
+  /* Inhalte blenden ein, sobald die Linie (bzw. der Scrollstand) sie erreicht – auch mobil ohne Linie */
+  const followers = Array.from(document.querySelectorAll<HTMLElement>('[data-follow]'));
+  const valuesSec = document.querySelector<HTMLElement>('[data-values]');
+  const valuesBar = document.querySelector<HTMLElement>('[data-values-bar]');
+  const follow = () => {
+    const t = target();
+    followers.forEach((el) => {
+      const y = el.dataset.followY ? Number(el.dataset.followY) : box(el)!.top + 24;
+      if (!el.classList.contains('is-in') && y <= t) el.classList.add('is-in');
+    });
+    // Randlinie der Werte wächst mit dem Scrollen
+    if (valuesSec && valuesBar) {
+      const v = box(valuesSec)!;
+      const f = Math.min(1, Math.max(0, (t - v.top) / (v.bottom - v.top)));
+      valuesBar.style.transform = `scaleY(${reduce ? 1 : f})`;
+    }
+  };
+
+  const onScroll = () => {
+    draw();
+    follow();
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', () => {
+    build();
+    toRail();
+  });
+  window.addEventListener('load', () => {
+    ScrollTrigger.refresh();
+    build();
+    follow();
+  });
+  ScrollTrigger.addEventListener('refresh', () => build());
+  build();
+  toRail();
+  follow();
+</script>
