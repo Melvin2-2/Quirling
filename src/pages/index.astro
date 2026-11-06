@@ -11,6 +11,7 @@ import heroPoster from '~/assets/site/hero-poster.jpg';
 import filmPoster from '~/assets/site/film-poster.jpg';
 import teamFoto from '~/assets/team/baustellenteam.jpg';
 import rohbauFoto from '~/assets/site/rohbau-wandsbek.jpg';
+import handwerkFoto from '~/assets/site/handwerk-schalung.jpg';
 
 const heroPosterImg = await getImage({ src: heroPoster, width: 1920, format: 'jpg', quality: 70 });
 const filmPosterImg = await getImage({ src: filmPoster, width: 1600, format: 'jpg', quality: 70 });
@@ -55,7 +56,7 @@ const showcase = await Promise.all(
   }),
 );
 
-const introBild = (await getEntry('projekte', 'milchgrund'))!.data.bilder[0]!;
+
 
 const werte = [
   {
@@ -99,26 +100,32 @@ const werte = [
     </div>
   </section>
 
-  <!-- ======================= INTRO ======================= -->
+  <!-- ======================= HANDWERK ======================= -->
   <section class="intro">
-    <div class="container intro-grid" data-intro>
-      <div class="intro-visual">
-        <span class="block block-l" aria-hidden="true"></span>
-        <div class="cut-img intro-img">
-          <Image src={introBild} alt="Wohnanlage Milchgrund, Hamburg" widths={[600, 1000, 1400]} sizes="(min-width: 900px) 50vw, 100vw" />
+    <div class="container">
+      <div class="intro-grid" data-intro>
+        <div class="intro-visual">
+          <span class="block block-l" aria-hidden="true"></span>
+          <div class="cut-img intro-img">
+            <Image
+              src={handwerkFoto}
+              alt="Schalung mit Quirling-Logo und Bewehrung auf einer Baustelle"
+              widths={[600, 1000, 1400]}
+              sizes="(min-width: 900px) 45vw, 100vw"
+            />
+          </div>
         </div>
-      </div>
-      <div class="intro-text">
-        <h2 class="h1 intro-h">Massiv gebaut.</h2>
-        <p class="intro-sub">Sorgfältig übergeben.</p>
-        <p class="intro-p">
-          Seit {GRUENDUNGSJAHR} bauen wir in Hamburg und Umgebung. Familiengeführt, mit einem eingespielten Team und dem Anspruch, jede Arbeit bis
-          zum Schluss sorgfältig auszuführen.
-        </p>
-        <a class="svc-more" href={url('/unternehmen/')} data-follow data-line-link>
-          <span>Mehr über uns</span>
-          <Icon name="arrow" />
-        </a>
+        <div class="intro-text">
+          <h2 class="h1 intro-h">Wir bauen das,<br /><span class="lt">was trägt.</span></h2>
+          <p class="intro-p">
+            Rohbau ist unser Handwerk. Seit {GRUENDUNGSJAHR} erstellen wir in Hamburg Fundamente, Wände und Decken in Beton und Stahlbeton.
+            Familiengeführt und bis zum Schluss sorgfältig.
+          </p>
+          <a class="svc-more" href={url('/unternehmen/')} data-follow data-line-link>
+            <span>Mehr über uns</span>
+            <Icon name="arrow" />
+          </a>
+        </div>
       </div>
     </div>
   </section>
@@ -398,27 +405,21 @@ const werte = [
   /* ======================= INTRO ======================= */
   .intro {
     overflow-x: clip;
-    padding-block: clamp(7rem, 12vw, 11rem) clamp(3rem, 6vw, 5rem);
+    padding-block: clamp(7rem, 12vw, 11rem) clamp(6rem, 10vw, 9rem);
   }
   .intro-grid {
+    /* endet mit Abstand vor der Linie, die bei 78 % der Breite senkrecht nach unten läuft */
+    width: min(100%, calc(78vw - var(--content-left) - 4.5rem));
     display: grid;
-    grid-template-columns: 1.05fr 1fr;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
     gap: clamp(2.5rem, 6vw, 6rem);
     align-items: center;
   }
   .intro-h {
     color: var(--blue);
-    margin-bottom: 0.7rem;
-  }
-  .intro-sub {
-    font-family: var(--font-head);
-    font-stretch: 125%;
-    font-weight: 300;
-    font-size: clamp(1.1rem, 1.6vw, 1.5rem);
-    text-transform: uppercase;
-    letter-spacing: 0.02em;
-    color: var(--blue);
-    margin-bottom: 2rem;
+    font-size: clamp(1.8rem, 2.8vw, 3rem);
+    white-space: nowrap;
+    margin-bottom: 1.6rem;
   }
   .intro-p {
     font-size: 0.95rem;
@@ -1179,8 +1180,12 @@ const werte = [
     }
     .hero-title,
     .show-h,
-    .career-h {
+    .career-h,
+    .intro-h {
       white-space: normal;
+    }
+    .intro-grid {
+      width: 100%;
     }
     .value h3 {
       font-size: clamp(0.95rem, 4.6vw, 1.5rem);
@@ -1341,14 +1346,9 @@ const werte = [
     const head = document.querySelector<HTMLElement>('[data-svc-head]')!;
     const uy = box(head)!.bottom;
     head.dataset.followY = String(uy);
-    // Intro: Bild links, Text rechts. Die Linie läuft von der Hero-Spitze kurz nach unten,
-    // oberhalb des Texts nach rechts und dann am rechten Rand weiter bis zu den Zahlen.
-    const intro = box(document.querySelector('[data-intro]'))!;
-    const iy = intro.top - 56;
+    // Handwerk: die Linie läuft von der Hero-Spitze senkrecht nach unten, rechts am Inhalt vorbei
     const d = [
       `M${ax} ${hero.bottom}`,
-      `V${iy}`,
-      `H${R}`,
       `V${figs.top}`,
       `L${L} ${figs.bottom}`,
       `V${uy}`,
@@ -1366,7 +1366,7 @@ const werte = [
 
     // Abzweige von der Hauptlinie zu den Kennzahlen (gleiche Linienstärke)
     const defs: { d: string; y: number }[] = [];
-    const xOnDiag = (y: number) => R + ((y - figs.top) / (figs.bottom - figs.top)) * (L - R);
+    const xOnDiag = (y: number) => ax + ((y - figs.top) / (figs.bottom - figs.top)) * (L - ax);
     // Zahlen mit festem Abstand neben die Diagonale setzen (auch auf breiten Bildschirmen nie auf der Linie)
     const field = box(document.querySelector('[data-figs]'))!;
     const fieldW = field.right - field.left;
@@ -1390,8 +1390,10 @@ const werte = [
       const b = box(a)!;
       const y = (b.top + b.bottom) / 2;
       const e = b.right + 16;
+      // Abzweig von der Linie (Handwerk: senkrechte Linie bei ax, Leistungen: rechter Rand)
+      const from = a.closest('[data-intro]') ? ax : R;
       // Linie endet mit einer Pfeilspitze, die auf den Link zeigt
-      defs.push({ d: `M${R} ${y} H${e} M${e + 8} ${y - 7} L${e} ${y} L${e + 8} ${y + 7}`, y });
+      defs.push({ d: `M${from} ${y} H${e} M${e + 8} ${y - 7} L${e} ${y} L${e + 8} ${y + 7}`, y });
       a.dataset.followY = String(y);
     });
     // Randlinie in Projekten und Werten auf derselben Höhe wie die Hauptlinie
