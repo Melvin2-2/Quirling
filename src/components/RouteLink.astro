@@ -1,0 +1,95 @@
+---
+/**
+ * „Route planen“: klappt eine kleine Auswahl auf (Google Maps oder Apple Karten),
+ * jeweils mit der Firmenadresse als Ziel. Ohne JavaScript funktioniert <details> trotzdem.
+ */
+import Icon from './Icon.astro';
+import { firma } from '~/data/site';
+
+interface Props {
+  /** helle Darstellung auf dunklem Grund */
+  light?: boolean;
+}
+const { light = false } = Astro.props;
+const ziel = encodeURIComponent(`${firma.langname}, ${firma.strasse}, ${firma.plz} ${firma.ort}`);
+const google = `https://www.google.com/maps/dir/?api=1&destination=${ziel}`;
+const apple = `https://maps.apple.com/?daddr=${ziel}&dirflg=d`;
+---
+
+<details class:list={['route', { light }]} data-route>
+  <summary class="text-link"><span>Route planen</span><Icon name="chevron" /></summary>
+  <div class="route-menu">
+    <a href={google} target="_blank" rel="noopener"><span>Google Maps</span><Icon name="arrow" /></a>
+    <a href={apple} target="_blank" rel="noopener"><span>Apple Karten</span><Icon name="arrow" /></a>
+  </div>
+</details>
+
+<style>
+  .route {
+    position: relative;
+    display: inline-block;
+  }
+  .route summary {
+    list-style: none;
+    cursor: pointer;
+  }
+  .route summary::-webkit-details-marker {
+    display: none;
+  }
+  .route summary :global(svg) {
+    transition: transform 0.3s var(--ease);
+  }
+  .route[open] summary :global(svg) {
+    transform: rotate(180deg);
+  }
+  .light summary {
+    color: #fff;
+  }
+  .route-menu {
+    position: absolute;
+    left: 0;
+    top: calc(100% + 0.6rem);
+    z-index: 5;
+    min-width: 14rem;
+    display: grid;
+    background: #fff;
+    box-shadow: 0 20px 40px -16px rgb(18 23 53 / 0.35);
+  }
+  .route-menu a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.85rem 1rem;
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--blue);
+    text-decoration: none;
+  }
+  .route-menu a + a {
+    border-top: 1px solid var(--line);
+  }
+  .route-menu a:hover {
+    background: var(--tint);
+  }
+  .route-menu :global(svg) {
+    width: 1rem;
+    height: 1rem;
+  }
+</style>
+
+<script>
+  // Auswahl schließen bei Klick daneben oder Esc
+  document.addEventListener('click', (e) => {
+    document.querySelectorAll<HTMLDetailsElement>('[data-route][open]').forEach((d) => {
+      if (!d.contains(e.target as Node)) d.open = false;
+    });
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') document.querySelectorAll<HTMLDetailsElement>('[data-route][open]').forEach((d) => (d.open = false));
+  });
+</script>

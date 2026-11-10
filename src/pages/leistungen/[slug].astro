@@ -57,6 +57,8 @@ const [t1, t2] = l.title.includes(' & ') ? [l.title.split(' & ')[0] + ' &', l.ti
         <h2 class="h-sec">{l.umfangTitel[0]}<br /><span class="lt">{l.umfangTitel[1]}</span></h2>
         <p class="small typen"><span class="label">Gebäude</span><br />{l.gebaeude.join(', ')}</p>
       </div>
+      <div class="umfang-list">
+      <h3 class="umfang-t">Leistungen</h3>
       <ol class="umfang">
         {
           l.umfang.map((u) => (
@@ -66,6 +68,7 @@ const [t1, t2] = l.title.includes(' & ') ? [l.title.split(' & ')[0] + ' &', l.ti
           ))
         }
       </ol>
+      </div>
     </div>
   </section>
 
@@ -167,19 +170,29 @@ const [t1, t2] = l.title.includes(' & ') ? [l.title.split(' & ')[0] + ' &', l.ti
     padding: 0;
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    gap: 0.9rem;
+    gap: 1rem;
   }
   .umfang li {
     position: relative;
     display: grid;
     gap: 0.5rem;
   }
+  .umfang-t {
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: clamp(1.4rem, 1.8vw, 1.8rem);
+    line-height: 1;
+    color: var(--blue);
+    margin: 0 0 1.3rem;
+  }
   /* Leistungen untergeordnet: Fließtext-Schrift, keine Großbuchstaben */
   .u-t {
     font-family: var(--font-body);
     font-weight: 500;
-    font-size: clamp(1.05rem, 1.2vw, 1.2rem);
-    line-height: 1.45;
+    font-size: clamp(1.15rem, 1.5vw, 1.45rem);
+    line-height: 1.4;
     color: var(--ink);
   }
 
