@@ -1,14 +1,10 @@
 ---
-import { Image } from 'astro:assets';
-import { getEntry } from 'astro:content';
 import Base from '~/layouts/Base.astro';
 import PageHero from '~/components/PageHero.astro';
 import Icon from '~/components/Icon.astro';
-import Todo from '~/components/Todo.astro';
 import { firma } from '~/data/site';
-import team from '~/assets/team/baustellenteam.jpg';
+import hero from '~/assets/site/baustelle-team.jpg';
 
-const hero = (await getEntry('projekte', 'sulkyweg'))!.data.bilder[0]!;
 const mailBewerbung = `mailto:${firma.email}?subject=${encodeURIComponent('Bewerbung')}`;
 
 const vorteile = [
@@ -18,26 +14,21 @@ const vorteile = [
   { t: 'Gutes Klima', d: 'Wir bauen auf Partnerschaft mit unseren Mitarbeitern, denn ein zufriedenes Team baut besser.' },
 ];
 
-// Offene Stellen: bitte ergänzen (TODO.md)
-const stellen = [
-  { titel: '[Stellenbezeichnung] (m/w/d)', ort: 'Hamburg', art: 'Vollzeit' },
-  { titel: '[Stellenbezeichnung] (m/w/d)', ort: 'Hamburg', art: 'Vollzeit' },
-];
+// Wen wir suchen: bewusst ohne Datum, die Stellen sind dauerhaft offen.
+// Weitere Berufe einfach hier ergänzen.
+const stellen = [{ titel: 'Beton- und Stahlbetonbauer (m/w/d)', ort: 'Hamburg', art: 'Vollzeit' }];
 
-const schritte = [
-  { t: 'Unterlagen', d: 'Ein kurzes Anschreiben, Ihr Lebenslauf und relevante Zeugnisse genügen.' },
-  { t: 'Per E-Mail', d: `An ${firma.email}. Gerne auch per Post oder persönlich bei uns im Büro.` },
-  { t: 'Kennenlernen', d: 'Wir melden uns zeitnah und lernen Sie gerne persönlich kennen.' },
-];
 ---
 
 <Base title="Karriere" description="Karriere bei der Quirling GmbH in Hamburg: Werden Sie Teil unseres Teams auf der Baustelle oder im Büro. Bewerbung gerne per E-Mail.">
   <PageHero
     title="Mit anpacken"
     titleLight="bei Quirling."
-    intro="Wir suchen Menschen, die gerne bauen. Auf der Baustelle oder im Büro, bewerben Sie sich unkompliziert per E-Mail."
+    intro="Gute Leute suchen wir immer. Wer gerne baut und Teil eines eingespielten Teams sein möchte, ist bei uns richtig."
     image={hero}
-    imageAlt="Baustelle Sulkyweg"
+    imageAlt="Zwei Kollegen mit Schutzhelm auf einer Baustelle der Quirling GmbH"
+    imageSide="right"
+    imagePosition="50% 30%"
     crumbs={[{ label: 'Karriere' }]}
   >
     <a class="pill light hero-btn" href={mailBewerbung}><span>Jetzt bewerben</span><Icon name="arrow" /></a>
@@ -62,20 +53,21 @@ const schritte = [
     </div>
   </section>
 
-  <!-- Stellen -->
+  <!-- Wen wir suchen -->
   <section class="section section-tint">
     <div class="container jobs-wrap">
       <div class="jobs-head">
-        <h2 class="h-sec">Aktuelle<br /><span class="lt">Angebote.</span></h2>
+        <h2 class="h-sec">Wir suchen<br /><span class="lt">Verstärkung.</span></h2>
+        <p class="small">
+          Bewerben Sie sich einfach per E-Mail an <a href={mailBewerbung}>{firma.email}</a>. Gerne auch per Post oder persönlich bei uns im Büro.
+        </p>
       </div>
       <ul class="jobs">
         {
           stellen.map((s) => (
             <li>
               <a class="job" href={mailBewerbung}>
-                <span class="job-t">
-                  <Todo hint="Stelle eintragen">{s.titel}</Todo>
-                </span>
+                <span class="job-t">{s.titel}</span>
                 <span class="job-m">
                   {s.ort} · {s.art}
                 </span>
@@ -87,39 +79,11 @@ const schritte = [
         <li>
           <a class="job job-init" href={mailBewerbung}>
             <span class="job-t">Initiativ&shy;bewerbung</span>
-            <span class="job-m">Keine passende Stelle dabei? Wir freuen uns trotzdem.</span>
+            <span class="job-m">Ihr Beruf ist nicht dabei? Melden Sie sich trotzdem.</span>
             <span class="job-i"><Icon name="arrow" /></span>
           </a>
         </li>
       </ul>
-    </div>
-  </section>
-
-  <!-- So bewerben Sie sich -->
-  <section class="section">
-    <div class="container how">
-      <div class="para how-img">
-        <span class="para-img">
-          <Image src={team} alt="Das Team der Quirling GmbH" widths={[700, 1200]} sizes="(min-width: 1024px) 50vw, 100vw" />
-        </span>
-      </div>
-      <div class="how-text">
-        <h2 class="h-sec">Einfach<br /><span class="lt">per E-Mail.</span></h2>
-        <ol class="steps">
-          {
-            schritte.map((s) => (
-              <li>
-                  <div>
-                  <h3 class="s-t">{s.t}</h3>
-                  <p class="small">{s.d}</p>
-                </div>
-              </li>
-            ))
-          }
-        </ol>
-        <p class="small post">Per Post: {firma.langname}, {firma.strasse}, {firma.plz} {firma.ort}</p>
-        <a class="pill" href={mailBewerbung}><span>Bewerbung senden</span><Icon name="mail" /></a>
-      </div>
     </div>
   </section>
 </Base>
@@ -137,11 +101,17 @@ const schritte = [
     align-items: start;
   }
   .vt-head,
-  .jobs-head,
-  .how-text {
+  .jobs-head {
     display: grid;
     gap: 1.2rem;
     justify-items: start;
+  }
+  .jobs-head .small {
+    margin: 0;
+    max-width: 34ch;
+  }
+  .jobs-head a {
+    color: var(--blue);
   }
   .vorteile {
     display: grid;
@@ -152,8 +122,7 @@ const schritte = [
     position: relative;
     padding-top: 1.3rem;
   }
-  .v::before,
-  .steps li::before {
+  .v::before {
     content: '';
     position: absolute;
     left: 0;
@@ -162,8 +131,7 @@ const schritte = [
     height: 2px;
     background: var(--blue);
   }
-  .v-t,
-  .s-t {
+  .v-t {
     font-family: var(--font-head);
     font-stretch: 68%;
     font-weight: 800;
@@ -250,54 +218,11 @@ const schritte = [
     background: #1c2350;
   }
 
-  /* Bewerbung */
-  .how {
-    display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: clamp(1.5rem, 3vw, 3rem);
-    align-items: center;
-  }
-  .how-img {
-    grid-column: 1 / 7;
-  }
-  .how-text {
-    grid-column: 8 / 13;
-  }
-  .steps {
-    list-style: none;
-    margin: 0.6rem 0 0;
-    padding: 0;
-    display: grid;
-    gap: 1.6rem;
-  }
-  .steps li {
-    position: relative;
-    padding-top: 1.1rem;
-  }
-  .steps .s-t {
-    font-size: clamp(1.3rem, 1.6vw, 1.6rem);
-    margin: 0.5rem 0 0.4rem;
-  }
-  .steps .small,
-  .post {
-    margin: 0;
-  }
-  .post {
-    color: var(--ink-3);
-  }
 
   @media (max-width: 900px) {
     .vt-wrap,
-    .jobs-wrap,
-    .how {
+    .jobs-wrap {
       grid-template-columns: minmax(0, 1fr);
-    }
-    .how-img,
-    .how-text {
-      grid-column: 1 / -1;
-    }
-    .how-img {
-      margin-inline: 4%;
     }
   }
   @media (max-width: 560px) {

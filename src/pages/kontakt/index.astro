@@ -1,94 +1,99 @@
 ---
+import { Image } from 'astro:assets';
 import Base from '~/layouts/Base.astro';
 import PageHero from '~/components/PageHero.astro';
 import Icon from '~/components/Icon.astro';
 import { firma } from '~/data/site';
 import { url } from '~/lib/url';
-import hero from '~/assets/team/kontakt-ivonne-michaela.jpg';
+import buero from '~/assets/site/buero-tilsiter-strasse.jpg';
+import team from '~/assets/team/kontakt-ivonne-michaela.jpg';
 
 const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
+const anliegen = ['Neubau', 'Rohbau', 'Schlüsselfertig', 'Umbau & Sanierung', 'Bewerbung', 'Sonstiges'];
 ---
 
-<Base title="Kontakt" description="Kontakt zur Quirling GmbH Bauunternehmen, Tilsiter Straße 174, 22047 Hamburg. Telefon 040 / 33 46 34 19 0, info@quirling.de.">
+<Base title="Kontakt" footerClaim={false} description="Kontakt zur Quirling GmbH Bauunternehmen, Tilsiter Straße 174, 22047 Hamburg. Telefon 040 / 33 46 34 19 0, info@quirling.de.">
   <PageHero
     title="Sprechen"
     titleLight="wir."
-    intro="Wir sind montags bis freitags für Sie da und freuen uns auf Ihr Vorhaben. Am schnellsten erreichen Sie uns telefonisch."
-    image={hero}
-    imageAlt="Ivonne Quirling und Michaela Venghaus aus dem Büro der Quirling GmbH"
+    intro="Ob erste Idee oder fertige Planung: Rufen Sie uns an, schreiben Sie uns oder kommen Sie vorbei. Wir freuen uns auf Ihr Vorhaben."
+    image={buero}
+    imageAlt="Bürogebäude der Quirling GmbH in der Tilsiter Straße 174, Hamburg"
     size="medium"
-    imagePosition="75% 12%"
     crumbs={[{ label: 'Kontakt' }]}
-  />
+  >
+    <div class="quick">
+      <a class="pill light" href={firma.telefonHref}><Icon name="phone" /><span>Anrufen</span></a>
+      <a class="pill light" href="#anfrage"><Icon name="mail" /><span>Anfrage senden</span></a>
+    </div>
+  </PageHero>
 
-  <section class="section">
-    <div class="container contact">
-      <div class="info">
-        <div class="block">
-          <h2 class="b-t">Anrufen</h2>
-          <a class="big" href={firma.telefonHref}>{firma.telefon}</a>
-          <p>Montags bis freitags. Wir rufen auch gerne zurück.</p>
-        </div>
-        <div class="block">
-          <h2 class="b-t">Schreiben</h2>
-          <a class="mail" href={`mailto:${firma.email}`}>{firma.email}</a>
-        </div>
-        <div class="block">
-          <h2 class="b-t">Besuchen</h2>
-          <address>
-            {firma.langname}<br />
-            {firma.strasse}<br />
-            {`${firma.plz} ${firma.ort}`}
-          </address>
-          <a class="text-link" href={firma.mapsUrl} target="_blank" rel="noopener"><span>Route planen</span><Icon name="arrow" /></a>
-        </div>
-        <div class="block">
-          <h2 class="b-t">Bewerben</h2>
-          <p>Bewerbungen gerne per E-Mail an <a href={`mailto:${firma.email}`}>{firma.email}</a> oder persönlich bei uns im Büro.</p>
-        </div>
+  <!-- Persönlich am Telefon -->
+  <section class="section direct">
+    <div class="container direct-in">
+      <div class="para direct-img">
+        <span class="para-img">
+          <Image src={team} alt="Ivonne Quirling und Michaela Venghaus aus dem Büro der Quirling GmbH" widths={[700, 1100, 1600]} sizes="(min-width: 1024px) 50vw, 100vw" />
+        </span>
+      </div>
+      <div class="direct-text">
+        <h2 class="h-sec">Am Telefon.<br /><span class="lt">Gleich persönlich.</span></h2>
+        <a class="tel" href={firma.telefonHref}>{firma.telefon}</a>
+        <p class="small">
+          Ivonne Quirling und Michaela Venghaus sind montags bis freitags für Sie da und verbinden Sie direkt mit dem richtigen Ansprechpartner.
+        </p>
+        <a class="mail" href={`mailto:${firma.email}`}><Icon name="mail" /><span>{firma.email}</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Anfrage: blaue Fläche, Oberkante als angedeutete Raute wie im Seitenkopf -->
+  <section class="ask on-blue" id="anfrage">
+    <div class="container ask-in">
+      <div class="ask-head">
+        <h2 class="ask-h">Ihre<br /><span class="lt">Anfrage.</span></h2>
+        <p>Erzählen Sie uns kurz von Ihrem Vorhaben. Wir melden uns zeitnah bei Ihnen zurück.</p>
       </div>
 
-      <div class="form-wrap">
-        <form class="form on-blue" data-form data-endpoint={endpoint} data-mail={firma.email} novalidate>
-          <h2 class="form-h">Ihre<br /><span class="lt">Anfrage.</span></h2>
-          <p class="form-intro">Erzählen Sie uns kurz von Ihrem Vorhaben. Wir melden uns zeitnah bei Ihnen.</p>
-          <div class="row2">
-            <label>
-              <span>Name *</span>
-              <input name="name" required autocomplete="name" />
-            </label>
-            <label>
-              <span>Firma</span>
-              <input name="firma" autocomplete="organization" />
-            </label>
-          </div>
-          <div class="row2">
-            <label>
-              <span>E-Mail *</span>
-              <input name="email" type="email" required autocomplete="email" />
-            </label>
-            <label>
-              <span>Telefon</span>
-              <input name="telefon" type="tel" autocomplete="tel" />
-            </label>
-          </div>
-          <label>
-            <span>Ihr Anliegen</span>
-            <select name="anliegen">
-              <option>Anfrage zu einem Bauvorhaben</option>
-              <option>Rohbau &amp; Stahlbetonbau</option>
-              <option>Schlüsselfertiges Bauen</option>
-              <option>Umbau &amp; Sanierung</option>
-              <option>Bewerbung</option>
-              <option>Sonstiges</option>
-            </select>
+      <form class="form" data-form data-endpoint={endpoint} data-mail={firma.email} novalidate>
+        <fieldset class="chips">
+          <legend>Worum geht es?</legend>
+          {
+            anliegen.map((a, i) => (
+              <label class="chip">
+                <input type="radio" name="anliegen" value={a} checked={i === 0} />
+                <span>{a}</span>
+              </label>
+            ))
+          }
+        </fieldset>
+        <div class="row2">
+          <label class="f">
+            <span>Name *</span>
+            <input name="name" required autocomplete="name" />
           </label>
-          <label>
-            <span>Nachricht *</span>
-            <textarea name="nachricht" rows="6" required></textarea>
+          <label class="f">
+            <span>Firma</span>
+            <input name="firma" autocomplete="organization" />
           </label>
+        </div>
+        <div class="row2">
+          <label class="f">
+            <span>E-Mail *</span>
+            <input name="email" type="email" required autocomplete="email" />
+          </label>
+          <label class="f">
+            <span>Telefon</span>
+            <input name="telefon" type="tel" autocomplete="tel" />
+          </label>
+        </div>
+        <label class="f">
+          <span>Ihre Nachricht *</span>
+          <textarea name="nachricht" rows="5" required></textarea>
+        </label>
+        <div class="row2 bottom">
           <!-- Sicherheitsfrage gegen Spam: Aufgabe wird beim Laden neu gewürfelt -->
-          <label class="captcha">
+          <label class="f captcha">
             <span>Sicherheitsfrage *</span>
             <span class="cq">
               <span class="cq-t" data-captcha-q>Was ergibt 3 + 4?</span>
@@ -99,137 +104,219 @@ const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
             <input type="checkbox" name="datenschutz" required />
             <span>Ich habe die <a href={url('/datenschutz/')}>Datenschutzerklärung</a> gelesen und bin mit der Verarbeitung meiner Angaben zur Beantwortung meiner Anfrage einverstanden. *</span>
           </label>
-          <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
-          <div class="submit">
-            <button class="send" type="submit"><span>Nachricht senden</span><Icon name="arrow" /></button>
-            <p class="status" data-status role="status" aria-live="polite"></p>
-          </div>
-        </form>
+        </div>
+        <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+        <div class="submit">
+          <button class="send" type="submit"><span>Nachricht senden</span><Icon name="arrow" /></button>
+          <p class="status" data-status role="status" aria-live="polite"></p>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- Besuchen und Bewerben -->
+  <section class="section more">
+    <div class="container more-in">
+      <div class="m">
+        <h2 class="m-h">Besuchen<br /><span class="lt">Sie uns.</span></h2>
+        <address class="small">
+          {firma.langname}<br />
+          {firma.strasse}<br />
+          {`${firma.plz} ${firma.ort}`}
+        </address>
+        <a class="text-link" href={firma.mapsUrl} target="_blank" rel="noopener"><span>Route planen</span><Icon name="arrow" /></a>
+      </div>
+      <div class="m">
+        <h2 class="m-h">Mit anpacken<br /><span class="lt">bei Quirling.</span></h2>
+        <p class="small">Bewerbungen gerne per E-Mail an <a href={`mailto:${firma.email}`}>{firma.email}</a> oder persönlich bei uns im Büro.</p>
+        <a class="text-link" href={url('/karriere/')}><span>Zur Karriereseite</span><Icon name="arrow" /></a>
       </div>
     </div>
   </section>
 </Base>
 
 <style>
-  .contact {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
-    gap: clamp(2.5rem, 7vw, 7rem);
-    align-items: start;
+  .quick {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-top: 1.8rem;
   }
-  .info {
+
+  /* Persönlich am Telefon */
+  .direct-in {
     display: grid;
-    gap: clamp(2rem, 3.5vw, 2.8rem);
-    padding-top: 0.5rem;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: clamp(1.5rem, 3vw, 3rem);
+    align-items: center;
   }
-  .b-t {
+  .direct-img {
+    grid-column: 1 / 7;
+  }
+  .direct-img :global(img) {
+    object-position: 60% 18%;
+  }
+  .direct-text {
+    grid-column: 8 / 13;
+    display: grid;
+    gap: 1.2rem;
+    justify-items: start;
+  }
+  .direct-text .h-sec {
+    font-size: clamp(2.4rem, 4vw, 4.2rem);
+  }
+  .tel {
     font-family: var(--font-head);
     font-stretch: 68%;
     font-weight: 800;
-    text-transform: uppercase;
-    font-size: clamp(1.6rem, 2.2vw, 2.1rem);
-    line-height: 1;
-    color: var(--ink);
-    margin: 0 0 0.7rem;
-  }
-  .block p {
-    font-size: 0.92rem;
-    line-height: 1.65;
-    color: var(--ink-2);
-    margin: 0;
-    max-width: 36ch;
-  }
-  .block p a {
-    color: var(--blue);
-  }
-  address {
-    font-style: normal;
-    margin-bottom: 0.9rem;
-    font-size: 0.95rem;
-    line-height: 1.7;
-    color: var(--ink-2);
-  }
-  .big {
-    display: block;
-    font-family: var(--font-head);
-    font-stretch: 68%;
-    font-weight: 800;
-    font-size: clamp(2.2rem, 3.4vw, 3.2rem);
+    font-size: clamp(2.6rem, 4.6vw, 4.8rem);
     line-height: 1;
     color: var(--blue);
     text-decoration: none;
-    margin-bottom: 0.6rem;
+    white-space: nowrap;
+  }
+  .tel:hover {
+    color: var(--navy);
+  }
+  .direct-text .small {
+    margin: 0;
+    max-width: 40ch;
   }
   .mail {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
     font-family: var(--font-mono);
     font-size: 1rem;
     color: var(--blue);
     text-decoration: none;
   }
-  .big:hover,
-  .mail:hover {
+  .mail :global(svg) {
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+  .mail:hover span {
     text-decoration: underline;
-    text-underline-offset: 0.2em;
+    text-underline-offset: 0.25em;
   }
 
-  /* Formular: blaue Fläche mit Navy-Block wie bei den Bildern */
-  .form-wrap {
-    position: relative;
-  }
-  .form-wrap::before {
-    content: '';
-    position: absolute;
-    right: -3%;
-    top: 12%;
-    bottom: -4%;
-    width: 34%;
-    background: var(--navy);
-    clip-path: polygon(40% 0, 100% 0, 88% 100%, 0 100%);
-  }
-  .form {
+  /* Anfrage */
+  .ask {
     position: relative;
     background: var(--blue);
     color: #fff;
-    padding: clamp(1.75rem, 4vw, 3.5rem);
-    display: grid;
-    gap: 1.3rem;
+    padding-block: clamp(6rem, 11vw, 10rem) var(--section);
+    clip-path: polygon(0 0, 78% clamp(2rem, 5vw, 4.5rem), 100% clamp(0.8rem, 2vw, 1.8rem), 100% 100%, 0 100%);
+    margin-top: calc(var(--section) * -0.3);
+    scroll-margin-top: 2rem;
   }
-  .form-h {
+  .ask-in {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.7fr);
+    gap: clamp(2rem, 6vw, 6rem);
+    align-items: start;
+  }
+  .ask-head {
+    position: sticky;
+    top: 7rem;
+    display: grid;
+    gap: 1.2rem;
+  }
+  .ask-h {
     font-family: var(--font-head);
     font-stretch: 68%;
     font-weight: 800;
     text-transform: uppercase;
-    font-size: clamp(2.6rem, 4.4vw, 4.4rem);
-    line-height: 0.94;
+    font-size: clamp(3rem, 6vw, 6.2rem);
+    line-height: 0.97;
     color: #fff;
     margin: 0;
   }
-  .form-h .lt {
+  .ask-h .lt {
     font-weight: 300;
+    color: #c9d0f5;
   }
-  .form-intro {
-    margin: -0.2rem 0 0.6rem;
+  .ask-head p {
+    margin: 0;
     font-size: 0.95rem;
+    line-height: 1.65;
     color: rgb(255 255 255 / 0.85);
+    max-width: 32ch;
   }
-  .row2 {
+
+  .form {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 1.3rem;
+    gap: 1.4rem;
   }
-  label {
-    display: grid;
-    gap: 0.45rem;
+  .chips {
+    border: 0;
+    margin: 0 0 0.4rem;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
   }
-  label > span:first-child {
+  .chips legend,
+  .f > span:first-child {
     font-family: var(--font-mono);
     font-size: 0.72rem;
     letter-spacing: 0.04em;
     text-transform: uppercase;
     color: #c9d0f5;
+    margin-bottom: 0.7rem;
+    padding: 0;
+  }
+  .f > span:first-child {
+    margin-bottom: 0;
+  }
+  .chip {
+    position: relative;
+    cursor: pointer;
+  }
+  .chip input {
+    position: absolute;
+    opacity: 0;
+    inset: 0;
+    cursor: pointer;
+  }
+  .chip span {
+    display: inline-block;
+    padding: 0.65rem 1.1rem;
+    border: 1.5px solid rgb(255 255 255 / 0.45);
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: #fff;
+    transition:
+      background 0.2s ease,
+      color 0.2s ease,
+      border-color 0.2s ease;
+  }
+  .chip:hover span {
+    border-color: #fff;
+  }
+  .chip input:checked + span {
+    background: #fff;
+    border-color: #fff;
+    color: var(--blue);
+  }
+  .chip input:focus-visible + span {
+    outline: 2px solid #fff;
+    outline-offset: 3px;
+  }
+  .row2 {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 1.4rem;
+  }
+  .f {
+    display: grid;
+    gap: 0.45rem;
   }
   input,
-  select,
   textarea {
     font: inherit;
     font-size: 1rem;
@@ -243,26 +330,24 @@ const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
     transition: border-color 0.2s ease;
   }
   input:focus,
-  select:focus,
   textarea:focus {
     outline: none;
     border-bottom-color: var(--navy);
   }
-  .form :focus-visible {
-    outline: 2px solid #fff;
-    outline-offset: 2px;
-  }
-  .was-validated :invalid {
-    border-bottom-color: #ff8a8a;
+  .was-validated :invalid:not([type='radio']):not([type='checkbox']) {
+    border-bottom-color: #ff9c9c;
   }
   textarea {
     resize: vertical;
   }
+  .bottom {
+    align-items: end;
+  }
   .cq {
     display: grid;
-    grid-template-columns: auto 8rem;
+    grid-template-columns: auto minmax(4.5rem, 7rem);
     align-items: center;
-    gap: 1.2rem;
+    gap: 1rem;
     justify-content: start;
   }
   .cq-t {
@@ -274,6 +359,7 @@ const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
     color: #fff;
   }
   .check {
+    display: grid;
     grid-template-columns: auto 1fr;
     align-items: start;
     gap: 0.8rem;
@@ -285,8 +371,8 @@ const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
     accent-color: var(--navy);
   }
   .check span {
-    font-size: 0.86rem;
-    line-height: 1.6;
+    font-size: 0.82rem;
+    line-height: 1.55;
     color: rgb(255 255 255 / 0.88);
   }
   .check a {
@@ -307,13 +393,13 @@ const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
     display: inline-flex;
     align-items: center;
     gap: 0.9rem;
-    padding: 0.95rem 1.6rem;
+    padding: 1.05rem 1.8rem;
     border: 0;
     background: var(--navy);
     color: #fff;
     font-family: var(--font-mono);
     font-weight: 500;
-    font-size: 0.82rem;
+    font-size: 0.85rem;
     letter-spacing: 0.04em;
     text-transform: uppercase;
     cursor: pointer;
@@ -341,20 +427,67 @@ const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
   .status.err {
     color: #ffd0d0;
   }
+
+  /* Besuchen und Bewerben */
+  .more-in {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(2.5rem, 6vw, 6rem);
+  }
+  .m {
+    display: grid;
+    gap: 1.1rem;
+    justify-items: start;
+    align-content: start;
+  }
+  .m-h {
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: clamp(2.4rem, 4vw, 4.2rem);
+    line-height: 0.97;
+    color: var(--blue);
+    margin: 0 0 0.4rem;
+  }
+  .m-h .lt {
+    font-weight: 300;
+  }
+  .m address {
+    font-style: normal;
+    margin: 0;
+  }
+  .m .small {
+    margin: 0;
+    max-width: 40ch;
+  }
+  .m .small a {
+    color: var(--blue);
+  }
+
   @media (max-width: 900px) {
-    .contact {
+    .direct-in,
+    .ask-in,
+    .more-in {
       grid-template-columns: minmax(0, 1fr);
     }
-    .form-wrap::before {
-      display: none;
+    .direct-img,
+    .direct-text {
+      grid-column: 1 / -1;
+    }
+    .direct-img {
+      margin-inline: 4%;
+    }
+    .ask-head {
+      position: static;
     }
   }
   @media (max-width: 560px) {
     .row2 {
       grid-template-columns: minmax(0, 1fr);
     }
-    .form {
-      margin-inline: calc(var(--gutter) * -1);
+    .tel {
+      white-space: normal;
     }
   }
 </style>

@@ -89,7 +89,6 @@ export const nav: NavItem[] = [
 export const downloadGruppen = [
   {
     titel: 'Steuern',
-    text: 'Bescheinigungen des Finanzamts, unter anderem zum Steuerabzug bei Bauleistungen.',
     dokumente: [
       { title: 'Freistellungsbescheinigung zum Steuerabzug', file: 'freistellungsbescheinigung-zum-steuerabzug-fhh.pdf', size: '52 KB' },
       { title: 'Bescheinigung in Steuersachen', file: 'bescheinigung-in-steuersachen-finanzamt.pdf', size: '420 KB' },
@@ -98,7 +97,6 @@ export const downloadGruppen = [
   },
   {
     titel: 'Sozialkassen',
-    text: 'Nachweise der Berufsgenossenschaft und der Sozialkasse der Bauwirtschaft.',
     dokumente: [
       { title: 'Unbedenklichkeitsbescheinigung BG Bau', file: 'unbedenktlichkeitsbescheinigung-bg-bau.pdf', size: '48 KB' },
       { title: 'Bestätigung SOKA-BAU', file: 'bestaetigung-soka-bau.pdf', size: '36 KB' },
@@ -106,7 +104,6 @@ export const downloadGruppen = [
   },
   {
     titel: 'Unternehmen',
-    text: 'Handelsregister und Versicherungsschutz der Quirling GmbH.',
     dokumente: [
       { title: 'Registernachweis Amtsgericht Hamburg', file: 'amtsgericht-hamburg-registernachweis.pdf', size: '53 KB' },
       { title: 'Versicherungsnachweis', file: 'versicherungsnachweis.pdf', size: '45 KB' },
@@ -116,7 +113,5 @@ export const downloadGruppen = [
 
 export const downloads: { title: string; file: string; size: string }[] = downloadGruppen.flatMap((g) => [...g.dokumente]);
 
-/** alle Nachweise in einer Datei (wird mit scripts/zip-downloads.py erzeugt) */
-export const downloadsZip = { file: 'quirling-nachweise.zip', size: '1 MB' };
 
 export const kategorien = ['Wohnungsbau', 'Bürogebäude', 'Industriebau', 'Häuser', 'Umbau'] as const;

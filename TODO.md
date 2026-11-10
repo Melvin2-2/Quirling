@@ -33,7 +33,7 @@ Alles, was auf der Website **rot gestrichelt** markiert ist, steht auch hier. Pl
   Projektbilder: `src/assets/projects/<projekt>/01.jpg …` (01 = Titelbild)
 - [x] **Firmenfilm** eingebunden (SER_Timelapse_Export): Startvideo = Drohnenflug 4:16–4:26, Film-Raute = Ausschnitt ab 3:20,
   „Film ansehen“ spielt den kompletten Film (720p) direkt von der Website – ohne YouTube.
-- [ ] **Zertifikate** sind die PDFs der alten Website (Stand ca. 2017) → bei Bedarf aktuelle Versionen in `public/downloads/` austauschen und danach `python3 scripts/zip-downloads.py` ausführen (aktualisiert die ZIP mit allen Nachweisen)
+- [ ] **Zertifikate** sind die PDFs der alten Website (Stand ca. 2017) → bei Bedarf aktuelle Versionen in `public/downloads/` austauschen
 - [ ] Logo liegt als Vektor vor (aus `Logo_mit_Adressblock.pdf`). Falls es Original-Logodateien gibt (AI/EPS/SVG), gern nachliefern.
 
 ## Veröffentlichung
@@ -53,3 +53,5 @@ Alles, was auf der Website **rot gestrichelt** markiert ist, steht auch hier. Pl
 - [ ] **Kinderwelt**: Projekt heißt „Kinderwelt“, die Leistung „Umbau und Erweiterung des Alsterpalais“. Welcher Name soll als Titel stehen?
 - [ ] **My Place Selfstorage**: offizielle Schreibweise des Namens (MyPlace SelfStorage?) bestätigen.
 - [ ] **Krebs & Riedel**: Websites der Planer wurden aus den Projektinfos entfernt (nur Name und Adresse). Wieder aufnehmen?
+- [ ] **Michaela Venghaus**: Berufsbezeichnung steht wie auf der alten Website als „Büroangestellte“. Gibt es eine genauere Bezeichnung (z. B. Kauffrau für Büromanagement, Buchhaltung)?
+- [ ] **Karriere**: Welche Berufe sollen dauerhaft als gesucht erscheinen? Aktuell: Beton- und Stahlbetonbauer (m/w/d) und Initiativbewerbung. Ergänzen in `src/pages/karriere/index.astro` (Liste `stellen`).
