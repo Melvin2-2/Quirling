@@ -13,8 +13,8 @@ const year = new Date().getFullYear();
     <div class="claim">
       <p class="h2 claim-t">Projekt geplant?<br /><span class="lt">Sprechen wir.</span></p>
       <div class="claim-ways">
-        <a class="claim-tel" href={firma.telefonHref}>{firma.telefon}</a>
         <a class="pill light" href={url('/kontakt/')}><span>Kontakt aufnehmen</span><Icon name="arrow" /></a>
+        <a class="claim-tel" href={firma.telefonHref}>{firma.telefon}</a>
       </div>
     </div>
     )}
@@ -60,7 +60,7 @@ const year = new Date().getFullYear();
     </div>
 
     <div class="bottom">
-      <span>© {year} {firma.name} · {firma.registergericht} {firma.hrb}</span>
+      <span>© {year} {firma.name}</span>
       <nav aria-label="Rechtliches">
         <a href={url('/impressum/')}>Impressum</a>
         <a href={url('/datenschutz/')}>Datenschutz</a>
@@ -88,20 +88,29 @@ const year = new Date().getFullYear();
     color: #fff !important;
     margin: 0;
   }
+  /* Telefonnummer in Höhe und Schrift wie „Sprechen wir.“ (leicht), unten bündig */
   .claim-ways {
-    display: grid;
-    justify-items: start;
-    gap: 1.2rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 1.2rem 2.4rem;
   }
   .claim-tel {
     font-family: var(--font-head);
     font-stretch: 68%;
-    font-weight: 800;
-    font-size: clamp(1.6rem, 2.8vw, 2.4rem);
+    font-weight: 300;
+    font-size: clamp(1.9rem, 3.8vw, 3.4rem);
+    line-height: 0.88;
+    text-transform: uppercase;
+    color: #fff;
     text-decoration: none;
+    white-space: nowrap;
   }
   .claim-tel:hover {
-    text-decoration: underline;
+    color: #c9d0f5;
+  }
+  .claim-ways .pill {
+    margin-bottom: 0.35em;
   }
   .cols {
     display: grid;

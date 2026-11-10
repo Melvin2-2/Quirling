@@ -15,7 +15,7 @@ const anliegen = ['Neubau', 'Rohbau', 'Schlüsselfertig', 'Umbau & Sanierung', '
   <PageHero
     title="Sprechen"
     titleLight="wir."
-    intro="Ivonne Quirling und Michaela Venghaus sind montags bis freitags für Sie da. Ob erste Idee oder fertige Planung, wir freuen uns auf Ihr Vorhaben."
+    intro="Wir sind montags bis freitags für Sie erreichbar. Ob erste Idee oder fertige Planung, wir freuen uns auf Ihr Vorhaben."
     image={team}
     imageAlt="Ivonne Quirling und Michaela Venghaus aus dem Büro der Quirling GmbH"
     imageSide="right"
@@ -28,10 +28,16 @@ const anliegen = ['Neubau', 'Rohbau', 'Schlüsselfertig', 'Umbau & Sanierung', '
   <section class="section direct">
     <div class="container direct-in">
       <div class="call">
-        <h2 class="h-sec">Rufen Sie an<br /><span class="lt">oder schreiben Sie.</span></h2>
-        <a class="tel" href={firma.telefonHref}>{firma.telefon}</a>
-        <a class="mail" href={`mailto:${firma.email}`}>{firma.email}</a>
-        <p class="small">Montags bis freitags für Sie da. Gerne rufen wir auch zurück.</p>
+        <h2 class="visually-hidden">Telefon und E-Mail</h2>
+        <div class="c-way">
+          <span class="c-pre">Rufen Sie an</span>
+          <a class="c-big" href={firma.telefonHref}>{firma.telefon}</a>
+        </div>
+        <div class="c-way">
+          <span class="c-pre">oder schreiben Sie uns</span>
+          <a class="c-big" href={`mailto:${firma.email}`}>{firma.email}</a>
+        </div>
+        <p class="small">Montags bis freitags erreichbar. Gerne rufen wir auch zurück.</p>
       </div>
       <div class="side">
         <div class="side-b">
@@ -132,16 +138,27 @@ const anliegen = ['Neubau', 'Rohbau', 'Schlüsselfertig', 'Umbau & Sanierung', '
     gap: clamp(2rem, 4vw, 4rem);
     align-items: end;
   }
+  /* klein und dünn über groß und fett, mit viel Luft dazwischen */
   .call {
     grid-column: 1 / 8;
     display: grid;
-    gap: 1.2rem;
+    gap: clamp(2.2rem, 4vw, 3.4rem);
     justify-items: start;
   }
-  .call .h-sec {
-    font-size: clamp(2.4rem, 4.2vw, 4.4rem);
+  .c-way {
+    display: grid;
+    gap: 0.5rem;
   }
-  .tel {
+  .c-pre {
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 300;
+    text-transform: uppercase;
+    font-size: clamp(1.4rem, 2vw, 2rem);
+    line-height: 1;
+    color: var(--blue);
+  }
+  .c-big {
     font-family: var(--font-head);
     font-stretch: 68%;
     font-weight: 800;
@@ -149,27 +166,13 @@ const anliegen = ['Neubau', 'Rohbau', 'Schlüsselfertig', 'Umbau & Sanierung', '
     line-height: 0.95;
     color: var(--blue);
     text-decoration: none;
-    white-space: nowrap;
+    overflow-wrap: anywhere;
   }
-  .tel:hover {
+  .c-big:hover {
     color: var(--navy);
   }
   .call .small {
     margin: 0;
-  }
-  /* E-Mail gleichgestellt, minimal kleiner als die Telefonnummer */
-  .mail {
-    font-family: var(--font-head);
-    font-stretch: 68%;
-    font-weight: 800;
-    font-size: clamp(2.1rem, 3.8vw, 4rem);
-    line-height: 0.95;
-    color: var(--blue);
-    text-decoration: none;
-    overflow-wrap: anywhere;
-  }
-  .mail:hover {
-    color: var(--navy);
   }
   .side {
     grid-column: 9 / 13;
@@ -443,9 +446,6 @@ const anliegen = ['Neubau', 'Rohbau', 'Schlüsselfertig', 'Umbau & Sanierung', '
   @media (max-width: 560px) {
     .row2 {
       grid-template-columns: minmax(0, 1fr);
-    }
-    .tel {
-      white-space: normal;
     }
   }
 </style>
