@@ -16,7 +16,39 @@ const vorteile = [
 
 // Wen wir suchen: bewusst ohne Datum, die Stellen sind dauerhaft offen.
 // Weitere Berufe einfach hier ergänzen.
-const stellen = [{ titel: 'Beton- und Stahlbetonbauer (m/w/d)', ort: 'Hamburg', art: 'Vollzeit' }];
+const stellen = [
+  {
+    titel: 'Beton- und Stahlbetonbauer (m/w/d)',
+    meta: 'Hamburg und Umgebung · Vollzeit',
+    kurz: 'Schalen, bewehren, betonieren und noch einiges mehr.',
+    teile: [
+      {
+        t: 'Ihre Aufgaben',
+        d: 'Bei uns wird es nie langweilig. Sie schalen, bewehren und betonieren Fundamente, Wände und Decken, mauern mit und packen auch bei Umbauten im Bestand an. Jede Baustelle ist anders, vom Mehrfamilienhaus mit Tiefgarage bis zur Stadtvilla.',
+      },
+      {
+        t: 'Ihr Profil',
+        d: 'Eine Ausbildung im Bauhandwerk oder Erfahrung im Rohbau, Zuverlässigkeit und Freude an der Arbeit im Team. Flexibilität ist bei uns gefragt, denn kein Tag ist wie der andere.',
+      },
+      {
+        t: 'Was wir bieten',
+        d: 'Ein festes, eingespieltes Team, abwechslungsreiche Baustellen in Hamburg und Umgebung und kurze Wege zur Geschäftsführung. Als Familienbetrieb nehmen wir uns Zeit für unsere Leute.',
+      },
+    ],
+  },
+  {
+    titel: 'Initiativ\u00adbewerbung',
+    meta: 'Baustelle oder Büro',
+    kurz: 'Ihr Beruf ist nicht dabei? Melden Sie sich trotzdem.',
+    teile: [
+      {
+        t: 'Gute Leute suchen wir immer',
+        d: 'Ob Maurer, Polier oder Auszubildender: Schicken Sie uns ein paar Zeilen und Ihren Lebenslauf. Wir melden uns zeitnah und lernen Sie gerne persönlich kennen.',
+      },
+    ],
+  },
+];
+const mailFor = (titel: string) => `mailto:${firma.email}?subject=${encodeURIComponent(`Bewerbung: ${titel.replace('\u00ad', '')}`)}`;
 
 ---
 
@@ -31,7 +63,7 @@ const stellen = [{ titel: 'Beton- und Stahlbetonbauer (m/w/d)', ort: 'Hamburg', 
     imagePosition="50% 30%"
     crumbs={[{ label: 'Karriere' }]}
   >
-    <a class="pill light hero-btn" href={mailBewerbung}><span>Jetzt bewerben</span><Icon name="arrow" /></a>
+    <a class="pill light hero-btn" href="#stellen"><span>Offene Stellen</span><Icon name="arrow-down" /></a>
   </PageHero>
 
   <!-- Vorteile -->
@@ -54,7 +86,7 @@ const stellen = [{ titel: 'Beton- und Stahlbetonbauer (m/w/d)', ort: 'Hamburg', 
   </section>
 
   <!-- Wen wir suchen -->
-  <section class="section section-tint">
+  <section class="section section-tint" id="stellen">
     <div class="container jobs-wrap">
       <div class="jobs-head">
         <h2 class="h-sec">Wir suchen<br /><span class="lt">Verstärkung.</span></h2>
@@ -62,28 +94,33 @@ const stellen = [{ titel: 'Beton- und Stahlbetonbauer (m/w/d)', ort: 'Hamburg', 
           Bewerben Sie sich einfach per E-Mail an <a href={mailBewerbung}>{firma.email}</a>. Gerne auch per Post oder persönlich bei uns im Büro.
         </p>
       </div>
-      <ul class="jobs">
+      <div class="jobs">
         {
-          stellen.map((s) => (
-            <li>
-              <a class="job" href={mailBewerbung}>
-                <span class="job-t">{s.titel}</span>
-                <span class="job-m">
-                  {s.ort} · {s.art}
+          stellen.map((j, i) => (
+            <details class="job" open={i === 0}>
+              <summary>
+                <span class="job-top">
+                  <span class="job-t" set:html={j.titel} />
+                  <span class="job-m">{j.meta}</span>
                 </span>
-                <span class="job-i"><Icon name="arrow" /></span>
-              </a>
-            </li>
+                <span class="job-k">{j.kurz}</span>
+                <span class="job-i" aria-hidden="true"><Icon name="plus" /></span>
+              </summary>
+              <div class="job-body">
+                <div class="job-cols">
+                  {j.teile.map((t) => (
+                    <div>
+                      <h3 class="job-h">{t.t}</h3>
+                      <p class="small">{t.d}</p>
+                    </div>
+                  ))}
+                </div>
+                <a class="pill solid" href={mailFor(j.titel)}><span>Jetzt per E-Mail bewerben</span><Icon name="mail" /></a>
+              </div>
+            </details>
           ))
         }
-        <li>
-          <a class="job job-init" href={mailBewerbung}>
-            <span class="job-t">Initiativ&shy;bewerbung</span>
-            <span class="job-m">Ihr Beruf ist nicht dabei? Melden Sie sich trotzdem.</span>
-            <span class="job-i"><Icon name="arrow" /></span>
-          </a>
-        </li>
-      </ul>
+      </div>
     </div>
   </section>
 </Base>
@@ -120,104 +157,129 @@ const stellen = [{ titel: 'Beton- und Stahlbetonbauer (m/w/d)', ort: 'Hamburg', 
   }
   .v {
     position: relative;
-    padding-top: 1.3rem;
-  }
-  .v::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 3rem;
-    height: 2px;
-    background: var(--blue);
   }
   .v-t {
     font-family: var(--font-head);
     font-stretch: 68%;
     font-weight: 800;
     text-transform: uppercase;
-    font-size: clamp(1.5rem, 2vw, 2rem);
-    line-height: 1;
+    font-size: clamp(2rem, 3vw, 3rem);
+    line-height: 0.97;
     color: var(--blue);
-    margin: 0.6rem 0 0.7rem;
+    margin: 0 0 0.8rem;
   }
   .v .small {
     margin: 0;
     max-width: 38ch;
   }
 
-  /* Stellen */
+  /* Stellen: aufklappbar */
   .jobs {
-    list-style: none;
-    margin: 0;
-    padding: 0;
     display: grid;
     gap: 6px;
   }
   .job {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto auto;
-    align-items: center;
-    gap: 1.5rem;
-    padding: clamp(1.2rem, 2vw, 1.6rem) 1.3rem clamp(1.2rem, 2vw, 1.6rem) 1.6rem;
     background: #fff;
-    color: var(--ink);
-    text-decoration: none;
+  }
+  .job summary {
+    list-style: none;
+    cursor: pointer;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.5rem 1.5rem;
+    align-items: center;
+    padding: clamp(1.3rem, 2.4vw, 2rem) clamp(1.3rem, 2.4vw, 2rem);
     transition: background 0.25s ease;
   }
-  .job:hover {
+  .job summary::-webkit-details-marker {
+    display: none;
+  }
+  .job summary:hover {
     background: var(--stone-50);
+  }
+  .job-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.4rem 1.4rem;
   }
   .job-t {
     font-family: var(--font-head);
     font-stretch: 68%;
     font-weight: 800;
     text-transform: uppercase;
-    font-size: clamp(1.35rem, 1.9vw, 1.9rem);
-    line-height: 1;
+    font-size: clamp(1.7rem, 2.6vw, 2.6rem);
+    line-height: 0.97;
     color: var(--blue);
   }
   .job-m {
     font-family: var(--font-mono);
-    font-size: 0.74rem;
+    font-size: 0.72rem;
     letter-spacing: 0.04em;
     text-transform: uppercase;
     color: var(--ink-3);
   }
+  .job-k {
+    grid-row: 2;
+    font-size: 0.95rem;
+    color: var(--ink-2);
+  }
   .job-i {
-    width: 44px;
-    height: 44px;
+    grid-row: 1 / 3;
+    grid-column: 2;
+    width: 46px;
+    height: 46px;
     display: grid;
     place-items: center;
-    background: var(--navy);
-    color: #fff;
-    transition: background 0.3s ease;
-  }
-  .job:hover .job-i {
-    background: var(--blue);
+    border: 1.5px solid var(--blue);
+    color: var(--blue);
+    transition:
+      background 0.3s ease,
+      color 0.3s ease,
+      transform 0.4s var(--ease);
   }
   .job-i :global(svg) {
     width: 20px;
     height: 20px;
   }
-  .job-init {
-    background: var(--navy);
-  }
-  .job-init .job-t {
+  .job summary:hover .job-i,
+  .job[open] .job-i {
+    background: var(--blue);
     color: #fff;
   }
-  .job-init .job-m {
-    color: #aab4ea;
-    text-transform: none;
-    letter-spacing: 0;
+  .job-i :global(svg) {
+    transition: transform 0.4s var(--ease);
   }
-  .job-init .job-i {
-    background: var(--blue);
+  .job[open] .job-i :global(svg) {
+    transform: rotate(45deg);
   }
-  .job-init:hover {
-    background: #1c2350;
+  .job-body {
+    padding: 0 clamp(1.3rem, 2.4vw, 2rem) clamp(1.6rem, 3vw, 2.4rem);
+    display: grid;
+    gap: 1.8rem;
+    justify-items: start;
   }
-
+  .job-cols {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: 1.4rem 2.4rem;
+    width: 100%;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--line);
+  }
+  .job-h {
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: clamp(1.3rem, 1.6vw, 1.6rem);
+    line-height: 1;
+    color: var(--blue);
+    margin: 0 0 0.6rem;
+  }
+  .job-cols .small {
+    margin: 0;
+  }
 
   @media (max-width: 900px) {
     .vt-wrap,
@@ -229,15 +291,9 @@ const stellen = [{ titel: 'Beton- und Stahlbetonbauer (m/w/d)', ort: 'Hamburg', 
     .vorteile {
       grid-template-columns: minmax(0, 1fr);
     }
-    .job {
-      grid-template-columns: minmax(0, 1fr) auto;
-    }
-    .job-m {
-      grid-row: 2;
-    }
     .job-i {
-      grid-row: 1 / 3;
-      grid-column: 2;
+      width: 40px;
+      height: 40px;
     }
   }
 </style>

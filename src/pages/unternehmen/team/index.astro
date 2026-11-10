@@ -3,10 +3,9 @@ import { Image } from 'astro:assets';
 import Base from '~/layouts/Base.astro';
 import PageHero from '~/components/PageHero.astro';
 import Icon from '~/components/Icon.astro';
-import { firma } from '~/data/site';
 import { url } from '~/lib/url';
 import baustellenteam from '~/assets/team/baustellenteam.jpg';
-import baustelle from '~/assets/site/rohbau-wandsbek.jpg';
+import baustelle from '~/assets/site/buero-tilsiter-strasse.jpg';
 import thomas from '~/assets/team/thomas-quirling.jpg';
 import ivonne from '~/assets/team/ivonne-quirling.jpg';
 import michaela from '~/assets/team/michaela-venghaus.jpg';
@@ -24,7 +23,7 @@ const personen = [
     titleLight="uns vor."
     intro="Ein eingespieltes und beständiges Team, das Sie bei Ihrem Vorhaben kompetent und zuverlässig unterstützt."
     image={baustelle}
-    imageAlt="Rohbau der Quirling GmbH in Hamburg-Wandsbek"
+    imageAlt="Bürogebäude der Quirling GmbH in der Tilsiter Straße 174, Hamburg"
     crumbs={[{ label: 'Unternehmen', href: '/unternehmen/' }, { label: 'Team' }]}
     size="medium"
   />
@@ -33,15 +32,6 @@ const personen = [
     <div class="container">
       <div class="head">
         <h2 class="h-sec">Ihre<br /><span class="lt">Ansprechpartner.</span></h2>
-        <!-- Kontaktkarte neben der Überschrift, nicht in der Bildreihe -->
-        <aside class="reach">
-          <div class="reach-in">
-            <h3 class="reach-t">Direkt<br /><span class="lt">erreichen.</span></h3>
-            <a class="reach-tel" href={firma.telefonHref}>{firma.telefon}</a>
-            <a class="reach-mail" href={`mailto:${firma.email}`}>{firma.email}</a>
-            <p>Montags bis freitags für Sie da.</p>
-          </div>
-        </aside>
       </div>
       <div class="people">
         {
@@ -81,9 +71,7 @@ const personen = [
 <style>
   .head {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: end;
-    gap: 2rem;
+    gap: 1.2rem;
     margin-bottom: clamp(2.5rem, 5vw, 4rem);
   }
   .people {
@@ -124,66 +112,6 @@ const personen = [
     color: var(--blue);
     margin: 0;
   }
-  .reach {
-    position: relative;
-    width: min(100%, 27rem);
-    background: var(--navy);
-    color: #fff;
-    overflow: hidden;
-  }
-  /* blauer Keil wie die Schräge im Seitenkopf */
-  .reach::before {
-    content: '';
-    position: absolute;
-    inset: 0 0 0 auto;
-    width: 34%;
-    background: var(--blue);
-    clip-path: polygon(45% 0, 100% 0, 100% 100%, 0 100%);
-  }
-  .reach-in {
-    position: relative;
-    padding: clamp(1.3rem, 2.2vw, 1.9rem);
-    display: grid;
-    gap: 0.6rem;
-    justify-items: start;
-  }
-  .reach-t {
-    font-family: var(--font-head);
-    font-stretch: 68%;
-    font-weight: 800;
-    text-transform: uppercase;
-    font-size: clamp(1.8rem, 2.4vw, 2.4rem);
-    line-height: 0.97;
-    margin: 0 0 0.6rem;
-    color: #fff;
-  }
-  .reach-t .lt {
-    font-weight: 300;
-  }
-  .reach-tel {
-    font-family: var(--font-head);
-    font-stretch: 68%;
-    font-weight: 800;
-    font-size: clamp(1.5rem, 2vw, 2rem);
-    line-height: 1;
-    color: #fff;
-    text-decoration: none;
-  }
-  .reach-mail {
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-    color: #c9d0f5;
-    text-decoration: none;
-  }
-  .reach a:hover {
-    text-decoration: underline;
-    text-underline-offset: 0.2em;
-  }
-  .reach p {
-    margin: 0.3rem 0 0;
-    font-size: 0.85rem;
-    color: rgb(255 255 255 / 0.75);
-  }
 
   /* gleiche Fläche wie die Seite: die Mannschaft gehört dazu */
   .crew {
@@ -210,12 +138,6 @@ const personen = [
     grid-column: 1 / 9;
   }
 
-  @media (max-width: 1100px) {
-    .head {
-      grid-template-columns: minmax(0, 1fr);
-      align-items: start;
-    }
-  }
   @media (max-width: 900px) {
     .people {
       grid-template-columns: repeat(2, minmax(0, 1fr));

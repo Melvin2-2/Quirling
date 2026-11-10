@@ -170,27 +170,17 @@ const [t1, t2] = l.title.includes(' & ') ? [l.title.split(' & ')[0] + ' &', l.ti
   }
   .umfang li {
     position: relative;
-    padding-top: 1.2rem;
     display: grid;
     gap: 0.5rem;
-  }
-  .umfang li::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 3rem;
-    height: 2px;
-    background: var(--blue);
   }
   .u-t {
     font-family: var(--font-head);
     font-stretch: 68%;
-    font-weight: 700;
+    font-weight: 800;
     text-transform: uppercase;
-    font-size: clamp(1.3rem, 1.7vw, 1.7rem);
-    line-height: 1.05;
-    color: var(--ink);
+    font-size: clamp(1.5rem, 2.1vw, 2.1rem);
+    line-height: 1;
+    color: var(--blue);
   }
 
   .refs-head {

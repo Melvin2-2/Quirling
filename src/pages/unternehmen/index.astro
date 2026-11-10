@@ -1,17 +1,15 @@
 ---
 import { Image } from 'astro:assets';
-import { getEntry } from 'astro:content';
 import Base from '~/layouts/Base.astro';
 import PageHero from '~/components/PageHero.astro';
 import Icon from '~/components/Icon.astro';
 import Todo from '~/components/Todo.astro';
 import ValueIcon from '~/components/ValueIcon.astro';
 import { firma, JAHRE_ERFAHRUNG, GRUENDUNGSJAHR } from '~/data/site';
-import { url } from '~/lib/url';
 import historisch from '~/assets/site/historisch.jpg';
 import buero from '~/assets/site/buero-tilsiter-strasse.jpg';
+import team from '~/assets/team/baustellenteam.jpg';
 
-const bild = (await getEntry('projekte', 'horner-landstrasse'))!.data.bilder[0]!;
 
 type Station = { jahr: string; titel: string; text: string; pruefen?: boolean };
 // bewusst kurz: nur Meilensteine des Unternehmens, keine Projekte (die stehen unter Referenzen)
@@ -40,7 +38,7 @@ const zahlen = [
   <PageHero
     title="Bauen in Hamburg."
     titleLight={`Seit ${GRUENDUNGSJAHR}.`}
-    intro="Ein dynamisches und flexibles Team aus jungen und erfahrenen Mitarbeitern. Inhabergeführt und mit kurzen Wegen."
+    intro="Familienbetrieb mit Schwerpunkt Rohbau. Inhabergeführt, mit kurzen Wegen und einem eingespielten Team aus jungen und erfahrenen Kollegen."
     image={historisch}
     imageAlt="Historisches Foto einer Baumannschaft"
     crumbs={[{ label: 'Unternehmen' }]}
@@ -51,16 +49,15 @@ const zahlen = [
     <div class="container about">
       <div class="para about-img">
         <span class="para-img">
-          <Image src={bild} alt="Mehrfamilienhaus Horner Landstraße" widths={[600, 1000, 1400]} sizes="(min-width: 1024px) 45vw, 100vw" />
+          <Image src={team} alt="Die Mannschaft der Quirling GmbH vor Schalungselementen" widths={[600, 1000, 1400]} sizes="(min-width: 1024px) 50vw, 100vw" />
         </span>
       </div>
       <div class="about-text">
         <h2 class="h-sec">Eine Basis,<br /><span class="lt">auf die Sie<br />bauen können.</span></h2>
         <p class="small">
-          Mit unseren kompetenten Mitarbeitern konnten wir uns an vielseitigen Bauten beweisen. Wir erstellen nicht nur Neubauten, sondern führen
-          auch Umbau- und Sanierungsmaßnahmen aus. Schwerpunkt ist der Rohbau, speziell Beton- und Stahlbetonbau mit Schalungsbau.
+          Seit {GRUENDUNGSJAHR} bauen wir in Hamburg und Umgebung. Unser Schwerpunkt ist der Rohbau in Beton- und Stahlbetonbauweise, dazu bauen wir
+          schlüsselfertig und führen Umbauten und Sanierungen aus. Mit eigenem Team, direkten Absprachen und Sorgfalt bis zum Schluss.
         </p>
-        <p class="small">Unser Einsatzgebiet ist {firma.einsatzgebiet}</p>
       </div>
     </div>
 
@@ -99,63 +96,38 @@ const zahlen = [
     </div>
   </section>
 
-  <!-- Geschichte: die blaue Linie als Zeitstrahl -->
+  <!-- Geschichte und Büro -->
   <section class="section">
-    <div class="container tl-wrap">
-      <div class="tl-head">
+    <div class="container story">
+      <div class="story-tl">
         <h2 class="h-sec">Stein<br /><span class="lt">auf Stein.</span></h2>
-        <p class="small">{JAHRE_ERFAHRUNG} Jahre Quirling in wenigen Schritten.</p>
+        <ol class="timeline">
+          <span class="tl-line" aria-hidden="true"><span data-line></span></span>
+          {
+            stationen.map((s) => (
+              <li class="station">
+                <span class="jahr">{s.jahr}</span>
+                <div class="st-text">
+                  <h3 class="st-t">{s.titel}</h3>
+                  <p class="small">{s.pruefen ? <Todo hint="bitte prüfen">{s.text}</Todo> : s.text}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
       </div>
-      <ol class="timeline">
-        <span class="tl-line" aria-hidden="true"><span data-line></span></span>
-        {
-          stationen.map((s) => (
-            <li class="station">
-              <span class="jahr">{s.jahr}</span>
-              <div class="st-text">
-                <h3 class="st-t">{s.titel}</h3>
-                <p class="small">{s.pruefen ? <Todo hint="bitte prüfen">{s.text}</Todo> : s.text}</p>
-              </div>
-            </li>
-          ))
-        }
-      </ol>
-    </div>
-  </section>
-
-  <!-- Unser Büro -->
-  <section class="section section-tint">
-    <div class="container office">
-      <div class="para office-img">
-        <span class="para-img">
-          <Image src={buero} alt="Bürogebäude der Quirling GmbH in der Tilsiter Straße 174, Hamburg" widths={[700, 1100, 1600]} sizes="(min-width: 1024px) 55vw, 100vw" />
-        </span>
-      </div>
-      <div class="office-text">
-        <h2 class="h-sec">Unser Büro.<br /><span class="lt">In Wandsbek.</span></h2>
-        <p class="small">
-          In unserem neuen Bürogebäude in der Tilsiter Straße laufen die Fäden zusammen: Angebote, Planung und die Abstimmung mit allen Baustellen.
-          Kommen Sie gerne vorbei, wir freuen uns auf Sie.
-        </p>
-        <address class="small">{firma.strasse}<br />{firma.plz} {firma.ort}</address>
-        <a class="text-link" href={firma.mapsUrl} target="_blank" rel="noopener"><span>Route planen</span><Icon name="arrow" /></a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Weiter zu Team und Nachweisen -->
-  <section class="section tight">
-    <div class="container links">
-      <a class="link-tile" href={url('/unternehmen/team/')}>
-        <span class="lt-t">Unser Team</span>
-        <span class="lt-d">Die Menschen im Büro und auf der Baustelle</span>
-        <Icon name="arrow" />
-      </a>
-      <a class="link-tile" href={url('/unternehmen/zertifikate/')}>
-        <span class="lt-t">Zertifikate</span>
-        <span class="lt-d">Alle Nachweise zum Herunterladen</span>
-        <Icon name="arrow" />
-      </a>
+      <figure class="story-office">
+        <div class="para flip">
+          <span class="para-img">
+            <Image src={buero} alt="Bürogebäude der Quirling GmbH in der Tilsiter Straße 174, Hamburg" widths={[700, 1100, 1600]} sizes="(min-width: 1024px) 45vw, 100vw" />
+          </span>
+        </div>
+        <figcaption>
+          <span class="oc-t">Unser Büro</span>
+          <span class="small">{firma.strasse}, {firma.plz} {firma.ort}</span>
+          <a class="text-link" href={firma.mapsUrl} target="_blank" rel="noopener"><span>Route planen</span><Icon name="arrow" /></a>
+        </figcaption>
+      </figure>
     </div>
   </section>
 </Base>
@@ -193,19 +165,9 @@ const zahlen = [
   }
   .zahl {
     position: relative;
-    padding-top: 1.2rem;
     display: flex;
     flex-direction: column-reverse;
     gap: 0.6rem;
-  }
-  .zahl::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 3rem;
-    height: 2px;
-    background: var(--blue);
   }
   .zahl dd {
     margin: 0;
@@ -264,22 +226,39 @@ const zahlen = [
   }
 
   /* Zeitstrahl */
-  .tl-wrap {
+  .story {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.7fr);
-    gap: clamp(2rem, 6vw, 6rem);
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: clamp(1.5rem, 3vw, 3rem);
     align-items: start;
   }
-  .tl-head {
+  .story-tl {
+    grid-column: 1 / 7;
+    display: grid;
+    gap: clamp(2rem, 4vw, 3rem);
+  }
+  .story-office {
+    grid-column: 8 / 13;
     position: sticky;
     top: 7rem;
+    margin: clamp(1rem, 6vw, 6rem) 0 0;
     display: grid;
-    gap: 1.2rem;
-    justify-items: start;
+    gap: 1.4rem;
   }
-  .tl-head .small {
-    margin: 0;
-    max-width: 30ch;
+  .story-office figcaption {
+    display: grid;
+    gap: 0.5rem;
+    justify-items: start;
+    padding-top: 1rem;
+  }
+  .oc-t {
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: clamp(1.8rem, 2.6vw, 2.6rem);
+    line-height: 0.97;
+    color: var(--blue);
   }
   .timeline {
     position: relative;
@@ -335,9 +314,9 @@ const zahlen = [
     font-stretch: 68%;
     font-weight: 700;
     text-transform: uppercase;
-    font-size: clamp(1.3rem, 1.6vw, 1.6rem);
-    line-height: 1.05;
-    color: var(--ink);
+    font-size: clamp(1.4rem, 1.8vw, 1.8rem);
+    line-height: 1;
+    color: var(--blue);
     margin: 0 0 0.5rem;
   }
   .st-text .small {
@@ -345,96 +324,24 @@ const zahlen = [
     max-width: 52ch;
   }
 
-  /* Büro */
-  .office {
-    display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: clamp(1.5rem, 3vw, 3rem);
-    align-items: center;
-  }
-  .office-img {
-    grid-column: 1 / 8;
-  }
-  .office-text {
-    grid-column: 9 / 13;
-    display: grid;
-    gap: 1.2rem;
-    justify-items: start;
-  }
-  .office-text .h-sec {
-    font-size: clamp(2.4rem, 4.2vw, 4.4rem);
-  }
-  .office-text .small {
-    margin: 0;
-    max-width: 40ch;
-  }
-  .office-text address {
-    font-style: normal;
-  }
-
-  /* Weiter zu Team und Nachweisen */
-  .links {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 6px;
-  }
-  .link-tile {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: center;
-    gap: 0.3rem 1.4rem;
-    padding: clamp(1.4rem, 2.5vw, 2.2rem);
-    background: var(--navy);
-    color: #fff;
-    text-decoration: none;
-    transition: background 0.3s var(--ease);
-  }
-  .lt-t {
-    font-family: var(--font-head);
-    font-stretch: 68%;
-    font-weight: 800;
-    text-transform: uppercase;
-    font-size: clamp(1.6rem, 2.4vw, 2.4rem);
-    line-height: 1;
-  }
-  .lt-d {
-    grid-row: 2;
-    font-size: 0.9rem;
-    color: #c9d0f5;
-  }
-  .link-tile :global(svg) {
-    grid-row: 1 / 3;
-    grid-column: 2;
-    width: 1.5rem;
-    height: 1.5rem;
-    transition: transform 0.35s var(--ease);
-  }
-  .link-tile:hover {
-    background: var(--blue);
-  }
-  .link-tile:hover :global(svg) {
-    transform: translateX(6px);
-  }
-
   @media (max-width: 900px) {
     .about,
-    .office,
-    .links,
-    .tl-wrap {
+    .story {
       grid-template-columns: minmax(0, 1fr);
     }
     .about-img,
     .about-text,
-    .office-img,
-    .office-text {
+    .story-tl,
+    .story-office {
       grid-column: 1 / -1;
     }
     .about-img,
-    .office-img {
+    .story-office .para {
       margin-inline: 4%;
     }
-    .tl-head {
+    .story-office {
       position: static;
+      margin-top: 0;
     }
     .zahlen {
       grid-template-columns: repeat(2, minmax(0, 1fr));

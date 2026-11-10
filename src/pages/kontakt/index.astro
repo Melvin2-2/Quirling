@@ -1,11 +1,9 @@
 ---
-import { Image } from 'astro:assets';
 import Base from '~/layouts/Base.astro';
 import PageHero from '~/components/PageHero.astro';
 import Icon from '~/components/Icon.astro';
 import { firma } from '~/data/site';
 import { url } from '~/lib/url';
-import buero from '~/assets/site/buero-tilsiter-strasse.jpg';
 import team from '~/assets/team/kontakt-ivonne-michaela.jpg';
 
 const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
@@ -16,34 +14,42 @@ const anliegen = ['Neubau', 'Rohbau', 'Schlüsselfertig', 'Umbau & Sanierung', '
   <PageHero
     title="Sprechen"
     titleLight="wir."
-    intro="Ob erste Idee oder fertige Planung: Rufen Sie uns an, schreiben Sie uns oder kommen Sie vorbei. Wir freuen uns auf Ihr Vorhaben."
-    image={buero}
-    imageAlt="Bürogebäude der Quirling GmbH in der Tilsiter Straße 174, Hamburg"
+    intro="Ivonne Quirling und Michaela Venghaus sind montags bis freitags für Sie da. Ob erste Idee oder fertige Planung, wir freuen uns auf Ihr Vorhaben."
+    image={team}
+    imageAlt="Ivonne Quirling und Michaela Venghaus aus dem Büro der Quirling GmbH"
+    imageSide="right"
+    imagePosition="50% 0%"
     size="medium"
     crumbs={[{ label: 'Kontakt' }]}
-  >
-    <div class="quick">
-      <a class="pill light" href={firma.telefonHref}><Icon name="phone" /><span>Anrufen</span></a>
-      <a class="pill light" href="#anfrage"><Icon name="mail" /><span>Anfrage senden</span></a>
-    </div>
-  </PageHero>
+  />
 
-  <!-- Persönlich am Telefon -->
-  <section class="section direct">
-    <div class="container direct-in">
-      <div class="para direct-img">
-        <span class="para-img">
-          <Image src={team} alt="Ivonne Quirling und Michaela Venghaus aus dem Büro der Quirling GmbH" widths={[700, 1100, 1600]} sizes="(min-width: 1024px) 50vw, 100vw" />
-        </span>
-      </div>
-      <div class="direct-text">
-        <h2 class="h-sec">Am Telefon.<br /><span class="lt">Gleich persönlich.</span></h2>
-        <a class="tel" href={firma.telefonHref}>{firma.telefon}</a>
-        <p class="small">
-          Ivonne Quirling und Michaela Venghaus sind montags bis freitags für Sie da und verbinden Sie direkt mit dem richtigen Ansprechpartner.
-        </p>
-        <a class="mail" href={`mailto:${firma.email}`}><Icon name="mail" /><span>{firma.email}</span></a>
-      </div>
+  <!-- Kontaktwege -->
+  <section class="section ways">
+    <div class="container ways-in">
+      <a class="way way-tel" href={firma.telefonHref}>
+        <h2 class="way-h">Anrufen</h2>
+        <span class="way-big">{firma.telefon}</span>
+        <span class="way-note">Montags bis freitags, wir rufen auch gerne zurück.</span>
+        <span class="way-go"><Icon name="phone" /></span>
+      </a>
+      <a class="way" href={`mailto:${firma.email}`}>
+        <h2 class="way-h">Schreiben</h2>
+        <span class="way-val mono">{firma.email}</span>
+        <span class="way-note">Für Unterlagen, Pläne und Anfragen.</span>
+        <span class="way-go"><Icon name="mail" /></span>
+      </a>
+      <a class="way" href={firma.mapsUrl} target="_blank" rel="noopener">
+        <h2 class="way-h">Besuchen</h2>
+        <span class="way-val">{firma.strasse}<br />{`${firma.plz} ${firma.ort}`}</span>
+        <span class="way-note">Route planen</span>
+        <span class="way-go"><Icon name="pin" /></span>
+      </a>
+      <a class="way" href={url('/karriere/')}>
+        <h2 class="way-h">Bewerben</h2>
+        <span class="way-val">Per E-Mail oder persönlich im Büro.</span>
+        <span class="way-note">Zur Karriereseite</span>
+        <span class="way-go"><Icon name="arrow" /></span>
+      </a>
     </div>
   </section>
 
@@ -114,90 +120,118 @@ const anliegen = ['Neubau', 'Rohbau', 'Schlüsselfertig', 'Umbau & Sanierung', '
     </div>
   </section>
 
-  <!-- Besuchen und Bewerben -->
-  <section class="section more">
-    <div class="container more-in">
-      <div class="m">
-        <h2 class="m-h">Besuchen<br /><span class="lt">Sie uns.</span></h2>
-        <address class="small">
-          {firma.langname}<br />
-          {firma.strasse}<br />
-          {`${firma.plz} ${firma.ort}`}
-        </address>
-        <a class="text-link" href={firma.mapsUrl} target="_blank" rel="noopener"><span>Route planen</span><Icon name="arrow" /></a>
-      </div>
-      <div class="m">
-        <h2 class="m-h">Mit anpacken<br /><span class="lt">bei Quirling.</span></h2>
-        <p class="small">Bewerbungen gerne per E-Mail an <a href={`mailto:${firma.email}`}>{firma.email}</a> oder persönlich bei uns im Büro.</p>
-        <a class="text-link" href={url('/karriere/')}><span>Zur Karriereseite</span><Icon name="arrow" /></a>
-      </div>
-    </div>
-  </section>
 </Base>
 
 <style>
-  .quick {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.8rem;
-    margin-top: 1.8rem;
+  /* Kontaktwege: vier Kacheln, Telefon hervorgehoben */
+  .ways {
+    padding-bottom: calc(var(--section) * 0.9);
   }
-
-  /* Persönlich am Telefon */
-  .direct-in {
+  .ways-in {
     display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: clamp(1.5rem, 3vw, 3rem);
-    align-items: center;
+    grid-template-columns: minmax(0, 1.5fr) repeat(3, minmax(0, 1fr));
+    gap: 6px;
   }
-  .direct-img {
-    grid-column: 1 / 7;
-  }
-  .direct-img :global(img) {
-    object-position: 60% 18%;
-  }
-  .direct-text {
-    grid-column: 8 / 13;
+  .way {
+    position: relative;
     display: grid;
-    gap: 1.2rem;
-    justify-items: start;
+    grid-template-rows: auto 1fr auto;
+    gap: 0.9rem;
+    min-height: clamp(15rem, 22vw, 19rem);
+    padding: clamp(1.4rem, 2.4vw, 2.2rem);
+    background: #fff;
+    color: var(--ink-2);
+    text-decoration: none;
+    transition:
+      background 0.3s var(--ease),
+      transform 0.4s var(--ease);
   }
-  .direct-text .h-sec {
-    font-size: clamp(2.4rem, 4vw, 4.2rem);
+  .way:hover {
+    background: var(--tint);
   }
-  .tel {
+  .way-h {
     font-family: var(--font-head);
     font-stretch: 68%;
     font-weight: 800;
-    font-size: clamp(2.6rem, 4.6vw, 4.8rem);
-    line-height: 1;
+    text-transform: uppercase;
+    font-size: clamp(2rem, 2.8vw, 2.8rem);
+    line-height: 0.97;
     color: var(--blue);
-    text-decoration: none;
-    white-space: nowrap;
-  }
-  .tel:hover {
-    color: var(--navy);
-  }
-  .direct-text .small {
     margin: 0;
-    max-width: 40ch;
   }
-  .mail {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6rem;
-    font-family: var(--font-mono);
+  .way-val {
+    align-self: end;
     font-size: 1rem;
+    line-height: 1.55;
+    color: var(--ink);
+    overflow-wrap: anywhere;
+  }
+  .way-val.mono {
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
     color: var(--blue);
-    text-decoration: none;
   }
-  .mail :global(svg) {
-    width: 1.2rem;
-    height: 1.2rem;
+  .way-note {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    padding-right: 3rem;
   }
-  .mail:hover span {
-    text-decoration: underline;
-    text-underline-offset: 0.25em;
+  .way-go {
+    position: absolute;
+    right: clamp(1.2rem, 2vw, 1.8rem);
+    bottom: clamp(1.2rem, 2vw, 1.8rem);
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    border: 1.5px solid var(--blue);
+    color: var(--blue);
+    transition:
+      background 0.3s ease,
+      color 0.3s ease;
+  }
+  .way-go :global(svg) {
+    width: 19px;
+    height: 19px;
+  }
+  .way:hover .way-go {
+    background: var(--blue);
+    color: #fff;
+  }
+  /* Telefon: dunkle Kachel mit großer Nummer */
+  .way-tel {
+    background: var(--navy);
+    color: #fff;
+  }
+  .way-tel:hover {
+    background: #1b2250;
+  }
+  .way-tel .way-h {
+    color: #c9d0f5;
+    font-weight: 300;
+  }
+  .way-big {
+    align-self: end;
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    font-size: clamp(2.4rem, 3.6vw, 3.8rem);
+    line-height: 1;
+    color: #fff;
+  }
+  .way-tel .way-note {
+    color: #aab4ea;
+  }
+  .way-tel .way-go {
+    border-color: #fff;
+    color: #fff;
+  }
+  .way-tel:hover .way-go {
+    background: #fff;
+    color: var(--navy);
   }
 
   /* Anfrage */
@@ -428,55 +462,14 @@ const anliegen = ['Neubau', 'Rohbau', 'Schlüsselfertig', 'Umbau & Sanierung', '
     color: #ffd0d0;
   }
 
-  /* Besuchen und Bewerben */
-  .more-in {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(2.5rem, 6vw, 6rem);
+  @media (max-width: 1100px) {
+    .ways-in {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
-  .m {
-    display: grid;
-    gap: 1.1rem;
-    justify-items: start;
-    align-content: start;
-  }
-  .m-h {
-    font-family: var(--font-head);
-    font-stretch: 68%;
-    font-weight: 800;
-    text-transform: uppercase;
-    font-size: clamp(2.4rem, 4vw, 4.2rem);
-    line-height: 0.97;
-    color: var(--blue);
-    margin: 0 0 0.4rem;
-  }
-  .m-h .lt {
-    font-weight: 300;
-  }
-  .m address {
-    font-style: normal;
-    margin: 0;
-  }
-  .m .small {
-    margin: 0;
-    max-width: 40ch;
-  }
-  .m .small a {
-    color: var(--blue);
-  }
-
   @media (max-width: 900px) {
-    .direct-in,
-    .ask-in,
-    .more-in {
+    .ask-in {
       grid-template-columns: minmax(0, 1fr);
-    }
-    .direct-img,
-    .direct-text {
-      grid-column: 1 / -1;
-    }
-    .direct-img {
-      margin-inline: 4%;
     }
     .ask-head {
       position: static;
@@ -486,8 +479,11 @@ const anliegen = ['Neubau', 'Rohbau', 'Schlüsselfertig', 'Umbau & Sanierung', '
     .row2 {
       grid-template-columns: minmax(0, 1fr);
     }
-    .tel {
-      white-space: normal;
+    .ways-in {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .way {
+      min-height: 0;
     }
   }
 </style>
