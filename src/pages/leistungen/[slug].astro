@@ -1,20 +1,21 @@
 ---
 import { Image } from 'astro:assets';
-import { getEntry, getCollection } from 'astro:content';
+import { getCollection } from 'astro:content';
 import Base from '~/layouts/Base.astro';
 import PageHero from '~/components/PageHero.astro';
 import ProjectCard from '~/components/ProjectCard.astro';
 import Icon from '~/components/Icon.astro';
 import { leistungenInhalt } from '~/data/leistungen-inhalt';
 import { leistungen } from '~/data/site';
+import { leistungBild } from '~/data/leistung-bilder';
 import { url } from '~/lib/url';
 
 export function getStaticPaths() {
   return leistungenInhalt.map((l) => ({ params: { slug: l.slug }, props: { l } }));
 }
 const { l } = Astro.props;
-const hero = (await getEntry('projekte', l.heroProjekt))!.data.bilder[0]!;
-const bild = (await getEntry('projekte', l.bildProjekt))!.data.bilder[0]!;
+const hero = await leistungBild(l.slug, 'hero');
+const bild = await leistungBild(l.slug, 'text');
 const projekte = (await getCollection('projekte', (p) => p.data.bereich === l.slug)).sort(
   (a, b) => (a.data.highlight ?? 99) - (b.data.highlight ?? 99) || (b.data.jahr ?? 0) - (a.data.jahr ?? 0),
 );
@@ -37,6 +38,7 @@ const [t1, t2] = l.title.includes(' & ') ? [l.title.split(' & ')[0] + ' &', l.ti
   <section class="section">
     <div class="container intro">
       <div class="intro-text">
+        <h2 class="h-sec">{l.introTitel[0]}<br /><span class="lt">{l.introTitel[1]}</span></h2>
         <p class="lead-c">{l.absaetze[0]}</p>
         {l.absaetze.slice(1).map((a) => <p class="small">{a}</p>)}
       </div>
@@ -53,7 +55,7 @@ const [t1, t2] = l.title.includes(' & ') ? [l.title.split(' & ')[0] + ' &', l.ti
     <div class="container umfang-wrap">
       <div class="umfang-head">
         <span class="label">Leistungsumfang</span>
-        <h2 class="h-sec">Aus einer<br /><span class="lt">Hand.</span></h2>
+        <h2 class="h-sec">{l.umfangTitel[0]}<br /><span class="lt">{l.umfangTitel[1]}</span></h2>
         <p class="small typen"><span class="label">Gebäude</span><br />{l.gebaeude.join(', ')}</p>
       </div>
       <ol class="umfang">
@@ -120,10 +122,15 @@ const [t1, t2] = l.title.includes(' & ') ? [l.title.split(' & ')[0] + ' &', l.ti
     align-items: center;
   }
   .intro-text {
-    grid-column: 1 / 6;
+    grid-column: 1 / 7;
     display: grid;
     gap: 1.2rem;
     justify-items: start;
+  }
+  .intro-text .h-sec,
+  .umfang-head .h-sec {
+    font-size: clamp(2.4rem, 4.2vw, 4.4rem);
+    margin-bottom: 0.4rem;
   }
   .intro-img {
     grid-column: 7 / 13;

@@ -39,17 +39,22 @@ const personen = [
           personen.map((p) => (
             <article class="person">
               <div class="pimg">
-                <Image src={p.bild} alt={p.name} widths={[400, 700, 1000]} sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 100vw" />
+                <Image src={p.bild} alt={p.name} widths={[400, 700, 1000]} sizes="(min-width: 1024px) 25vw, (min-width: 640px) 45vw, 100vw" />
               </div>
               <span class="label">{p.rolle}</span>
               <h3 class="p-name">{p.name}</h3>
             </article>
           ))
         }
-      </div>
-      <div class="reach">
-        <a href={firma.telefonHref}><Icon name="phone" /><span>{firma.telefon}</span></a>
-        <a href={`mailto:${firma.email}`}><Icon name="mail" /><span>{firma.email}</span></a>
+        <!-- Kontakt als vierte Kachel, gleich hoch wie die Porträts -->
+        <aside class="reach">
+          <div class="reach-in">
+            <h3 class="reach-t">Direkt<br /><span class="lt">erreichen.</span></h3>
+            <a class="reach-tel" href={firma.telefonHref}>{firma.telefon}</a>
+            <a class="reach-mail" href={`mailto:${firma.email}`}>{firma.email}</a>
+            <p>Montags bis freitags für Sie da.</p>
+          </div>
+        </aside>
       </div>
     </div>
   </section>
@@ -81,7 +86,8 @@ const personen = [
   }
   .people {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    align-items: start;
     gap: clamp(1.25rem, 3vw, 2.5rem);
   }
   .person {
@@ -117,27 +123,65 @@ const personen = [
     margin: 0;
   }
   .reach {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem 3rem;
-    margin-top: clamp(2.5rem, 5vw, 4rem);
+    position: relative;
+    aspect-ratio: 4 / 5;
+    background: var(--navy);
+    color: #fff;
+    overflow: hidden;
   }
-  .reach a {
-    display: inline-flex;
-    align-items: center;
+  /* angedeutete Raute wie im Seitenkopf */
+  .reach::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 38%;
+    background: var(--blue);
+    clip-path: polygon(0 0, 100% 0, 100% 70%, 0 100%);
+  }
+  .reach-in {
+    position: absolute;
+    inset: auto 0 0 0;
+    padding: clamp(1.2rem, 2vw, 1.8rem);
+    display: grid;
     gap: 0.7rem;
-    font-family: var(--font-mono);
-    font-size: 0.95rem;
+    justify-items: start;
+  }
+  .reach-t {
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: clamp(1.8rem, 2.4vw, 2.4rem);
+    line-height: 0.97;
+    margin: 0 0 0.6rem;
+    color: #fff;
+  }
+  .reach-t .lt {
+    font-weight: 300;
+  }
+  .reach-tel {
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    font-size: clamp(1.5rem, 2vw, 2rem);
+    line-height: 1;
+    color: #fff;
     text-decoration: none;
-    color: var(--blue);
   }
-  .reach a:hover span {
+  .reach-mail {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: #c9d0f5;
+    text-decoration: none;
+  }
+  .reach a:hover {
     text-decoration: underline;
-    text-underline-offset: 0.3em;
+    text-underline-offset: 0.2em;
   }
-  .reach :global(svg) {
-    width: 20px;
-    height: 20px;
+  .reach p {
+    margin: 0.3rem 0 0;
+    font-size: 0.85rem;
+    color: rgb(255 255 255 / 0.75);
   }
 
   /* gleiche Fläche wie die Seite: die Mannschaft gehört dazu */
@@ -184,6 +228,9 @@ const personen = [
   @media (max-width: 560px) {
     .people {
       grid-template-columns: minmax(0, 1fr);
+    }
+    .reach {
+      aspect-ratio: 4 / 3;
     }
   }
 </style>

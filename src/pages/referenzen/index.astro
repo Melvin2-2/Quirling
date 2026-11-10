@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import { getCollection, getEntry } from 'astro:content';
 import Base from '~/layouts/Base.astro';
 import PageHero from '~/components/PageHero.astro';
@@ -10,7 +10,16 @@ import { url } from '~/lib/url';
 const projekte = (await getCollection('projekte')).sort(
   (a, b) => (a.data.highlight ?? 99) - (b.data.highlight ?? 99) || (b.data.jahr ?? 0) - (a.data.jahr ?? 0),
 );
-const hero = (await getEntry('projekte', 'hanseforum'))!.data.bilder[0]!;
+const hero = (await getEntry('projekte', 'my-place-selfstorage-stellingen'))!.data.bilder[0]!;
+// große Fassung jedes Galeriebildes für die Vergrößerung (Lightbox)
+const gross = Object.fromEntries(
+  await Promise.all(
+    projekte.map(async (p) => [
+      p.id,
+      await Promise.all(p.data.bilder.map(async (b) => (await getImage({ src: b, width: Math.min(b.width, 2400), format: 'webp', quality: 85 })).src)),
+    ]),
+  ),
+) as Record<string, string[]>;
 const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.title.replace('­', '') ?? '';
 ---
 
@@ -20,7 +29,7 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
     titleLight="die stehen."
     intro={`Eine Auswahl aus mehr als ${firma.projekteAnzahl} Projekten seit 1992. Überwiegend Rohbau, dazu zahlreiche Umbauten und Sanierungen.`}
     image={hero}
-    imageAlt="Hanseforum am Axel-Springer-Platz, Hamburg"
+    imageAlt="My Place Selfstorage in Hamburg-Stellingen"
     crumbs={[{ label: 'Referenzen' }]}
     size="medium"
   />
@@ -75,6 +84,23 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
     <div class="panel-body" data-panel-body></div>
   </aside>
 
+  <!-- Vergrößerung -->
+  <div class="lb" data-lb hidden role="dialog" aria-modal="true" aria-label="Bildansicht" data-lenis-prevent>
+    <div class="lb-stage" data-lb-stage>
+      <img class="lb-img" data-lb-img alt="" draggable="false" />
+    </div>
+    <div class="lb-bar">
+      <span class="lb-hint">Mausrad, Doppelklick oder zwei Finger zum Zoomen</span>
+      <div class="lb-nav">
+        <button type="button" class="pbtn" data-lb-out aria-label="Verkleinern"><Icon name="minus" /></button>
+        <button type="button" class="pbtn" data-lb-in aria-label="Vergrößern"><Icon name="plus" /></button>
+        <button type="button" class="pbtn" data-lb-prev aria-label="Vorheriges Bild"><Icon name="arrow" class="flip" /></button>
+        <button type="button" class="pbtn" data-lb-next aria-label="Nächstes Bild"><Icon name="arrow" /></button>
+        <button type="button" class="pbtn close" data-lb-close aria-label="Schließen"><Icon name="close" /></button>
+      </div>
+    </div>
+  </div>
+
   <!-- Inhalte der Seitenfenster (werden erst beim Öffnen eingefügt, Bilder laden dann) -->
   {
     projekte.map((p) => (
@@ -106,6 +132,7 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
               widths={[600, 1000, 1600]}
               sizes={i === 0 ? '(min-width: 900px) 66vw, 100vw' : '(min-width: 900px) 33vw, 100vw'}
               loading={i < 3 ? 'eager' : 'lazy'}
+              data-zoom={gross[p.id]![i]}
             />
           ))}
         </div>
@@ -328,7 +355,7 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
     font-stretch: 68%;
     font-weight: 800;
     font-size: clamp(2.4rem, 4.2vw, 4.6rem);
-    line-height: 0.9;
+    line-height: 0.97;
     text-transform: uppercase;
     color: var(--blue);
     margin: 0;
@@ -383,11 +410,83 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
     object-fit: cover;
     display: block;
   }
+  .panel-body :global(.pp-galerie img) {
+    cursor: zoom-in;
+  }
   .panel-body :global(.pp-galerie img:first-child) {
     grid-column: 1 / -1;
     aspect-ratio: 16 / 9;
   }
+  /* ---------- Vergrößerung ---------- */
+  .lb {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgb(18 23 53 / 0.97);
+    display: flex;
+    flex-direction: column;
+  }
+  .lb[hidden] {
+    display: none;
+  }
+  .lb-stage {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+    touch-action: none;
+    cursor: zoom-in;
+  }
+  .lb-stage.is-zoomed {
+    cursor: grab;
+  }
+  .lb-stage.is-dragging {
+    cursor: grabbing;
+  }
+  .lb-img {
+    max-width: 94vw;
+    max-height: calc(100svh - 90px);
+    object-fit: contain;
+    user-select: none;
+    transform-origin: 50% 50%;
+    will-change: transform;
+  }
+  .lb-img.is-anim {
+    transition: transform 0.3s var(--ease);
+  }
+  .lb-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.8rem clamp(1rem, 2.5vw, 2rem) 1rem;
+  }
+  .lb-hint {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #aab4ea;
+  }
+  .lb-nav {
+    display: flex;
+    gap: 0.4rem;
+    margin-left: auto;
+  }
+  .lb .pbtn {
+    color: #fff;
+    border-color: rgb(255 255 255 / 0.25);
+  }
+  .lb .pbtn.close {
+    background: var(--blue);
+    border-color: var(--blue);
+  }
+
   @media (max-width: 900px) {
+    .lb-hint {
+      display: none;
+    }
     :global(:root) {
       --panel-w: 100vw;
     }
@@ -413,6 +512,7 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
 </style>
 
 <script>
+  import { createLightbox } from '~/scripts/lightbox';
   const refs = document.querySelector<HTMLElement>('[data-refs]')!;
   const tiles = Array.from(document.querySelectorAll<HTMLElement>('[data-tiles] .tile'));
   const empty = document.querySelector<HTMLElement>('[data-empty]');
@@ -500,10 +600,22 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
   panel.querySelector('[data-prev]')!.addEventListener('click', () => step(-1));
   panel.querySelector('[data-next]')!.addEventListener('click', () => step(1));
   document.addEventListener('keydown', (e) => {
-    if (!current) return;
+    if (!current || lb.isOpen()) return;
     if (e.key === 'Escape') close();
     if (e.key === 'ArrowRight') step(1);
     if (e.key === 'ArrowLeft') step(-1);
+  });
+
+  /* ---------- Vergrößerung mit Zoom ---------- */
+  const lb = createLightbox(document.querySelector<HTMLElement>('[data-lb]')!);
+  body.addEventListener('click', (e) => {
+    const img = (e.target as HTMLElement).closest<HTMLImageElement>('img[data-zoom]');
+    if (!img) return;
+    const all = Array.from(body.querySelectorAll<HTMLImageElement>('img[data-zoom]'));
+    lb.open(
+      all.map((i) => ({ src: i.dataset.zoom!, alt: i.alt })),
+      all.indexOf(img),
+    );
   });
 
   /* ---------- Zustand aus der URL (z. B. Links von der Startseite) ---------- */

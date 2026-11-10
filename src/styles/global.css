@@ -544,7 +544,8 @@ html.typo-c .lt {
   font-weight: 800;
   text-transform: uppercase;
   font-size: clamp(2.6rem, 6vw, 6.2rem);
-  line-height: 0.88;
+  /* genug Luft für Umlautpunkte (Ä, Ö, Ü) unter der Zeile darüber */
+  line-height: 0.97;
   letter-spacing: -0.005em;
   color: var(--blue);
   margin: 0;

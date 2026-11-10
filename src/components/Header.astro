@@ -36,6 +36,7 @@ const mainItems = nav;
                       <a href={url(c.href)} class="sub-link">
                         <span class="sub-nr">0{i + 1}</span>
                         <span class="sub-title">{c.label}</span>
+                        {c.text && <span class="sub-text">{c.text}</span>}
                       </a>
                     ))}
                   </div>
@@ -239,7 +240,7 @@ const mainItems = nav;
   }
   .sub-inner {
     display: grid;
-    grid-template-columns: repeat(3, minmax(12rem, auto));
+    grid-template-columns: repeat(3, 13.5rem);
     gap: 1px;
     background: var(--line);
     border: 1px solid var(--line);
@@ -264,6 +265,12 @@ const mainItems = nav;
     font-weight: 500;
     color: var(--blue);
     letter-spacing: 0.04em;
+  }
+  .sub-text {
+    margin-top: 0.15rem;
+    font-size: 0.84rem;
+    line-height: 1.45;
+    color: var(--ink-3);
   }
   .sub-title {
     font-family: var(--font-head);

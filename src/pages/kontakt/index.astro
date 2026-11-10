@@ -1,13 +1,11 @@
 ---
-import { getEntry } from 'astro:content';
 import Base from '~/layouts/Base.astro';
 import PageHero from '~/components/PageHero.astro';
 import Icon from '~/components/Icon.astro';
-import Todo from '~/components/Todo.astro';
-import { firma, platzhalter } from '~/data/site';
+import { firma } from '~/data/site';
 import { url } from '~/lib/url';
+import hero from '~/assets/team/kontakt-ivonne-michaela.jpg';
 
-const hero = (await getEntry('projekte', 'milchgrund'))!.data.bilder[1]!;
 const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
 ---
 
@@ -15,10 +13,11 @@ const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
   <PageHero
     title="Sprechen"
     titleLight="wir."
-    intro="Wir stehen Ihnen gerne mit Rat und Tat zur Verfügung. Am schnellsten erreichen Sie uns telefonisch."
+    intro="Wir sind montags bis freitags für Sie da und freuen uns auf Ihr Vorhaben. Am schnellsten erreichen Sie uns telefonisch."
     image={hero}
-    imageAlt="Wohnungsbau Milchgrund"
-    size="small"
+    imageAlt="Ivonne Quirling und Michaela Venghaus aus dem Büro der Quirling GmbH"
+    size="medium"
+    imagePosition="75% 12%"
     crumbs={[{ label: 'Kontakt' }]}
   />
 
@@ -26,77 +25,87 @@ const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
     <div class="container contact">
       <div class="info">
         <div class="block">
-          <h2 class="label">Postanschrift</h2>
+          <h2 class="b-t">Anrufen</h2>
+          <a class="big" href={firma.telefonHref}>{firma.telefon}</a>
+          <p>Montags bis freitags. Wir rufen auch gerne zurück.</p>
+        </div>
+        <div class="block">
+          <h2 class="b-t">Schreiben</h2>
+          <a class="mail" href={`mailto:${firma.email}`}>{firma.email}</a>
+        </div>
+        <div class="block">
+          <h2 class="b-t">Besuchen</h2>
           <address>
-            <strong>{firma.langname}</strong><br />
+            {firma.langname}<br />
             {firma.strasse}<br />
-            {`${firma.plz} ${firma.ort}`}<br />
-            Deutschland
+            {`${firma.plz} ${firma.ort}`}
           </address>
           <a class="text-link" href={firma.mapsUrl} target="_blank" rel="noopener"><span>Route planen</span><Icon name="arrow" /></a>
         </div>
         <div class="block">
-          <h2 class="label">Kontaktinfo</h2>
-          <a class="big" href={firma.telefonHref}>{firma.telefon}</a>
-          <a class="mail" href={`mailto:${firma.email}`}>{firma.email}</a>
-        </div>
-        <div class="block">
-          <h2 class="label">Bürozeiten</h2>
-          <p><Todo hint="Bürozeiten eintragen">{platzhalter.buerozeiten}</Todo></p>
-        </div>
-        <div class="block note">
-          <h2 class="label">Bewerbungen</h2>
-          <p>Bewerbungen senden Sie bitte per E-Mail an <a href={`mailto:${firma.email}`}>{firma.email}</a> oder stellen Sie sich persönlich bei uns vor.</p>
+          <h2 class="b-t">Bewerben</h2>
+          <p>Bewerbungen gerne per E-Mail an <a href={`mailto:${firma.email}`}>{firma.email}</a> oder persönlich bei uns im Büro.</p>
         </div>
       </div>
 
-      <form class="form" data-form data-endpoint={endpoint} data-mail={firma.email} novalidate>
-        <h2 class="form-h">Ihre Anfrage</h2>
-        <div class="row2">
+      <div class="form-wrap">
+        <form class="form on-blue" data-form data-endpoint={endpoint} data-mail={firma.email} novalidate>
+          <h2 class="form-h">Ihre<br /><span class="lt">Anfrage.</span></h2>
+          <p class="form-intro">Erzählen Sie uns kurz von Ihrem Vorhaben. Wir melden uns zeitnah bei Ihnen.</p>
+          <div class="row2">
+            <label>
+              <span>Name *</span>
+              <input name="name" required autocomplete="name" />
+            </label>
+            <label>
+              <span>Firma</span>
+              <input name="firma" autocomplete="organization" />
+            </label>
+          </div>
+          <div class="row2">
+            <label>
+              <span>E-Mail *</span>
+              <input name="email" type="email" required autocomplete="email" />
+            </label>
+            <label>
+              <span>Telefon</span>
+              <input name="telefon" type="tel" autocomplete="tel" />
+            </label>
+          </div>
           <label>
-            <span>Name *</span>
-            <input name="name" required autocomplete="name" />
+            <span>Ihr Anliegen</span>
+            <select name="anliegen">
+              <option>Anfrage zu einem Bauvorhaben</option>
+              <option>Rohbau &amp; Stahlbetonbau</option>
+              <option>Schlüsselfertiges Bauen</option>
+              <option>Umbau &amp; Sanierung</option>
+              <option>Bewerbung</option>
+              <option>Sonstiges</option>
+            </select>
           </label>
           <label>
-            <span>Firma</span>
-            <input name="firma" autocomplete="organization" />
+            <span>Nachricht *</span>
+            <textarea name="nachricht" rows="6" required></textarea>
           </label>
-        </div>
-        <div class="row2">
-          <label>
-            <span>E-Mail *</span>
-            <input name="email" type="email" required autocomplete="email" />
+          <!-- Sicherheitsfrage gegen Spam: Aufgabe wird beim Laden neu gewürfelt -->
+          <label class="captcha">
+            <span>Sicherheitsfrage *</span>
+            <span class="cq">
+              <span class="cq-t" data-captcha-q>Was ergibt 3 + 4?</span>
+              <input name="sicherheit" inputmode="numeric" required autocomplete="off" data-captcha-a />
+            </span>
           </label>
-          <label>
-            <span>Telefon</span>
-            <input name="telefon" type="tel" autocomplete="tel" />
+          <label class="check">
+            <input type="checkbox" name="datenschutz" required />
+            <span>Ich habe die <a href={url('/datenschutz/')}>Datenschutzerklärung</a> gelesen und bin mit der Verarbeitung meiner Angaben zur Beantwortung meiner Anfrage einverstanden. *</span>
           </label>
-        </div>
-        <label>
-          <span>Ihr Anliegen</span>
-          <select name="anliegen">
-            <option>Anfrage zu einem Bauvorhaben</option>
-            <option>Rohbau &amp; Stahlbetonbau</option>
-            <option>Schlüsselfertiges Bauen</option>
-            <option>Umbau &amp; Sanierung</option>
-            <option>Bewerbung</option>
-            <option>Sonstiges</option>
-          </select>
-        </label>
-        <label>
-          <span>Nachricht *</span>
-          <textarea name="nachricht" rows="6" required></textarea>
-        </label>
-        <label class="check">
-          <input type="checkbox" name="datenschutz" required />
-          <span>Ich habe die <a href={url('/datenschutz/')}>Datenschutzerklärung</a> gelesen und bin mit der Verarbeitung meiner Angaben zur Beantwortung meiner Anfrage einverstanden. *</span>
-        </label>
-        <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
-        <div class="submit">
-          <button class="pill solid" type="submit"><span>Nachricht senden</span><Icon name="arrow" /></button>
-          <p class="status" data-status role="status" aria-live="polite"></p>
-        </div>
-      </form>
+          <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <div class="submit">
+            <button class="send" type="submit"><span>Nachricht senden</span><Icon name="arrow" /></button>
+            <p class="status" data-status role="status" aria-live="polite"></p>
+          </div>
+        </form>
+      </div>
     </div>
   </section>
 </Base>
@@ -108,53 +117,52 @@ const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
     gap: clamp(2.5rem, 7vw, 7rem);
     align-items: start;
   }
-  .block {
-    position: relative;
-    padding-top: 1.2rem;
-    margin-bottom: clamp(2rem, 3.5vw, 2.8rem);
+  .info {
+    display: grid;
+    gap: clamp(2rem, 3.5vw, 2.8rem);
+    padding-top: 0.5rem;
   }
-  .block::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 3rem;
-    height: 2px;
-    background: var(--blue);
-  }
-  .block .label {
-    margin: 0 0 0.9rem;
-    display: block;
+  .b-t {
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: clamp(1.6rem, 2.2vw, 2.1rem);
+    line-height: 1;
+    color: var(--ink);
+    margin: 0 0 0.7rem;
   }
   .block p {
     font-size: 0.92rem;
+    line-height: 1.65;
     color: var(--ink-2);
     margin: 0;
+    max-width: 36ch;
+  }
+  .block p a {
+    color: var(--blue);
   }
   address {
     font-style: normal;
-    margin-bottom: 1rem;
+    margin-bottom: 0.9rem;
     font-size: 0.95rem;
     line-height: 1.7;
     color: var(--ink-2);
-  }
-  address strong {
-    color: var(--ink);
   }
   .big {
     display: block;
     font-family: var(--font-head);
     font-stretch: 68%;
     font-weight: 800;
-    font-size: clamp(2rem, 3.2vw, 3rem);
+    font-size: clamp(2.2rem, 3.4vw, 3.2rem);
     line-height: 1;
     color: var(--blue);
     text-decoration: none;
-    margin-bottom: 0.8rem;
+    margin-bottom: 0.6rem;
   }
   .mail {
     font-family: var(--font-mono);
-    font-size: 0.95rem;
+    font-size: 1rem;
     color: var(--blue);
     text-decoration: none;
   }
@@ -163,22 +171,46 @@ const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
     text-decoration: underline;
     text-underline-offset: 0.2em;
   }
+
+  /* Formular: blaue Fläche mit Navy-Block wie bei den Bildern */
+  .form-wrap {
+    position: relative;
+  }
+  .form-wrap::before {
+    content: '';
+    position: absolute;
+    right: -3%;
+    top: 12%;
+    bottom: -4%;
+    width: 34%;
+    background: var(--navy);
+    clip-path: polygon(40% 0, 100% 0, 88% 100%, 0 100%);
+  }
   .form {
-    background: #fff;
-    padding: clamp(1.75rem, 4vw, 3.25rem);
+    position: relative;
+    background: var(--blue);
+    color: #fff;
+    padding: clamp(1.75rem, 4vw, 3.5rem);
     display: grid;
     gap: 1.3rem;
-    border-top: 4px solid var(--blue);
   }
   .form-h {
     font-family: var(--font-head);
     font-stretch: 68%;
     font-weight: 800;
     text-transform: uppercase;
-    font-size: clamp(2rem, 3vw, 2.8rem);
-    line-height: 0.95;
-    color: var(--blue);
-    margin: -0.6rem 0 0.4rem;
+    font-size: clamp(2.6rem, 4.4vw, 4.4rem);
+    line-height: 0.94;
+    color: #fff;
+    margin: 0;
+  }
+  .form-h .lt {
+    font-weight: 300;
+  }
+  .form-intro {
+    margin: -0.2rem 0 0.6rem;
+    font-size: 0.95rem;
+    color: rgb(255 255 255 / 0.85);
   }
   .row2 {
     display: grid;
@@ -189,12 +221,12 @@ const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
     display: grid;
     gap: 0.45rem;
   }
-  label > span {
+  label > span:first-child {
     font-family: var(--font-mono);
     font-size: 0.72rem;
     letter-spacing: 0.04em;
     text-transform: uppercase;
-    color: var(--ink-3);
+    color: #c9d0f5;
   }
   input,
   select,
@@ -202,26 +234,44 @@ const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
     font: inherit;
     font-size: 1rem;
     color: var(--ink);
-    background: var(--stone-50);
+    background: #fff;
     border: 0;
-    border-bottom: 2px solid var(--stone-200);
+    border-bottom: 3px solid transparent;
     padding: 0.85rem 0.9rem;
     border-radius: 0;
     width: 100%;
-    transition: border-color 0.2s ease, background 0.2s ease;
+    transition: border-color 0.2s ease;
   }
   input:focus,
   select:focus,
   textarea:focus {
     outline: none;
-    background: var(--tint);
-    border-bottom-color: var(--blue);
+    border-bottom-color: var(--navy);
+  }
+  .form :focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
   }
   .was-validated :invalid {
-    border-bottom-color: var(--todo);
+    border-bottom-color: #ff8a8a;
   }
   textarea {
     resize: vertical;
+  }
+  .cq {
+    display: grid;
+    grid-template-columns: auto 8rem;
+    align-items: center;
+    gap: 1.2rem;
+    justify-content: start;
+  }
+  .cq-t {
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 1.35rem;
+    color: #fff;
   }
   .check {
     grid-template-columns: auto 1fr;
@@ -232,18 +282,15 @@ const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
     width: 1.2rem;
     height: 1.2rem;
     margin-top: 0.15rem;
-    accent-color: var(--blue);
+    accent-color: var(--navy);
   }
   .check span {
-    font-family: inherit;
-    text-transform: none;
-    letter-spacing: 0;
     font-size: 0.86rem;
     line-height: 1.6;
-    color: var(--ink-2);
+    color: rgb(255 255 255 / 0.88);
   }
   .check a {
-    color: var(--blue);
+    color: #fff;
   }
   .hp {
     position: absolute;
@@ -254,27 +301,60 @@ const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
     flex-wrap: wrap;
     align-items: center;
     gap: 1.2rem;
-    margin-top: 0.5rem;
+    margin-top: 0.4rem;
+  }
+  .send {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 0.95rem 1.6rem;
+    border: 0;
+    background: var(--navy);
+    color: #fff;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition:
+      background 0.25s ease,
+      color 0.25s ease;
+  }
+  .send :global(svg) {
+    width: 1.15rem;
+    height: 1.15rem;
+    transition: transform 0.35s var(--ease);
+  }
+  .send:hover {
+    background: #fff;
+    color: var(--blue);
+  }
+  .send:hover :global(svg) {
+    transform: translateX(4px);
   }
   .status {
     margin: 0;
     font-size: 0.92rem;
-    color: var(--ink-2);
-  }
-  .status.ok {
-    color: #1d7a3e;
+    color: #fff;
   }
   .status.err {
-    color: var(--todo);
+    color: #ffd0d0;
   }
   @media (max-width: 900px) {
     .contact {
       grid-template-columns: minmax(0, 1fr);
     }
+    .form-wrap::before {
+      display: none;
+    }
   }
   @media (max-width: 560px) {
     .row2 {
       grid-template-columns: minmax(0, 1fr);
+    }
+    .form {
+      margin-inline: calc(var(--gutter) * -1);
     }
   }
 </style>
@@ -288,6 +368,19 @@ const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
     status.className = `status ${cls}`;
   };
 
+  /* Sicherheitsfrage: einfache Rechenaufgabe, bei jedem Laden neu */
+  const q = form?.querySelector<HTMLElement>('[data-captcha-q]');
+  const a = form?.querySelector<HTMLInputElement>('[data-captcha-a]');
+  let solution = 7;
+  const newTask = () => {
+    const x = 2 + Math.floor(Math.random() * 8);
+    const y = 1 + Math.floor(Math.random() * 9);
+    solution = x + y;
+    if (q) q.textContent = `Was ergibt ${x} + ${y}?`;
+    if (a) a.value = '';
+  };
+  newTask();
+
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();
     form.classList.add('was-validated');
@@ -296,8 +389,15 @@ const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
       form.querySelector<HTMLElement>(':invalid')?.focus();
       return;
     }
+    if (Number(a?.value.trim()) !== solution) {
+      say('Die Antwort auf die Sicherheitsfrage stimmt leider nicht. Bitte versuchen Sie es noch einmal.', 'err');
+      newTask();
+      a?.focus();
+      return;
+    }
     const data = new FormData(form);
     if (data.get('_gotcha')) return;
+    data.delete('sicherheit');
     const endpoint = form.dataset.endpoint;
 
     if (endpoint) {
@@ -308,6 +408,7 @@ const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
         if (!res.ok) throw new Error(String(res.status));
         form.reset();
         form.classList.remove('was-validated');
+        newTask();
         say('Vielen Dank! Ihre Nachricht wurde gesendet. Wir melden uns zeitnah bei Ihnen.', 'ok');
       } catch {
         say('Leider ist ein Fehler aufgetreten. Bitte schreiben Sie uns direkt per E-Mail.', 'err');

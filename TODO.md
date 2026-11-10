@@ -19,7 +19,6 @@ Alles, was auf der Website **rot gestrichelt** markiert ist, steht auch hier. Pl
 
 ## Inhalte ergänzen
 
-- [ ] **Bürozeiten** (Kontaktseite) → `platzhalter.buerozeiten`
 - [ ] **Offene Stellen** (Karriere) → `src/pages/karriere/index.astro` → Liste `stellen`
 - [ ] **Zeitstrahl prüfen** (Über uns) – rot markierte Stationen bitte bestätigen/korrigieren → `src/pages/unternehmen/index.astro`
   - 1992: „Thomas Quirling gründet das Bauunternehmen“
@@ -44,3 +43,13 @@ Alles, was auf der Website **rot gestrichelt** markiert ist, steht auch hier. Pl
 - [ ] Optional: eigene Domain `www.quirling.de` → in *Settings → Pages → Custom domain* eintragen, beim Domain-Anbieter einen
   CNAME auf `melvin2-2.github.io` setzen und die Variablen `SITE_URL=https://www.quirling.de` und `BASE_PATH=/` anlegen.
   Alte WordPress-URLs (`/project/…`, `/unternehmen/unser-team/` …) ändern sich dabei.
+
+## Rückfragen (Stand Überarbeitung Unterseiten)
+
+- [ ] **Zeitstrahl Über uns**: Stimmen 1997 (Firmensitz Tegelweg) und 2019 (Umzug Tilsiter Straße)? Gibt es weitere Meilensteine (z. B. Ausbildungsbetrieb, Jubiläum, Generationswechsel)?
+- [ ] **Schlüsselfertig**: Hat Quirling das eigene Bürogebäude in der Tilsiter Straße selbst gebaut? Dann als Referenz ergänzen.
+- [ ] **Projektdaten**: Fertigstellung fehlt bei Ebeersreye, Eißendorfer Grenzweg 24a und 48 a+b.
+- [ ] **Adresse Eißendorfer Pferdeweg**: in den alten Daten stand „Eißendorfer Pferdestraße 29“, korrigiert auf „Eißendorfer Pferdeweg 29“. Bitte bestätigen.
+- [ ] **Kinderwelt**: Projekt heißt „Kinderwelt“, die Leistung „Umbau und Erweiterung des Alsterpalais“. Welcher Name soll als Titel stehen?
+- [ ] **My Place Selfstorage**: offizielle Schreibweise des Namens (MyPlace SelfStorage?) bestätigen.
+- [ ] **Krebs & Riedel**: Websites der Planer wurden aus den Projektinfos entfernt (nur Name und Adresse). Wieder aufnehmen?

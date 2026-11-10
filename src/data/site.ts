@@ -28,7 +28,6 @@ export const firma = {
 /** Werte, die noch fehlen – erscheinen rot auf der Seite */
 export const platzhalter = {
   ustId: 'DE XXX XXX XXX',
-  buerozeiten: 'Mo–Fr XX:XX–XX:XX Uhr',
 } as const;
 
 export type NavItem = { label: string; href: string; text?: string; children?: NavItem[] };
@@ -38,6 +37,8 @@ export const leistungen = [
     slug: 'rohbau',
     nr: '01',
     title: 'Rohbau & Stahlbetonbau',
+    /** kurzer Text im Menü */
+    menu: 'Beton und Stahlbeton, vom Fundament bis zur Decke.',
     kurz: 'Unser Schwerpunkt: Rohbauten in Beton- und Stahlbetonbauweise, vom Fundament bis zur letzten Decke.',
     picto: 'rohbau',
     stichworte: ['Ortbeton', 'Schalungsbau', 'Tiefgaragen'],
@@ -46,6 +47,8 @@ export const leistungen = [
     slug: 'schluesselfertiges-bauen',
     nr: '02',
     title: 'Schlüssel\u00adfertiges Bauen',
+    /** kurzer Text im Menü */
+    menu: 'Ein Ansprechpartner bis zur Übergabe.',
     kurz: 'Ein Ansprechpartner für das ganze Gebäude: Wir koordinieren alle Gewerke bis zur Übergabe.',
     picto: 'schluessel',
     stichworte: ['Ein Ansprechpartner', 'Alle Gewerke', 'Übergabe'],
@@ -54,6 +57,8 @@ export const leistungen = [
     slug: 'umbau-sanierung',
     nr: '03',
     title: 'Umbau & Sanierung',
+    /** kurzer Text im Menü */
+    menu: 'Umbauen, erweitern und sanieren im Bestand.',
     kurz: 'Erweiterungen, Umbauten und Sanierungen im Bestand, auch bei Stadtvillen und historischen Gebäuden.',
     picto: 'umbau',
     stichworte: ['Stadtvillen', 'Erweiterungen', 'Bestand'],
@@ -64,20 +69,16 @@ export const nav: NavItem[] = [
   {
     label: 'Leistungen',
     href: '/leistungen/',
-    children: leistungen.map((l) => ({ label: l.title, href: `/leistungen/${l.slug}/`, text: l.kurz })),
+    children: leistungen.map((l) => ({ label: l.title, href: `/leistungen/${l.slug}/`, text: l.menu })),
   },
   { label: 'Referenzen', href: '/referenzen/' },
   {
     label: 'Unternehmen',
     href: '/unternehmen/',
     children: [
-      { label: 'Über uns', href: '/unternehmen/', text: 'Seit 1992 in Hamburg: Geschichte, Werte und Arbeitsweise.' },
-      { label: 'Team', href: '/unternehmen/team/', text: 'Die Menschen hinter Quirling, im Büro und auf der Baustelle.' },
-      {
-        label: 'Zertifikate & Downloads',
-        href: '/unternehmen/zertifikate/',
-        text: 'Bescheinigungen und Nachweise zum Herunterladen.',
-      },
+      { label: 'Über uns', href: '/unternehmen/', text: 'Familienbetrieb in Hamburg seit 1992.' },
+      { label: 'Team', href: '/unternehmen/team/', text: 'Die Menschen im Büro und auf der Baustelle.' },
+      { label: 'Zertifikate & Downloads', href: '/unternehmen/zertifikate/', text: 'Alle Nachweise zum Herunterladen.' },
     ],
   },
   { label: 'Karriere', href: '/karriere/' },

@@ -21,13 +21,15 @@ interface Props {
   imageAlt?: string;
   crumbs?: Crumb[];
   size?: 'large' | 'medium' | 'small';
+  /** Bildausschnitt, z. B. "70% 20%" damit Gesichter nicht angeschnitten werden */
+  imagePosition?: string;
 }
-const { eyebrow, title, titleLight, intro, image, imageAlt = '', crumbs = [], size = 'large' } = Astro.props;
+const { eyebrow, title, titleLight, intro, image, imageAlt = '', crumbs = [], size = 'large', imagePosition } = Astro.props;
 ---
 
 <section class:list={['phero', `phero-${size}`, { 'no-image': !image }]}>
   <div class="phero-media">
-    {image && <Image src={image} alt={imageAlt} widths={[800, 1400, 2000]} sizes="100vw" loading="eager" fetchpriority="high" />}
+    {image && <Image src={image} alt={imageAlt} widths={[800, 1400, 2000]} sizes="100vw" loading="eager" fetchpriority="high" style={imagePosition ? `object-position: ${imagePosition}` : undefined} />}
     <div class="phero-slab" aria-hidden="true"></div>
   </div>
   <div class="phero-cut" aria-hidden="true"></div>
@@ -135,7 +137,7 @@ const { eyebrow, title, titleLight, intro, image, imageAlt = '', crumbs = [], si
     font-weight: 800;
     text-transform: uppercase;
     font-size: clamp(3rem, 6.6vw, 7rem);
-    line-height: 0.86;
+    line-height: 0.97;
     letter-spacing: -0.005em;
     max-width: min(48vw, 760px);
   }

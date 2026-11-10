@@ -5,13 +5,17 @@ import Base from '~/layouts/Base.astro';
 import PageHero from '~/components/PageHero.astro';
 import Icon from '~/components/Icon.astro';
 import { leistungenInhalt } from '~/data/leistungen-inhalt';
+import { leistungBild } from '~/data/leistung-bilder';
+import { leistungen } from '~/data/site';
 import { url } from '~/lib/url';
 
 const hero = (await getEntry('projekte', 'dorfkoppel'))!.data.bilder[0]!;
 const rows = await Promise.all(
   leistungenInhalt.map(async (l) => ({
     ...l,
-    bild: (await getEntry('projekte', l.heroProjekt))!.data.bilder[0]!,
+    bild: await leistungBild(l.slug, 'start'),
+    // Titel mit weichem Trennzeichen (Schlüssel-fertiges), damit er in die Spalte passt
+    titel: leistungen.find((x) => x.slug === l.slug)!.title,
   })),
 );
 
@@ -45,8 +49,8 @@ const werte = [
               </span>
             </a>
             <div class="row-text">
-              <h2 class="h-item">
-                <a href={url(`/leistungen/${l.slug}/`)}>{l.title}</a>
+              <h2 class="row-h">
+                <a href={url(`/leistungen/${l.slug}/`)} set:html={l.titel} />
               </h2>
               <p class="small">{l.intro}</p>
               <a class="text-link" href={url(`/leistungen/${l.slug}/`)}>
@@ -109,6 +113,17 @@ const werte = [
   }
   .row.flip .row-text {
     grid-column: 1 / 6;
+  }
+  .row-h {
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: clamp(2.6rem, 4.4vw, 4.6rem);
+    line-height: 0.95;
+    color: var(--blue);
+    margin: 0;
+    hyphens: manual;
   }
   .row-text h2 a {
     color: inherit;

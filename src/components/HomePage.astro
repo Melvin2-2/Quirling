@@ -10,7 +10,7 @@ import { url } from '~/lib/url';
 import heroPoster from '~/assets/site/hero-poster.jpg';
 import filmPoster from '~/assets/site/film-poster.jpg';
 import teamFoto from '~/assets/team/baustellenteam.jpg';
-import rohbauFoto from '~/assets/site/rohbau-wandsbek.jpg';
+import { leistungBild } from '~/data/leistung-bilder';
 import handwerkFoto from '~/assets/site/handwerk-schalung.jpg';
 
 interface Props {
@@ -27,21 +27,18 @@ const heroPosterImg = await getImage({ src: heroPoster, width: 1920, format: 'jp
 const filmPosterImg = await getImage({ src: filmPoster, width: 1600, format: 'jpg', quality: 70 });
 
 /* Leistungen: Bilder folgen der Diagonale der Linie */
-const svcInfo: Record<string, { bild: string; a: string; b: string; text: string }> = {
+const svcInfo: Record<string, { a: string; b: string; text: string }> = {
   rohbau: {
-    bild: 'grosse-johannisstrasse',
     a: 'Rohbau &',
     b: 'Stahlbetonbau',
     text: 'Rohbauten in Beton- und Stahlbetonbauweise. Vom Fundament über die Tiefgarage bis zur letzten Decke.',
   },
   'schluesselfertiges-bauen': {
-    bild: 'steinwegel',
     a: 'Schlüssel\u00adfertiges',
     b: 'Bauen',
     text: 'Vom Rohbau bis zur Übergabe koordinieren wir alle Gewerke. Mit einem festen Ansprechpartner.',
   },
   'umbau-sanierung': {
-    bild: 'bellevue-59',
     a: 'Umbau &',
     b: 'Sanierung',
     text: 'Umbauten, Erweiterungen und Sanierungen im Bestand. Von der Stadtvilla bis zum Alsterpalais.',
@@ -50,8 +47,8 @@ const svcInfo: Record<string, { bild: string; a: string; b: string; text: string
 const services = await Promise.all(
   leistungen.map(async (l) => {
     const info = svcInfo[l.slug]!;
-    // Rohbau zeigt ein Foto aus der Rohbauphase (My Place Selfstorage Wandsbek)
-    const img = l.slug === 'rohbau' ? rohbauFoto : (await getEntry('projekte', info.bild))!.data.bilder[0]!;
+    // gleiche Bilder wie auf der Leistungsübersicht (src/data/leistung-bilder.ts)
+    const img = await leistungBild(l.slug, 'start');
     return { ...l, ...info, img };
   }),
 );
@@ -1250,9 +1247,10 @@ const werte = [
     line-height: 0.86;
   }
   :global(html.typo-c) .intro-h {
+    /* Umlaut in „können“: etwas mehr Zeilenabstand */
     font-weight: 800;
     font-size: clamp(2.4rem, 3.9vw, 4.4rem);
-    line-height: 0.9;
+    line-height: 0.98;
   }
   :global(html.typo-c) .svc-head {
     font-weight: 800;
