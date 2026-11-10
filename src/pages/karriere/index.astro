@@ -33,7 +33,6 @@ const schritte = [
 
 <Base title="Karriere" description="Karriere bei der Quirling GmbH in Hamburg: Werden Sie Teil unseres Teams auf der Baustelle oder im Büro. Bewerbung gerne per E-Mail.">
   <PageHero
-    eyebrow="Karriere"
     title="Mit anpacken"
     titleLight="bei Quirling."
     intro="Wir suchen Menschen, die gerne bauen. Auf der Baustelle oder im Büro, bewerben Sie sich unkompliziert per E-Mail."
@@ -48,14 +47,12 @@ const schritte = [
   <section class="section">
     <div class="container vt-wrap">
       <div class="vt-head">
-        <span class="label">Warum Quirling</span>
         <h2 class="h-sec">Was Sie<br /><span class="lt">erwartet.</span></h2>
       </div>
       <div class="vorteile">
         {
-          vorteile.map((v, i) => (
+          vorteile.map((v) => (
             <div class="v">
-              <span class="label">0{i + 1}</span>
               <h3 class="v-t">{v.t}</h3>
               <p class="small">{v.d}</p>
             </div>
@@ -69,7 +66,6 @@ const schritte = [
   <section class="section section-tint">
     <div class="container jobs-wrap">
       <div class="jobs-head">
-        <span class="label">Offene Stellen</span>
         <h2 class="h-sec">Aktuelle<br /><span class="lt">Angebote.</span></h2>
       </div>
       <ul class="jobs">
@@ -108,14 +104,12 @@ const schritte = [
         </span>
       </div>
       <div class="how-text">
-        <span class="label">So bewerben Sie sich</span>
         <h2 class="h-sec">Einfach<br /><span class="lt">per E-Mail.</span></h2>
         <ol class="steps">
           {
-            schritte.map((s, i) => (
+            schritte.map((s) => (
               <li>
-                <span class="label">0{i + 1}</span>
-                <div>
+                  <div>
                   <h3 class="s-t">{s.t}</h3>
                   <p class="small">{s.d}</p>
                 </div>

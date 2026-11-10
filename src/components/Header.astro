@@ -10,7 +10,7 @@ interface Props {
 }
 const { overlay = true } = Astro.props;
 const current = Astro.url.pathname;
-const mainItems = nav.filter((n) => n.href !== '/kontakt/');
+const mainItems = nav;
 ---
 
 <header class="site-header" data-header data-overlay={overlay ? 'true' : 'false'}>
@@ -36,7 +36,6 @@ const mainItems = nav.filter((n) => n.href !== '/kontakt/');
                       <a href={url(c.href)} class="sub-link">
                         <span class="sub-nr">0{i + 1}</span>
                         <span class="sub-title">{c.label}</span>
-                        <span class="sub-text">{c.text}</span>
                       </a>
                     ))}
                   </div>
@@ -50,7 +49,6 @@ const mainItems = nav.filter((n) => n.href !== '/kontakt/');
 
     <div class="actions">
       <a class="phone" href={firma.telefonHref}><Icon name="phone" /><span>{firma.telefon}</span></a>
-      <a class="phone cta" href={url('/kontakt/')}><Icon name="mail" /><span>Kontakt</span></a>
       <button class="burger" type="button" aria-expanded="false" aria-controls="mobile-nav" data-burger>
         <span class="visually-hidden">Menü öffnen</span>
         <i></i><i></i>
@@ -241,7 +239,7 @@ const mainItems = nav.filter((n) => n.href !== '/kontakt/');
   }
   .sub-inner {
     display: grid;
-    grid-template-columns: repeat(3, 15rem);
+    grid-template-columns: repeat(3, minmax(12rem, auto));
     gap: 1px;
     background: var(--line);
     border: 1px solid var(--line);
@@ -251,7 +249,7 @@ const mainItems = nav.filter((n) => n.href !== '/kontakt/');
     display: grid;
     gap: 0.35rem;
     align-content: start;
-    padding: 1.4rem 1.4rem 1.6rem;
+    padding: 1.1rem 1.4rem 1.2rem;
     background: #fff;
     color: var(--ink);
     text-decoration: none;
@@ -274,11 +272,6 @@ const mainItems = nav.filter((n) => n.href !== '/kontakt/');
     font-size: 1.35rem;
     line-height: 1.05;
     text-transform: uppercase;
-  }
-  .sub-text {
-    font-size: 0.92rem;
-    line-height: 1.45;
-    color: var(--ink-3);
   }
 
   .actions {
@@ -425,8 +418,7 @@ const mainItems = nav.filter((n) => n.href !== '/kontakt/');
       --header-h: 72px;
     }
     .main-nav,
-    .phone,
-    .cta {
+    .phone {
       display: none;
     }
     .burger {

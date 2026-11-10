@@ -1,7 +1,7 @@
 ---
 /**
  * Seiten-Header im Stil der Startseite: Bild (oder Navy), schräge Navy-Fläche,
- * Unterkante als angedeutete Raute (Spitze rechts) und Linienstart an der Spitze.
+ * Unterkante als angedeutete Raute (Spitze rechts).
  */
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
@@ -31,7 +31,6 @@ const { eyebrow, title, titleLight, intro, image, imageAlt = '', crumbs = [], si
     <div class="phero-slab" aria-hidden="true"></div>
   </div>
   <div class="phero-cut" aria-hidden="true"></div>
-  <span class="phero-line" aria-hidden="true"></span>
   <div class="container phero-content">
     {
       crumbs.length > 0 && (
@@ -103,23 +102,6 @@ const { eyebrow, title, titleLight, intro, image, imageAlt = '', crumbs = [], si
     clip-path: var(--cut);
     pointer-events: none;
   }
-  /* Linienstart an der Rautenspitze */
-  .phero-line {
-    position: absolute;
-    left: 78%;
-    top: 100%;
-    width: 1.5px;
-    height: clamp(4rem, 9vw, 8rem);
-    background: var(--blue);
-    transform-origin: top;
-    animation: phero-line 1.2s var(--ease) 0.4s both;
-    z-index: 2;
-  }
-  @keyframes phero-line {
-    from {
-      transform: scaleY(0);
-    }
-  }
   .phero-content {
     position: relative;
     padding-top: calc(var(--header-h) + 2.5rem);
@@ -179,14 +161,6 @@ const { eyebrow, title, titleLight, intro, image, imageAlt = '', crumbs = [], si
     .phero-title,
     .phero-intro {
       max-width: none;
-    }
-    .phero-line {
-      display: none;
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .phero-line {
-      animation: none;
     }
   }
 </style>

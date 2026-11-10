@@ -34,7 +34,7 @@ Alles, was auf der Website **rot gestrichelt** markiert ist, steht auch hier. Pl
   Projektbilder: `src/assets/projects/<projekt>/01.jpg …` (01 = Titelbild)
 - [x] **Firmenfilm** eingebunden (SER_Timelapse_Export): Startvideo = Drohnenflug 4:16–4:26, Film-Raute = Ausschnitt ab 3:20,
   „Film ansehen“ spielt den kompletten Film (720p) direkt von der Website – ohne YouTube.
-- [ ] **Zertifikate** sind die PDFs der alten Website (Stand ca. 2017) → bei Bedarf aktuelle Versionen in `public/downloads/` austauschen
+- [ ] **Zertifikate** sind die PDFs der alten Website (Stand ca. 2017) → bei Bedarf aktuelle Versionen in `public/downloads/` austauschen und danach `python3 scripts/zip-downloads.py` ausführen (aktualisiert die ZIP mit allen Nachweisen)
 - [ ] Logo liegt als Vektor vor (aus `Logo_mit_Adressblock.pdf`). Falls es Original-Logodateien gibt (AI/EPS/SVG), gern nachliefern.
 
 ## Veröffentlichung

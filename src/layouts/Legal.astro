@@ -10,7 +10,7 @@ const { title, description } = Astro.props;
 ---
 
 <Base title={title} description={description}>
-  <PageHero eyebrow="Rechtliches" title={title} crumbs={[{ label: title }]} size="small" />
+  <PageHero title={title} crumbs={[{ label: title }]} size="small" />
   <section class="legal">
     <div class="container">
       <div class="prose">

@@ -25,7 +25,6 @@ const [t1, t2] = l.title.includes(' & ') ? [l.title.split(' & ')[0] + ' &', l.ti
 
 <Base title={l.title} description={l.intro}>
   <PageHero
-    eyebrow={l.eyebrow}
     title={t1!}
     titleLight={t2}
     intro={l.intro}
@@ -38,7 +37,6 @@ const [t1, t2] = l.title.includes(' & ') ? [l.title.split(' & ')[0] + ' &', l.ti
   <section class="section">
     <div class="container intro">
       <div class="intro-text">
-        <span class="label">Was wir machen</span>
         <p class="lead-c">{l.absaetze[0]}</p>
         {l.absaetze.slice(1).map((a) => <p class="small">{a}</p>)}
       </div>
@@ -60,9 +58,8 @@ const [t1, t2] = l.title.includes(' & ') ? [l.title.split(' & ')[0] + ' &', l.ti
       </div>
       <ol class="umfang">
         {
-          l.umfang.map((u, i) => (
+          l.umfang.map((u) => (
             <li>
-              <span class="label">{String(i + 1).padStart(2, '0')}</span>
               <span class="u-t">{u}</span>
             </li>
           ))
@@ -77,7 +74,6 @@ const [t1, t2] = l.title.includes(' & ') ? [l.title.split(' & ')[0] + ' &', l.ti
       <section class="section refs">
         <div class="container refs-head">
           <div>
-            <span class="label">Referenzen · {projekte.length} Projekte</span>
             <h2 class="h-sec">
               Gebaut
               <br />
@@ -106,7 +102,6 @@ const [t1, t2] = l.title.includes(' & ') ? [l.title.split(' & ')[0] + ' &', l.ti
         {
           andere.map((a) => (
             <a class="more-link" href={url(`/leistungen/${a.slug}/`)}>
-              <span class="label">{a.nr}</span>
               <span class="more-t" set:html={a.title} />
               <Icon name="arrow" />
             </a>
@@ -220,7 +215,7 @@ const [t1, t2] = l.title.includes(' & ') ? [l.title.split(' & ')[0] + ' &', l.ti
   }
   .more-link {
     display: grid;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
     gap: 1.4rem;
     padding: clamp(1.4rem, 2.5vw, 2.2rem) clamp(1.2rem, 2.5vw, 2.2rem);
@@ -228,9 +223,6 @@ const [t1, t2] = l.title.includes(' & ') ? [l.title.split(' & ')[0] + ' &', l.ti
     color: #fff;
     text-decoration: none;
     transition: background 0.3s var(--ease);
-  }
-  .more-link .label {
-    color: #aab4ea;
   }
   .more-t {
     font-family: var(--font-head);

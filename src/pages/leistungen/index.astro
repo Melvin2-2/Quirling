@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import { getEntry, getCollection } from 'astro:content';
+import { getEntry } from 'astro:content';
 import Base from '~/layouts/Base.astro';
 import PageHero from '~/components/PageHero.astro';
 import Icon from '~/components/Icon.astro';
@@ -8,12 +8,10 @@ import { leistungenInhalt } from '~/data/leistungen-inhalt';
 import { url } from '~/lib/url';
 
 const hero = (await getEntry('projekte', 'dorfkoppel'))!.data.bilder[0]!;
-const alle = await getCollection('projekte');
 const rows = await Promise.all(
   leistungenInhalt.map(async (l) => ({
     ...l,
     bild: (await getEntry('projekte', l.heroProjekt))!.data.bilder[0]!,
-    anzahl: alle.filter((p) => p.data.bereich === l.slug).length,
   })),
 );
 
@@ -27,7 +25,6 @@ const werte = [
 
 <Base title="Leistungen" description="Rohbau und Stahlbetonbau, schlüsselfertiges Bauen sowie Umbau und Sanierung: die Leistungen der Quirling GmbH in Hamburg.">
   <PageHero
-    eyebrow="Leistungen"
     title="Vom Fundament"
     titleLight="bis zur Übergabe."
     intro="Schwerpunkt ist der Rohbau, speziell Beton- und Stahlbetonbau. Dazu bauen wir schlüsselfertig und führen vielseitige Umbauten und Sanierungen aus."
@@ -48,7 +45,6 @@ const werte = [
               </span>
             </a>
             <div class="row-text">
-              <span class="label">0{i + 1} · {l.anzahl} Referenzen</span>
               <h2 class="h-item">
                 <a href={url(`/leistungen/${l.slug}/`)}>{l.title}</a>
               </h2>
@@ -67,7 +63,6 @@ const werte = [
   <section class="section section-tint">
     <div class="container werte-wrap">
       <div class="werte-head">
-        <span class="label">Arbeitsweise</span>
         <h2 class="h-sec">
           So
           <br />
@@ -76,9 +71,8 @@ const werte = [
       </div>
       <div class="werte">
         {
-          werte.map((w, i) => (
+          werte.map((w) => (
             <div class="wert">
-              <span class="label">0{i + 1}</span>
               <h3 class="wert-t">{w.t}</h3>
               <p class="small">{w.d}</p>
             </div>

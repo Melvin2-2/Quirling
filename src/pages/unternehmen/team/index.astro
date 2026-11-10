@@ -6,6 +6,7 @@ import Icon from '~/components/Icon.astro';
 import { firma } from '~/data/site';
 import { url } from '~/lib/url';
 import baustellenteam from '~/assets/team/baustellenteam.jpg';
+import baustelle from '~/assets/site/rohbau-wandsbek.jpg';
 import thomas from '~/assets/team/thomas-quirling.jpg';
 import ivonne from '~/assets/team/ivonne-quirling.jpg';
 import michaela from '~/assets/team/michaela-venghaus.jpg';
@@ -19,12 +20,11 @@ const personen = [
 
 <Base title="Team" description="Das Team der Quirling GmbH: Geschäftsführung, Büro und unsere Mannschaft auf der Baustelle.">
   <PageHero
-    eyebrow="Team"
     title="Wir stellen"
     titleLight="uns vor."
     intro="Ein eingespieltes und beständiges Team, das Sie bei Ihrem Vorhaben kompetent und zuverlässig unterstützt."
-    image={baustellenteam}
-    imageAlt="Das Baustellenteam der Quirling GmbH"
+    image={baustelle}
+    imageAlt="Rohbau der Quirling GmbH in Hamburg-Wandsbek"
     crumbs={[{ label: 'Unternehmen', href: '/unternehmen/' }, { label: 'Team' }]}
     size="medium"
   />
@@ -32,7 +32,6 @@ const personen = [
   <section class="section">
     <div class="container">
       <div class="head">
-        <span class="label">Geschäftsführung und Büro</span>
         <h2 class="h-sec">Ihre<br /><span class="lt">Ansprechpartner.</span></h2>
       </div>
       <div class="people">
@@ -55,10 +54,9 @@ const personen = [
     </div>
   </section>
 
-  <section class="section on-dark crew">
+  <section class="section crew">
     <div class="container crew-in">
       <div class="crew-text">
-        <span class="label">Auf der Baustelle</span>
         <h2 class="h-sec">Unsere<br /><span class="lt">Mannschaft.</span></h2>
         <p class="small">
           Das Herz unseres Unternehmens sind die Facharbeiter auf der Baustelle. Junge und erfahrene Kollegen, die seit vielen Jahren zusammenarbeiten.
@@ -66,9 +64,9 @@ const personen = [
         </p>
         <a class="text-link" href={url('/karriere/')}><span>Mit anpacken</span><Icon name="arrow" /></a>
       </div>
-      <div class="para flip crew-img">
+      <div class="para crew-img">
         <span class="para-img">
-          <Image src={baustellenteam} alt="Gruppenfoto des Baustellenteams vor Schalungselementen" widths={[700, 1100, 1440]} sizes="(min-width: 1024px) 55vw, 100vw" />
+          <Image src={baustellenteam} alt="Gruppenfoto unserer Mannschaft vor Schalungselementen" widths={[700, 1100, 1440]} sizes="(min-width: 1024px) 60vw, 100vw" />
         </span>
       </div>
     </div>
@@ -142,8 +140,9 @@ const personen = [
     height: 20px;
   }
 
+  /* gleiche Fläche wie die Seite: die Mannschaft gehört dazu */
   .crew {
-    background: var(--navy);
+    padding-top: 0;
   }
   .crew-in {
     display: grid;
@@ -152,7 +151,8 @@ const personen = [
     align-items: center;
   }
   .crew-text {
-    grid-column: 1 / 6;
+    grid-column: 9 / 13;
+    order: 2;
     display: grid;
     gap: 1.2rem;
     justify-items: start;
@@ -162,11 +162,7 @@ const personen = [
     max-width: 44ch;
   }
   .crew-img {
-    grid-column: 7 / 13;
-  }
-  /* Navy-Block wäre auf Navy unsichtbar: hier in Blau */
-  .crew .para::before {
-    background: var(--blue);
+    grid-column: 1 / 9;
   }
 
   @media (max-width: 900px) {
@@ -179,6 +175,7 @@ const personen = [
     .crew-text,
     .crew-img {
       grid-column: 1 / -1;
+      order: 0;
     }
     .crew-img {
       margin-inline: 4%;
