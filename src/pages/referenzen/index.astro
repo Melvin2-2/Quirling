@@ -6,7 +6,7 @@ import PageHero from '~/components/PageHero.astro';
 import Icon from '~/components/Icon.astro';
 import { kategorien, leistungen, firma } from '~/data/site';
 import { url } from '~/lib/url';
-import hero from '~/assets/site/baustelle-grossprojekt.jpg';
+import hero from '~/assets/site/baustelle-kraene.jpg';
 
 const projekte = (await getCollection('projekte')).sort(
   (a, b) => (a.data.highlight ?? 99) - (b.data.highlight ?? 99) || (b.data.jahr ?? 0) - (a.data.jahr ?? 0),
@@ -29,7 +29,8 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
     titleLight="die stehen."
     intro={`Eine Auswahl aus mehr als ${firma.projekteAnzahl} Projekten seit 1992. Überwiegend Rohbau, dazu zahlreiche Umbauten und Sanierungen.`}
     image={hero}
-    imageAlt="Große Baustelle mit Kränen und Gerüsten, Rohbau durch die Quirling GmbH"
+    imageAlt="Große Baustelle mit mehreren Kränen und Gerüsten in Lüneburg"
+    imagePosition="60% 40%"
     crumbs={[{ label: 'Referenzen' }]}
     size="medium"
   />

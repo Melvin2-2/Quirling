@@ -23,15 +23,15 @@ interface Props {
   size?: 'large' | 'medium' | 'small';
   /** Bildausschnitt, z. B. "70% 20%" damit Gesichter nicht angeschnitten werden */
   imagePosition?: string;
-  /** 'right': Bild nur in der rechten Hälfte (für Motive, deren Personen sonst unter der Navy-Fläche liegen) */
+  /** 'right' (Standard): Bild nur rechts neben der Navy-Fläche. 'full': Bild über die ganze Breite */
   imageSide?: 'full' | 'right';
 }
-const { eyebrow, title, titleLight, intro, image, imageAlt = '', crumbs = [], size = 'large', imagePosition, imageSide = 'full' } = Astro.props;
+const { eyebrow, title, titleLight, intro, image, imageAlt = '', crumbs = [], size = 'large', imagePosition, imageSide = 'right' } = Astro.props;
 ---
 
 <section class:list={['phero', `phero-${size}`, { 'no-image': !image, 'img-right': imageSide === 'right' }]}>
   <div class="phero-media">
-    {image && <Image src={image} alt={imageAlt} widths={[800, 1400, 2000]} sizes="100vw" loading="eager" fetchpriority="high" style={imagePosition ? `object-position: ${imagePosition}` : undefined} />}
+    {image && <Image src={image} alt={imageAlt} widths={[800, 1400, 2000]} sizes={imageSide === 'right' ? '(min-width: 900px) 60vw, 100vw' : '100vw'} loading="eager" fetchpriority="high" style={imagePosition ? `object-position: ${imagePosition}` : undefined} />}
     <div class="phero-slab" aria-hidden="true"></div>
   </div>
   <div class="phero-cut" aria-hidden="true"></div>

@@ -9,15 +9,17 @@ import { firma } from '~/data/site';
 interface Props {
   /** helle Darstellung auf dunklem Grund */
   light?: boolean;
+  /** als eckiger Button (Pill) statt als Textlink */
+  pill?: boolean;
 }
-const { light = false } = Astro.props;
+const { light = false, pill = false } = Astro.props;
 const ziel = encodeURIComponent(`${firma.langname}, ${firma.strasse}, ${firma.plz} ${firma.ort}`);
 const google = `https://www.google.com/maps/dir/?api=1&destination=${ziel}`;
 const apple = `https://maps.apple.com/?daddr=${ziel}&dirflg=d`;
 ---
 
 <details class:list={['route', { light }]} data-route>
-  <summary class="text-link"><span>Route planen</span><Icon name="chevron" /></summary>
+  <summary class={pill ? 'pill' : 'text-link'}><span>Route planen</span><Icon name="chevron" /></summary>
   <div class="route-menu">
     <a href={google} target="_blank" rel="noopener"><span>Google Maps</span><Icon name="arrow" /></a>
     <a href={apple} target="_blank" rel="noopener"><span>Apple Karten</span><Icon name="arrow" /></a>

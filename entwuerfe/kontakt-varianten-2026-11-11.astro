@@ -1,0 +1,278 @@
+---
+// Nur für die Auswahl: vier Varianten des Kontaktblocks. Wird vor dem Veröffentlichen gelöscht.
+import Base from '~/layouts/Base.astro';
+import Icon from '~/components/Icon.astro';
+import RouteLink from '~/components/RouteLink.astro';
+import { firma } from '~/data/site';
+import { url } from '~/lib/url';
+---
+
+<Base title="Entwurf Kontakt" noindex>
+  <div style="height: 120px; background: var(--navy)"></div>
+
+  <!-- V1: zwei Spalten, oben bündig -->
+  <section class="section v v1" data-v="1">
+    <div class="container v1-in">
+      <div class="v1-call">
+        <div class="w">
+          <span class="pre">Rufen Sie an</span>
+          <a class="big" href={firma.telefonHref}>{firma.telefon}</a>
+          <span class="note">Montags bis freitags erreichbar</span>
+        </div>
+        <div class="w">
+          <span class="pre">Oder schreiben Sie uns</span>
+          <a class="big" href={`mailto:${firma.email}`}>{firma.email}</a>
+        </div>
+      </div>
+      <div class="v1-side">
+        <div class="sb">
+          <h3 class="sh">Unser Büro</h3>
+          <p class="st">{firma.strasse}, {firma.plz} {firma.ort}</p>
+          <RouteLink pill />
+        </div>
+        <div class="sb">
+          <h3 class="sh">Bewerbungen</h3>
+          <p class="st">Gerne per E-Mail oder persönlich bei uns im Büro.</p>
+          <a class="pill" href={url('/karriere/')}><span>Zur Karriereseite</span><Icon name="arrow" /></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- V2: drei gleiche Spalten, Bewerbungen als Zeile darunter -->
+  <section class="section v v2" data-v="2">
+    <div class="container">
+      <div class="v2-grid">
+        <div class="v2-col">
+          <span class="pre">Telefon</span>
+          <a class="big" href={firma.telefonHref}>{firma.telefon}</a>
+          <span class="note">Montags bis freitags erreichbar</span>
+          <a class="pill" href={firma.telefonHref}><span>Jetzt anrufen</span><Icon name="phone" /></a>
+        </div>
+        <div class="v2-col">
+          <span class="pre">E-Mail</span>
+          <a class="big" href={`mailto:${firma.email}`}>{firma.email}</a>
+          <span class="note">Für Anfragen, Pläne und Unterlagen</span>
+          <a class="pill" href={`mailto:${firma.email}`}><span>E-Mail schreiben</span><Icon name="mail" /></a>
+        </div>
+        <div class="v2-col">
+          <span class="pre">Büro</span>
+          <span class="big">{firma.strasse}</span>
+          <span class="note">{firma.plz} {firma.ort}</span>
+          <RouteLink pill />
+        </div>
+      </div>
+      <p class="v2-job">
+        <strong>Bewerbungen</strong> gerne per E-Mail oder persönlich im Büro.
+        <a class="text-link" href={url('/karriere/')}><span>Zur Karriereseite</span><Icon name="arrow" /></a>
+      </p>
+    </div>
+  </section>
+
+  <!-- V3: Kontakt links, weiße Karte rechts -->
+  <section class="section v v3" data-v="3">
+    <div class="container v3-in">
+      <div class="v1-call">
+        <div class="w">
+          <span class="pre">Rufen Sie an</span>
+          <a class="big" href={firma.telefonHref}>{firma.telefon}</a>
+          <span class="note">Montags bis freitags erreichbar</span>
+        </div>
+        <div class="w">
+          <span class="pre">Oder schreiben Sie uns</span>
+          <a class="big" href={`mailto:${firma.email}`}>{firma.email}</a>
+        </div>
+      </div>
+      <div class="v3-card">
+        <div class="sb">
+          <h3 class="sh">Unser Büro</h3>
+          <p class="st">{firma.langname}<br />{firma.strasse}<br />{firma.plz} {firma.ort}</p>
+          <RouteLink pill />
+        </div>
+        <div class="sb">
+          <h3 class="sh">Bewerbungen</h3>
+          <p class="st">Gerne per E-Mail oder persönlich bei uns im Büro.</p>
+          <a class="pill" href={url('/karriere/')}><span>Zur Karriereseite</span><Icon name="arrow" /></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- V4: Navy-Fläche mit Telefon und E-Mail, rechts Büro und Bewerbungen -->
+  <section class="section v v4" data-v="4">
+    <div class="container v4-in">
+      <div class="v4-panel">
+        <div class="w">
+          <span class="pre">Rufen Sie an</span>
+          <a class="big" href={firma.telefonHref}>{firma.telefon}</a>
+        </div>
+        <div class="w">
+          <span class="pre">Oder schreiben Sie uns</span>
+          <a class="big" href={`mailto:${firma.email}`}>{firma.email}</a>
+        </div>
+        <span class="note">Montags bis freitags erreichbar. Gerne rufen wir auch zurück.</span>
+      </div>
+      <div class="v4-side">
+        <div class="sb">
+          <h3 class="sh">Unser Büro</h3>
+          <p class="st">{firma.strasse}<br />{firma.plz} {firma.ort}</p>
+          <RouteLink pill />
+        </div>
+        <div class="sb">
+          <h3 class="sh">Bewerbungen</h3>
+          <p class="st">Gerne per E-Mail oder persönlich bei uns im Büro.</p>
+          <a class="pill" href={url('/karriere/')}><span>Zur Karriereseite</span><Icon name="arrow" /></a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .v + .v {
+    border-top: 8px solid var(--navy);
+  }
+  .pre {
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 300;
+    text-transform: uppercase;
+    font-size: clamp(1.2rem, 1.6vw, 1.6rem);
+    line-height: 1;
+    color: var(--blue);
+  }
+  .big {
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    font-size: clamp(2rem, 3.4vw, 3.5rem);
+    line-height: 0.95;
+    color: var(--blue);
+    text-decoration: none;
+    overflow-wrap: anywhere;
+  }
+  .note {
+    font-size: 0.88rem;
+    color: var(--ink-3);
+  }
+  .w {
+    display: grid;
+    gap: 0.55rem;
+    justify-items: start;
+  }
+  .sh {
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: clamp(1.8rem, 2.6vw, 2.6rem);
+    line-height: 0.97;
+    color: var(--blue);
+    margin: 0;
+  }
+  .st {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--ink-2);
+  }
+  .sb {
+    display: grid;
+    gap: 0.8rem;
+    justify-items: start;
+  }
+
+  /* V1 */
+  .v1-in,
+  .v3-in,
+  .v4-in {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: clamp(2rem, 4vw, 4rem);
+    align-items: start;
+  }
+  .v1-call {
+    grid-column: 1 / 7;
+    display: grid;
+    gap: clamp(2.5rem, 4vw, 3.5rem);
+  }
+  .v1-side {
+    grid-column: 8 / 13;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2.5rem;
+    /* Überschriften auf Höhe der Telefonnummer */
+    padding-top: calc(clamp(1.2rem, 1.6vw, 1.6rem) + 0.55rem);
+  }
+
+  /* V2 */
+  .v2-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(2rem, 4vw, 4rem);
+  }
+  .v2-col {
+    display: grid;
+    grid-template-rows: auto auto auto 1fr;
+    gap: 0.55rem;
+    justify-items: start;
+    align-content: start;
+  }
+  .v2-col .pill,
+  .v2-col :global(.route) {
+    margin-top: 1rem;
+    align-self: end;
+  }
+  .v2-col .big {
+    font-size: clamp(1.8rem, 2.6vw, 2.8rem);
+  }
+  .v2-job {
+    margin: clamp(3rem, 5vw, 4rem) 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1.4rem;
+    font-size: 0.95rem;
+    color: var(--ink-2);
+  }
+  .v2-job strong {
+    color: var(--blue);
+  }
+
+  /* V3 */
+  .v3-card {
+    grid-column: 8 / 13;
+    background: #fff;
+    padding: clamp(1.6rem, 3vw, 2.6rem);
+    display: grid;
+    gap: 2.2rem;
+  }
+
+  /* V4 */
+  .v4-in {
+    align-items: stretch;
+  }
+  .v4-panel {
+    grid-column: 1 / 8;
+    background: var(--navy);
+    padding: clamp(2rem, 4vw, 3.4rem);
+    display: grid;
+    gap: 2.2rem;
+    align-content: center;
+  }
+  .v4-panel .pre {
+    color: #c9d0f5;
+  }
+  .v4-panel .big {
+    color: #fff;
+  }
+  .v4-panel .note {
+    color: #aab4ea;
+  }
+  .v4-side {
+    grid-column: 8 / 13;
+    display: grid;
+    gap: 2.4rem;
+    align-content: center;
+  }
+</style>
