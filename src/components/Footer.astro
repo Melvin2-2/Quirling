@@ -1,6 +1,5 @@
 ---
 import Logo from './Logo.astro';
-import Icon from './Icon.astro';
 import { firma, leistungen } from '~/data/site';
 import { url } from '~/lib/url';
 const { claim = true } = Astro.props as { claim?: boolean };
@@ -12,10 +11,11 @@ const year = new Date().getFullYear();
     {claim && (
     <div class="claim">
       <p class="h2 claim-t">Projekt geplant?<br /><span class="lt">Sprechen wir.</span></p>
-      <div class="claim-ways">
-        <a class="pill light" href={url('/kontakt/')}><span>Kontakt aufnehmen</span><Icon name="arrow" /></a>
-        <a class="claim-tel" href={firma.telefonHref}>{firma.telefon}</a>
-      </div>
+      <!-- rechts, Zeile für Zeile auf Höhe der Überschrift: Telefon (fett) und E-Mail (leicht) -->
+      <p class="h2 claim-ways">
+        <a class="claim-tel" href={firma.telefonHref}>{firma.telefon}</a><br />
+        <a class="claim-mail lt" href={`mailto:${firma.email}`}>{firma.email}</a>
+      </p>
     </div>
     )}
 
@@ -78,7 +78,7 @@ const year = new Date().getFullYear();
   .claim {
     display: flex;
     flex-wrap: wrap;
-    align-items: flex-end;
+    align-items: flex-start;
     justify-content: space-between;
     gap: 2rem;
     padding-bottom: clamp(3rem, 6vw, 5rem);
@@ -88,29 +88,27 @@ const year = new Date().getFullYear();
     color: #fff !important;
     margin: 0;
   }
-  /* Telefonnummer in Höhe und Schrift wie „Sprechen wir.“ (leicht), unten bündig */
+  /* Telefon und E-Mail: gleiche Schrift, Größe und Zeilenhöhe wie die Überschrift links */
   .claim-ways {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-end;
-    gap: 1.2rem 2.4rem;
+    margin: 0;
+    text-align: right;
+    color: #fff;
   }
-  .claim-tel {
-    font-family: var(--font-head);
-    font-stretch: 68%;
-    font-weight: 300;
-    font-size: clamp(1.9rem, 3.8vw, 3.4rem);
-    line-height: 0.88;
-    text-transform: uppercase;
+  .claim-ways a {
     color: #fff;
     text-decoration: none;
     white-space: nowrap;
   }
-  .claim-tel:hover {
+  .claim-mail {
+    text-transform: none;
+  }
+  .claim-ways a:hover {
     color: #c9d0f5;
   }
-  .claim-ways .pill {
-    margin-bottom: 0.35em;
+  @media (max-width: 700px) {
+    .claim-ways {
+      text-align: left;
+    }
   }
   .cols {
     display: grid;
