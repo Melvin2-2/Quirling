@@ -25,7 +25,7 @@ const mainItems = nav;
         {
           mainItems.map((item) => (
             <li class:list={[{ 'has-sub': item.children }]}>
-              <a href={url(item.href)} class:list={[{ active: isActive(current, item.href) }]}>
+              <a href={url(item.href)} class:list={[{ active: isActive(current, item.href) || item.children?.some((c) => isActive(current, c.href)) }]}>
                 {item.label}
                 {item.children && <Icon name="chevron" class="chev" />}
               </a>

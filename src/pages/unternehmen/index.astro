@@ -61,21 +61,6 @@ const zahlen = [
     </div>
   </section>
 
-  <!-- Unser Büro: großes Bild mit Navy-Schräge wie im Seitenkopf -->
-  <section class="office on-dark">
-    <Image src={buero} alt="Bürogebäude der Quirling GmbH in der Tilsiter Straße 174, Hamburg" widths={[1000, 1600, 2400]} sizes="100vw" class="office-img" />
-    <div class="office-slab" aria-hidden="true"></div>
-    <div class="container office-in">
-      <h2 class="h-sec">Unser Büro.<br /><span class="lt">In Wandsbek.</span></h2>
-      <p>
-        In unserem Bürogebäude in der Tilsiter Straße laufen die Fäden zusammen: Angebote, Planung und die Abstimmung mit allen Baustellen. Kommen Sie
-        gerne vorbei, wir freuen uns auf Sie.
-      </p>
-      <address>{firma.strasse}, {firma.plz} {firma.ort}</address>
-      <RouteLink light />
-    </div>
-  </section>
-
   <!-- Unsere Mannschaft: eigener Abschnitt, großes Foto -->
   <section class="section section-tint crew" id="mannschaft">
     <div class="container crew-in">
@@ -115,6 +100,20 @@ const zahlen = [
     </div>
   </section>
 
+  <!-- Unser Büro: großes Bild mit Navy-Schräge wie im Seitenkopf -->
+  <section class="office on-dark">
+    <Image src={buero} alt="Bürogebäude der Quirling GmbH in der Tilsiter Straße 174, Hamburg" widths={[1000, 1600, 2400]} sizes="100vw" class="office-img" />
+    <div class="office-slab" aria-hidden="true"></div>
+    <div class="container office-in">
+      <h2 class="h-sec">Unser Büro.<br /><span class="lt">In Wandsbek.</span></h2>
+      <p>
+        In unserem Bürogebäude in der Tilsiter Straße laufen die Fäden zusammen: Angebote, Planung und die Abstimmung mit allen Baustellen. Kommen Sie
+        gerne vorbei, wir freuen uns auf Sie.
+      </p>
+      <address>{firma.strasse}, {firma.plz} {firma.ort}</address>
+      <RouteLink light />
+    </div>
+  </section>
 </Base>
 
 <style>

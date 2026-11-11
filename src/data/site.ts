@@ -68,8 +68,9 @@ export const leistungen = [
 export const nav: NavItem[] = [
   {
     label: 'Leistungen',
-    href: '/leistungen/',
-    children: leistungen.map((l) => ({ label: l.title, href: `/leistungen/#${l.slug}`, text: l.menu })),
+    // keine eigene Übersichtsseite: führt zum Abschnitt „Was wir bauen“ auf der Startseite
+    href: '/#leistungen',
+    children: leistungen.map((l) => ({ label: l.title, href: `/leistungen/${l.slug}/`, text: l.menu })),
   },
   { label: 'Referenzen', href: '/referenzen/' },
   {

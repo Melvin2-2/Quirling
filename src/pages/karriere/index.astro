@@ -143,6 +143,10 @@ const mailFor = (titel: string) => `mailto:${firma.email}?subject=${encodeURICom
     gap: 1.2rem;
     justify-items: start;
   }
+  /* kleiner als sonst, damit „Verstärkung.“ nicht an die Stellen stößt */
+  .jobs-head .h-sec {
+    font-size: clamp(2.6rem, 4.6vw, 4.8rem);
+  }
   .jobs-head .small {
     margin: 0;
     max-width: 34ch;

@@ -162,7 +162,7 @@ const werte = [
   </section>
 
   <!-- ======================= LEISTUNGEN ======================= -->
-  <section class="services" data-services aria-labelledby="svc-h">
+  <section class="services" id="leistungen" data-services aria-labelledby="svc-h">
     <div class:list={['svc-bg', `svc-bg-${svcBg}`]} data-svc-bg aria-hidden="true">
       {
         svcBg === 'rauten' && (
@@ -182,7 +182,7 @@ const werte = [
       services.map((s, i) => (
         <article class:list={['svc', `svc-${i + 1}`]} data-svc>
           <div class="container svc-grid">
-            <a class="svc-visual" href={url(`/leistungen/#${s.slug}`)} tabindex="-1" aria-hidden="true">
+            <a class="svc-visual" href={url(`/leistungen/${s.slug}/`)} tabindex="-1" aria-hidden="true">
               <span class="block block-l" />
               <span class="cut-img svc-img">
                 <Image src={s.img} alt="" widths={[600, 1000, 1400]} sizes="(min-width: 900px) 50vw, 100vw" />
@@ -191,7 +191,7 @@ const werte = [
             <div class="svc-text">
               <h3 class="svc-title">{s.title}</h3>
               <p>{s.text}</p>
-              <a class="svc-more" href={url(`/leistungen/#${s.slug}`)} data-follow data-line-link>
+              <a class="svc-more" href={url(`/leistungen/${s.slug}/`)} data-follow data-line-link>
                 <span>Mehr erfahren</span>
                 <Icon name="arrow" />
               </a>

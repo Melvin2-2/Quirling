@@ -40,13 +40,13 @@ const anliegen = ['Neubau', 'Rohbau', 'Schlüsselfertig', 'Umbau & Sanierung', '
       </div>
       <div class="side">
         <div class="sb">
-          <h3 class="sh">Unser Büro</h3>
-          <p class="st">{firma.strasse}<br />{`${firma.plz} ${firma.ort}`}</p>
+          <h3 class="sh">Postanschrift</h3>
+          <p class="st">{firma.langname}<br />{firma.strasse}<br />{`${firma.plz} ${firma.ort}`}</p>
           <RouteLink pill />
         </div>
         <div class="sb">
           <h3 class="sh">Bewerbungen</h3>
-          <p class="st">Gerne per E-Mail oder persönlich bei uns im Büro.</p>
+          <p class="st">Gerne per E-Mail, per Post an unsere Postanschrift oder persönlich bei uns im Büro.</p>
           <a class="pill" href={url('/karriere/')}><span>Zur Karriereseite</span><Icon name="arrow" /></a>
         </div>
       </div>
@@ -125,7 +125,7 @@ const anliegen = ['Neubau', 'Rohbau', 'Schlüsselfertig', 'Umbau & Sanierung', '
 <style>
   /* Direkt */
   .direct {
-    padding-bottom: calc(var(--section) * 1.6);
+    padding-bottom: calc(var(--section) * 1.25);
   }
   .direct-in {
     display: grid;
