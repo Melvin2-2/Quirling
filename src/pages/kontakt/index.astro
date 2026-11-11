@@ -46,7 +46,7 @@ const anliegen = ['Neubau', 'Rohbau', 'Schlüsselfertig', 'Umbau & Sanierung', '
         </div>
         <div class="sb">
           <h3 class="sh">Bewerbungen</h3>
-          <p class="st">Gerne per E-Mail, per Post an unsere Postanschrift oder persönlich bei uns im Büro.</p>
+          <p class="st">Gerne können Sie sich per Post, per E-Mail oder persönlich bei uns im Büro melden.</p>
           <a class="pill" href={url('/karriere/')}><span>Zur Karriereseite</span><Icon name="arrow" /></a>
         </div>
       </div>
@@ -166,14 +166,15 @@ const anliegen = ['Neubau', 'Rohbau', 'Schlüsselfertig', 'Umbau & Sanierung', '
     color: var(--navy);
   }
   .note {
-    font-size: 0.88rem;
+    font-size: 1rem;
+    font-weight: 300;
     color: var(--ink-3);
   }
   .side {
     grid-column: 8 / 13;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 2.5rem;
+    gap: clamp(3rem, 5vw, 5rem);
     /* Überschriften auf Höhe der Telefonnummer */
     padding-top: calc(clamp(1.2rem, 1.6vw, 1.6rem) + 0.55rem);
   }
@@ -195,7 +196,8 @@ const anliegen = ['Neubau', 'Rohbau', 'Schlüsselfertig', 'Umbau & Sanierung', '
   }
   .st {
     margin: 0;
-    font-size: 0.95rem;
+    font-size: 1.0625rem;
+    font-weight: 300;
     line-height: 1.6;
     color: var(--ink-2);
   }
@@ -238,7 +240,8 @@ const anliegen = ['Neubau', 'Rohbau', 'Schlüsselfertig', 'Umbau & Sanierung', '
   }
   .ask-head p {
     margin: 0;
-    font-size: 0.95rem;
+    font-size: 1.0625rem;
+    font-weight: 300;
     line-height: 1.65;
     color: rgb(255 255 255 / 0.85);
     max-width: 32ch;
@@ -421,7 +424,7 @@ const anliegen = ['Neubau', 'Rohbau', 'Schlüsselfertig', 'Umbau & Sanierung', '
   }
   .status {
     margin: 0;
-    font-size: 0.92rem;
+    font-size: 1rem;
     color: #fff;
   }
   .status.err {
