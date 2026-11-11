@@ -1,0 +1,205 @@
+---
+// Nur für die Auswahl, wird vor dem Veröffentlichen gelöscht.
+import { Image } from 'astro:assets';
+import Base from '~/layouts/Base.astro';
+import Icon from '~/components/Icon.astro';
+import RouteLink from '~/components/RouteLink.astro';
+import { firma } from '~/data/site';
+import buero from '~/assets/site/buero-tilsiter-strasse.jpg';
+---
+
+<Base title="Entwurf Kontakt" noindex>
+  <div style="height: 120px; background: var(--navy)"></div>
+
+  <!-- A: drei gleiche Spalten -->
+  <section class="section v" data-v="A">
+    <div class="container a-grid">
+      <div class="w">
+        <span class="pre">Telefon</span>
+        <a class="big" href={firma.telefonHref}>{firma.telefon}</a>
+        <span class="note">Montags bis freitags erreichbar</span>
+      </div>
+      <div class="w">
+        <span class="pre">E-Mail</span>
+        <a class="big" href={`mailto:${firma.email}`}>{firma.email}</a>
+        <span class="note">Für Anfragen, Pläne und Unterlagen</span>
+      </div>
+      <div class="w">
+        <span class="pre">Postanschrift</span>
+        <span class="big">{firma.strasse}<br />{`${firma.plz} ${firma.ort}`}</span>
+        <RouteLink />
+      </div>
+    </div>
+  </section>
+
+  <!-- B: typografische Liste, Bezeichnung links, Angabe rechts -->
+  <section class="section v" data-v="B">
+    <div class="container">
+      <dl class="b-list">
+        <dt class="pre">Telefon</dt>
+        <dd>
+          <a class="big" href={firma.telefonHref}>{firma.telefon}</a>
+          <span class="note">Montags bis freitags erreichbar</span>
+        </dd>
+        <dt class="pre">E-Mail</dt>
+        <dd><a class="big" href={`mailto:${firma.email}`}>{firma.email}</a></dd>
+        <dt class="pre">Postanschrift</dt>
+        <dd>
+          <span class="big">{firma.langname}<br />{firma.strasse}, {`${firma.plz} ${firma.ort}`}</span>
+          <RouteLink />
+        </dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- C: Bürofoto links, Kontakt rechts -->
+  <section class="section v" data-v="C">
+    <div class="container c-grid">
+      <div class="para c-img">
+        <span class="para-img"><Image src={buero} alt="" widths={[700, 1100]} sizes="45vw" /></span>
+      </div>
+      <div class="c-text">
+        <div class="w">
+          <span class="pre">Telefon</span>
+          <a class="big" href={firma.telefonHref}>{firma.telefon}</a>
+          <span class="note">Montags bis freitags erreichbar</span>
+        </div>
+        <div class="w">
+          <span class="pre">E-Mail</span>
+          <a class="big" href={`mailto:${firma.email}`}>{firma.email}</a>
+        </div>
+        <div class="w">
+          <span class="pre">Postanschrift</span>
+          <span class="mid">{firma.langname}<br />{firma.strasse}<br />{`${firma.plz} ${firma.ort}`}</span>
+          <RouteLink />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- D: Telefon und E-Mail groß nebeneinander, Anschrift ruhig darunter -->
+  <section class="section v" data-v="D">
+    <div class="container">
+      <div class="d-top">
+        <div class="w">
+          <span class="pre">Rufen Sie an</span>
+          <a class="big xl" href={firma.telefonHref}>{firma.telefon}</a>
+        </div>
+        <div class="w">
+          <span class="pre">Oder schreiben Sie uns</span>
+          <a class="big xl" href={`mailto:${firma.email}`}>{firma.email}</a>
+        </div>
+      </div>
+      <div class="d-bottom">
+        <span><strong>Postanschrift</strong> {firma.langname}, {firma.strasse}, {`${firma.plz} ${firma.ort}`}</span>
+        <span>Montags bis freitags erreichbar</span>
+        <RouteLink />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .v + .v {
+    border-top: 8px solid var(--navy);
+  }
+  .pre {
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 300;
+    text-transform: uppercase;
+    font-size: clamp(1.15rem, 1.5vw, 1.5rem);
+    line-height: 1;
+    color: var(--blue);
+  }
+  .big {
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    font-size: clamp(1.8rem, 2.6vw, 2.7rem);
+    line-height: 1;
+    color: var(--blue);
+    text-decoration: none;
+    overflow-wrap: anywhere;
+  }
+  .big.xl {
+    font-size: clamp(2.2rem, 3.6vw, 3.8rem);
+  }
+  .mid {
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    font-size: clamp(1.4rem, 1.9vw, 1.9rem);
+    line-height: 1.1;
+    color: var(--blue);
+  }
+  .note {
+    font-size: 0.88rem;
+    color: var(--ink-3);
+  }
+  .w {
+    display: grid;
+    gap: 0.6rem;
+    justify-items: start;
+    align-content: start;
+  }
+  /* A */
+  .a-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(2rem, 4vw, 4rem);
+  }
+  /* B */
+  .b-list {
+    margin: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 9fr);
+    gap: clamp(2rem, 3.5vw, 3rem) clamp(2rem, 4vw, 4rem);
+    align-items: baseline;
+  }
+  .b-list dd {
+    margin: 0;
+    display: grid;
+    gap: 0.6rem;
+    justify-items: start;
+  }
+  /* C */
+  .c-grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: clamp(2rem, 4vw, 4rem);
+    align-items: center;
+  }
+  .c-img {
+    grid-column: 1 / 7;
+  }
+  .c-text {
+    grid-column: 8 / 13;
+    display: grid;
+    gap: clamp(1.8rem, 3vw, 2.6rem);
+  }
+  /* D */
+  .d-top {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(2rem, 4vw, 4rem);
+  }
+  .d-bottom {
+    margin-top: clamp(2.5rem, 4vw, 3.5rem);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.8rem 2.5rem;
+    font-size: 0.95rem;
+    color: var(--ink-2);
+  }
+  .d-bottom strong {
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 1.15rem;
+    color: var(--blue);
+    margin-right: 0.6rem;
+  }
+</style>

@@ -216,14 +216,11 @@ const werte = [
                   {p.leistung}
                   <span class="show-meta">{p.ort}</span>
                 </p>
-                <a class="link-arrow" href={url(`/referenzen/?p=${p.id}`)} tabindex={i === 0 ? undefined : -1}>
-                  Projekt ansehen <Icon name="arrow" />
-                </a>
               </div>
             ))
           }
         </div>
-        <a class="pill light" href={url('/referenzen/')}><span>Alle Referenzen</span><Icon name="arrow" /></a>
+        <a class="text-link show-all" href={url('/referenzen/')}><span>Alle Referenzen</span><Icon name="arrow" /></a>
       </div>
       <div class="show-stage">
         {
@@ -833,7 +830,8 @@ const werte = [
     margin-top: 0.3rem;
     color: #9aa6ee;
   }
-  .show .link-arrow {
+  .show .show-all {
+    align-self: flex-start;
     color: #fff;
   }
   .show-stage {
