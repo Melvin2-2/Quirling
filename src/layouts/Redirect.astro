@@ -1,0 +1,27 @@
+---
+/**
+ * Weiterleitung für Seiten, die zusammengelegt wurden (statisches Hosting, daher per meta refresh).
+ * Wird nicht von Suchmaschinen indexiert und verweist per canonical auf das neue Ziel.
+ */
+import { url } from '~/lib/url';
+
+interface Props {
+  to: string;
+}
+const ziel = url(Astro.props.to);
+const canonical = new URL(ziel, Astro.site);
+---
+
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <title>Weiterleitung</title>
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href={canonical} />
+    <meta http-equiv="refresh" content={`0; url=${ziel}`} />
+  </head>
+  <body>
+    <p>Diese Seite ist umgezogen: <a href={ziel}>weiter</a>.</p>
+  </body>
+</html>

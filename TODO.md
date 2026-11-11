@@ -10,7 +10,6 @@ Alles, was auf der Website **rot gestrichelt** markiert ist, steht auch hier. Pl
   - [ ] Hinweisbox oben entfernen
   - [ ] Anbieter des Formulardienstes eintragen (siehe unten)
   - [ ] „Stand: [Monat Jahr]“ setzen
-- [ ] **Bildnachweis** (Fotograf/Quelle) im Impressum → `src/pages/impressum/index.astro`
 - [ ] **Kontaktformular** an einen Formulardienst anbinden (GitHub Pages kann selbst keine E-Mails versenden):
   1. Kostenloses Formular bei z. B. Formspree oder Web3Forms anlegen (Ziel: info@quirling.de)
   2. In GitHub unter *Settings → Secrets and variables → Actions → Variables* die Variable

@@ -69,7 +69,7 @@ export const nav: NavItem[] = [
   {
     label: 'Leistungen',
     href: '/leistungen/',
-    children: leistungen.map((l) => ({ label: l.title, href: `/leistungen/${l.slug}/`, text: l.menu })),
+    children: leistungen.map((l) => ({ label: l.title, href: `/leistungen/#${l.slug}`, text: l.menu })),
   },
   { label: 'Referenzen', href: '/referenzen/' },
   {
@@ -77,7 +77,7 @@ export const nav: NavItem[] = [
     href: '/unternehmen/',
     children: [
       { label: 'Über uns', href: '/unternehmen/', text: 'Familienbetrieb in Hamburg seit 1992.' },
-      { label: 'Team', href: '/unternehmen/team/', text: 'Die Menschen im Büro und auf der Baustelle.' },
+      { label: 'Team', href: '/unternehmen/#team', text: 'Die Menschen im Büro und auf der Baustelle.' },
       { label: 'Zertifikate & Downloads', href: '/unternehmen/zertifikate/', text: 'Alle Nachweise zum Herunterladen.' },
     ],
   },

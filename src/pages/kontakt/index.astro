@@ -37,21 +37,17 @@ const anliegen = ['Neubau', 'Rohbau', 'Schlüsselfertig', 'Umbau & Sanierung', '
           <span class="c-pre">oder schreiben Sie uns</span>
           <a class="c-big" href={`mailto:${firma.email}`}>{firma.email}</a>
         </div>
-        <p class="small">Montags bis freitags erreichbar. Gerne rufen wir auch zurück.</p>
+        <p class="note">Montags bis freitags erreichbar. Gerne rufen wir auch zurück.</p>
       </div>
       <div class="side">
         <div class="side-b">
-          <h3 class="side-h">Unser Büro</h3>
-          <address class="small">
-            {firma.langname}<br />
-            {firma.strasse}<br />
-            {`${firma.plz} ${firma.ort}`}
-          </address>
+          <span class="c-pre">Unser Büro</span>
+          <span class="side-v">{firma.strasse}<br />{`${firma.plz} ${firma.ort}`}</span>
           <RouteLink />
         </div>
         <div class="side-b">
-          <h3 class="side-h">Bewerbungen</h3>
-          <p class="small">Gerne per E-Mail oder persönlich bei uns im Büro.</p>
+          <span class="c-pre">Bewerbungen</span>
+          <span class="side-v">Per E-Mail oder<br />persönlich im Büro</span>
           <a class="text-link" href={url('/karriere/')}><span>Zur Karriereseite</span><Icon name="arrow" /></a>
         </div>
       </div>
@@ -154,7 +150,7 @@ const anliegen = ['Neubau', 'Rohbau', 'Schlüsselfertig', 'Umbau & Sanierung', '
     font-stretch: 68%;
     font-weight: 300;
     text-transform: uppercase;
-    font-size: clamp(1.4rem, 2vw, 2rem);
+    font-size: clamp(1.2rem, 1.6vw, 1.6rem);
     line-height: 1;
     color: var(--blue);
   }
@@ -162,7 +158,7 @@ const anliegen = ['Neubau', 'Rohbau', 'Schlüsselfertig', 'Umbau & Sanierung', '
     font-family: var(--font-head);
     font-stretch: 68%;
     font-weight: 800;
-    font-size: clamp(2.4rem, 4.4vw, 4.6rem);
+    font-size: clamp(2rem, 3.4vw, 3.5rem);
     line-height: 0.95;
     color: var(--blue);
     text-decoration: none;
@@ -171,8 +167,10 @@ const anliegen = ['Neubau', 'Rohbau', 'Schlüsselfertig', 'Umbau & Sanierung', '
   .c-big:hover {
     color: var(--navy);
   }
-  .call .small {
+  .note {
     margin: 0;
+    font-size: 0.85rem;
+    color: var(--ink-3);
   }
   .side {
     grid-column: 9 / 13;
@@ -181,18 +179,18 @@ const anliegen = ['Neubau', 'Rohbau', 'Schlüsselfertig', 'Umbau & Sanierung', '
   }
   .side-b {
     display: grid;
-    gap: 0.6rem;
+    gap: 0.5rem;
     justify-items: start;
   }
-  .side-h {
+  /* wie Telefon und E-Mail, aber eine Stufe kleiner */
+  .side-v {
     font-family: var(--font-head);
     font-stretch: 68%;
     font-weight: 800;
-    text-transform: uppercase;
-    font-size: clamp(1.6rem, 2.2vw, 2.2rem);
-    line-height: 1;
+    font-size: clamp(1.4rem, 2vw, 2rem);
+    line-height: 1.05;
     color: var(--blue);
-    margin: 0 0 0.2rem;
+    margin-bottom: 0.3rem;
   }
   .side-b address,
   .side-b .small {
