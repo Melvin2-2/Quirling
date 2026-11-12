@@ -209,22 +209,23 @@ const werte = [
     }
   </section>
 
-  <!-- ======================= WERTE ======================= -->
-  <section class="values on-blue" data-values>
-    <div class="container values-grid">
-      <div class="values-head">
-        <h2 class="values-h">Familien&shy;betrieb.</h2>
+  <!-- ======================= WERTE: aufgebaut wie die Leistungsübersicht ======================= -->
+  <section class="values" data-values aria-labelledby="fam-h">
+    <div class="container values-in">
+      <div class="values-top">
+        <h2 id="fam-h" class="svc-head fam-h" data-follow>Familien-<br /><span class="lt">betrieb.</span></h2>
         <p class="values-core">Hinter jedem Bauvorhaben steht die Familie Quirling. Mit Namen und Handschlag.</p>
       </div>
+      <!-- die Grundlinie läuft darunter, Pfeile zeigen von unten hinein -->
       <ul class="values-list">
         {
           werte.map((w) => (
-            <li class="value" data-follow data-band>
+            <li class="value" data-follow data-line-fam>
+              <ValueIcon name={w.icon} class="value-icon" frame={false} />
               <div class="value-text">
                 <h3>{w.t}</h3>
                 <p>{w.d}</p>
               </div>
-              <ValueIcon name={w.icon} class="value-icon" frame={false} />
             </li>
           ))
         }
@@ -239,7 +240,7 @@ const werte = [
       <span class="figs-img" data-figs-img>
         <Image src={historisch} alt="Historisches Foto einer Baumannschaft auf einem Gerüst" widths={[800, 1200, 1600]} sizes="(min-width: 900px) 52vw, 100vw" />
       </span>
-      <a class="intro-btn figs-btn" href={url('/unternehmen/')}>
+      <a class="intro-btn figs-btn" href={url('/unternehmen/#team')}>
         <span>Wer steckt<br />dahinter?</span>
         <Icon name="arrow" />
       </a>
@@ -1122,101 +1123,103 @@ const werte = [
     transform-origin: top;
   }
   /* ======================= WERTE ======================= */
+  /* helle Fläche wie die Leistungsübersicht, Oberkante mit gespiegeltem Knick */
   .values {
     position: relative;
-    background: var(--navy);
-    z-index: 2;
-    /* überlappt die Projekt-Sektion minimal: keine helle Haarlinie durch Subpixel-Rundung */
-    margin-top: -2px;
-    padding-block: clamp(5rem, 9vw, 8rem) clamp(6rem, 10vw, 9rem);
+    background: #e6e9f6;
+    padding-block: clamp(6rem, 10vw, 8.5rem) clamp(4rem, 6vw, 5rem);
+    clip-path: polygon(0 clamp(0.8rem, 1.6vw, 1.4rem), 22% clamp(2rem, 4vw, 3.5rem), 100% 0, 100% 100%, 0 100%);
   }
-  .values-grid {
+  .values-in {
     display: grid;
-    /* minmax(0, …): die Spalten dürfen nie über das Raster hinauswachsen */
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-    gap: clamp(3rem, 8vw, 9rem);
-    align-items: center;
+    gap: clamp(3.5rem, 6vw, 5rem);
   }
-  .values-h {
-    font-family: var(--font-head);
-    font-stretch: 125%;
-    font-weight: 800;
-    text-transform: uppercase;
-    font-size: clamp(2.6rem, 5.2vw, 5.4rem);
-    line-height: 0.95;
-    hyphens: manual;
-    margin-bottom: 1.6rem;
+  .values-top {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: end;
+  }
+  .values-top .fam-h {
+    margin: 0;
+    padding: 0;
   }
   .values-core {
-    font-family: var(--font-head);
-    font-stretch: 112%;
-    font-weight: 300;
-    font-size: clamp(1rem, 1.25vw, 1.2rem);
-    line-height: 1.4;
-    max-width: 24rem;
-    color: #fff !important;
     margin: 0;
+    max-width: 30rem;
+    font-size: clamp(1.1rem, 1.3vw, 1.25rem);
+    font-weight: 300;
+    line-height: 1.65;
+    color: var(--ink);
   }
-  /* drei Werte ohne Flächen: kräftige hellblaue Schrift, Piktogramme zeichnen sich, versetzt wie eine Treppe */
   .values-list {
     list-style: none;
     margin: 0;
-    padding: 0;
+    padding: 0 0 clamp(4.5rem, 7vw, 6rem);
     display: grid;
-    gap: clamp(2.4rem, 4.4vw, 3.6rem);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(2rem, 4vw, 4rem);
   }
   .value {
-    position: relative;
-    display: flex;
-    flex-direction: row-reverse;
-    justify-content: flex-end;
-    align-items: center;
-    gap: clamp(1.4rem, 2.6vw, 2.4rem);
-    color: #9aa6ee;
-    text-align: left;
-  }
-  .value:nth-child(2) {
-    margin-left: 10%;
-  }
-  .value:nth-child(3) {
-    margin-left: 20%;
+    display: grid;
+    gap: 1rem;
+    align-content: start;
+    justify-items: start;
   }
   .values[data-values] .value[data-follow] {
     opacity: 1;
     transform: none;
   }
+  .value :global(.value-icon) {
+    color: var(--blue);
+    --vicon-bg: #e6e9f6;
+    height: 60px;
+    display: flex;
+    align-items: flex-end;
+  }
+  .value :global(.vicon-art) {
+    width: 60px;
+    height: 60px;
+  }
+  .value h3 {
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: clamp(1.6rem, 2.3vw, 2.4rem);
+    line-height: 1;
+    color: var(--blue);
+    margin: 0 0 0.5rem;
+  }
+  .value p {
+    margin: 0;
+    max-width: 26ch;
+    font-size: 1.0625rem;
+    font-weight: 300;
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
   .value-text {
-    min-width: 0;
-    overflow-wrap: break-word;
     opacity: 0;
-    transition: opacity 0.6s ease 0.9s;
+    transition: opacity 0.6s ease 0.5s;
   }
   .value.is-in .value-text {
     opacity: 1;
   }
-  .value :global(.value-icon) {
-    flex: none;
-    color: #9aa6ee;
-    --vicon-bg: #121735;
-  }
-  .value :global(.vicon-art) {
-    width: 72px;
-    height: 72px;
-  }
-  /* Piktogramm zeichnet sich, wenn der Abzweig ankommt */
+  /* Piktogramm zeichnet sich, wenn die Linie ankommt */
   .value :global(.vicon-art path) {
     stroke-dasharray: 1;
     stroke-dashoffset: 1;
-    transition: stroke-dashoffset 1.2s ease 0.5s;
+    transition: stroke-dashoffset 1.2s ease 0.2s;
   }
   .value.is-in :global(.vicon-art path) {
     stroke-dashoffset: 0;
   }
   .value :global(.vicon-hammer) {
-    width: 56px;
-    height: 56px;
+    width: 52px;
+    height: 52px;
     clip-path: inset(0 0 0 100%);
-    transition: clip-path 1s ease 0.5s;
+    transition: clip-path 1s ease 0.2s;
   }
   .value.is-in :global(.vicon-hammer) {
     clip-path: inset(0 0 0 0);
@@ -1231,23 +1234,6 @@ const werte = [
     .value :global(.vicon-hammer) {
       clip-path: none;
     }
-  }
-  .value h3 {
-    font-stretch: 125%;
-    font-weight: 800;
-    font-size: clamp(1.6rem, 2.6vw, 2.5rem);
-    text-transform: uppercase;
-    line-height: 1;
-    margin-bottom: 0.45rem;
-  }
-  .value h3 {
-    color: #9aa6ee;
-  }
-  .value p {
-    font-size: clamp(1.05rem, 1.25vw, 1.2rem);
-    font-weight: 500;
-    color: #9aa6ee;
-    margin: 0;
   }
 
   /* ======================= MIT ANPACKEN ======================= */
@@ -1673,11 +1659,12 @@ const werte = [
     .svc-2 .svc-img {
       clip-path: polygon(0 6%, 100% 0, 100% 100%, 0 100%);
     }
-    .value:nth-child(2) {
-      margin-left: 6%;
+    .values-top,
+    .values-list {
+      grid-template-columns: minmax(0, 1fr);
     }
-    .value:nth-child(3) {
-      margin-left: 12%;
+    .values-list {
+      padding-bottom: 1rem;
     }
 
     .svc-grid > *,
@@ -1728,17 +1715,8 @@ const werte = [
       font-weight: 800;
       font-size: 1.15rem;
     }
-    .values-grid {
-      grid-template-columns: 1fr;
-    }
-    .values-grid > * {
+    .values-top > * {
       min-width: 0;
-    }
-    .values-h {
-      font-size: clamp(1.9rem, 8.6vw, 2.6rem);
-    }
-    .value {
-      gap: 1rem;
     }
     .value :global(.vicon-art) {
       width: 48px;
@@ -1753,7 +1731,7 @@ const werte = [
       white-space: normal;
     }
     .value h3 {
-      font-size: clamp(0.95rem, 4.6vw, 1.5rem);
+      font-size: clamp(1.4rem, 6.4vw, 1.8rem);
     }
     .value-text {
       min-width: 0;
@@ -2030,8 +2008,17 @@ const werte = [
       }
     });
 
-    // Leistungsübersicht: eine gerade Grundlinie über die ganze Breite, Pfeile zeigen von unten hinein
-    const d = `M0 ${yU} H${W}`;
+    // Familienbetrieb: dieselbe Grundlinie, Pfeile zeigen von unten in die drei Werte
+    const fam = Array.from(document.querySelectorAll<HTMLElement>('[data-line-fam]')).map((c) => box(c)!);
+    const yV = fam.length ? Math.max(...fam.map((c) => c.bottom)) + 48 : 0;
+    fam.forEach((c) => {
+      const x = c.left + 8;
+      const end = c.bottom + 14;
+      defs.push({ d: `M${x} ${yV} V${end} M${x - 7} ${end + 9} L${x} ${end} L${x + 7} ${end + 9}`, y: yV });
+    });
+
+    // Leistungsübersicht und Familienbetrieb: je eine gerade Grundlinie über die ganze Breite
+    const d = `M0 ${yU} H${W}` + (fam.length ? ` M0 ${yV} H${W}` : '');
 
     // Koordinaten relativ zu <main>; die Grafik ist so hoch wie <main> und endet damit vor dem Footer
     const mainEl = svg.parentElement!;
@@ -2195,17 +2182,6 @@ const werte = [
     photo.style.width = `${kinkX}px`;
     img.style.clipPath = `polygon(0 0, ${topX.toFixed(1)}px 0, ${kinkX.toFixed(1)}px ${kinkY.toFixed(1)}px, ${x0.toFixed(1)}px ${h.toFixed(1)}px, 0 ${h.toFixed(1)}px)`;
   };
-
-  /* ---------- Familienbetrieb: die Werte gleiten nacheinander von rechts herein ---------- */
-  mm.add('(prefers-reduced-motion: no-preference)', () => {
-    document.querySelectorAll<HTMLElement>('[data-band]').forEach((band) => {
-      gsap.fromTo(
-        band,
-        { x: () => window.innerWidth * 0.35, opacity: 0 },
-        { x: 0, opacity: 1, ease: 'power3.out', scrollTrigger: { trigger: band, start: 'top 98%', end: 'top 60%', scrub: 0.5 } },
-      );
-    });
-  });
 
   /* ---------- Über uns: Klapptafel wie am Flughafen ---------- */
   const DIGITS = '0123456789';
