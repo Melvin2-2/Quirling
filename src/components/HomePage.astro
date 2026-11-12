@@ -35,27 +35,27 @@ const svcInfo: Record<string, { text: string; more: string; facts: [PictoName, s
     more: 'Rohbau aus der Nähe',
     text: 'Rohbauten in Beton- und Stahlbetonbauweise für Wohnanlagen, Büro- und Geschäftshäuser sowie Lagergebäude. Mit eigener Mannschaft, vom Fundament bis zur letzten Decke.',
     facts: [
-      ['rohbau', 'Fundamente und Bodenplatten'],
-      ['gebaeude', 'Tiefgaragen und Untergeschosse'],
-      ['bewehrung', 'Wände und Decken in Ortbeton'],
+      ['rohbau', 'Fundamente'],
+      ['gebaeude', 'Tiefgaragen'],
+      ['bewehrung', 'Wände und Decken'],
     ],
   },
   'schluesselfertiges-bauen': {
     more: 'So läuft schlüsselfertig',
     text: 'Den Rohbau führen wir selbst aus, alle weiteren Gewerke koordinieren wir. Sie haben einen festen Ansprechpartner, der Termine, Qualität und Kosten im Blick behält.',
     facts: [
-      ['helm', 'Rohbau in eigener Ausführung'],
-      ['kalender', 'Termine und Gewerke im Griff'],
-      ['schluessel', 'Übergabe aus einer Hand'],
+      ['helm', 'Eigener Rohbau'],
+      ['kalender', 'Feste Termine'],
+      ['schluessel', 'Aus einer Hand'],
     ],
   },
   'umbau-sanierung': {
     more: 'Umbauten angucken',
     text: 'Umbauten, Erweiterungen und Sanierungen, von der Stadtvilla bis zum historischen Gebäude. Wir schauen genau hin, bevor wir loslegen, und arbeiten sauber bis zum Schluss.',
     facts: [
-      ['umbau', 'Umbau und Erweiterung'],
-      ['hammer', 'Sanierung im Bestand'],
-      ['siegel', 'Sorgfalt bis ins Detail'],
+      ['umbau', 'Erweiterungen'],
+      ['hammer', 'Sanierungen'],
+      ['siegel', 'Sorgfalt im Detail'],
     ],
   },
 };
@@ -82,9 +82,9 @@ const showcase = await Promise.all(
 
 /* Zahlen: drei Stufen, die nach rechts ansteigen */
 const zahlen = [
-  { n: GRUENDUNGSJAHR, from: 1960, plus: false, l: 'Gegründet in Hamburg', t: 'Bis heute inhabergeführt.' },
-  { n: firma.projekteAnzahl, from: 0, plus: true, l: 'Projekte realisiert', t: 'Vom Einfamilienhaus bis zum Bürogebäude.' },
-  { n: null, txt: 'HH', from: 0, plus: false, l: 'Hamburg und Umgebung', t: 'Kurze Wege zu jeder Baustelle.' },
+  { n: GRUENDUNGSJAHR, from: 1960, plus: false, t: 'Gegründet in Hamburg' },
+  { n: firma.projekteAnzahl, from: 0, plus: true, t: 'Projekte realisiert' },
+  { n: null, txt: 'HH', from: 0, plus: false, t: 'Zuhause in Hamburg' },
 ];
 
 const werte = [
@@ -218,14 +218,13 @@ const werte = [
       </div>
       <ul class="values-list">
         {
-          werte.map((w, i) => (
+          werte.map((w) => (
             <li class="value" data-follow data-band>
               <div class="value-text">
                 <h3>{w.t}</h3>
                 <p>{w.d}</p>
               </div>
               <ValueIcon name={w.icon} class="value-icon" frame={false} />
-              <span class="value-n" aria-hidden="true">0{i + 1}</span>
             </li>
           ))
         }
@@ -258,7 +257,6 @@ const werte = [
                     {z.n !== null ? <span data-num={z.n} data-num-from={z.from}>{z.n}</span> : z.txt}
                     {z.plus && <sup>+</sup>}
                   </strong>
-                  <span class="fg-l">{z.l}</span>
                   <p>{z.t}</p>
                 </div>
               </div>
@@ -330,8 +328,11 @@ const werte = [
   <div class="join">
     <div class="join-pos">
       <a class="ja" href={url('/karriere/')} data-follow>
-        <span class="ja-l">Werde Teil des Teams</span>
-        <span class="ja-h"><QHammer class="ja-hammer" color="#121735" highlight="#3948A4" />Mit anpacken</span>
+        <QHammer class="ja-hammer" color="#ffffff" highlight="#9aa6ee" />
+        <span class="ja-txt">
+          <span class="ja-l">Werde Teil des Teams</span>
+          <span class="ja-h">Mit anpacken</span>
+        </span>
         <span class="ja-btn">Zur Karriere <Icon name="arrow" /></span>
       </a>
     </div>
@@ -603,8 +604,8 @@ const werte = [
     font-stretch: 68%;
     font-weight: 800;
     text-transform: uppercase;
-    font-size: clamp(2.6rem, 4.6vw, 4.8rem);
-    line-height: 0.92;
+    font-size: clamp(3.2rem, 6.2vw, 6.6rem);
+    line-height: 0.9;
     color: var(--blue);
     margin: 0;
   }
@@ -673,19 +674,15 @@ const werte = [
     vertical-align: top;
     margin-left: 0.05em;
   }
-  .fg-l {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--blue);
-  }
   .fg p {
     margin: 0;
-    font-size: 0.95rem;
+    font-size: 1.0625rem;
     font-weight: 300;
-    line-height: 1.55;
-    color: var(--ink-2);
+    line-height: 1.45;
+    color: var(--ink);
+  }
+  .figs-steps {
+    perspective: 900px;
   }
   /* Einblenden, sobald die Linie die Stelle erreicht */
   [data-follow] {
@@ -850,7 +847,7 @@ const werte = [
     .svc .svc-more {
       display: flex;
       width: fit-content;
-      margin: clamp(1.5rem, 3vw, 2.5rem) auto 0;
+      margin: clamp(3.5rem, 6vw, 5.5rem) auto 0;
     }
   }
   .svc-visual {
@@ -939,15 +936,17 @@ const werte = [
     list-style: none;
     margin: 0 0 2.6rem;
     padding: 0;
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1rem 1.8rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem 2rem;
+    max-width: 36rem;
   }
-  /* Icon neben dem Text, Text zurückhaltend */
+  /* Icon neben dem Text, Text zurückhaltend und kurz */
   .svc-facts li {
     display: grid;
-    grid-template-columns: 34px minmax(0, 1fr);
-    gap: 0.75rem;
+    grid-template-columns: 30px auto;
+    gap: 0.6rem;
+    white-space: nowrap;
     align-items: center;
     font-size: 0.95rem;
     font-weight: 300;
@@ -955,8 +954,8 @@ const werte = [
     color: var(--ink-2);
   }
   .svc-facts :global(.svc-ico) {
-    width: 34px;
-    height: 34px;
+    width: 30px;
+    height: 30px;
     color: var(--blue);
   }
 
@@ -1077,6 +1076,7 @@ const werte = [
   /* ======================= WERTE ======================= */
   .values {
     position: relative;
+    background: var(--navy);
     z-index: 2;
     /* überlappt die Projekt-Sektion minimal: keine helle Haarlinie durch Subpixel-Rundung */
     margin-top: -2px;
@@ -1125,7 +1125,8 @@ const werte = [
     align-items: center;
     gap: clamp(1.25rem, 2.4vw, 2.2rem);
     padding: clamp(1.4rem, 2.4vw, 2rem) calc(var(--content-left) + 1rem) clamp(1.4rem, 2.4vw, 2rem) clamp(2.6rem, 4.5vw, 4rem);
-    background: var(--navy);
+    background: #9aa6ee;
+    color: var(--navy);
     clip-path: polygon(clamp(1.6rem, 3vw, 2.6rem) 0, 100% 0, 100% 100%, 0 100%);
     text-align: left;
   }
@@ -1134,20 +1135,6 @@ const werte = [
   }
   .value:nth-child(3) {
     margin-left: 18%;
-  }
-  .value-n {
-    position: absolute;
-    right: calc(var(--content-left) + 1rem);
-    top: 50%;
-    translate: 0 -50%;
-    font-family: var(--font-head);
-    font-stretch: 68%;
-    font-weight: 800;
-    font-size: clamp(3.4rem, 5.6vw, 5.6rem);
-    line-height: 1;
-    color: transparent;
-    -webkit-text-stroke: 1.2px rgb(154 166 238 / 0.45);
-    pointer-events: none;
   }
   .values[data-values] .value[data-follow] {
     opacity: 1;
@@ -1164,8 +1151,8 @@ const werte = [
   }
   .value :global(.value-icon) {
     flex: none;
-    color: #9aa6ee;
-    --vicon-bg: #121735;
+    color: var(--navy);
+    --vicon-bg: #9aa6ee;
   }
   .value :global(.vicon-art) {
     width: 62px;
@@ -1208,9 +1195,12 @@ const werte = [
     line-height: 1;
     margin-bottom: 0.45rem;
   }
+  .value h3 {
+    color: var(--navy);
+  }
   .value p {
     font-size: 1.02rem;
-    color: rgb(255 255 255 / 0.82);
+    color: rgb(18 23 53 / 0.8);
     margin: 0;
   }
 
@@ -1229,13 +1219,58 @@ const werte = [
     top: 0;
     transform: translateY(-50%);
   }
+  /* blaue Fläche mit schrägen Seiten wie die Hero-Schräge, Knopf in Hellblau integriert */
+  .ja {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: clamp(1rem, 1.8vw, 1.6rem);
+    padding: clamp(1.2rem, 2vw, 1.6rem) clamp(2.4rem, 3.6vw, 3.2rem) clamp(1.2rem, 2vw, 1.6rem) clamp(2.6rem, 4vw, 3.6rem);
+    color: #fff;
+    text-decoration: none;
+    filter: drop-shadow(0 24px 34px rgb(18 23 53 / 0.45));
+  }
+  .ja::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--blue);
+    clip-path: polygon(clamp(1.4rem, 2.2vw, 2rem) 0, 100% 0, calc(100% - clamp(1.4rem, 2.2vw, 2rem)) 100%, 0 100%);
+    z-index: -1;
+  }
+  .ja :global(.ja-hammer) {
+    flex: none;
+    width: clamp(2.6rem, 3.8vw, 3.6rem);
+    height: clamp(2.6rem, 3.8vw, 3.6rem);
+  }
+  .ja-txt {
+    display: grid;
+    gap: 0.35rem;
+  }
+  .ja-l {
+    font-family: var(--font-mono);
+    font-size: clamp(0.7rem, 0.9vw, 0.82rem);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #c9d0f5;
+  }
+  .ja-h {
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: clamp(2rem, 3.4vw, 3.4rem);
+    line-height: 0.9;
+    white-space: nowrap;
+  }
   .ja-btn {
     display: inline-flex;
     align-items: center;
     gap: 0.6rem;
+    margin-left: clamp(0.4rem, 1.2vw, 1.2rem);
     padding: 0.85rem 1.2rem 0.8rem;
-    background: var(--blue);
-    color: #fff;
+    background: #9aa6ee;
+    color: var(--navy);
     font-family: var(--font-head);
     font-stretch: 68%;
     font-weight: 800;
@@ -1251,73 +1286,16 @@ const werte = [
     transition: transform 0.35s var(--ease);
   }
   .ja:hover .ja-btn {
-    background: #2b3889;
+    background: #fff;
   }
   .ja:hover .ja-btn :global(svg) {
     transform: translateX(4px);
   }
-
-  /* --- A: hellblaue Fläche mit Knick-Unterkante, Knopf hängt halb heraus --- */
-  .ja {
-    position: relative;
-    display: grid;
-    justify-items: start;
-    gap: 0.6rem;
-    padding: clamp(1.4rem, 2.4vw, 2rem) clamp(1.6rem, 2.8vw, 2.4rem) clamp(2.8rem, 4vw, 3.4rem);
-    color: var(--navy);
-    text-decoration: none;
-    filter: drop-shadow(0 22px 30px rgb(18 23 53 / 0.35));
-  }
-  .ja::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: #9aa6ee;
-    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 1.6rem), 64% 100%, 0 calc(100% - 0.6rem));
-    z-index: -1;
-  }
-  .ja-l {
-    font-family: var(--font-mono);
-    font-size: clamp(0.78rem, 1vw, 0.9rem);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-  .ja-h {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    font-family: var(--font-head);
-    font-stretch: 68%;
-    font-weight: 800;
-    text-transform: uppercase;
-    font-size: clamp(2.2rem, 4.4vw, 4.2rem);
-    line-height: 0.92;
-  }
-  .ja-h :global(.ja-hammer) {
-    width: 1em;
-    height: 1em;
-  }
-  .ja-btn {
-    position: absolute;
-    left: clamp(1.6rem, 2.8vw, 2.4rem);
-    bottom: 0;
-    transform: translateY(50%);
-  }
   .ja[data-follow] {
-    transform: rotate(-3deg) scale(1.3);
+    transform: translateX(60px);
     transition:
-      opacity 0.35s ease,
-      transform 0.55s cubic-bezier(0.3, 1.6, 0.5, 1);
-  }
-  .ja[data-follow].is-in {
-    transform: rotate(-3deg);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .ja[data-follow],
-    .ja[data-follow].is-in {
-      transform: rotate(-3deg);
-    }
+      opacity 0.6s ease,
+      transform 0.8s var(--ease);
   }
   /* ======================= FILM ======================= */
   .film {
@@ -1489,7 +1467,7 @@ const werte = [
   }
   :global(html.typo-c) .svc-head {
     font-weight: 800;
-    font-size: clamp(2.6rem, 5vw, 5.2rem);
+    font-size: clamp(3.2rem, 6.6vw, 7rem);
     line-height: 0.95;
   }
   :global(html.typo-c) .svc-title {
@@ -1508,7 +1486,7 @@ const werte = [
   }
   :global(html.typo-c) .values-h {
     font-weight: 800;
-    font-size: clamp(3.2rem, 6vw, 6.4rem);
+    font-size: clamp(3.8rem, 7.6vw, 8.2rem);
     line-height: 0.86;
   }
   :global(html.typo-c) .value h3 {
@@ -1583,14 +1561,22 @@ const werte = [
       font-size: clamp(2.2rem, 10vw, 3rem);
     }
     .fg p {
-      display: none;
+      font-size: 0.9rem;
     }
     .join-pos {
       right: var(--gutter);
       transform: translateY(-92%);
     }
+    .ja {
+      flex-wrap: wrap;
+      padding: 1.1rem 2rem 1.1rem 2.2rem;
+      gap: 0.8rem 1rem;
+    }
     .ja-h {
       font-size: clamp(1.7rem, 8vw, 2.4rem);
+    }
+    .ja-btn {
+      margin-left: 0;
     }
     .intro-visual {
       position: relative;
@@ -1635,7 +1621,7 @@ const werte = [
       margin-bottom: 2.5rem;
     }
     .svc-facts {
-      grid-template-columns: minmax(0, 1fr);
+      flex-direction: column;
     }
     .svc .svc-img,
     .svc-2 .svc-img {
@@ -1653,9 +1639,7 @@ const werte = [
     .value:nth-child(3) {
       margin-left: 10%;
     }
-    .value-n {
-      display: none;
-    }
+
     .svc-grid > *,
     .intro-grid > * {
       min-width: 0;
@@ -2208,18 +2192,18 @@ const werte = [
     });
   });
 
-  /* ---------- Über uns: die drei Zahlen klappen beim Scrollen schräg auf ---------- */
+  /* ---------- Über uns: die drei Zahlen klappen beim Scrollen von oben nach unten um ---------- */
   mm.add('(prefers-reduced-motion: no-preference)', () => {
     const steps = document.querySelector('.figs-steps');
     if (!steps) return;
     const items = Array.from(steps.querySelectorAll<HTMLElement>('.fg'));
-    const tl = gsap.timeline({ scrollTrigger: { trigger: steps, start: 'top 92%', end: 'bottom 62%', scrub: 0.6 } });
+    const tl = gsap.timeline({ scrollTrigger: { trigger: steps, start: 'top 90%', end: 'bottom 60%', scrub: 0.6 } });
     items.forEach((el, i) => {
       tl.fromTo(
         el,
-        { clipPath: 'polygon(0 0, 0 0, 0 0, 0 0)' },
-        { clipPath: 'polygon(0 0, 240% 0, 0 240%, 0 0)', ease: 'none', duration: 1 },
-        i * 0.6,
+        { rotationX: -100, transformOrigin: '50% 0%', opacity: 0 },
+        { rotationX: 0, opacity: 1, ease: 'power2.out', duration: 1 },
+        i * 0.55,
       );
     });
   });
