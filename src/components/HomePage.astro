@@ -91,17 +91,17 @@ const werte = [
   {
     icon: 'familie',
     t: 'Persönlich',
-    d: 'Sie sprechen direkt mit denen, die entscheiden.',
+    d: 'Sie sprechen direkt mit denen, die entscheiden. Ohne Umwege.',
   },
   {
     icon: 'dialog',
     t: 'Verbindlich',
-    d: 'Klare Absprachen, feste Termine.',
+    d: 'Klare Absprachen und feste Termine, auf die Verlass ist.',
   },
   {
     icon: 'hammer',
     t: 'Sorgfältig',
-    d: 'Bis zum Schluss. Bis ins Detail.',
+    d: 'Sauber bis zum Schluss und genau bis ins Detail.',
   },
 ] as const;
 ---
@@ -210,11 +210,14 @@ const werte = [
   </section>
 
   <!-- ======================= WERTE: aufgebaut wie die Leistungsübersicht ======================= -->
-  <section class="values" data-values aria-labelledby="fam-h">
+  <section class="values values--a" data-values aria-labelledby="fam-h">
     <div class="container values-in">
       <div class="values-top">
-        <h2 id="fam-h" class="svc-head fam-h" data-follow>Familien-<br /><span class="lt">betrieb.</span></h2>
-        <p class="values-core">Hinter jedem Bauvorhaben steht die Familie Quirling. Mit Namen und Handschlag.</p>
+        <h2 id="fam-h" class="svc-head fam-h" data-follow>Familien<span class="fh-hy">-</span><br class="fh-br" /><span class="lt">betrieb.</span></h2>
+        <p class="values-core">
+          Seit {GRUENDUNGSJAHR} führt die Familie Quirling das Unternehmen selbst. Hinter jedem Bauvorhaben stehen Menschen mit Namen, die für ihr Wort
+          einstehen. Mit Handschlag und bis zur Übergabe.
+        </p>
       </div>
       <!-- die Grundlinie läuft darunter, Pfeile zeigen von unten hinein -->
       <ul class="values-list">
@@ -588,7 +591,7 @@ const werte = [
   }
   .figs-btn {
     left: 100%;
-    top: 52%;
+    top: var(--ky, 52%);
     transform: translate(-92%, -50%);
   }
   .fg[data-follow] {
@@ -1015,6 +1018,16 @@ const werte = [
     background: var(--navy);
     color: #fff;
   }
+  /* Desktop: die Bühne bleibt per CSS stehen (kein Einrasten durch Pinning), die Höhe gibt die Scrollstrecke vor */
+  @media (min-width: 901px) {
+    .show {
+      height: calc(100vh + 2 * 80vh);
+    }
+    .show-in {
+      position: sticky;
+      top: 0;
+    }
+  }
   .show-in {
     display: grid;
     grid-template-columns: calc(var(--content-left) + clamp(330px, 30vw, 540px)) 1fr;
@@ -1123,30 +1136,40 @@ const werte = [
     transform-origin: top;
   }
   /* ======================= WERTE ======================= */
-  /* helle Fläche wie die Leistungsübersicht, Oberkante mit gespiegeltem Knick */
+  /* helle Fläche wie die Leistungsübersicht, Ober- und Unterkante mit gespiegeltem Knick */
   .values {
     position: relative;
     background: #e6e9f6;
-    padding-block: clamp(6rem, 10vw, 8.5rem) clamp(4rem, 6vw, 5rem);
-    clip-path: polygon(0 clamp(0.8rem, 1.6vw, 1.4rem), 22% clamp(2rem, 4vw, 3.5rem), 100% 0, 100% 100%, 0 100%);
+    padding-block: clamp(6rem, 10vw, 8.5rem) clamp(6rem, 9vw, 8rem);
+    clip-path: polygon(
+      0 clamp(0.8rem, 1.6vw, 1.4rem),
+      22% clamp(2rem, 4vw, 3.5rem),
+      100% 0,
+      100% calc(100% - clamp(0.8rem, 1.6vw, 1.4rem)),
+      78% 100%,
+      0 calc(100% - clamp(2rem, 4vw, 3.5rem))
+    );
   }
   .values-in {
     display: grid;
     gap: clamp(3.5rem, 6vw, 5rem);
   }
+  /* A: aufgebaut wie die Leistungsübersicht, Überschrift in einer Zeile, Text darunter */
   .values-top {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: clamp(2rem, 5vw, 5rem);
-    align-items: end;
+    gap: clamp(1.4rem, 2.5vw, 2rem);
+    max-width: 44rem;
   }
   .values-top .fam-h {
     margin: 0;
     padding: 0;
   }
+  .values--a .fh-hy,
+  .values--a .fh-br {
+    display: none;
+  }
   .values-core {
     margin: 0;
-    max-width: 30rem;
     font-size: clamp(1.1rem, 1.3vw, 1.25rem);
     font-weight: 300;
     line-height: 1.65;
@@ -1155,7 +1178,7 @@ const werte = [
   .values-list {
     list-style: none;
     margin: 0;
-    padding: 0 0 clamp(4.5rem, 7vw, 6rem);
+    padding: 0 0 clamp(4rem, 6vw, 5rem);
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: clamp(2rem, 4vw, 4rem);
@@ -1166,6 +1189,68 @@ const werte = [
     align-content: start;
     justify-items: start;
   }
+  .value h3 {
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: clamp(1.45rem, 2vw, 2.1rem);
+    line-height: 1;
+    color: var(--blue);
+    margin: 0 0 0.5rem;
+  }
+  .value p {
+    margin: 0;
+    max-width: 30ch;
+    font-size: 1.0625rem;
+    font-weight: 300;
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
+  /* B: Überschrift zweizeilig links, Text rechts unten bündig, größere Werte */
+  .values--b .values-top {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: end;
+    gap: clamp(2rem, 5vw, 5rem);
+    max-width: none;
+  }
+  .values--b .values-core {
+    max-width: 30rem;
+  }
+  .values--b .value h3 {
+    font-size: clamp(1.8rem, 2.6vw, 2.7rem);
+  }
+  /* C: Überschrift groß links, Text und Werte gemeinsam rechts */
+  .values--c .values-in {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    column-gap: clamp(2rem, 5vw, 5rem);
+    row-gap: clamp(2.5rem, 4vw, 3.5rem);
+  }
+  .values--c .values-top {
+    display: contents;
+  }
+  .values--c .fam-h {
+    grid-column: 1;
+    grid-row: 1 / 3;
+    font-size: clamp(3.6rem, 7.4vw, 8rem);
+  }
+  .values--c .values-core {
+    grid-column: 2;
+    grid-row: 1;
+    font-size: clamp(1.25rem, 1.6vw, 1.5rem);
+    line-height: 1.55;
+  }
+  .values--c .values-list {
+    grid-column: 2;
+    grid-row: 2;
+    gap: clamp(1.5rem, 2.6vw, 2.4rem);
+  }
+  .values--c .value h3 {
+    font-size: clamp(1.3rem, 1.7vw, 1.7rem);
+  }
+  .values--c .value p {
+    font-size: 0.98rem;
+  }
   .values[data-values] .value[data-follow] {
     opacity: 1;
     transform: none;
@@ -1173,13 +1258,13 @@ const werte = [
   .value :global(.value-icon) {
     color: var(--blue);
     --vicon-bg: #e6e9f6;
-    height: 60px;
+    height: 56px;
     display: flex;
     align-items: flex-end;
   }
   .value :global(.vicon-art) {
-    width: 60px;
-    height: 60px;
+    width: 54px;
+    height: 54px;
   }
   .value h3 {
     font-family: var(--font-head);
@@ -1216,8 +1301,8 @@ const werte = [
     stroke-dashoffset: 0;
   }
   .value :global(.vicon-hammer) {
-    width: 52px;
-    height: 52px;
+    width: 48px;
+    height: 48px;
     clip-path: inset(0 0 0 100%);
     transition: clip-path 1s ease 0.2s;
   }
@@ -1516,15 +1601,6 @@ const werte = [
     font-weight: 800;
     font-size: clamp(1.7rem, 2.6vw, 2.5rem);
   }
-  :global(html.typo-c) .values-h {
-    font-weight: 800;
-    font-size: clamp(3.8rem, 7.6vw, 8.2rem);
-    line-height: 0.86;
-  }
-  :global(html.typo-c) .value h3 {
-    font-weight: 900;
-    font-size: clamp(2.4rem, 3.8vw, 3.8rem);
-  }
 
   /* ======================= RESPONSIVE ======================= */
   @media (max-width: 900px) {
@@ -1663,6 +1739,9 @@ const werte = [
     .values-list {
       grid-template-columns: minmax(0, 1fr);
     }
+    .values {
+      clip-path: polygon(0 0.8rem, 22% 2rem, 100% 0, 100% 100%, 0 100%);
+    }
     .values-list {
       padding-bottom: 1rem;
     }
@@ -1798,10 +1877,8 @@ const werte = [
       scrollTrigger: {
         trigger: show,
         start: 'top top',
-        end: () => `+=${(imgs.length - 1) * window.innerHeight * 0.8}`,
-        pin: true,
-        anticipatePin: 1,
-        scrub: 0.6,
+        end: 'bottom bottom',
+        scrub: 0.5,
         invalidateOnRefresh: true,
         onUpdate: (self) => {
           setActive(Math.min(imgs.length - 1, Math.round(self.progress * (imgs.length - 1))));
@@ -2167,20 +2244,28 @@ const werte = [
     if (!photo || !img || !stage) return;
     if (window.innerWidth <= 900) {
       photo.style.removeProperty('width');
+      photo.style.removeProperty('top');
+      photo.style.removeProperty('--ky');
       img.style.removeProperty('clip-path');
       return;
     }
+    const W = document.documentElement.clientWidth;
+    // Unterkante Familienbetrieb: links um a höher, Spitze bei 78 % – das Foto reicht bis an diese Kante hinauf
+    const a = Math.min(56, Math.max(32, W * 0.04));
+    photo.style.top = `${-a}px`;
     const st = stage.getBoundingClientRect();
     const ph = photo.getBoundingClientRect();
     const h = ph.height;
     // Kante der Projekte: oben bei 14 % der Bühne, unten bei 0 %
     const x0 = st.left + st.width * 0.14 - ph.left;
     const slope = (st.width * 0.14) / st.height;
-    const kinkY = h * 0.52;
+    const kinkY = a + (h - a) * 0.52;
     const kinkX = x0 + slope * (h - kinkY);
-    const topX = kinkX - slope * kinkY;
+    const topX = kinkX - slope * (kinkY - a);
+    const topY = (a * topX) / (W * 0.78);
     photo.style.width = `${kinkX}px`;
-    img.style.clipPath = `polygon(0 0, ${topX.toFixed(1)}px 0, ${kinkX.toFixed(1)}px ${kinkY.toFixed(1)}px, ${x0.toFixed(1)}px ${h.toFixed(1)}px, 0 ${h.toFixed(1)}px)`;
+    photo.style.setProperty('--ky', `${kinkY}px`);
+    img.style.clipPath = `polygon(0 0, ${topX.toFixed(1)}px ${topY.toFixed(1)}px, ${kinkX.toFixed(1)}px ${kinkY.toFixed(1)}px, ${x0.toFixed(1)}px ${h.toFixed(1)}px, 0 ${h.toFixed(1)}px)`;
   };
 
   /* ---------- Über uns: Klapptafel wie am Flughafen ---------- */
