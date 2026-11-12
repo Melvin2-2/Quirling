@@ -49,7 +49,8 @@ const mainItems = nav;
     </nav>
 
     <div class="actions">
-      <a class="phone" href={firma.telefonHref}><Icon name="phone" /><span>{firma.telefon}</span></a>
+      <a class="phone" href={firma.telefonHref} aria-label={`Anrufen: ${firma.telefon}`}><Icon name="phone" /><span>{firma.telefon}</span></a>
+      <a class="ask" href={url('/kontakt/')}>Projekt anfragen</a>
       <button class="burger" type="button" aria-expanded="false" aria-controls="mobile-nav" data-burger>
         <span class="visually-hidden">Menü öffnen</span>
         <i></i><i></i>
@@ -305,6 +306,29 @@ const mainItems = nav;
     text-decoration: underline;
     text-underline-offset: 0.3em;
   }
+  /* Anfrage-Knopf: Kontur in der aktuellen Schriftfarbe, passt sich hellem und dunklem Kopf an */
+  .ask {
+    padding: 0.6rem 0.95rem 0.55rem;
+    border: 1.5px solid currentColor;
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    font-size: 0.98rem;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+    transition:
+      background 0.25s ease,
+      color 0.25s ease,
+      border-color 0.25s ease;
+  }
+  .ask:hover {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: #fff;
+  }
 
   .burger {
     display: none;
@@ -425,8 +449,18 @@ const mainItems = nav;
       --header-h: 72px;
     }
     .main-nav,
-    .phone {
+    .ask {
       display: none;
+    }
+    /* am Handy bleibt das Telefon als Symbol neben dem Menü */
+    .phone {
+      width: 46px;
+      height: 46px;
+      justify-content: center;
+    }
+    .phone :global(svg) {
+      width: 1.35rem;
+      height: 1.35rem;
     }
     .burger {
       display: block;

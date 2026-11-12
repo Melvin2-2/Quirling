@@ -1,5 +1,6 @@
 ---
 import Logo from './Logo.astro';
+import Icon from './Icon.astro';
 import { firma, leistungen } from '~/data/site';
 import { url } from '~/lib/url';
 const { claim = true } = Astro.props as { claim?: boolean };
@@ -10,7 +11,10 @@ const year = new Date().getFullYear();
   <div class="container">
     {claim && (
     <div class="claim">
-      <p class="h2 claim-t">Projekt geplant?<br /><span class="lt">Sprechen wir.</span></p>
+      <div class="claim-l">
+        <p class="h2 claim-t">Projekt geplant?<br /><span class="lt">Sprechen wir.</span></p>
+        <a class="claim-btn" href={url('/kontakt/')}><span>Projekt anfragen</span><Icon name="arrow" /></a>
+      </div>
       <!-- rechts, Zeile für Zeile auf Höhe der Überschrift: Telefon (fett) und E-Mail (leicht) -->
       <p class="h2 claim-ways">
         <a class="claim-tel" href={firma.telefonHref}>{firma.telefon}</a><br />
@@ -87,6 +91,40 @@ const year = new Date().getFullYear();
   .claim-t {
     color: #fff !important;
     margin: 0;
+  }
+  .claim-l {
+    display: grid;
+    gap: clamp(1.4rem, 2.4vw, 2rem);
+    justify-items: start;
+  }
+  /* deutlicher Knopf für die Anfrage */
+  .claim-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.1rem 1.5rem 1rem;
+    background: #fff;
+    color: var(--navy);
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    font-size: clamp(1.2rem, 1.5vw, 1.45rem);
+    letter-spacing: 0.02em;
+    line-height: 1;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.25s ease;
+  }
+  .claim-btn :global(svg) {
+    width: 1.2rem;
+    height: 1.2rem;
+    transition: transform 0.35s var(--ease);
+  }
+  .claim-btn:hover {
+    background: #9aa6ee;
+  }
+  .claim-btn:hover :global(svg) {
+    transform: translateX(4px);
   }
   /* Telefon und E-Mail: gleiche Schrift, Größe und Zeilenhöhe wie die Überschrift links */
   /* etwas kleiner als die Überschrift, unten bündig mit „Sprechen wir.“ */

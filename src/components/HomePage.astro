@@ -35,27 +35,27 @@ const svcInfo: Record<string, { text: string; more: string; facts: [PictoName, s
     more: 'Rohbau aus der Nähe',
     text: 'Rohbauten in Beton- und Stahlbetonbauweise für Wohnanlagen, Büro- und Geschäftshäuser sowie Lagergebäude. Mit eigener Mannschaft, vom Fundament bis zur letzten Decke.',
     facts: [
-      ['rohbau', 'Fundamente'],
+      ['rohbau', 'Ortbeton'],
       ['gebaeude', 'Tiefgaragen'],
-      ['bewehrung', 'Wände und Decken'],
+      ['bewehrung', 'Schalungsbau'],
     ],
   },
   'schluesselfertiges-bauen': {
     more: 'So läuft schlüsselfertig',
     text: 'Den Rohbau führen wir selbst aus, alle weiteren Gewerke koordinieren wir. Sie haben einen festen Ansprechpartner, der Termine, Qualität und Kosten im Blick behält.',
     facts: [
-      ['helm', 'Eigener Rohbau'],
-      ['kalender', 'Feste Termine'],
-      ['schluessel', 'Aus einer Hand'],
+      ['helm', 'Ein Ansprechpartner'],
+      ['kalender', 'Alle Gewerke'],
+      ['schluessel', 'Schlüsselübergabe'],
     ],
   },
   'umbau-sanierung': {
-    more: 'Umbauten angucken',
+    more: 'Umbauten ansehen',
     text: 'Umbauten, Erweiterungen und Sanierungen, von der Stadtvilla bis zum historischen Gebäude. Wir schauen genau hin, bevor wir loslegen, und arbeiten sauber bis zum Schluss.',
     facts: [
       ['umbau', 'Erweiterungen'],
-      ['hammer', 'Sanierungen'],
-      ['siegel', 'Sorgfalt im Detail'],
+      ['hammer', 'Bauen im Bestand'],
+      ['gebaeude', 'Stadtvillen'],
     ],
   },
 };
@@ -84,36 +84,29 @@ const showcase = await Promise.all(
 const zahlen = [
   { n: GRUENDUNGSJAHR, plus: false, t: 'Gegründet in Hamburg' },
   { n: firma.projekteAnzahl, plus: true, t: 'Projekte realisiert' },
-  { n: null, txt: 'HH', plus: false, t: 'Zuhause in Hamburg' },
+  { n: firma.mitarbeiter, plus: false, t: 'Mitarbeiter im Team' },
 ];
 
 const werte = [
   {
     icon: 'familie',
     t: 'Persönlich',
-    d: 'Sie sprechen direkt mit denen, die entscheiden. Ohne Umwege.',
+    d: 'Sie sprechen direkt mit denen, die entscheiden.',
   },
   {
     icon: 'dialog',
     t: 'Verbindlich',
-    d: 'Klare Absprachen und feste Termine, auf die Verlass ist.',
+    d: 'Klare Absprachen, feste Termine.',
   },
   {
     icon: 'hammer',
     t: 'Sorgfältig',
-    d: 'Sauber bis zum Schluss und genau bis ins Detail.',
+    d: 'Sauber bis zum Schluss.',
   },
 ] as const;
 ---
 
 <Base title={title} noindex={noindex} typo={typo}>
-  <!-- Blaue Linie: startet an der Spitze des Hero und endet in der Film-Raute -->
-  <svg class="flow" data-flow aria-hidden="true">
-    <path data-flow-path></path>
-    <g data-flow-branches></g>
-    <g data-flow-svc></g>
-  </svg>
-
   <!-- ======================= HERO ======================= -->
   <section class="hero" data-hero>
     <div class="hero-media">
@@ -126,7 +119,11 @@ const werte = [
     <div class="hero-cut" aria-hidden="true"></div>
     <div class="container hero-content">
       <h1 class="hero-title">Was wir<br />zusagen,<br /><span class="lt">steht.</span></h1>
-      <a class="pill light" href={url('/referenzen/')}><span>Referenzen ansehen</span><Icon name="arrow" /></a>
+      <p class="hero-sub">Rohbau, schlüsselfertiges Bauen und Umbau in Hamburg. Seit {GRUENDUNGSJAHR}.</p>
+      <div class="hero-cta">
+        <a class="pill fill" href={url('/kontakt/')}><span>Projekt anfragen</span><Icon name="arrow" /></a>
+        <a class="pill light" href={url('/referenzen/')}><span>Referenzen ansehen</span><Icon name="arrow" /></a>
+      </div>
     </div>
   </section>
 
@@ -134,21 +131,20 @@ const werte = [
   <section class="intro" data-intro>
     <div class="container intro-grid">
       <div class="intro-text">
-        <h2 class="intro-h">Wir lieben<br /><span class="lt">Beton.</span></h2>
+        <h2 class="intro-h">Rohbau ist<br /><span class="lt">unser Ding.</span></h2>
         <p class="intro-p">
-          Schalen, bewehren, betonieren: Seit {GRUENDUNGSJAHR} ist der Rohbau unser Handwerk. Als Familienbetrieb aus Hamburg bauen wir mit eigener
-          Mannschaft Wohnhäuser, Büros und Hallen. Und wir freuen uns jedes Mal, wenn aus einem Plan ein Gebäude wird.
+          Schalen, bewehren, betonieren: Wir bauen Rohbauten für Wohnanlagen, Büro- und Gewerbebauten in Hamburg und Umgebung. Mit eigener
+          Mannschaft, vom Fundament bis zur letzten Decke.
         </p>
+        <a class="block-btn" href={url('/unternehmen/')}>
+          <span>Kennste uns schon?</span>
+          <Icon name="arrow" />
+        </a>
       </div>
       <div class="intro-visual">
         <div class="intro-img">
           <Image src={handwerkFoto} alt="Schalung mit Quirling-Logo und Bewehrung auf einer Baustelle" widths={[700, 1100, 1600]} sizes="(min-width: 900px) 50vw, 100vw" />
         </div>
-        <!-- Knopf liegt halb über dem Bild -->
-        <a class="intro-btn" href={url('/unternehmen/')}>
-          <span>Kennste<br />uns schon?</span>
-          <Icon name="arrow" />
-        </a>
       </div>
     </div>
   </section>
@@ -163,11 +159,11 @@ const werte = [
           bringen Bestandsgebäude wieder in Form. Immer mit eigener Mannschaft und einem festen Ansprechpartner.
         </p>
       </div>
-      <!-- nur Stichworte, die Linie zeigt mit Pfeilen von unten hinein -->
+      <!-- nur Stichworte, davor jeweils eine kleine Raute -->
       <div class="ov">
         {
           leistungen.map((l) => (
-            <a class="ov-col" href={url(`/leistungen/${l.slug}/`)} data-line-up>
+            <a class="ov-col" href={url(`/leistungen/${l.slug}/`)} data-follow>
               <h3 class="ov-t" set:html={l.title} />
             </a>
           ))
@@ -198,7 +194,7 @@ const werte = [
                   </li>
                 ))}
               </ul>
-              <a class="svc-more" href={url(`/leistungen/${s.slug}/`)} data-follow data-line-link>
+              <a class="svc-more" href={url(`/leistungen/${s.slug}/`)} data-follow>
                 <span>{s.more}</span>
                 <Icon name="arrow" />
               </a>
@@ -207,68 +203,6 @@ const werte = [
         </article>
       ))
     }
-  </section>
-
-  <!-- ======================= WERTE: aufgebaut wie die Leistungsübersicht ======================= -->
-  <section class="values values--a" data-values aria-labelledby="fam-h">
-    <div class="container values-in">
-      <div class="values-top">
-        <h2 id="fam-h" class="svc-head fam-h" data-follow>Familien<span class="fh-hy">-</span><br class="fh-br" /><span class="lt">betrieb.</span></h2>
-        <p class="values-core">
-          Seit {GRUENDUNGSJAHR} führt die Familie Quirling das Unternehmen selbst. Hinter jedem Bauvorhaben stehen Menschen mit Namen, die für ihr Wort
-          einstehen. Mit Handschlag und bis zur Übergabe.
-        </p>
-      </div>
-      <!-- die Grundlinie läuft darunter, Pfeile zeigen von unten hinein -->
-      <ul class="values-list">
-        {
-          werte.map((w) => (
-            <li class="value" data-follow data-line-fam>
-              <ValueIcon name={w.icon} class="value-icon" frame={false} />
-              <div class="value-text">
-                <h3>{w.t}</h3>
-                <p>{w.d}</p>
-              </div>
-            </li>
-          ))
-        }
-      </ul>
-    </div>
-  </section>
-
-  <!-- ======================= KENNZAHLEN / ÜBER UNS ======================= -->
-  <section class="figs" data-figs-sec aria-labelledby="figs-h">
-    <!-- Foto randlos von Kante zu Kante, Knopf liegt auf dem Knick -->
-    <div class="figs-photo">
-      <span class="figs-img" data-figs-img>
-        <Image src={historisch} alt="Historisches Foto einer Baumannschaft auf einem Gerüst" widths={[800, 1200, 1600]} sizes="(min-width: 900px) 52vw, 100vw" />
-      </span>
-      <a class="intro-btn figs-btn" href={url('/unternehmen/#team')}>
-        <span>Wer steckt<br />dahinter?</span>
-        <Icon name="arrow" />
-      </a>
-    </div>
-    <div class="container figs-in">
-      <div class="figs-side">
-        <h2 id="figs-h" class="figs-h">Gebaut auf<br /><span class="lt">Erfahrung.</span></h2>
-        <p class="figs-p">Von Thomas Quirling gegründet und bis heute inhabergeführt. Was damals mit einer kleinen Mannschaft begann, ist heute ein fester Name im Hamburger Rohbau.</p>
-        <div class="figs-steps">
-          {
-            zahlen.map((z, i) => (
-              <div class:list={['fg-par', `fg-par-${i + 1}`]} data-par={String(i + 1)}>
-                <div class="fg" data-follow>
-                  <strong>
-                    <span class="flap" data-flap={String(z.n ?? z.txt)}>{z.n ?? z.txt}</span>
-                    {z.plus && <sup>+</sup>}
-                  </strong>
-                  <p>{z.t}</p>
-                </div>
-              </div>
-            ))
-          }
-        </div>
-      </div>
-    </div>
   </section>
 
   <!-- ======================= PROJEKTE (3 × scrollen) ======================= -->
@@ -289,7 +223,7 @@ const werte = [
             ))
           }
         </div>
-        <a class="svc-more show-all" href={url('/referenzen/')}><span>Alle Projekte angucken</span><Icon name="arrow" /></a>
+        <a class="svc-more show-all" href={url('/referenzen/')}><span>Alle Projekte ansehen</span><Icon name="arrow" /></a>
       </div>
       <div class="show-stage">
         {
@@ -303,6 +237,56 @@ const werte = [
             </a>
           ))
         }
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= FAMILIE UND ERFAHRUNG ======================= -->
+  <section class="figs" data-figs-sec aria-labelledby="figs-h">
+    <!-- historisches Foto randlos von Kante zu Kante, Innenkante mit Knick -->
+    <figure class="figs-photo">
+      <span class="figs-img" data-figs-img>
+        <Image src={historisch} alt="Historisches Foto einer Baumannschaft auf einem Gerüst" widths={[800, 1200, 1600]} sizes="(min-width: 900px) 46vw, 100vw" />
+      </span>
+      <figcaption class="figs-cap">Der Vater unseres Gründers in seiner Lehrzeit.</figcaption>
+    </figure>
+    <div class="container figs-in">
+      <div class="figs-side">
+        <h2 id="figs-h" class="figs-h">Bauen liegt<br /><span class="lt">in der Familie.</span></h2>
+        <p class="figs-p">
+          Schon der Vater unseres Gründers stand auf dem Gerüst. Seit {GRUENDUNGSJAHR} führt die Familie Quirling das Unternehmen selbst. Hinter jedem
+          Bauvorhaben stehen Menschen mit Namen, die für ihr Wort einstehen.
+        </p>
+        <div class="figs-steps">
+          {
+            zahlen.map((z) => (
+              <div class="fg" data-follow>
+                <strong>
+                  <span class="flap" data-flap={String(z.n)}>{z.n}</span>
+                  {z.plus && <sup>+</sup>}
+                </strong>
+                <p>{z.t}</p>
+              </div>
+            ))
+          }
+        </div>
+        <ul class="values-list">
+          {
+            werte.map((w) => (
+              <li class="value" data-follow>
+                <ValueIcon name={w.icon} class="value-icon" frame={false} />
+                <div class="value-text">
+                  <h3>{w.t}</h3>
+                  <p>{w.d}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+        <a class="block-btn" href={url('/unternehmen/#team')}>
+          <span>Wer steckt dahinter?</span>
+          <Icon name="arrow" />
+        </a>
       </div>
     </div>
   </section>
@@ -324,6 +308,7 @@ const werte = [
       </svg>
       <div class="film-ui" data-film-ui>
         <h2 class="h-display">Quirling<br /><span class="lt">von oben.</span></h2>
+        <a class="pill fill" href={url('/kontakt/')}><span>Projekt anfragen</span><Icon name="arrow" /></a>
       </div>
     </div>
   </section>
@@ -381,22 +366,6 @@ const werte = [
   :global(main) {
     position: relative;
   }
-  .flow {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 1;
-    overflow: visible;
-  }
-  .flow :global(path) {
-    fill: none;
-    stroke: var(--blue);
-    stroke-width: 1.5;
-  }
-
 
   /* ======================= HERO ======================= */
   .hero {
@@ -454,17 +423,47 @@ const werte = [
     font-size: clamp(2.4rem, 4.6vw, 4.6rem);
     line-height: 0.98;
     letter-spacing: -0.01em;
-    margin-bottom: 2.6rem;
+    margin-bottom: 1.4rem;
     /* bleibt mit Abstand innerhalb der schrägen blauen Fläche */
     max-width: min(42vw, 660px);
     white-space: nowrap;
+  }
+
+  .hero-sub {
+    margin: 0 0 2rem;
+    max-width: 24rem;
+    font-size: clamp(1.05rem, 1.3vw, 1.25rem);
+    font-weight: 300;
+    line-height: 1.5;
+    color: rgb(255 255 255 / 0.9);
+  }
+  .hero-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem;
+  }
+  .hero-cta .pill,
+  .film-ui .pill {
+    padding: 0.95rem 1.5rem;
+    font-size: 0.86rem;
+  }
+  /* gefüllter Knopf für die Anfrage: weiß auf dunklem Grund */
+  .pill.fill {
+    background: #fff;
+    border-color: #fff;
+    color: var(--navy);
+  }
+  .pill.fill:hover {
+    background: #9aa6ee;
+    border-color: #9aa6ee;
+    color: var(--navy);
   }
 
   /* ======================= EINSTIEG ======================= */
   .intro {
     position: relative;
     overflow-x: clip;
-    padding-block: clamp(3.5rem, 6vw, 5rem) clamp(4rem, 7vw, 6rem);
+    padding-block: clamp(4rem, 6.5vw, 5.5rem) clamp(4.5rem, 7.5vw, 6.5rem);
   }
   .intro-grid {
     display: grid;
@@ -517,46 +516,38 @@ const werte = [
     height: 100%;
     object-fit: cover;
   }
-  /* Knopf liegt halb auf der Bildkante */
-  /* sitzt genau auf dem Knick der Bildkante (Lage setzt fitIntro) */
-  .intro-btn {
-    position: absolute;
-    left: var(--kx, 0px);
-    top: var(--ky, 58%);
-    transform: translate(-30%, -50%);
+  /* dunkler Knopf unter dem Text (Einstieg und Familie) */
+  .block-btn {
+    justify-self: start;
     display: inline-flex;
-    align-items: flex-end;
-    gap: 1.2rem;
-    padding: 1.3rem 1.5rem 1.2rem;
-    line-height: 0.95;
+    align-items: center;
+    gap: 1.1rem;
+    padding: 1.15rem 1.5rem 1.05rem;
+    line-height: 1;
     background: var(--navy);
     color: #fff;
     font-family: var(--font-head);
     font-stretch: 68%;
     font-weight: 800;
-    font-size: clamp(1.4rem, 1.9vw, 1.85rem);
+    font-size: clamp(1.25rem, 1.6vw, 1.55rem);
     letter-spacing: 0.02em;
     text-transform: uppercase;
     text-decoration: none;
-    box-shadow: 0 20px 40px -20px rgb(18 23 53 / 0.6);
-    z-index: 2;
-    transition:
-      background 0.25s ease,
-      color 0.25s ease;
+    transition: background 0.25s ease;
   }
-  .intro-btn :global(svg) {
+  .block-btn :global(svg) {
     width: 1.2rem;
     height: 1.2rem;
     transition: transform 0.35s var(--ease);
   }
-  .intro-btn:hover {
+  .block-btn:hover {
     background: var(--blue);
   }
-  .intro-btn:hover :global(svg) {
+  .block-btn:hover :global(svg) {
     transform: translateX(4px);
   }
 
-  /* ======================= KENNZAHLEN / ÜBER UNS ======================= */
+  /* ======================= FAMILIE UND ERFAHRUNG ======================= */
   .figs {
     position: relative;
     overflow-x: clip;
@@ -567,20 +558,21 @@ const werte = [
     grid-template-columns: repeat(12, minmax(0, 1fr));
     gap: clamp(2rem, 4vw, 4rem);
   }
-  /* Foto füllt die linke Hälfte von Ober- bis Unterkante, Innenkante mit Knick nach rechts */
+  /* Foto füllt die linke Seite von Ober- bis Unterkante, Innenkante mit Knick nach rechts */
   .figs-photo {
     position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
-    width: 50%;
+    width: 44%;
+    margin: 0;
     z-index: 2;
   }
   .figs-img {
     position: absolute;
     inset: 0;
     overflow: hidden;
-    clip-path: polygon(0 0, 86% 0, 100% 52%, 90% 100%, 0 100%);
+    clip-path: polygon(0 0, 86% 0, 100% 46%, 90% 100%, 0 100%);
     background: var(--stone-200);
   }
   .figs-img :global(img) {
@@ -589,20 +581,22 @@ const werte = [
     object-fit: cover;
     object-position: 80% 0%;
   }
-  .figs-btn {
-    left: 100%;
-    top: var(--ky, 52%);
-    transform: translate(-92%, -50%);
-  }
-  .fg[data-follow] {
-    opacity: 1;
-    transform: none;
+  .figs-cap {
+    position: absolute;
+    left: var(--content-left);
+    bottom: 1.4rem;
+    padding: 0.5rem 0.8rem 0.45rem;
+    background: var(--navy);
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
   }
   .figs-side {
     grid-column: 7 / 13;
-    padding-left: clamp(2.4rem, 5vw, 5rem);
     display: grid;
-    gap: clamp(1.2rem, 2vw, 1.6rem);
+    gap: clamp(1.4rem, 2.2vw, 1.9rem);
     justify-items: start;
   }
   .figs-h {
@@ -610,7 +604,7 @@ const werte = [
     font-stretch: 68%;
     font-weight: 800;
     text-transform: uppercase;
-    font-size: clamp(3.2rem, 6.2vw, 6.6rem);
+    font-size: clamp(3rem, 5.6vw, 6rem);
     line-height: 0.9;
     color: var(--blue);
     margin: 0;
@@ -620,36 +614,30 @@ const werte = [
   }
   .figs-p {
     margin: 0;
-    max-width: 30rem;
+    max-width: 34rem;
     font-size: 1.0625rem;
     font-weight: 300;
     line-height: 1.65;
     color: var(--ink-2);
   }
-  /* drei Zahlen als Treppe, die nach rechts ansteigt; jede Stufe mit eigener Linie */
+  /* drei Zahlen nebeneinander, jede mit einer Linie, die sich zeichnet */
   .figs-steps {
     width: 100%;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    align-items: end;
     gap: clamp(1rem, 2vw, 2rem);
-    margin-top: clamp(1.5rem, 3vw, 2.5rem);
-  }
-  .fg-par-1 {
-    margin-bottom: 0;
-  }
-  .fg-par-2 {
-    margin-bottom: clamp(2rem, 4vw, 3.5rem);
-  }
-  .fg-par-3 {
-    margin-bottom: clamp(4rem, 8vw, 7rem);
+    margin-top: 0.4rem;
   }
   .fg {
     position: relative;
     display: grid;
-    gap: 0.5rem;
+    gap: 0.3rem;
     align-content: start;
-    padding-top: 1rem;
+    padding-top: 0.9rem;
+  }
+  .fg[data-follow] {
+    opacity: 1;
+    transform: none;
   }
   .fg::before {
     content: '';
@@ -670,7 +658,7 @@ const werte = [
     font-family: var(--font-head);
     font-stretch: 68%;
     font-weight: 800;
-    font-size: clamp(3rem, 5vw, 5.2rem);
+    font-size: clamp(2.8rem, 4.6vw, 4.8rem);
     line-height: 1.08;
     color: var(--blue);
     font-variant-numeric: tabular-nums;
@@ -684,10 +672,93 @@ const werte = [
   }
   .fg p {
     margin: 0;
-    font-size: 1.0625rem;
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1.4;
+    color: var(--ink);
+  }
+  /* drei Werte, schlicht: Piktogramm, Wort, ein Satz */
+  .values-list {
+    list-style: none;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1rem, 2vw, 2rem);
+  }
+  .value {
+    display: grid;
+    gap: 0.7rem;
+    align-content: start;
+    justify-items: start;
+  }
+  .value[data-follow] {
+    opacity: 1;
+    transform: none;
+  }
+  .value :global(.value-icon) {
+    color: var(--blue);
+    --vicon-bg: var(--stone-50);
+    height: 44px;
+    display: flex;
+    align-items: flex-end;
+  }
+  .value :global(.vicon-art) {
+    width: 42px;
+    height: 42px;
+  }
+  .value :global(.vicon-hammer) {
+    width: 38px;
+    height: 38px;
+    clip-path: inset(0 0 0 100%);
+    transition: clip-path 1s ease 0.2s;
+  }
+  .value.is-in :global(.vicon-hammer) {
+    clip-path: inset(0 0 0 0);
+  }
+  .value :global(.vicon-art path) {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    transition: stroke-dashoffset 1.2s ease 0.2s;
+  }
+  .value.is-in :global(.vicon-art path) {
+    stroke-dashoffset: 0;
+  }
+  .value h3 {
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: clamp(1.25rem, 1.6vw, 1.6rem);
+    line-height: 1;
+    color: var(--blue);
+    margin: 0 0 0.35rem;
+  }
+  .value p {
+    margin: 0;
+    font-size: 0.98rem;
     font-weight: 300;
     line-height: 1.45;
-    color: var(--ink);
+    color: var(--ink-2);
+  }
+  .value-text {
+    opacity: 0;
+    transition: opacity 0.6s ease 0.4s;
+  }
+  .value.is-in .value-text {
+    opacity: 1;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .value-text {
+      opacity: 1;
+    }
+    .value :global(.vicon-art path) {
+      stroke-dashoffset: 0;
+    }
+    .value :global(.vicon-hammer) {
+      clip-path: none;
+    }
   }
   /* Klapptafel-Effekt in der Quirling-Schrift: ohne Täfelchen, nur die Ziffern klappen um */
   .flap {
@@ -759,7 +830,7 @@ const werte = [
   .overview {
     position: relative;
     background: #e6e9f6;
-    padding-block: clamp(6rem, 10vw, 8.5rem) clamp(6rem, 9vw, 8rem);
+    padding-block: clamp(6rem, 10vw, 8.5rem) clamp(5.5rem, 8vw, 7rem);
     /* Ober- und Unterkante mit Knick wie die angedeutete Raute */
     clip-path: polygon(
       0 0,
@@ -789,7 +860,7 @@ const werte = [
   .services {
     position: relative;
     overflow-x: clip;
-    padding-block: clamp(4rem, 7vw, 6rem);
+    padding-block: clamp(3rem, 5vw, 4.5rem);
   }
   .svc-head {
     position: relative;
@@ -833,21 +904,38 @@ const werte = [
       background-position: 0 0;
     }
   }
-  /* Stichworte: drei Spalten, die Linie läuft darunter und zeigt mit Pfeilen von unten hinein */
+  /* Stichworte: drei Spalten, jeweils mit einer kleinen Raute als Marker */
   .ov {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: clamp(2rem, 4vw, 4rem);
-    margin-top: clamp(3.5rem, 6vw, 5rem);
-    padding-bottom: clamp(4rem, 6vw, 5rem);
+    margin-top: clamp(3rem, 5vw, 4rem);
   }
   .ov-col {
-    display: grid;
-    gap: 0.7rem;
-    align-content: start;
-    justify-items: start;
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
     color: inherit;
     text-decoration: none;
+  }
+  /* Raute: dreht sich beim Erscheinen ein */
+  .ov-col::before,
+  .svc .svc-more::before {
+    content: '';
+    flex: none;
+    width: 0.62rem;
+    height: 0.62rem;
+    background: var(--blue);
+    transform: rotate(45deg);
+    transition: transform 0.8s var(--ease) 0.25s;
+  }
+  .ov-col[data-follow]:not(.is-in)::before,
+  .svc .svc-more[data-follow]:not(.is-in)::before {
+    transform: rotate(-135deg) scale(0);
+  }
+  .ov-col:hover::before,
+  .svc .svc-more:hover::before {
+    transform: rotate(135deg);
   }
   .ov-t {
     font-family: var(--font-head);
@@ -866,41 +954,32 @@ const werte = [
 
   /* Leistungen einzeln: Bilder abwechselnd links / rechts, bis an den Bildschirmrand */
   .svc {
-    padding-block: clamp(2rem, 3.5vw, 3rem);
+    padding-block: clamp(1.2rem, 2vw, 1.8rem);
   }
   .svc-grid {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
-    /* breite Fuge: hier läuft die Linie zwischen Bild und Text */
-    column-gap: clamp(3rem, 7vw, 7rem);
+    column-gap: clamp(2.5rem, 5vw, 5rem);
     align-items: center;
   }
   /* Bilder rechts, links, rechts; jeweils randlos bis an den Bildschirmrand */
   .svc-1 .svc-visual,
   .svc-3 .svc-visual {
-    grid-column: 9 / 13;
+    grid-column: 8 / 13;
     grid-row: 1;
     margin-right: calc(-1 * var(--content-left));
   }
   .svc-1 .svc-text,
   .svc-3 .svc-text {
-    grid-column: 1 / 9;
+    grid-column: 1 / 8;
     grid-row: 1;
   }
   .svc-2 .svc-visual {
-    grid-column: 1 / 5;
+    grid-column: 1 / 6;
     margin-left: calc(-1 * var(--content-left));
   }
   .svc-2 .svc-text {
-    grid-column: 5 / 13;
-  }
-  /* Link mit Abstand unter den Stichpunkten, mittig in der Textspalte */
-  @media (min-width: 901px) {
-    .svc .svc-more {
-      display: flex;
-      width: fit-content;
-      margin: clamp(3.5rem, 6vw, 5.5rem) auto 0;
-    }
+    grid-column: 6 / 13;
   }
   .svc-visual {
     position: relative;
@@ -910,7 +989,7 @@ const werte = [
 
   .svc-img {
     position: relative;
-    aspect-ratio: 5 / 6;
+    aspect-ratio: 4 / 3;
     /* Bild rechts: Innenkante links mit Knick, Unterkante steigt leicht an */
     clip-path: polygon(14% 0, 100% 0, 100% 93%, 8% 100%, 0 58%);
   }
@@ -964,12 +1043,6 @@ const werte = [
   .svc-more:hover {
     color: var(--navy);
   }
-  /* auf dem Desktop übernimmt die Linie den Pfeil */
-  @media (min-width: 901px) {
-    .svc-more :global(svg) {
-      display: none;
-    }
-  }
   .svc-more[data-follow] {
     transform: translateX(14px);
     transition:
@@ -982,11 +1055,11 @@ const werte = [
   .svc-text p {
     color: var(--ink-2);
     max-width: 52ch;
-    margin: 0 0 1.8rem;
+    margin: 0 0 1.4rem;
   }
   .svc-facts {
     list-style: none;
-    margin: 0 0 2.6rem;
+    margin: 0 0 1.6rem;
     padding: 0;
     display: flex;
     flex-wrap: wrap;
@@ -1021,7 +1094,7 @@ const werte = [
   /* Desktop: die Bühne bleibt per CSS stehen (kein Einrasten durch Pinning), die Höhe gibt die Scrollstrecke vor */
   @media (min-width: 901px) {
     .show {
-      height: calc(100vh + 2 * 80vh);
+      height: calc(100vh + 2 * 65vh);
     }
     .show-in {
       position: sticky;
@@ -1117,210 +1190,6 @@ const werte = [
   .show-cap {
     display: none;
   }
-  /* Linie am Rand: nimmt die Hauptlinie in den farbigen Flächen auf (gleiche Stärke) */
-  .rail {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: var(--rail-r, 34px);
-    width: 1.5px;
-    background: rgb(255 255 255 / 0.2);
-    z-index: 20;
-    pointer-events: none;
-  }
-  .rail span {
-    position: absolute;
-    inset: 0;
-    background: #fff;
-    transform: scaleY(0);
-    transform-origin: top;
-  }
-  /* ======================= WERTE ======================= */
-  /* helle Fläche wie die Leistungsübersicht, Ober- und Unterkante mit gespiegeltem Knick */
-  .values {
-    position: relative;
-    background: #e6e9f6;
-    padding-block: clamp(6rem, 10vw, 8.5rem) clamp(6rem, 9vw, 8rem);
-    clip-path: polygon(
-      0 clamp(0.8rem, 1.6vw, 1.4rem),
-      22% clamp(2rem, 4vw, 3.5rem),
-      100% 0,
-      100% calc(100% - clamp(0.8rem, 1.6vw, 1.4rem)),
-      78% 100%,
-      0 calc(100% - clamp(2rem, 4vw, 3.5rem))
-    );
-  }
-  .values-in {
-    display: grid;
-    gap: clamp(3.5rem, 6vw, 5rem);
-  }
-  /* A: aufgebaut wie die Leistungsübersicht, Überschrift in einer Zeile, Text darunter */
-  .values-top {
-    display: grid;
-    gap: clamp(1.4rem, 2.5vw, 2rem);
-    max-width: 44rem;
-  }
-  .values-top .fam-h {
-    margin: 0;
-    padding: 0;
-  }
-  .values--a .fh-hy,
-  .values--a .fh-br {
-    display: none;
-  }
-  .values-core {
-    margin: 0;
-    font-size: clamp(1.1rem, 1.3vw, 1.25rem);
-    font-weight: 300;
-    line-height: 1.65;
-    color: var(--ink);
-  }
-  .values-list {
-    list-style: none;
-    margin: 0;
-    padding: 0 0 clamp(4rem, 6vw, 5rem);
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: clamp(2rem, 4vw, 4rem);
-  }
-  .value {
-    display: grid;
-    gap: 1rem;
-    align-content: start;
-    justify-items: start;
-  }
-  .value h3 {
-    font-family: var(--font-head);
-    font-stretch: 68%;
-    font-weight: 800;
-    text-transform: uppercase;
-    font-size: clamp(1.45rem, 2vw, 2.1rem);
-    line-height: 1;
-    color: var(--blue);
-    margin: 0 0 0.5rem;
-  }
-  .value p {
-    margin: 0;
-    max-width: 30ch;
-    font-size: 1.0625rem;
-    font-weight: 300;
-    line-height: 1.55;
-    color: var(--ink-2);
-  }
-  /* B: Überschrift zweizeilig links, Text rechts unten bündig, größere Werte */
-  .values--b .values-top {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    align-items: end;
-    gap: clamp(2rem, 5vw, 5rem);
-    max-width: none;
-  }
-  .values--b .values-core {
-    max-width: 30rem;
-  }
-  .values--b .value h3 {
-    font-size: clamp(1.8rem, 2.6vw, 2.7rem);
-  }
-  /* C: Überschrift groß links, Text und Werte gemeinsam rechts */
-  .values--c .values-in {
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    column-gap: clamp(2rem, 5vw, 5rem);
-    row-gap: clamp(2.5rem, 4vw, 3.5rem);
-  }
-  .values--c .values-top {
-    display: contents;
-  }
-  .values--c .fam-h {
-    grid-column: 1;
-    grid-row: 1 / 3;
-    font-size: clamp(3.6rem, 7.4vw, 8rem);
-  }
-  .values--c .values-core {
-    grid-column: 2;
-    grid-row: 1;
-    font-size: clamp(1.25rem, 1.6vw, 1.5rem);
-    line-height: 1.55;
-  }
-  .values--c .values-list {
-    grid-column: 2;
-    grid-row: 2;
-    gap: clamp(1.5rem, 2.6vw, 2.4rem);
-  }
-  .values--c .value h3 {
-    font-size: clamp(1.3rem, 1.7vw, 1.7rem);
-  }
-  .values--c .value p {
-    font-size: 0.98rem;
-  }
-  .values[data-values] .value[data-follow] {
-    opacity: 1;
-    transform: none;
-  }
-  .value :global(.value-icon) {
-    color: var(--blue);
-    --vicon-bg: #e6e9f6;
-    height: 56px;
-    display: flex;
-    align-items: flex-end;
-  }
-  .value :global(.vicon-art) {
-    width: 54px;
-    height: 54px;
-  }
-  .value h3 {
-    font-family: var(--font-head);
-    font-stretch: 68%;
-    font-weight: 800;
-    text-transform: uppercase;
-    font-size: clamp(1.6rem, 2.3vw, 2.4rem);
-    line-height: 1;
-    color: var(--blue);
-    margin: 0 0 0.5rem;
-  }
-  .value p {
-    margin: 0;
-    max-width: 26ch;
-    font-size: 1.0625rem;
-    font-weight: 300;
-    line-height: 1.55;
-    color: var(--ink-2);
-  }
-  .value-text {
-    opacity: 0;
-    transition: opacity 0.6s ease 0.5s;
-  }
-  .value.is-in .value-text {
-    opacity: 1;
-  }
-  /* Piktogramm zeichnet sich, wenn die Linie ankommt */
-  .value :global(.vicon-art path) {
-    stroke-dasharray: 1;
-    stroke-dashoffset: 1;
-    transition: stroke-dashoffset 1.2s ease 0.2s;
-  }
-  .value.is-in :global(.vicon-art path) {
-    stroke-dashoffset: 0;
-  }
-  .value :global(.vicon-hammer) {
-    width: 48px;
-    height: 48px;
-    clip-path: inset(0 0 0 100%);
-    transition: clip-path 1s ease 0.2s;
-  }
-  .value.is-in :global(.vicon-hammer) {
-    clip-path: inset(0 0 0 0);
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .value-text {
-      opacity: 1;
-    }
-    .value :global(.vicon-art path) {
-      stroke-dashoffset: 0;
-    }
-    .value :global(.vicon-hammer) {
-      clip-path: none;
-    }
-  }
-
   /* ======================= MIT ANPACKEN ======================= */
   /* liegt auf der Kante zwischen Video und Footer, halb im Bild, halb im Footer */
   .join {
@@ -1342,10 +1211,10 @@ const werte = [
     display: flex;
     align-items: center;
     gap: clamp(1rem, 1.8vw, 1.6rem);
-    padding: clamp(1.2rem, 2vw, 1.6rem) clamp(2.4rem, 3.6vw, 3.2rem) clamp(1.2rem, 2vw, 1.6rem) clamp(2.6rem, 4vw, 3.6rem);
+    padding: clamp(0.8rem, 1.3vw, 1.05rem) clamp(1.8rem, 2.6vw, 2.3rem) clamp(0.8rem, 1.3vw, 1.05rem) clamp(2rem, 2.9vw, 2.6rem);
     color: #fff;
     text-decoration: none;
-    filter: drop-shadow(0 24px 34px rgb(18 23 53 / 0.45));
+    filter: drop-shadow(0 10px 16px rgb(18 23 53 / 0.3));
   }
   .ja::before {
     content: '';
@@ -1357,8 +1226,8 @@ const werte = [
   }
   .ja :global(.ja-hammer) {
     flex: none;
-    width: clamp(2.6rem, 3.8vw, 3.6rem);
-    height: clamp(2.6rem, 3.8vw, 3.6rem);
+    width: clamp(1.9rem, 2.6vw, 2.4rem);
+    height: clamp(1.9rem, 2.6vw, 2.4rem);
   }
   .ja-txt {
     display: grid;
@@ -1376,7 +1245,7 @@ const werte = [
     font-stretch: 68%;
     font-weight: 800;
     text-transform: uppercase;
-    font-size: clamp(2rem, 3.4vw, 3.4rem);
+    font-size: clamp(1.5rem, 2.3vw, 2.2rem);
     line-height: 0.9;
     white-space: nowrap;
   }
@@ -1385,7 +1254,7 @@ const werte = [
     align-items: center;
     gap: 0.6rem;
     margin-left: clamp(0.4rem, 1.2vw, 1.2rem);
-    padding: 0.85rem 1.2rem 0.8rem;
+    padding: 0.6rem 0.9rem 0.55rem;
     background: #9aa6ee;
     color: var(--navy);
     font-family: var(--font-head);
@@ -1417,7 +1286,7 @@ const werte = [
   /* ======================= FILM ======================= */
   .film {
     position: relative;
-    height: 175vh;
+    height: 135vh;
     background: #e6e9f6;
   }
   .film-sticky {
@@ -1459,21 +1328,6 @@ const werte = [
     transform-box: view-box;
     transform-origin: 297px 185px;
   }
-  /* Linienende im stehenden Bereich: läuft von oben genau in die Rautenspitze */
-  .film-feed {
-    position: absolute;
-    left: calc(50% - 0.75px);
-    top: 40px;
-    width: 1.5px;
-    height: calc(22% - 40px);
-    background: var(--blue);
-    z-index: 3;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-  }
-  .film-feed.is-on {
-    opacity: 1;
-  }
   .film-frame video {
     width: 100%;
     height: 100%;
@@ -1491,6 +1345,9 @@ const werte = [
     text-align: center;
     color: #fff;
     padding-inline: var(--gutter);
+    display: grid;
+    justify-items: center;
+    gap: clamp(1.4rem, 2.4vw, 2rem);
   }
 
   /* ======================= TYPOGRAFIE-ENTWURF B ======================= */
@@ -1528,15 +1385,10 @@ const werte = [
     font-size: clamp(3rem, 6vw, 6.4rem);
     line-height: 0.88;
   }
-  :global(html.typo-b) .value h3 {
-    font-weight: 900;
-    font-size: clamp(1.6rem, 2.4vw, 2.5rem);
-  }
   /* Fließtexte kleiner, ruhiger */
   :global(html.typo-b) .intro-p,
   :global(html.typo-b) .svc-text p,
-  :global(html.typo-b) .show-desc,
-  :global(html.typo-b) .value p {
+  :global(html.typo-b) .show-desc {
     font-size: 1.0625rem;
     font-weight: 300;
     line-height: 1.7;
@@ -1567,7 +1419,6 @@ const werte = [
   :global(html.typo-c) .svc-title,
   :global(html.typo-c) .show-h,
   :global(html.typo-c) .show-title,
-  :global(html.typo-c) .values-h,
   :global(html.typo-c) .value h3 {
     font-stretch: 68%;
     letter-spacing: -0.005em;
@@ -1604,15 +1455,12 @@ const werte = [
 
   /* ======================= RESPONSIVE ======================= */
   @media (max-width: 900px) {
-    .flow {
-      display: none;
-    }
     .hero {
       --hero-cut: polygon(0 94%, 78% 100%, 100% 96%, 100% 101%, 0 101%);
     }
     .hero-slab {
       width: 100%;
-      clip-path: polygon(0 0, 100% 0, 100% 52%, 0 78%);
+      clip-path: polygon(0 0, 100% 0, 100% 62%, 0 88%);
     }
     .hero-content {
       justify-content: flex-start;
@@ -1643,27 +1491,31 @@ const werte = [
     .figs-side {
       grid-column: 1 / -1;
       min-width: 0;
-      padding-left: 0;
     }
     .figs-photo {
       position: relative;
       width: auto;
       aspect-ratio: 4 / 3;
-      margin-bottom: 5rem;
+      margin-bottom: 3rem;
     }
     .figs-img {
       clip-path: polygon(0 0, 100% 0, 100% 94%, 0 100%);
     }
-    .figs-btn {
+    .figs-cap {
       left: var(--gutter);
-      top: 100%;
-      transform: translateY(-50%);
+      bottom: 2rem;
     }
-    .fg-par-2 {
-      margin-bottom: 1.5rem;
+    .values-list {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 1.4rem;
     }
-    .fg-par-3 {
-      margin-bottom: 3rem;
+    .value {
+      grid-template-columns: 44px minmax(0, 1fr);
+      align-items: center;
+      gap: 1rem;
+    }
+    .hero-sub {
+      max-width: 19rem;
     }
     .fg strong {
       font-size: clamp(1.7rem, 7.4vw, 2.4rem);
@@ -1699,17 +1551,11 @@ const werte = [
       aspect-ratio: 4 / 3.4;
       clip-path: polygon(0 6%, 100% 0, 100% 100%, 0 100%);
     }
-    .intro-btn {
-      left: var(--gutter);
-      bottom: auto;
-      top: 100%;
-      transform: translateY(-50%);
-    }
     .intro {
-      padding-bottom: 6rem;
+      padding-bottom: 0;
     }
     .ov {
-      padding-bottom: 2rem;
+      gap: 1.2rem;
     }
     .svc-grid {
       grid-template-columns: 1fr;
@@ -1726,7 +1572,13 @@ const werte = [
       clip-path: none;
     }
     .svc-visual {
-      margin-bottom: 2.5rem;
+      margin-bottom: 1.8rem;
+    }
+    .svc .svc-img {
+      aspect-ratio: 16 / 9;
+    }
+    .svc {
+      padding-block: 1.6rem;
     }
     .svc-facts {
       flex-direction: column;
@@ -1734,16 +1586,6 @@ const werte = [
     .svc .svc-img,
     .svc-2 .svc-img {
       clip-path: polygon(0 6%, 100% 0, 100% 100%, 0 100%);
-    }
-    .values-top,
-    .values-list {
-      grid-template-columns: minmax(0, 1fr);
-    }
-    .values {
-      clip-path: polygon(0 0.8rem, 22% 2rem, 100% 0, 100% 100%, 0 100%);
-    }
-    .values-list {
-      padding-bottom: 1rem;
     }
 
     .svc-grid > *,
@@ -1794,13 +1636,7 @@ const werte = [
       font-weight: 800;
       font-size: 1.15rem;
     }
-    .values-top > * {
-      min-width: 0;
-    }
-    .value :global(.vicon-art) {
-      width: 48px;
-      height: 48px;
-    }
+
     .svc-head {
       white-space: normal;
     }
@@ -1809,23 +1645,18 @@ const werte = [
     .intro-h {
       white-space: normal;
     }
-    .value h3 {
-      font-size: clamp(1.4rem, 6.4vw, 1.8rem);
-    }
+
     .value-text {
       min-width: 0;
     }
     .film {
-      height: 170svh;
+      height: 140svh;
     }
     .film-sticky {
       height: 100svh;
     }
     .film-logo {
       width: 66vw;
-    }
-    .film-feed {
-      display: none;
     }
   }
 </style>
@@ -1855,7 +1686,7 @@ const werte = [
     } else {
       gsap.fromTo(
         slab,
-        { clipPath: 'polygon(0 0, 100% 0, 100% 52%, 0 78%)', backgroundColor: 'rgba(18, 23, 53, 0.82)' },
+        { clipPath: 'polygon(0 0, 100% 0, 100% 62%, 0 88%)', backgroundColor: 'rgba(18, 23, 53, 0.82)' },
         { clipPath: 'polygon(0 0, 100% 0, 100% 110%, 0 110%)', backgroundColor: 'rgba(18, 23, 53, 1)', ease: 'none', scrollTrigger: trigger },
       );
     }
@@ -1963,234 +1794,23 @@ const werte = [
     },
   );
 
-  /* ---------- Die blaue Linie ---------- */
-  const svg = document.querySelector<SVGSVGElement>('[data-flow]');
-  const path = svg?.querySelector<SVGPathElement>('[data-flow-path]');
-  const branchG = svg?.querySelector<SVGGElement>('[data-flow-branches]');
-  let total = 0;
-  const samples: { len: number; y: number }[] = [];
-  let branches: { el: SVGPathElement; len: number; y: number; shown: boolean }[] = [];
-  const svcG = svg?.querySelector<SVGGElement>('[data-flow-svc]');
-  let svcPaths: { el: SVGPathElement; len: number; y0: number; y1: number }[] = [];
-  let tipEnd = Infinity;
-  let railX = 0;
-  // Abzweige (Werte, Karriere) enden exakt an der Linie
-  const toRail = () => {
-    const valuesRail = document.querySelector('.rail-values');
-    const vx = valuesRail ? valuesRail.getBoundingClientRect().left + 0.75 : railX;
-    document.querySelectorAll<HTMLElement>('[data-to-rail]').forEach((el) => {
-      const inValues = !!el.closest('[data-values]');
-      const x = inValues ? vx : railX;
-      if (!x) return;
-      // bei den Karriere-Punkten verlängert der Wert das Element selbst, daher an der Liste messen
-      const ref = inValues ? el : el.parentElement!;
-      el.style.setProperty('--to-rail', `${Math.max(0, x - ref.getBoundingClientRect().right)}px`);
-    });
-  };
-
+  /* ---------- Inhalte blenden ein, sobald sie beim Scrollen ins Bild kommen ---------- */
   const box = (el: Element | null) => {
     if (!el) return null;
     const r = el.getBoundingClientRect();
     return { top: r.top + window.scrollY, bottom: r.bottom + window.scrollY, left: r.left + window.scrollX, right: r.right + window.scrollX };
   };
-  // Vorlauf der Linie vor dem Scrollstand
-  let svcTop = Infinity;
-  let svcBottom = Infinity;
-  const lead = (y: number, vh: number) => {
-    // in den Leistungen zeichnet sich die Linie erst, wenn man hinschaut
-    if (y > svcTop - vh && y < svcBottom - vh * 0.6) {
-      const r = vh * 0.4;
-      const inF = Math.min(1, (y - (svcTop - vh)) / r);
-      const outF = Math.min(1, (svcBottom - vh * 0.6 - y) / r);
-      return 0.8 - 0.25 * Math.min(inF, outF);
-    }
-    return 0.8;
-  };
-  const target = () => {
-    if (reduce) return Infinity;
-    const vh = window.innerHeight;
-    return window.scrollY + vh * lead(window.scrollY, vh);
-  };
-
-  const build = () => {
-    if (!svg || !path || !branchG || !svcG || window.innerWidth <= 900) return;
-    const doc = document.documentElement;
-    const W = doc.clientWidth;
-    const cont = document.querySelector<HTMLElement>('.intro .container');
-    if (!cont) return;
-    const cb = box(cont)!;
-    const pad = parseFloat(getComputedStyle(cont).paddingLeft);
-    // Randspuren links und rechts neben dem Inhalt
-    const L = Math.max(34, cb.left + pad - 36);
-    const R = Math.min(W - 34, cb.right - pad + 36);
-    const svcSec = box(document.querySelector('.services'))!;
-    svcTop = svcSec.top;
-    svcBottom = svcSec.bottom;
-    const film = box(document.querySelector('[data-film]'))!;
-    const vh = window.innerHeight;
-    const tipY = film.top + vh * 0.22;
-    const defs: { d: string; y: number }[] = [];
-
-    // Übersicht: die Linie läuft unter den drei Stichworten durch, je ein Pfeil zeigt von unten hinein
-    const cols = Array.from(document.querySelectorAll<HTMLElement>('[data-line-up]')).map((c) => box(c)!);
-    const yU = Math.max(...cols.map((c) => c.bottom)) + 48;
-    const colX = cols.map((c) => c.left + 8);
-    cols.forEach((c, i) => {
-      const x = colX[i]!;
-      const end = c.bottom + 14;
-      defs.push({ d: `M${x} ${yU} V${end} M${x - 7} ${end + 9} L${x} ${end} L${x + 7} ${end + 9}`, y: yU });
-    });
-
-    // Leistungen einzeln: Linie entlang der geknickten Bildkante (genau ein Knick),
-    // eigene Pfade, die sich mit dem Scrollen durch die Zeile aufbauen
-    svcG!.innerHTML = '';
-    svcPaths = [];
-    document.querySelectorAll<HTMLElement>('[data-svc]').forEach((r) => {
-      const img = box(r.querySelector('.svc-img'))!;
-      const link = r.querySelector<HTMLElement>('[data-line-link]');
-      const text = box(r.querySelector('.svc-text'))!;
-      const imageLeft = img.right <= text.left;
-      const w = img.right - img.left;
-      const h = img.bottom - img.top;
-      const off = imageLeft ? 22 : -22;
-      // Innenkante: oben 14 % eingerückt, Knick bei 58 % genau an der Kante, unten 8 % eingerückt
-      const pts = imageLeft
-        ? [
-            { x: img.right - w * 0.14, y: img.top },
-            { x: img.right, y: img.top + h * 0.58 },
-            { x: img.right - w * 0.08, y: img.bottom },
-          ]
-        : [
-            { x: img.left + w * 0.14, y: img.top },
-            { x: img.left, y: img.top + h * 0.58 },
-            { x: img.left + w * 0.08, y: img.bottom },
-          ];
-      const edge = (y: number) => {
-        const [a, k, z] = pts as [{ x: number; y: number }, { x: number; y: number }, { x: number; y: number }];
-        if (y <= k.y) return a.x + ((k.x - a.x) * (y - a.y)) / (k.y - a.y);
-        return k.x + ((z.x - k.x) * (y - k.y)) / (z.y - k.y);
-      };
-      const pd = pts.map((pt, i) => `${i ? 'L' : 'M'}${pt.x + off} ${pt.y}`).join(' ');
-      const el = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      el.setAttribute('d', pd);
-      svcG!.appendChild(el);
-      const len = el.getTotalLength();
-      el.style.strokeDasharray = `${len}`;
-      el.style.strokeDashoffset = `${len}`;
-      svcPaths.push({ el, len, y0: img.top, y1: img.bottom });
-      if (link) {
-        const lb = box(link)!;
-        const y = (lb.top + lb.bottom) / 2;
-        link.dataset.lineX = String(edge(y) + off);
-      }
-    });
-
-    // Familienbetrieb: dieselbe Grundlinie, Pfeile zeigen von unten in die drei Werte
-    const fam = Array.from(document.querySelectorAll<HTMLElement>('[data-line-fam]')).map((c) => box(c)!);
-    const yV = fam.length ? Math.max(...fam.map((c) => c.bottom)) + 48 : 0;
-    fam.forEach((c) => {
-      const x = c.left + 8;
-      const end = c.bottom + 14;
-      defs.push({ d: `M${x} ${yV} V${end} M${x - 7} ${end + 9} L${x} ${end} L${x + 7} ${end + 9}`, y: yV });
-    });
-
-    // Leistungsübersicht und Familienbetrieb: je eine gerade Grundlinie über die ganze Breite
-    const d = `M0 ${yU} H${W}` + (fam.length ? ` M0 ${yV} H${W}` : '');
-
-    // Koordinaten relativ zu <main>; die Grafik ist so hoch wie <main> und endet damit vor dem Footer
-    const mainEl = svg.parentElement!;
-    const mainTop = box(mainEl)!.top;
-    svg.setAttribute('viewBox', `0 ${mainTop} ${W} ${mainEl.offsetHeight}`);
-    svg.setAttribute('preserveAspectRatio', 'none');
-    path.setAttribute('d', d);
-
-    // Abzweige mit Pfeilspitze zu „Mehr über uns“ und „Mehr erfahren“, je nach Seite von links oder rechts
-    document.querySelectorAll<HTMLElement>('[data-line-link]').forEach((a) => {
-      const b = box(a)!;
-      const y = (b.top + b.bottom) / 2;
-      const from = Number(a.dataset.lineX ?? R);
-      if (from < b.left) {
-        const e = b.left - 20;
-        defs.push({ d: `M${from} ${y} H${e} M${e - 8} ${y - 7} L${e} ${y} L${e - 8} ${y + 7}`, y });
-      } else {
-        const e = b.right + 20;
-        defs.push({ d: `M${from} ${y} H${e} M${e + 8} ${y - 7} L${e} ${y} L${e + 8} ${y + 7}`, y });
-      }
-      a.dataset.followY = String(y);
-    });
-    // Randlinie in Projekten und Werten auf derselben Höhe wie die Hauptlinie
-    doc.style.setProperty('--rail-r', `${W - R}px`);
-    doc.style.setProperty('--rail-l', `${L}px`);
-    railX = R;
-    toRail();
-    tipEnd = tipY;
-    branchG.innerHTML = '';
-    branches = defs.map(({ d: bd, y }) => {
-      const el = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      el.setAttribute('d', bd);
-      el.setAttribute('class', 'branch');
-      branchG.appendChild(el);
-      const len = el.getTotalLength();
-      el.style.strokeDasharray = `${len}`;
-      el.style.strokeDashoffset = `${len}`;
-      return { el, len, y, shown: false };
-    });
-
-    total = path.getTotalLength();
-    samples.length = 0;
-    for (let l = 0; l <= total; l += 24) samples.push({ len: l, y: path.getPointAtLength(l).y });
-    samples.push({ len: total, y: path.getPointAtLength(total).y });
-    path.style.strokeDasharray = `${total}`;
-    draw(true);
-  };
-
-  const draw = (instant = false) => {
-    if (!path || !total) return;
-    const t = target();
-    branches.forEach((b) => {
-      const show = b.y <= t;
-      if (show === b.shown) return;
-      b.shown = show;
-      gsap.to(b.el, { strokeDashoffset: show ? 0 : b.len, duration: instant || reduce ? 0 : 0.5, ease: 'power2.out', overwrite: true });
-    });
-    document.querySelector('[data-film-feed]')?.classList.toggle('is-on', t >= tipEnd);
-    // Leistungslinien: wachsen, während man durch die Zeile scrollt
-    const ts = window.scrollY + window.innerHeight * 0.7;
-    svcPaths.forEach((sp) => {
-      const f = reduce ? 1 : Math.min(1, Math.max(0, (ts - sp.y0) / (sp.y1 - sp.y0)));
-      sp.el.style.strokeDashoffset = String(sp.len * (1 - f));
-    });
-    if (reduce) {
-      path.style.strokeDashoffset = '0';
-      return;
-    }
-    let len = 0;
-    for (const s of samples) {
-      if (s.y <= t) len = s.len;
-      else break;
-    }
-    gsap.to(path, { strokeDashoffset: total - len, duration: instant ? 0 : 0.9, ease: 'power2.out', overwrite: true });
-  };
-
-  /* Inhalte blenden ein, sobald die Linie (bzw. der Scrollstand) sie erreicht – auch mobil ohne Linie */
+  const target = () => (reduce ? Infinity : window.scrollY + window.innerHeight * 0.85);
   const followers = Array.from(document.querySelectorAll<HTMLElement>('[data-follow]'));
-  const valuesSec = document.querySelector<HTMLElement>('[data-values]');
-  const valuesBar = document.querySelector<HTMLElement>('[data-values-bar]');
   const follow = () => {
     const t = target();
     followers.forEach((el) => {
-      const y = el.dataset.followY ? Number(el.dataset.followY) : box(el)!.top + 24;
-      if (!el.classList.contains('is-in') && y <= t) {
+      if (el.classList.contains('is-in')) return;
+      if (box(el)!.top + 24 <= t) {
         el.classList.add('is-in');
         el.querySelectorAll<HTMLElement>('[data-flap]').forEach((f) => setTimeout(() => runFlap(f), 200));
       }
     });
-    // Randlinie der Werte wächst mit dem Scrollen
-    if (valuesSec && valuesBar) {
-      const v = box(valuesSec)!;
-      const f = Math.min(1, Math.max(0, (t - v.top) / (v.bottom - v.top)));
-      valuesBar.style.transform = `scaleY(${reduce ? 1 : f})`;
-    }
   };
 
   /* ---------- Einstieg: Bild schließt bündig an Hero- und Übersichtskante an ---------- */
@@ -2204,8 +1824,6 @@ const werte = [
       img.style.removeProperty('top');
       img.style.removeProperty('bottom');
       img.style.removeProperty('clip-path');
-      vis.style.removeProperty('--kx');
-      vis.style.removeProperty('--ky');
       return;
     }
     const W = document.documentElement.clientWidth;
@@ -2229,43 +1847,9 @@ const werte = [
     const bottom = Math.max(...bots.map((p) => p.y));
     const kinkY = tops[0]!.y + (bots[0]!.y - tops[0]!.y) * 0.58;
     const pts = [...tops, ...bots.reverse(), { x: v.left, y: kinkY }].map((p) => `${(p.x - v.left).toFixed(1)}px ${(p.y - top).toFixed(1)}px`);
-    vis.style.setProperty('--kx', '0px');
-    vis.style.setProperty('--ky', `${kinkY - v.top}px`);
     img.style.top = `${top - v.top}px`;
     img.style.bottom = `${v.bottom - bottom}px`;
     img.style.clipPath = `polygon(${pts.join(', ')})`;
-  };
-
-  /* ---------- Über uns: untere Fotokante setzt die schräge Kante der Projekte fort ---------- */
-  const fitFigs = () => {
-    const photo = document.querySelector<HTMLElement>('.figs-photo');
-    const img = photo?.querySelector<HTMLElement>('.figs-img');
-    const stage = document.querySelector('.show-stage');
-    if (!photo || !img || !stage) return;
-    if (window.innerWidth <= 900) {
-      photo.style.removeProperty('width');
-      photo.style.removeProperty('top');
-      photo.style.removeProperty('--ky');
-      img.style.removeProperty('clip-path');
-      return;
-    }
-    const W = document.documentElement.clientWidth;
-    // Unterkante Familienbetrieb: links um a höher, Spitze bei 78 % – das Foto reicht bis an diese Kante hinauf
-    const a = Math.min(56, Math.max(32, W * 0.04));
-    photo.style.top = `${-a}px`;
-    const st = stage.getBoundingClientRect();
-    const ph = photo.getBoundingClientRect();
-    const h = ph.height;
-    // Kante der Projekte: oben bei 14 % der Bühne, unten bei 0 %
-    const x0 = st.left + st.width * 0.14 - ph.left;
-    const slope = (st.width * 0.14) / st.height;
-    const kinkY = a + (h - a) * 0.52;
-    const kinkX = x0 + slope * (h - kinkY);
-    const topX = kinkX - slope * (kinkY - a);
-    const topY = (a * topX) / (W * 0.78);
-    photo.style.width = `${kinkX}px`;
-    photo.style.setProperty('--ky', `${kinkY}px`);
-    img.style.clipPath = `polygon(0 0, ${topX.toFixed(1)}px ${topY.toFixed(1)}px, ${kinkX.toFixed(1)}px ${kinkY.toFixed(1)}px, ${x0.toFixed(1)}px ${h.toFixed(1)}px, 0 ${h.toFixed(1)}px)`;
   };
 
   /* ---------- Über uns: Klapptafel wie am Flughafen ---------- */
@@ -2336,49 +1920,26 @@ const werte = [
     el.textContent = el.dataset.flap ?? '';
   };
 
-  /* ---------- Über uns: Foto und Zahlen bewegen sich unterschiedlich schnell ---------- */
+  /* ---------- Familie: das Foto bewegt sich beim Scrollen leicht mit ---------- */
   mm.add('(prefers-reduced-motion: no-preference) and (min-width: 901px)', () => {
     const sec = document.querySelector('[data-figs-sec]');
-    if (!sec) return;
-    const st = { trigger: sec, start: 'top bottom', end: 'bottom top', scrub: true };
-    const img = sec.querySelector('[data-figs-img] img');
-    if (img) gsap.fromTo(img, { yPercent: -8 }, { yPercent: 0, ease: 'none', scrollTrigger: st });
-    sec.querySelectorAll<HTMLElement>('[data-par]').forEach((el) => {
-      const n = Number(el.dataset.par);
-      gsap.fromTo(el, { y: 30 * n }, { y: -30 * n, ease: 'none', scrollTrigger: { ...st } });
-    });
+    const img = sec?.querySelector('[data-figs-img] img');
+    if (!sec || !img) return;
+    gsap.fromTo(img, { yPercent: -8 }, { yPercent: 0, ease: 'none', scrollTrigger: { trigger: sec, start: 'top bottom', end: 'bottom top', scrub: true } });
   });
 
-  const onScroll = () => {
-    draw();
-    follow();
-  };
-  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('scroll', follow, { passive: true });
   window.addEventListener('resize', () => {
     fitIntro();
-    fitFigs();
-    build();
-    toRail();
+    follow();
   });
   window.addEventListener('load', () => {
     ScrollTrigger.refresh();
     fitIntro();
-    fitFigs();
-    build();
     follow();
   });
-  ScrollTrigger.addEventListener('refresh', () => {
-    fitIntro();
-    fitFigs();
-    build();
-  });
+  ScrollTrigger.addEventListener('refresh', fitIntro);
   fitIntro();
-  fitFigs();
-  build();
-  toRail();
   follow();
-  document.fonts?.ready.then(() => {
-    build();
-    toRail();
-  });
+  document.fonts?.ready.then(fitIntro);
 </script>
