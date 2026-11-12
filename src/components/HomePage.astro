@@ -82,9 +82,9 @@ const showcase = await Promise.all(
 
 /* Zahlen: drei Stufen, die nach rechts ansteigen */
 const zahlen = [
-  { n: GRUENDUNGSJAHR, from: 1960, plus: false, t: 'Gegründet in Hamburg' },
-  { n: firma.projekteAnzahl, from: 0, plus: true, t: 'Projekte realisiert' },
-  { n: null, txt: 'HH', from: 0, plus: false, t: 'Zuhause in Hamburg' },
+  { n: GRUENDUNGSJAHR, plus: false, t: 'Gegründet in Hamburg' },
+  { n: firma.projekteAnzahl, plus: true, t: 'Projekte realisiert' },
+  { n: null, txt: 'HH', plus: false, t: 'Zuhause in Hamburg' },
 ];
 
 const werte = [
@@ -254,7 +254,7 @@ const werte = [
               <div class:list={['fg-par', `fg-par-${i + 1}`]} data-par={String(i + 1)}>
                 <div class="fg" data-follow>
                   <strong>
-                    {z.n !== null ? <span data-num={z.n} data-num-from={z.from}>{z.n}</span> : z.txt}
+                    <span class="flap" data-flap={String(z.n ?? z.txt)}>{z.n ?? z.txt}</span>
                     {z.plus && <sup>+</sup>}
                   </strong>
                   <p>{z.t}</p>
@@ -525,8 +525,8 @@ const werte = [
     gap: 1.2rem;
     padding: 1.3rem 1.5rem 1.2rem;
     line-height: 0.95;
-    background: var(--navy);
-    color: #fff;
+    background: #9aa6ee;
+    color: var(--navy);
     font-family: var(--font-head);
     font-stretch: 68%;
     font-weight: 800;
@@ -536,7 +536,9 @@ const werte = [
     text-decoration: none;
     box-shadow: 0 20px 40px -20px rgb(18 23 53 / 0.6);
     z-index: 2;
-    transition: background 0.25s ease;
+    transition:
+      background 0.25s ease,
+      color 0.25s ease;
   }
   .intro-btn :global(svg) {
     width: 1.2rem;
@@ -544,7 +546,8 @@ const werte = [
     transition: transform 0.35s var(--ease);
   }
   .intro-btn:hover {
-    background: var(--blue);
+    background: var(--navy);
+    color: #fff;
   }
   .intro-btn:hover :global(svg) {
     transform: translateX(4px);
@@ -586,7 +589,7 @@ const werte = [
   .figs-btn {
     left: 100%;
     top: 52%;
-    transform: translate(-72%, -50%);
+    transform: translate(-92%, -50%);
   }
   .fg[data-follow] {
     opacity: 1;
@@ -594,7 +597,7 @@ const werte = [
   }
   .figs-side {
     grid-column: 7 / 13;
-    padding-left: clamp(1rem, 3vw, 3rem);
+    padding-left: clamp(2.4rem, 5vw, 5rem);
     display: grid;
     gap: clamp(1.2rem, 2vw, 1.6rem);
     justify-items: start;
@@ -664,10 +667,12 @@ const werte = [
     font-family: var(--font-head);
     font-stretch: 68%;
     font-weight: 800;
-    font-size: clamp(3rem, 5vw, 5.2rem);
-    line-height: 0.88;
+    font-size: clamp(2.6rem, 4vw, 4.2rem);
+    line-height: 1.08;
     color: var(--blue);
     font-variant-numeric: tabular-nums;
+    display: inline-flex;
+    align-items: flex-start;
   }
   .fg strong :global(sup) {
     font-size: 0.45em;
@@ -681,8 +686,71 @@ const werte = [
     line-height: 1.45;
     color: var(--ink);
   }
-  .figs-steps {
-    perspective: 900px;
+  /* Klapptafel wie am Flughafen: jede Ziffer ein Navy-Täfelchen mit Mittelfuge */
+  .flap {
+    display: inline-flex;
+    gap: 0.06em;
+  }
+  .flap :global(.sf) {
+    position: relative;
+    display: inline-block;
+    width: 0.66em;
+    height: 1.08em;
+    perspective: 4em;
+  }
+  .flap :global(.sf-h) {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 50%;
+    overflow: hidden;
+    background: var(--navy);
+    color: #fff;
+    backface-visibility: hidden;
+  }
+  .flap :global(.sf-h > span) {
+    display: block;
+    height: 1.08em;
+    line-height: 1.08em;
+    text-align: center;
+  }
+  .flap :global(.sf-top),
+  .flap :global(.sf-ft) {
+    top: 0;
+    border-radius: 2px 2px 0 0;
+    transform-origin: 50% 100%;
+  }
+  .flap :global(.sf-bot),
+  .flap :global(.sf-fb) {
+    bottom: 0;
+    border-radius: 0 0 2px 2px;
+    transform-origin: 50% 0;
+  }
+  .flap :global(.sf-bot > span),
+  .flap :global(.sf-fb > span) {
+    transform: translateY(-50%);
+  }
+  .flap :global(.sf-top),
+  .flap :global(.sf-ft) {
+    background: #1c2350;
+  }
+  .flap :global(.sf-ft),
+  .flap :global(.sf-fb) {
+    z-index: 2;
+  }
+  .flap :global(.sf-fb) {
+    transform: rotateX(90deg);
+  }
+  /* Fuge zwischen oberer und unterer Hälfte */
+  .flap :global(.sf::after) {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(50% - 0.5px);
+    height: 1px;
+    background: rgb(0 0 0 / 0.55);
+    z-index: 3;
   }
   /* Einblenden, sobald die Linie die Stelle erreicht */
   [data-follow] {
@@ -1109,13 +1177,13 @@ const werte = [
     color: #fff !important;
     margin: 0;
   }
-  /* drei Bänder mit schräger Kante wie die Raute, laufen bis an den rechten Rand und fahren beim Scrollen herein */
+  /* drei Werte ohne Flächen: kräftige hellblaue Schrift, Piktogramme zeichnen sich, versetzt wie eine Treppe */
   .values-list {
     list-style: none;
-    margin: 0 calc(-1 * var(--content-left)) 0 0;
+    margin: 0;
     padding: 0;
     display: grid;
-    gap: clamp(0.9rem, 1.6vw, 1.3rem);
+    gap: clamp(2.4rem, 4.4vw, 3.6rem);
   }
   .value {
     position: relative;
@@ -1123,18 +1191,15 @@ const werte = [
     flex-direction: row-reverse;
     justify-content: flex-end;
     align-items: center;
-    gap: clamp(1.25rem, 2.4vw, 2.2rem);
-    padding: clamp(1.4rem, 2.4vw, 2rem) calc(var(--content-left) + 1rem) clamp(1.4rem, 2.4vw, 2rem) clamp(2.6rem, 4.5vw, 4rem);
-    background: #9aa6ee;
-    color: var(--navy);
-    clip-path: polygon(clamp(1.6rem, 3vw, 2.6rem) 0, 100% 0, 100% 100%, 0 100%);
+    gap: clamp(1.4rem, 2.6vw, 2.4rem);
+    color: #9aa6ee;
     text-align: left;
   }
   .value:nth-child(2) {
-    margin-left: 9%;
+    margin-left: 10%;
   }
   .value:nth-child(3) {
-    margin-left: 18%;
+    margin-left: 20%;
   }
   .values[data-values] .value[data-follow] {
     opacity: 1;
@@ -1151,12 +1216,12 @@ const werte = [
   }
   .value :global(.value-icon) {
     flex: none;
-    color: var(--navy);
-    --vicon-bg: #9aa6ee;
+    color: #9aa6ee;
+    --vicon-bg: #121735;
   }
   .value :global(.vicon-art) {
-    width: 62px;
-    height: 62px;
+    width: 72px;
+    height: 72px;
   }
   /* Piktogramm zeichnet sich, wenn der Abzweig ankommt */
   .value :global(.vicon-art path) {
@@ -1196,11 +1261,12 @@ const werte = [
     margin-bottom: 0.45rem;
   }
   .value h3 {
-    color: var(--navy);
+    color: #9aa6ee;
   }
   .value p {
-    font-size: 1.02rem;
-    color: rgb(18 23 53 / 0.8);
+    font-size: clamp(1.05rem, 1.25vw, 1.2rem);
+    font-weight: 500;
+    color: #9aa6ee;
     margin: 0;
   }
 
@@ -1300,7 +1366,7 @@ const werte = [
   /* ======================= FILM ======================= */
   .film {
     position: relative;
-    height: 240vh;
+    height: 175vh;
     background: #e6e9f6;
   }
   .film-sticky {
@@ -1490,8 +1556,8 @@ const werte = [
     line-height: 0.86;
   }
   :global(html.typo-c) .value h3 {
-    font-weight: 800;
-    font-size: clamp(1.8rem, 2.6vw, 2.6rem);
+    font-weight: 900;
+    font-size: clamp(2.4rem, 3.8vw, 3.8rem);
   }
 
   /* ======================= RESPONSIVE ======================= */
@@ -1558,7 +1624,7 @@ const werte = [
       margin-bottom: 3rem;
     }
     .fg strong {
-      font-size: clamp(2.2rem, 10vw, 3rem);
+      font-size: clamp(1.7rem, 7.4vw, 2.4rem);
     }
     .fg p {
       font-size: 0.9rem;
@@ -1627,17 +1693,11 @@ const werte = [
     .svc-2 .svc-img {
       clip-path: polygon(0 6%, 100% 0, 100% 100%, 0 100%);
     }
-    .values-list {
-      margin-right: calc(-1 * var(--gutter));
-    }
-    .value {
-      padding: 1.2rem var(--gutter) 1.2rem 2rem;
-    }
     .value:nth-child(2) {
-      margin-left: 5%;
+      margin-left: 6%;
     }
     .value:nth-child(3) {
-      margin-left: 10%;
+      margin-left: 12%;
     }
 
     .svc-grid > *,
@@ -1719,7 +1779,7 @@ const werte = [
       min-width: 0;
     }
     .film {
-      height: 220svh;
+      height: 170svh;
     }
     .film-sticky {
       height: 100svh;
@@ -1780,23 +1840,23 @@ const werte = [
       scrollTrigger: {
         trigger: show,
         start: 'top top',
-        end: () => `+=${(imgs.length - 1) * window.innerHeight * 1.05}`,
+        end: () => `+=${(imgs.length - 1) * window.innerHeight * 0.8}`,
         pin: true,
-        scrub: 1.2,
+        anticipatePin: 1,
+        scrub: 0.6,
         invalidateOnRefresh: true,
         onUpdate: (self) => {
           setActive(Math.min(imgs.length - 1, Math.round(self.progress * (imgs.length - 1))));
         },
       },
     });
-    tl.to({}, { duration: 0.12 });
     imgs.slice(1).forEach((img, i) => {
-      tl.to(img, { clipPath: 'inset(0% 0% 0% 0%)', ease: 'power1.inOut', duration: 1 });
+      tl.to(img, { clipPath: 'inset(0% 0% 0% 0%)', ease: 'none', duration: 1 });
       const inner = img.querySelector('img');
-      if (inner) tl.fromTo(inner, { scale: 1.12 }, { scale: 1, ease: 'power1.out', duration: 1 }, '<');
-      if (i < imgs.length - 2) tl.to({}, { duration: 0.12 });
+      if (inner) tl.fromTo(inner, { scale: 1.12 }, { scale: 1, ease: 'none', duration: 1 }, '<');
+      if (i < imgs.length - 2) tl.to({}, { duration: 0.05 });
     });
-    tl.to({}, { duration: 0.12 });
+    tl.to({}, { duration: 0.06 });
   });
 
   /* ---------- Leistungen: Hintergrund blendet weich ein und aus ---------- */
@@ -1852,15 +1912,14 @@ const werte = [
       apply();
       const tl = gsap.timeline({ scrollTrigger: { ...st, onRefresh: apply } });
       // 1. Q und Hammer lösen sich, die graue Fläche gibt das Video frei
-      tl.to(q, { opacity: 0, scale: 1.35, duration: 0.2, ease: 'power1.in' }, 0.1);
-      tl.to(raute, { opacity: 0, duration: 0.16, ease: 'none' }, 0.16);
+      tl.to(q, { opacity: 0, scale: 1.35, duration: 0.22, ease: 'power1.in' }, 0.06);
+      tl.to(raute, { opacity: 0, duration: 0.18, ease: 'none' }, 0.12);
       // 2. die Raute öffnet sich ohne Halt, bis das ganze Video zu sehen ist
-      tl.to(state, { f: 11, duration: 0.6, ease: 'power1.inOut', onUpdate: apply }, 0.26);
+      tl.to(state, { f: 11, duration: 0.62, ease: 'power1.inOut', onUpdate: apply }, 0.24);
       if (ui) {
         gsap.set(ui, { autoAlpha: 0, y: 30 });
-        tl.to(ui, { autoAlpha: 1, y: 0, duration: 0.16 }, 0.7);
+        tl.to(ui, { autoAlpha: 1, y: 0, duration: 0.14 }, 0.72);
       }
-      tl.to({}, { duration: 0.1 });
       window.addEventListener('resize', apply);
       return () => {
         window.removeEventListener('resize', apply);
@@ -1934,7 +1993,6 @@ const werte = [
     svcBottom = svcSec.bottom;
     const film = box(document.querySelector('[data-film]'))!;
     const vh = window.innerHeight;
-    const ax = W * 0.78; // Spitze der Raute (Hero und Leistungsübersicht)
     const tipY = film.top + vh * 0.22;
     const defs: { d: string; y: number }[] = [];
 
@@ -2080,7 +2138,7 @@ const werte = [
       const y = el.dataset.followY ? Number(el.dataset.followY) : box(el)!.top + 24;
       if (!el.classList.contains('is-in') && y <= t) {
         el.classList.add('is-in');
-        el.querySelectorAll<HTMLElement>('[data-num]').forEach((c) => setTimeout(() => countUp(c), 250));
+        el.querySelectorAll<HTMLElement>('[data-flap]').forEach((f) => setTimeout(() => runFlap(f), 200));
       }
     });
     // Randlinie der Werte wächst mit dem Scrollen
@@ -2158,55 +2216,75 @@ const werte = [
     img.style.clipPath = `polygon(0 0, ${topX.toFixed(1)}px 0, ${kinkX.toFixed(1)}px ${kinkY.toFixed(1)}px, ${x0.toFixed(1)}px ${h.toFixed(1)}px, 0 ${h.toFixed(1)}px)`;
   };
 
-  /* ---------- Zahlen zählen hoch, sobald sie erscheinen ---------- */
-  const counters = Array.from(document.querySelectorAll<HTMLElement>('[data-num]'));
-  if (!reduce) counters.forEach((c) => (c.textContent = c.dataset.numFrom ?? '0'));
-  const countUp = (c: HTMLElement) => {
-    if (c.dataset.done) return;
-    c.dataset.done = '1';
-    const to = Number(c.dataset.num);
-    const from = Number(c.dataset.numFrom ?? 0);
-    if (reduce) {
-      c.textContent = String(to);
-      return;
-    }
-    const t0 = performance.now();
-    const dur = 1600;
-    const step = (now: number) => {
-      const p = Math.min(1, (now - t0) / dur);
-      const e = 1 - Math.pow(1 - p, 3);
-      c.textContent = String(Math.round(from + (to - from) * e));
-      if (p < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  };
-
-  /* ---------- Familienbetrieb: Bänder fahren nacheinander von rechts herein ---------- */
+  /* ---------- Familienbetrieb: die Werte gleiten nacheinander von rechts herein ---------- */
   mm.add('(prefers-reduced-motion: no-preference)', () => {
     document.querySelectorAll<HTMLElement>('[data-band]').forEach((band) => {
       gsap.fromTo(
         band,
-        { xPercent: 100 },
-        { xPercent: 0, ease: 'power2.out', scrollTrigger: { trigger: band, start: 'top 100%', end: 'top 62%', scrub: 0.6 } },
+        { x: () => window.innerWidth * 0.35, opacity: 0 },
+        { x: 0, opacity: 1, ease: 'power3.out', scrollTrigger: { trigger: band, start: 'top 98%', end: 'top 60%', scrub: 0.5 } },
       );
     });
   });
 
-  /* ---------- Über uns: die drei Zahlen klappen beim Scrollen von oben nach unten um ---------- */
-  mm.add('(prefers-reduced-motion: no-preference)', () => {
-    const steps = document.querySelector('.figs-steps');
-    if (!steps) return;
-    const items = Array.from(steps.querySelectorAll<HTMLElement>('.fg'));
-    const tl = gsap.timeline({ scrollTrigger: { trigger: steps, start: 'top 90%', end: 'bottom 60%', scrub: 0.6 } });
-    items.forEach((el, i) => {
-      tl.fromTo(
-        el,
-        { rotationX: -100, transformOrigin: '50% 0%', opacity: 0 },
-        { rotationX: 0, opacity: 1, ease: 'power2.out', duration: 1 },
-        i * 0.55,
-      );
+  /* ---------- Über uns: Klapptafel wie am Flughafen ---------- */
+  const DIGITS = '0123456789';
+  const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const flapCell = (ch: string) => {
+    const c = document.createElement('span');
+    c.className = 'sf';
+    c.dataset.c = ch;
+    c.innerHTML = ['sf-top', 'sf-bot', 'sf-ft', 'sf-fb'].map((k) => `<span class="sf-h ${k}"><span>${ch}</span></span>`).join('');
+    return c;
+  };
+  // ein Umklappen: obere Hälfte fällt nach vorn, die neue untere Hälfte klappt herunter
+  const flapStep = (cell: HTMLElement, next: string) =>
+    new Promise<void>((done) => {
+      const cur = cell.dataset.c ?? ' ';
+      const [top, bot, ft, fb] = Array.from(cell.children) as HTMLElement[];
+      top!.firstElementChild!.textContent = next;
+      bot!.firstElementChild!.textContent = cur;
+      ft!.firstElementChild!.textContent = cur;
+      fb!.firstElementChild!.textContent = next;
+      gsap
+        .timeline({
+          onComplete: () => {
+            bot!.firstElementChild!.textContent = next;
+            ft!.firstElementChild!.textContent = next;
+            cell.dataset.c = next;
+            gsap.set(ft!, { rotationX: 0 });
+            gsap.set(fb!, { rotationX: 90 });
+            done();
+          },
+        })
+        .fromTo(ft!, { rotationX: 0 }, { rotationX: -90, duration: 0.055, ease: 'power1.in' })
+        .fromTo(fb!, { rotationX: 90 }, { rotationX: 0, duration: 0.055, ease: 'power1.out' });
     });
-  });
+  const flapEls = Array.from(document.querySelectorAll<HTMLElement>('[data-flap]'));
+  if (!reduce) {
+    flapEls.forEach((el) => {
+      const target = el.dataset.flap ?? '';
+      el.textContent = '';
+      el.setAttribute('aria-label', target);
+      [...target].forEach(() => el.appendChild(flapCell(' ')));
+    });
+  }
+  const runFlap = async (el: HTMLElement) => {
+    if (reduce || el.dataset.done) return;
+    el.dataset.done = '1';
+    const target = [...(el.dataset.flap ?? '')];
+    const cells = Array.from(el.querySelectorAll<HTMLElement>('.sf'));
+    await Promise.all(
+      cells.map(async (cell, i) => {
+        const ch = target[i]!;
+        const pool = /\d/.test(ch) ? DIGITS : LETTERS;
+        const start = Math.floor(Math.random() * pool.length);
+        const steps = 7 + i * 4;
+        for (let k = 0; k < steps; k++) await flapStep(cell, pool[(start + k) % pool.length]!);
+        await flapStep(cell, ch);
+      }),
+    );
+  };
 
   /* ---------- Über uns: Foto und Zahlen bewegen sich unterschiedlich schnell ---------- */
   mm.add('(prefers-reduced-motion: no-preference) and (min-width: 901px)', () => {
