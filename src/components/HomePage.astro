@@ -106,6 +106,7 @@ const werte = [
   <svg class="flow" data-flow aria-hidden="true">
     <path data-flow-path></path>
     <g data-flow-branches></g>
+    <g data-flow-svc></g>
   </svg>
 
   <!-- ======================= HERO ======================= -->
@@ -127,13 +128,19 @@ const werte = [
   <!-- ======================= EINSTIEG ======================= -->
   <section class="intro" data-intro>
     <div class="container intro-grid">
-      <h2 class="intro-h">Wir lieben<br /><span class="lt">Beton.</span></h2>
       <div class="intro-text">
+        <h2 class="intro-h">Wir lieben<br /><span class="lt">Beton.</span></h2>
         <p class="intro-p">
           Schalen, bewehren, betonieren: Seit {GRUENDUNGSJAHR} ist der Rohbau unser Handwerk. Als Familienbetrieb aus Hamburg bauen wir mit eigener
           Mannschaft Wohnhäuser, Büros und Hallen. Und wir freuen uns jedes Mal, wenn aus einem Plan ein Gebäude wird.
         </p>
-        <a class="svc-more" href={url('/unternehmen/')} data-follow data-line-link>
+      </div>
+      <div class="intro-visual">
+        <div class="intro-img">
+          <Image src={handwerkFoto} alt="Schalung mit Quirling-Logo und Bewehrung auf einer Baustelle" widths={[700, 1100, 1600]} sizes="(min-width: 900px) 50vw, 100vw" />
+        </div>
+        <!-- Knopf liegt halb über dem Bild -->
+        <a class="intro-btn" href={url('/unternehmen/')}>
           <span>Kennste uns schon?</span>
           <Icon name="arrow" />
         </a>
@@ -143,9 +150,6 @@ const werte = [
 
   <!-- ======================= LEISTUNGEN: Übersicht (eigene blaue Fläche) ======================= -->
   <section class="overview" id="leistungen" aria-labelledby="svc-h">
-    <div class="ov-img" aria-hidden="true">
-      <Image src={handwerkFoto} alt="" widths={[600, 900, 1200]} sizes="34vw" />
-    </div>
     <div class="container ov-in">
       <div class="ov-top">
         <h2 id="svc-h" class="svc-head" data-follow data-svc-head>Was wir <span class="lt">bauen.</span></h2>
@@ -174,7 +178,6 @@ const werte = [
         <article class:list={['svc', `svc-${i + 1}`]} data-svc>
           <div class="container svc-grid">
             <a class="svc-visual" href={url(`/leistungen/${s.slug}/`)} tabindex="-1" aria-hidden="true">
-              <span class="block block-in" />
               <span class="cut-img svc-img">
                 <Image src={s.img} alt="" widths={[600, 1000, 1400]} sizes="(min-width: 900px) 50vw, 100vw" />
               </span>
@@ -430,17 +433,23 @@ const werte = [
 
   /* ======================= EINSTIEG ======================= */
   .intro {
+    position: relative;
     overflow-x: clip;
-    padding-block: clamp(7rem, 12vw, 11rem) clamp(5rem, 9vw, 8rem);
+    padding-block: clamp(4rem, 7vw, 6rem) clamp(5rem, 9vw, 8rem);
   }
   .intro-grid {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
     gap: clamp(2rem, 4vw, 4rem);
-    align-items: end;
+    align-items: center;
+  }
+  .intro-text {
+    grid-column: 1 / 7;
+    display: grid;
+    gap: clamp(1.6rem, 3vw, 2.4rem);
+    align-content: start;
   }
   .intro-h {
-    grid-column: 1 / 8;
     font-family: var(--font-head);
     text-transform: uppercase;
     color: var(--blue);
@@ -449,19 +458,63 @@ const werte = [
   .intro-h .lt {
     font-weight: 300;
   }
-  .intro-text {
-    grid-column: 8 / 13;
-    display: grid;
-    gap: 2.2rem;
-    justify-items: start;
-    padding-bottom: 0.6rem;
-  }
   .intro-p {
     margin: 0;
+    max-width: 34rem;
     font-size: clamp(1.1rem, 1.3vw, 1.25rem);
-    line-height: 1.6;
+    line-height: 1.65;
     font-weight: 300;
     color: var(--ink);
+  }
+  /* Bild randlos bis an den rechten Rand, Innenkante mit Knick */
+  .intro-visual {
+    grid-column: 7 / 13;
+    position: relative;
+    z-index: 2;
+    margin-right: calc(-1 * var(--content-left));
+  }
+  .intro-img {
+    aspect-ratio: 4 / 3.4;
+    overflow: hidden;
+    clip-path: polygon(14% 0, 100% 0, 100% 100%, 8% 100%, 0 58%);
+  }
+  .intro-img :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  /* Knopf liegt halb auf der Bildkante */
+  .intro-btn {
+    position: absolute;
+    left: 0;
+    bottom: clamp(2rem, 5vw, 3.5rem);
+    transform: translateX(-42%);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1.1rem 1.6rem 1rem;
+    background: var(--navy);
+    color: #fff;
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    font-size: clamp(1.2rem, 1.6vw, 1.5rem);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    text-decoration: none;
+    box-shadow: 0 20px 40px -20px rgb(18 23 53 / 0.6);
+    transition: background 0.25s ease;
+  }
+  .intro-btn :global(svg) {
+    width: 1.2rem;
+    height: 1.2rem;
+    transition: transform 0.35s var(--ease);
+  }
+  .intro-btn:hover {
+    background: var(--blue);
+  }
+  .intro-btn:hover :global(svg) {
+    transform: translateX(4px);
   }
 
   /* ======================= KENNZAHLEN ======================= */
@@ -564,23 +617,6 @@ const werte = [
       22% 100%,
       0 calc(100% - clamp(0.8rem, 1.6vw, 1.4rem))
     );
-  }
-  /* Schalungsbild links, läuft bis an den Rand, Innenkante schräg */
-  .ov-img {
-    position: absolute;
-    inset: 0 auto 0 0;
-    width: 34vw;
-    clip-path: polygon(0 0, 100% 0, 70% 100%, 0 100%);
-  }
-  .ov-img :global(img) {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  .ov-in {
-    position: relative;
-    /* Inhalt rechts neben dem Bild */
-    padding-left: max(var(--content-left), calc(34vw + 3rem));
   }
   .ov-top {
     display: grid;
@@ -687,23 +723,24 @@ const werte = [
     column-gap: clamp(3rem, 7vw, 7rem);
     align-items: center;
   }
+  /* Bilder rechts, links, rechts; jeweils randlos bis an den Bildschirmrand */
   .svc-1 .svc-visual,
   .svc-3 .svc-visual {
-    grid-column: 1 / 5;
-    margin-left: calc(-1 * var(--content-left));
-  }
-  .svc-1 .svc-text,
-  .svc-3 .svc-text {
-    grid-column: 5 / 13;
-  }
-  .svc-2 .svc-visual {
     grid-column: 9 / 13;
     grid-row: 1;
     margin-right: calc(-1 * var(--content-left));
   }
-  .svc-2 .svc-text {
+  .svc-1 .svc-text,
+  .svc-3 .svc-text {
     grid-column: 1 / 9;
     grid-row: 1;
+  }
+  .svc-2 .svc-visual {
+    grid-column: 1 / 5;
+    margin-left: calc(-1 * var(--content-left));
+  }
+  .svc-2 .svc-text {
+    grid-column: 5 / 13;
   }
   .svc-visual {
     position: relative;
@@ -714,27 +751,13 @@ const werte = [
   .svc-img {
     position: relative;
     aspect-ratio: 5 / 6;
-    /* nur die Innenkante ist schräg, die Außenkante liegt am Bildschirmrand */
-    clip-path: polygon(0 0, 100% 0, 86% 100%, 0 100%);
+    /* Bild rechts: Innenkante links mit Knick, Unterkante steigt leicht an */
+    clip-path: polygon(14% 0, 100% 0, 100% 93%, 8% 100%, 0 58%);
   }
   .svc-2 .svc-img {
-    clip-path: polygon(14% 0, 100% 0, 100% 100%, 0 100%);
+    /* Bild links: gespiegelt */
+    clip-path: polygon(0 0, 86% 0, 100% 58%, 92% 100%, 0 93%);
   }
-  /* Navy-Block an der Innenkante unten */
-  /* Navy-Keil an der Innenkante: wächst aus der schrägen Bildkante heraus, unten bündig mit dem Bild */
-  .block-in {
-    right: -6%;
-    top: 45%;
-    bottom: 0;
-    width: 30%;
-    clip-path: polygon(0 0, 59% 0, 100% 100%, 0 100%);
-  }
-  .svc-2 .block-in {
-    right: auto;
-    left: -6%;
-    clip-path: polygon(46% 0, 100% 0, 100% 100%, 0 100%);
-  }
-
   .svc-img :global(img) {
     transition: transform 1.2s var(--ease);
   }
@@ -804,26 +827,25 @@ const werte = [
   .svc-facts {
     list-style: none;
     margin: 0 0 2.6rem;
-    padding: 0.4rem 0 0;
+    padding: 0;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1.2rem 1.6rem;
+    gap: 1rem 1.8rem;
   }
+  /* Icon neben dem Text, Text zurückhaltend */
   .svc-facts li {
     display: grid;
-    gap: 0.6rem;
-    align-content: start;
-    font-family: var(--font-head);
-    font-stretch: 68%;
-    font-weight: 700;
-    text-transform: uppercase;
-    font-size: clamp(1rem, 1.2vw, 1.15rem);
-    line-height: 1.1;
-    color: var(--navy);
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 0.75rem;
+    align-items: center;
+    font-size: 0.95rem;
+    font-weight: 300;
+    line-height: 1.4;
+    color: var(--ink-2);
   }
   .svc-facts :global(.svc-ico) {
-    width: 40px;
-    height: 40px;
+    width: 34px;
+    height: 34px;
     color: var(--blue);
   }
 
@@ -1312,8 +1334,8 @@ const werte = [
   }
   :global(html.typo-c) .intro-h {
     font-weight: 800;
-    font-size: clamp(3.4rem, 8vw, 8.4rem);
-    line-height: 0.92;
+    font-size: clamp(3.6rem, 8.6vw, 9.2rem);
+    line-height: 0.9;
   }
   :global(html.typo-c) .svc-head {
     font-weight: 800;
@@ -1322,8 +1344,8 @@ const werte = [
   }
   :global(html.typo-c) .svc-title {
     font-weight: 800;
-    font-size: clamp(2.2rem, 3.4vw, 3.6rem);
-    line-height: 0.9;
+    font-size: clamp(2.6rem, 4.4vw, 4.6rem);
+    line-height: 0.92;
   }
   :global(html.typo-c) .show-h {
     font-weight: 800;
@@ -1372,9 +1394,10 @@ const werte = [
     .ov {
       grid-template-columns: minmax(0, 1fr);
     }
-    .intro-h,
     .intro-text,
-
+    .intro-visual {
+      grid-column: 1 / -1;
+    }
     .figs-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
@@ -1385,17 +1408,21 @@ const werte = [
     .cl-a {
       font-size: clamp(1.5rem, 7.4vw, 2.2rem);
     }
-    .ov-img {
-      position: relative;
-      inset: auto;
-      width: 100%;
-      height: 220px;
-      margin-top: -6rem;
-      margin-bottom: 3rem;
-      clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
+    .intro-visual {
+      margin-inline: calc(-1 * var(--gutter));
+      margin-top: 1rem;
     }
-    .ov-in {
-      padding-left: var(--gutter);
+    .intro-img {
+      clip-path: polygon(0 6%, 100% 0, 100% 100%, 0 100%);
+    }
+    .intro-btn {
+      left: var(--gutter);
+      bottom: auto;
+      top: 100%;
+      transform: translateY(-50%);
+    }
+    .intro {
+      padding-bottom: 6rem;
     }
     .ov {
       padding-bottom: 2rem;
@@ -1414,22 +1441,15 @@ const werte = [
     .svc .svc-img {
       clip-path: none;
     }
-    .block-in {
-      display: none;
-    }
     .svc-visual {
       margin-bottom: 2.5rem;
     }
     .svc-facts {
       grid-template-columns: minmax(0, 1fr);
     }
-    .svc-facts li {
-      grid-template-columns: 32px 1fr;
-      align-items: center;
-    }
-    .svc-facts :global(.svc-ico) {
-      width: 32px;
-      height: 32px;
+    .svc .svc-img,
+    .svc-2 .svc-img {
+      clip-path: polygon(0 6%, 100% 0, 100% 100%, 0 100%);
     }
     .rail-values {
       right: 8px;
@@ -1646,6 +1666,8 @@ const werte = [
   let total = 0;
   const samples: { len: number; y: number }[] = [];
   let branches: { el: SVGPathElement; len: number; y: number; shown: boolean }[] = [];
+  const svcG = svg?.querySelector<SVGGElement>('[data-flow-svc]');
+  let svcPaths: { el: SVGPathElement; len: number; y0: number; y1: number }[] = [];
   let tipEnd = Infinity;
   let railX = 0;
   // Abzweige (Werte, Karriere) enden exakt an der Linie
@@ -1708,7 +1730,7 @@ const werte = [
   };
 
   const build = () => {
-    if (!svg || !path || !branchG || window.innerWidth <= 900) return;
+    if (!svg || !path || !branchG || !svcG || window.innerWidth <= 900) return;
     const doc = document.documentElement;
     const W = doc.clientWidth;
     const cont = document.querySelector<HTMLElement>('.intro .container');
@@ -1745,41 +1767,49 @@ const werte = [
       defs.push({ d: `M${x} ${yU} V${end} M${x - 7} ${end + 9} L${x} ${end} L${x + 7} ${end + 9}`, y: yU });
     });
 
-    // Leistungen einzeln: senkrechte Teillinie entlang der schrägen Bildkante und des Navy-Blocks,
-    // von dort ein Abzweig zum Link
-    const svcLines: string[] = [];
+    // Leistungen einzeln: Linie entlang der geknickten Bildkante (genau ein Knick),
+    // eigene Pfade, die sich mit dem Scrollen durch die Zeile aufbauen
     let lastSvc: { x: number; y: number } | null = null;
+    svcG!.innerHTML = '';
+    svcPaths = [];
     document.querySelectorAll<HTMLElement>('[data-svc]').forEach((r) => {
       const img = box(r.querySelector('.svc-img'))!;
-      const blk = box(r.querySelector('.block-in'))!;
       const link = r.querySelector<HTMLElement>('[data-line-link]');
       const text = box(r.querySelector('.svc-text'))!;
       const imageLeft = img.right <= text.left;
       const w = img.right - img.left;
       const h = img.bottom - img.top;
-      const gap = 22;
-      // Außenkante: oben die schräge Bildkante, ab dem Keil dessen Kante (genau ein Knick)
-      const xImg = (y: number) => {
-        const f = Math.min(1, Math.max(0, (y - img.top) / h));
-        return imageLeft ? img.right - w * 0.14 * f : img.left + w * 0.14 * f;
-      };
-      const kinkY = blk.top;
-      const bottomX = imageLeft ? blk.right : blk.left;
+      const off = imageLeft ? 22 : -22;
+      // Innenkante: oben 14 % eingerückt, Knick bei 58 % genau an der Kante, unten 8 % eingerückt
+      const pts = imageLeft
+        ? [
+            { x: img.right - w * 0.14, y: img.top },
+            { x: img.right, y: img.top + h * 0.58 },
+            { x: img.right - w * 0.08, y: img.bottom },
+          ]
+        : [
+            { x: img.left + w * 0.14, y: img.top },
+            { x: img.left, y: img.top + h * 0.58 },
+            { x: img.left + w * 0.08, y: img.bottom },
+          ];
       const edge = (y: number) => {
-        if (y <= kinkY) return xImg(y);
-        const g = Math.min(1, (y - kinkY) / (img.bottom - kinkY));
-        return xImg(kinkY) + (bottomX - xImg(kinkY)) * g;
+        const [a, k, z] = pts as [{ x: number; y: number }, { x: number; y: number }, { x: number; y: number }];
+        if (y <= k.y) return a.x + ((k.x - a.x) * (y - a.y)) / (k.y - a.y);
+        return k.x + ((z.x - k.x) * (y - k.y)) / (z.y - k.y);
       };
-      const off = imageLeft ? gap : -gap;
-      const p0 = { x: xImg(img.top) + off, y: img.top };
-      const p1 = { x: xImg(kinkY) + off, y: kinkY };
-      const p2 = { x: bottomX + off, y: img.bottom };
-      svcLines.push(`M${p0.x} ${p0.y} L${p1.x} ${p1.y} L${p2.x} ${p2.y}`);
-      lastSvc = p2;
+      const pd = pts.map((pt, i) => `${i ? 'L' : 'M'}${pt.x + off} ${pt.y}`).join(' ');
+      const el = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      el.setAttribute('d', pd);
+      svcG!.appendChild(el);
+      const len = el.getTotalLength();
+      el.style.strokeDasharray = `${len}`;
+      el.style.strokeDashoffset = `${len}`;
+      svcPaths.push({ el, len, y0: img.top, y1: img.bottom });
+      lastSvc = { x: pts[2]!.x + off, y: img.bottom };
       if (link) {
         const lb = box(link)!;
         const y = (lb.top + lb.bottom) / 2;
-        link.dataset.lineX = String(edge(y) + (imageLeft ? gap : -gap));
+        link.dataset.lineX = String(edge(y) + off);
       }
     });
 
@@ -1802,10 +1832,8 @@ const werte = [
       `L${R} ${hero.bottom + 140}`,
       `V${yU}`,
       `H${colX[0] ?? L}`,
-      // Leistungen: Teillinien an den Bildern; die letzte führt weiter zum rechten Rand
-      ...svcLines,
-      // durch „Familienbetrieb“ (dort als helle Randlinie sichtbar) direkt weiter zu den Zahlen
-      end ? `V${Math.max(end.y + 24, values.top - 70)} H${R}` : `M${R} ${values.top - 70}`,
+      // ab dem Ende der letzten Leistungslinie zum rechten Rand und durch „Familienbetrieb“ zu den Zahlen
+      end ? `M${end.x} ${end.y} V${Math.max(end.y + 24, values.top - 70)} H${R}` : `M${R} ${values.top - 70}`,
       `V${yF}`,
       `H${figCols[0] ? figCols[0].left + 8 : L}`,
     ].join(' ');
@@ -1867,6 +1895,12 @@ const werte = [
       gsap.to(b.el, { strokeDashoffset: show ? 0 : b.len, duration: instant || reduce ? 0 : 0.5, ease: 'power2.out', overwrite: true });
     });
     document.querySelector('[data-film-feed]')?.classList.toggle('is-on', t >= tipEnd);
+    // Leistungslinien: wachsen, während man durch die Zeile scrollt
+    const ts = window.scrollY + window.innerHeight * 0.7;
+    svcPaths.forEach((sp) => {
+      const f = reduce ? 1 : Math.min(1, Math.max(0, (ts - sp.y0) / (sp.y1 - sp.y0)));
+      sp.el.style.strokeDashoffset = String(sp.len * (1 - f));
+    });
     if (reduce) {
       path.style.strokeDashoffset = '0';
       return;
