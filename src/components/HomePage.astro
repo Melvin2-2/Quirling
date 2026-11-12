@@ -9,9 +9,7 @@ import { firma, leistungen, GRUENDUNGSJAHR } from '~/data/site';
 import { url } from '~/lib/url';
 import heroPoster from '~/assets/site/hero-poster.jpg';
 import filmPoster from '~/assets/site/film-poster.jpg';
-import teamFoto from '~/assets/team/baustellenteam.jpg';
 import { leistungBild } from '~/data/leistung-bilder';
-import handwerkFoto from '~/assets/site/handwerk-schalung.jpg';
 
 interface Props {
   /** Typografie-Variante: 'a' (Standard), 'b' oder 'c' (Entwürfe) */
@@ -107,33 +105,100 @@ const werte = [
     </div>
   </section>
 
-  <!-- ======================= HANDWERK ======================= -->
-  <section class="intro">
-    <div class="container">
-      <div class="intro-grid" data-intro>
-        <div class="intro-visual">
-          <span class="block block-l" aria-hidden="true"></span>
-          <div class="cut-img intro-img">
-            <Image
-              src={handwerkFoto}
-              alt="Schalung mit Quirling-Logo und Bewehrung auf einer Baustelle"
-              widths={[600, 1000, 1400]}
-              sizes="(min-width: 900px) 45vw, 100vw"
-            />
-          </div>
-        </div>
-        <div class="intro-text">
-          <h2 class="h1 intro-h">Eine Basis,<br /><span class="lt">auf die Sie<br />bauen können.</span></h2>
-          <p class="intro-p">
-            Rohbau ist unser Handwerk. Seit {GRUENDUNGSJAHR} erstellen wir mit einem eingespielten Team Fundamente, Wände und Decken in Beton
-            und Stahlbeton. Familiengeführt und bis zum Schluss sorgfältig.
-          </p>
-          <a class="svc-more" href={url('/unternehmen/')} data-follow data-line-link>
-            <span>Mehr über uns</span>
-            <Icon name="arrow" />
-          </a>
-        </div>
+  <!-- ======================= EINSTIEG ======================= -->
+  <section class="intro" data-intro>
+    <div class="container intro-grid">
+      <h2 class="intro-h">Wir lieben<br /><span class="lt">Beton.</span></h2>
+      <div class="intro-text">
+        <p class="intro-p">
+          Schalen, bewehren, betonieren: Seit {GRUENDUNGSJAHR} ist der Rohbau unser Handwerk. Als Familienbetrieb aus Hamburg bauen wir mit eigener
+          Mannschaft Wohnhäuser, Büros und Hallen. Und wir freuen uns jedes Mal, wenn aus einem Plan ein Gebäude wird.
+        </p>
+        <a class="svc-more" href={url('/unternehmen/')} data-follow data-line-link>
+          <span>Mehr über uns</span>
+          <Icon name="arrow" />
+        </a>
       </div>
+    </div>
+  </section>
+
+  <!-- ======================= LEISTUNGEN ======================= -->
+  <section class="services" id="leistungen" data-services aria-labelledby="svc-h">
+    <div class:list={['svc-bg', `svc-bg-${svcBg}`]} data-svc-bg aria-hidden="true">
+      {
+        svcBg === 'rauten' && (
+          <>
+            <span class="rh rh-1" data-rh="-160" />
+            <span class="rh rh-2" data-rh="120" />
+            <span class="rh rh-3" data-rh="-80" />
+            <span class="rh rh-4" data-rh="200" />
+          </>
+        )
+      }
+    </div>
+    <div class="container">
+      <h2 id="svc-h" class="svc-head" data-follow data-svc-head>Was wir <span class="lt">bauen.</span></h2>
+      <!-- Übersicht: alle drei Leistungen nebeneinander, die Linie kommt von unten mit Pfeilen -->
+      <div class="ov">
+        {
+          leistungen.map((l) => (
+            <a class="ov-col" href={url(`/leistungen/${l.slug}/`)} data-line-up>
+              <h3 class="ov-t" set:html={l.title} />
+              <p>{l.kurz}</p>
+              <span class="text-link">
+                <span>Mehr erfahren</span>
+                <Icon name="arrow" />
+              </span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+    {
+      services.map((s, i) => (
+        <article class:list={['svc', `svc-${i + 1}`]} data-svc>
+          <div class="container svc-grid">
+            <a class="svc-visual" href={url(`/leistungen/${s.slug}/`)} tabindex="-1" aria-hidden="true">
+              <span class="block block-in" />
+              <span class="cut-img svc-img">
+                <Image src={s.img} alt="" widths={[600, 1000, 1400]} sizes="(min-width: 900px) 50vw, 100vw" />
+              </span>
+            </a>
+            <div class="svc-text">
+              <h3 class="svc-title">{s.title}</h3>
+              <p>{s.text}</p>
+              <a class="svc-more" href={url(`/leistungen/${s.slug}/`)} data-follow data-line-link>
+                <span>Mehr erfahren</span>
+                <Icon name="arrow" />
+              </a>
+            </div>
+          </div>
+        </article>
+      ))
+    }
+  </section>
+
+  <!-- ======================= WERTE ======================= -->
+  <section class="values on-blue" data-values>
+    <span class="rail rail-values" aria-hidden="true"><span data-values-bar></span></span>
+    <div class="container values-grid">
+      <div class="values-head">
+        <h2 class="values-h">Familien&shy;betrieb.</h2>
+        <p class="values-core">Hinter jedem Bauvorhaben steht die Familie Quirling. Mit Namen und Handschlag.</p>
+      </div>
+      <ul class="values-list">
+        {
+          werte.map((w) => (
+            <li class="value" data-follow data-to-rail>
+              <div class="value-text">
+                <h3>{w.t}</h3>
+                <p>{w.d}</p>
+              </div>
+              <ValueIcon name={w.icon} class="value-icon" frame={false} />
+            </li>
+          ))
+        }
+      </ul>
     </div>
   </section>
 
@@ -158,48 +223,11 @@ const werte = [
           <span>Unser Einsatzgebiet</span>
         </div>
       </div>
+      <a class="svc-more figs-more" href={url('/unternehmen/')} data-follow data-line-link>
+        <span>Mehr über uns</span>
+        <Icon name="arrow" />
+      </a>
     </div>
-  </section>
-
-  <!-- ======================= LEISTUNGEN ======================= -->
-  <section class="services" id="leistungen" data-services aria-labelledby="svc-h">
-    <div class:list={['svc-bg', `svc-bg-${svcBg}`]} data-svc-bg aria-hidden="true">
-      {
-        svcBg === 'rauten' && (
-          <>
-            <span class="rh rh-1" data-rh="-160" />
-            <span class="rh rh-2" data-rh="120" />
-            <span class="rh rh-3" data-rh="-80" />
-            <span class="rh rh-4" data-rh="200" />
-          </>
-        )
-      }
-    </div>
-    <div class="container">
-      <h2 id="svc-h" class="svc-head" data-follow data-svc-head>Was wir <span class="lt">bauen.</span></h2>
-    </div>
-    {
-      services.map((s, i) => (
-        <article class:list={['svc', `svc-${i + 1}`]} data-svc>
-          <div class="container svc-grid">
-            <a class="svc-visual" href={url(`/leistungen/${s.slug}/`)} tabindex="-1" aria-hidden="true">
-              <span class="block block-l" />
-              <span class="cut-img svc-img">
-                <Image src={s.img} alt="" widths={[600, 1000, 1400]} sizes="(min-width: 900px) 50vw, 100vw" />
-              </span>
-            </a>
-            <div class="svc-text">
-              <h3 class="svc-title">{s.title}</h3>
-              <p>{s.text}</p>
-              <a class="svc-more" href={url(`/leistungen/${s.slug}/`)} data-follow data-line-link>
-                <span>Mehr erfahren</span>
-                <Icon name="arrow" />
-              </a>
-            </div>
-          </div>
-        </article>
-      ))
-    }
   </section>
 
   <!-- ======================= PROJEKTE (3 × scrollen) ======================= -->
@@ -238,53 +266,6 @@ const werte = [
     </div>
   </section>
 
-  <!-- ======================= WERTE ======================= -->
-  <section class="values on-blue" data-values>
-    <span class="rail rail-values" aria-hidden="true"><span data-values-bar></span></span>
-    <div class="container values-grid">
-      <div class="values-head">
-        <h2 class="values-h">Familien&shy;betrieb.</h2>
-        <p class="values-core">Hinter jedem Bauvorhaben steht die Familie Quirling. Mit Namen und Handschlag.</p>
-      </div>
-      <ul class="values-list">
-        {
-          werte.map((w) => (
-            <li class="value" data-follow data-to-rail>
-              <div class="value-text">
-                <h3>{w.t}</h3>
-                <p>{w.d}</p>
-              </div>
-              <ValueIcon name={w.icon} class="value-icon" frame={false} />
-            </li>
-          ))
-        }
-      </ul>
-    </div>
-  </section>
-
-  <!-- ======================= KARRIERE ======================= -->
-  <section class="career">
-    <div class="career-stamp" data-follow aria-hidden="true">
-      <span class="cl-a"><QHammer class="cl-hammer" color="#fff" highlight="#3948A4" />Mit anpacken</span>
-      <span class="cl-b">bei Quirling</span>
-    </div>
-    <div class="container career-grid">
-      <div class="career-visual">
-        <span class="block block-l" aria-hidden="true"></span>
-        <div class="cut-img career-img">
-          <Image src={teamFoto} alt="Das Team der Quirling GmbH mit Geschäftsführer Thomas Quirling" widths={[700, 1100, 1440]} sizes="(min-width: 900px) 55vw, 100vw" />
-        </div>
-      </div>
-      <div class="career-text">
-        <h2 class="h2 career-h">Werde Teil<br /><span class="lt">des Teams.</span></h2>
-        <p class="career-lead">
-          Ein familiengeführtes Team aus erfahrenen Profis und jungen Kollegen. Wir suchen Verstärkung auf der Baustelle und im Büro.
-        </p>
-        <a class="pill" href={url('/karriere/')}><span>Jetzt bewerben</span><Icon name="arrow" /></a>
-      </div>
-    </div>
-  </section>
-
   <!-- ======================= FILM (Raute) ======================= -->
   <section class="film" data-film>
     <div class="film-sticky">
@@ -297,6 +278,17 @@ const werte = [
       <div class="film-ui" data-film-ui>
         <h2 class="h-display">Quirling<br /><span class="lt">von oben.</span></h2>
       </div>
+    </div>
+  </section>
+
+  <!-- ======================= MIT ANPACKEN (Stempel) ======================= -->
+  <section class="join" aria-label="Karriere">
+    <div class="container join-in">
+      <div class="career-stamp" data-follow>
+        <span class="cl-a"><QHammer class="cl-hammer" color="#fff" highlight="#3948A4" />Mit anpacken</span>
+        <span class="cl-b">Werde Teil des Teams</span>
+      </div>
+      <a class="pill join-btn" href={url('/karriere/')}><span>Zur Karriere</span><Icon name="arrow" /></a>
     </div>
   </section>
 </Base>
@@ -418,41 +410,40 @@ const werte = [
     white-space: nowrap;
   }
 
-  /* ======================= INTRO ======================= */
+  /* ======================= EINSTIEG ======================= */
   .intro {
     overflow-x: clip;
-    padding-block: clamp(7rem, 12vw, 11rem) clamp(6rem, 10vw, 9rem);
+    padding-block: clamp(7rem, 12vw, 11rem) clamp(5rem, 9vw, 8rem);
   }
   .intro-grid {
-    /* endet mit Abstand vor der Linie, die bei 78 % der Breite senkrecht nach unten läuft */
-    width: min(100%, calc(78vw - var(--content-left) - 4.5rem));
     display: grid;
-    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-    gap: clamp(2.5rem, 6vw, 6rem);
-    align-items: center;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: clamp(2rem, 4vw, 4rem);
+    align-items: end;
   }
   .intro-h {
+    grid-column: 1 / 8;
+    font-family: var(--font-head);
+    text-transform: uppercase;
     color: var(--blue);
-    font-size: clamp(1.7rem, 2.6vw, 2.8rem);
-    white-space: nowrap;
-    margin-bottom: 1.6rem;
+    margin: 0;
+  }
+  .intro-h .lt {
+    font-weight: 300;
+  }
+  .intro-text {
+    grid-column: 8 / 13;
+    display: grid;
+    gap: 1.4rem;
+    justify-items: start;
+    padding-bottom: 0.6rem;
   }
   .intro-p {
-    font-size: 0.95rem;
-    max-width: 30rem;
-    color: var(--ink-2);
-    margin-bottom: 2rem;
-  }
-  .intro-visual {
-    position: relative;
-    z-index: 2;
-    padding: 2.5rem 0 2.5rem 2.5rem;
-  }
-
-  .intro-img {
-    position: relative;
-    aspect-ratio: 4 / 3;
-    clip-path: polygon(9% 0, 100% 0, 91% 100%, 0 100%);
+    margin: 0;
+    font-size: clamp(1.1rem, 1.3vw, 1.25rem);
+    line-height: 1.6;
+    font-weight: 300;
+    color: var(--ink);
   }
 
   /* ======================= KENNZAHLEN ======================= */
@@ -489,6 +480,9 @@ const werte = [
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--ink-3);
+  }
+  .figs-more {
+    margin-top: clamp(2rem, 4vw, 3rem);
   }
   /* Einblenden, sobald die Linie die Stelle erreicht */
   [data-follow] {
@@ -658,33 +652,74 @@ const werte = [
       background-position: 0 0;
     }
   }
+  /* Übersicht: drei Spalten, die Linie läuft darunter und zeigt mit Pfeilen von unten hinein */
+  .ov {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(2rem, 4vw, 4rem);
+    margin-top: clamp(1.5rem, 3vw, 2.5rem);
+    padding-bottom: clamp(5rem, 8vw, 7rem);
+  }
+  .ov-col {
+    display: grid;
+    gap: 1rem;
+    align-content: start;
+    justify-items: start;
+    color: inherit;
+    text-decoration: none;
+  }
+  .ov-t {
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: clamp(1.8rem, 2.6vw, 2.7rem);
+    line-height: 0.97;
+    color: var(--blue);
+    margin: 0;
+    hyphens: manual;
+  }
+  .ov-col p {
+    margin: 0;
+    font-size: 1.0625rem;
+    font-weight: 300;
+    line-height: 1.6;
+    color: var(--ink-2);
+  }
+  .ov-col:hover .ov-t {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.12em;
+  }
+
+  /* Leistungen einzeln: Bilder abwechselnd links / rechts, bis an den Bildschirmrand */
   .svc {
     padding-block: clamp(2.75rem, 5vw, 4.5rem);
   }
   .svc-grid {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: clamp(1.25rem, 3vw, 2.5rem);
+    /* breite Fuge: hier läuft die Linie zwischen Bild und Text */
+    column-gap: clamp(3rem, 7vw, 7rem);
     align-items: center;
   }
-  /* Bilder treppen sich entlang der Diagonale nach rechts unten */
-  .svc-1 .svc-visual {
+  .svc-1 .svc-visual,
+  .svc-3 .svc-visual {
     grid-column: 1 / 8;
+    margin-left: calc(-1 * var(--content-left));
   }
-  .svc-1 .svc-text {
+  .svc-1 .svc-text,
+  .svc-3 .svc-text {
     grid-column: 8 / 13;
   }
   .svc-2 .svc-visual {
-    grid-column: 2 / 9;
+    grid-column: 6 / 13;
+    grid-row: 1;
+    margin-right: calc(-1 * var(--content-left));
   }
   .svc-2 .svc-text {
-    grid-column: 9 / 13;
-  }
-  .svc-3 .svc-visual {
-    grid-column: 1 / 8;
-  }
-  .svc-3 .svc-text {
-    grid-column: 8 / 13;
+    grid-column: 1 / 6;
+    grid-row: 1;
   }
   .svc-visual {
     position: relative;
@@ -694,8 +729,25 @@ const werte = [
 
   .svc-img {
     position: relative;
-    aspect-ratio: 16 / 11;
-    clip-path: polygon(9% 0, 100% 0, 91% 100%, 0 100%);
+    aspect-ratio: 16 / 10;
+    /* nur die Innenkante ist schräg, die Außenkante liegt am Bildschirmrand */
+    clip-path: polygon(0 0, 100% 0, 91% 100%, 0 100%);
+  }
+  .svc-2 .svc-img {
+    clip-path: polygon(9% 0, 100% 0, 100% 100%, 0 100%);
+  }
+  /* Navy-Block an der Innenkante unten */
+  .block-in {
+    right: -5%;
+    top: 34%;
+    bottom: -6%;
+    width: 26%;
+    clip-path: polygon(30% 0, 64% 0, 100% 100%, 0 100%);
+  }
+  .svc-2 .block-in {
+    right: auto;
+    left: -5%;
+    clip-path: polygon(36% 0, 70% 0, 100% 100%, 0 100%);
   }
 
   .svc-img :global(img) {
@@ -1004,42 +1056,24 @@ const werte = [
     margin: 0;
   }
 
-  /* ======================= KARRIERE ======================= */
-  .career {
-    padding-block: clamp(5rem, 10vw, 9rem);
-  }
-  .career-grid {
-    display: grid;
-    grid-template-columns: 1.15fr 1fr;
-    gap: clamp(3rem, 7vw, 7rem);
-    align-items: center;
-  }
-  .career-visual {
+  /* ======================= MIT ANPACKEN ======================= */
+  .join {
     position: relative;
-    z-index: 2;
-  }
-  .career-img {
-    position: relative;
-    aspect-ratio: 3 / 2;
-    /* dezent geneigte Seitenkanten, niemand wird angeschnitten */
-    clip-path: polygon(0 0, 93% 0, 100% 100%, 7% 100%);
-  }
-  .career {
-    position: relative;
+    padding-block: clamp(5rem, 10vw, 8rem);
     overflow-x: clip;
   }
-  /* Stempel an der Linie: hängt mit der rechten Kante an der Linie */
-  .career-stamp {
-    position: absolute;
-    right: var(--rail-r, 34px);
-    bottom: clamp(3rem, 7vw, 5.5rem);
-    z-index: 3;
+  .join-in {
     display: grid;
-    justify-items: end;
-    pointer-events: none;
+    justify-items: center;
+    gap: clamp(1.8rem, 3vw, 2.6rem);
+  }
+  /* Stempel ploppt auf, sobald man ihn erreicht */
+  .career-stamp {
+    display: grid;
+    justify-items: center;
   }
   .career-stamp[data-follow] {
-    transform: rotate(-4deg) scale(1.25);
+    transform: rotate(-4deg) scale(1.35);
     transition:
       opacity 0.35s ease,
       transform 0.55s cubic-bezier(0.3, 1.6, 0.5, 1);
@@ -1061,8 +1095,8 @@ const werte = [
     align-items: center;
     gap: 0.6rem;
     font-weight: 800;
-    font-size: clamp(1.3rem, 2.4vw, 2.1rem);
-    padding: 0.7rem 1.1rem 0.6rem;
+    font-size: clamp(2rem, 4.4vw, 4.2rem);
+    padding: 0.8rem 1.4rem 0.7rem;
   }
   .cl-a :global(.cl-hammer) {
     width: 1.1em;
@@ -1070,21 +1104,9 @@ const werte = [
   }
   .cl-b {
     font-weight: 300;
-    font-size: clamp(0.9rem, 1.4vw, 1.2rem);
-    padding: 0.35rem 1.1rem 0.5rem;
+    font-size: clamp(1.1rem, 2vw, 1.8rem);
+    padding: 0.45rem 1.4rem 0.6rem;
     background: var(--navy);
-  }
-  .career-h {
-    font-size: clamp(2.2rem, 4vw, 4rem);
-    white-space: nowrap;
-    color: var(--blue);
-    margin-bottom: 1.6rem;
-  }
-  .career-lead {
-    font-size: 0.95rem;
-    color: var(--ink-2);
-    margin-bottom: 1.4rem;
-    max-width: 26rem;
   }
   /* ======================= FILM ======================= */
   .film {
@@ -1179,18 +1201,12 @@ const werte = [
     font-weight: 900;
     font-size: clamp(1.6rem, 2.4vw, 2.5rem);
   }
-  :global(html.typo-b) .career-h {
-    font-weight: 900;
-    font-size: clamp(2.4rem, 4.4vw, 4.6rem);
-    line-height: 0.9;
-  }
   :global(html.typo-b) .fg strong {
     font-weight: 900;
   }
   /* Fließtexte kleiner, ruhiger */
   :global(html.typo-b) .intro-p,
   :global(html.typo-b) .svc-text p,
-  :global(html.typo-b) .career-lead,
   :global(html.typo-b) .show-desc,
   :global(html.typo-b) .value p {
     font-size: 1.0625rem;
@@ -1234,7 +1250,6 @@ const werte = [
   :global(html.typo-c) .show-title,
   :global(html.typo-c) .values-h,
   :global(html.typo-c) .value h3,
-  :global(html.typo-c) .career-h,
   :global(html.typo-c) .fg strong,
   :global(html.typo-c) .cl-a {
     font-stretch: 68%;
@@ -1246,10 +1261,9 @@ const werte = [
     line-height: 0.86;
   }
   :global(html.typo-c) .intro-h {
-    /* Umlaut in „können“: etwas mehr Zeilenabstand */
     font-weight: 800;
-    font-size: clamp(2.4rem, 3.9vw, 4.4rem);
-    line-height: 0.98;
+    font-size: clamp(3.4rem, 8vw, 8.4rem);
+    line-height: 0.92;
   }
   :global(html.typo-c) .svc-head {
     font-weight: 800;
@@ -1278,11 +1292,6 @@ const werte = [
   :global(html.typo-c) .value h3 {
     font-weight: 800;
     font-size: clamp(2rem, 3.2vw, 3.2rem);
-  }
-  :global(html.typo-c) .career-h {
-    font-weight: 800;
-    font-size: clamp(3rem, 5.6vw, 6rem);
-    line-height: 0.86;
   }
   :global(html.typo-c) .fg strong {
     font-weight: 800;
@@ -1322,8 +1331,15 @@ const werte = [
       padding-top: 5rem;
     }
     .intro-grid,
-    .career-grid {
-      grid-template-columns: 1fr;
+    .ov {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .intro-h,
+    .intro-text {
+      grid-column: 1 / -1;
+    }
+    .ov {
+      padding-bottom: 2rem;
     }
     .figs-field {
       height: auto;
@@ -1346,6 +1362,15 @@ const werte = [
       grid-column: auto;
       grid-row: auto;
     }
+    .svc .svc-visual {
+      margin-inline: calc(-1 * var(--gutter));
+    }
+    .svc .svc-img {
+      clip-path: none;
+    }
+    .block-in {
+      display: none;
+    }
     .svc-visual {
       margin-bottom: 2.5rem;
     }
@@ -1356,7 +1381,6 @@ const werte = [
       --rail-gap: 8px;
     }
     .svc-grid > *,
-    .career-grid > *,
     .intro-grid > * {
       min-width: 0;
     }
@@ -1364,18 +1388,7 @@ const werte = [
       font-size: clamp(1.35rem, 7.2vw, 1.9rem);
     }
     .cl-a {
-      font-size: clamp(1.05rem, 5.6vw, 1.4rem);
-    }
-    .career {
-      overflow-x: clip;
-    }
-    .career-stamp {
-      position: static;
-      justify-items: start;
-      margin: 0 var(--gutter) 3rem;
-    }
-    .intro-visual {
-      margin-bottom: 1.5rem;
+      font-size: clamp(1.4rem, 8vw, 2.2rem);
     }
     .show-in {
       grid-template-columns: 1fr;
@@ -1440,12 +1453,8 @@ const werte = [
     }
     .hero-title,
     .show-h,
-    .career-h,
     .intro-h {
       white-space: normal;
-    }
-    .intro-grid {
-      width: 100%;
     }
     .value h3 {
       font-size: clamp(0.95rem, 4.6vw, 1.5rem);
@@ -1637,6 +1646,7 @@ const werte = [
     if (!cont) return;
     const cb = box(cont)!;
     const pad = parseFloat(getComputedStyle(cont).paddingLeft);
+    // Randspuren links und rechts neben dem Inhalt
     const L = Math.max(34, cb.left + pad - 36);
     const R = Math.min(W - 34, cb.right - pad + 36);
     const hero = box(document.querySelector('[data-hero]'))!;
@@ -1648,35 +1658,58 @@ const werte = [
     const ax = W * 0.78; // Spitze der Hero-Unterkante
     const cx = W / 2;
     const tipY = film.top + vh * 0.22;
-    // Leistungen: die Linie läuft unter der großen Überschrift entlang (und deckt sie dabei auf),
-    // danach ruhig senkrecht am rechten Rand weiter
-    const head = document.querySelector<HTMLElement>('[data-svc-head]')!;
-    const uy = box(head)!.bottom;
-    head.dataset.followY = String(uy);
-    // Handwerk: die Linie läuft von der Hero-Spitze senkrecht nach unten, rechts am Inhalt vorbei
-    const d = [
-      `M${ax} ${hero.bottom}`,
-      `V${figs.top}`,
-      `L${L} ${figs.bottom}`,
-      `V${uy}`,
-      `H${R}`,
-      `V${film.top + 40}`,
-      `H${cx}`,
-      `V${tipY}`,
-    ].join(' ');
+    const defs: { d: string; y: number }[] = [];
+
+    // Einstieg: „Mehr über uns“ hängt an der rechten Randspur
+    const introLink = document.querySelector<HTMLElement>('[data-intro] [data-line-link]');
+    if (introLink) introLink.dataset.lineX = String(R);
+
+    // Übersicht: die Linie läuft unter den drei Spalten durch, je ein Pfeil zeigt von unten hinein
+    const cols = Array.from(document.querySelectorAll<HTMLElement>('[data-line-up]')).map((c) => box(c)!);
+    const yU = Math.max(...cols.map((c) => c.bottom)) + 56;
+    const colX = cols.map((c) => c.left + 8);
+    cols.forEach((c, i) => {
+      const x = colX[i]!;
+      const end = c.bottom + 14;
+      defs.push({ d: `M${x} ${yU} V${end} M${x - 7} ${end + 9} L${x} ${end} L${x + 7} ${end + 9}`, y: yU });
+    });
+
+    // Leistungen einzeln: die Linie läuft im Zickzack durch die Fuge zwischen Bild und Text
+    const rows = Array.from(document.querySelectorAll<HTMLElement>('[data-svc]')).map((r) => {
+      const v = box(r.querySelector('.svc-visual'))!;
+      const t = box(r.querySelector('.svc-text'))!;
+      const seam = v.right <= t.left ? (v.right + t.left) / 2 : (t.right + v.left) / 2;
+      const link = r.querySelector<HTMLElement>('[data-line-link]');
+      if (link) link.dataset.lineX = String(seam);
+      return { top: Math.min(v.top, t.top), bottom: Math.max(v.bottom, t.bottom), seam };
+    });
+
+    // Zahlen: „Mehr über uns“ hängt an der linken Randspur
+    const figsLink = document.querySelector<HTMLElement>('.figs [data-line-link]');
+    if (figsLink) figsLink.dataset.lineX = String(L);
+    const figsLinkY = figsLink ? (box(figsLink)!.top + box(figsLink)!.bottom) / 2 : figs.bottom;
+
+    const d: string[] = [`M${ax} ${hero.bottom}`, `L${R} ${hero.bottom + 140}`, `V${yU}`, `H${colX[0] ?? L}`];
+    rows.forEach((r, i) => {
+      const above = i === 0 ? r.top - 56 : (rows[i - 1]!.bottom + r.top) / 2;
+      d.push(`V${above}`, `H${r.seam}`);
+    });
+    const last = rows[rows.length - 1];
+    if (last) d.push(`V${last.bottom + 56}`);
+    // weiter am rechten Rand durch „Familienbetrieb“, dann diagonal durch die Zahlen
+    d.push(`H${R}`, `V${figs.top}`, `H${ax}`, `L${L} ${figs.bottom}`, `V${figsLinkY + 64}`, `H${R}`, `V${film.top + 40}`, `H${cx}`, `V${tipY}`);
+
     // Koordinaten relativ zu <main>; die Grafik ist so hoch wie <main> und endet damit vor dem Footer
     const mainEl = svg.parentElement!;
     const mainTop = box(mainEl)!.top;
     svg.setAttribute('viewBox', `0 ${mainTop} ${W} ${mainEl.offsetHeight}`);
     svg.setAttribute('preserveAspectRatio', 'none');
-    path.setAttribute('d', d);
+    path.setAttribute('d', d.join(' '));
 
-    // Abzweige von der Hauptlinie zu den Kennzahlen (gleiche Linienstärke)
-    const defs: { d: string; y: number }[] = [];
+    // Abzweige von der Diagonale zu den Kennzahlen (gleiche Linienstärke)
     const xOnDiag = (y: number) => ax + ((y - figs.top) / (figs.bottom - figs.top)) * (L - ax);
     // Zahlen mit festem Abstand neben die Diagonale setzen (auch auf breiten Bildschirmen nie auf der Linie)
-    const field = box(document.querySelector('[data-figs]'))!;
-    const fieldW = field.right - field.left;
+    const fieldW = figs.right - figs.left;
     document.querySelectorAll<HTMLElement>('.fg').forEach((fg) => {
       const num = box(fg.querySelector('strong'))!;
       const y = (num.top + num.bottom) / 2;
@@ -1685,22 +1718,25 @@ const werte = [
       const rightSide = fg.classList.contains('fg-2') || fg.classList.contains('fg-4');
       // rechts der Linie mit deutlich mehr Abstand, links mit mindestens 72 px
       const gap = rightSide ? 150 : 72;
-      const left = rightSide ? Math.min(x + gap - field.left, fieldW - w) : Math.max(0, Math.min(fg.offsetLeft, x - gap - w - field.left));
+      const left = rightSide ? Math.min(x + gap - figs.left, fieldW - w) : Math.max(0, Math.min(fg.offsetLeft, x - gap - w - figs.left));
       fg.style.left = `${left}px`;
       const fb = box(fg)!;
       const end = fb.right < x ? fb.right + 24 : fb.left - 24;
       defs.push({ d: `M${x} ${y} H${end}`, y });
       fg.dataset.followY = String(y);
     });
-    // Abzweig von der Linie zu „Mehr über uns“ und „Mehr erfahren“
+    // Abzweige mit Pfeilspitze zu „Mehr über uns“ und „Mehr erfahren“, je nach Seite von links oder rechts
     document.querySelectorAll<HTMLElement>('[data-line-link]').forEach((a) => {
       const b = box(a)!;
       const y = (b.top + b.bottom) / 2;
-      const e = b.right + 16;
-      // Abzweig von der Linie (Handwerk: senkrechte Linie bei ax, Leistungen: rechter Rand)
-      const from = a.closest('[data-intro]') ? ax : R;
-      // Linie endet mit einer Pfeilspitze, die auf den Link zeigt
-      defs.push({ d: `M${from} ${y} H${e} M${e + 8} ${y - 7} L${e} ${y} L${e + 8} ${y + 7}`, y });
+      const from = Number(a.dataset.lineX ?? R);
+      if (from < b.left) {
+        const e = b.left - 14;
+        defs.push({ d: `M${from} ${y} H${e} M${e - 8} ${y - 7} L${e} ${y} L${e - 8} ${y + 7}`, y });
+      } else {
+        const e = b.right + 16;
+        defs.push({ d: `M${from} ${y} H${e} M${e + 8} ${y - 7} L${e} ${y} L${e + 8} ${y + 7}`, y });
+      }
       a.dataset.followY = String(y);
     });
     // Randlinie in Projekten und Werten auf derselben Höhe wie die Hauptlinie
