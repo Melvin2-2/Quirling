@@ -5,6 +5,8 @@ import Base from '~/layouts/Base.astro';
 import Icon from '~/components/Icon.astro';
 import QHammer from '~/components/QHammer.astro';
 import ValueIcon from '~/components/ValueIcon.astro';
+import Picto from '~/components/Picto.astro';
+import type { PictoName } from '~/components/Picto.astro';
 import { firma, leistungen, GRUENDUNGSJAHR } from '~/data/site';
 import { url } from '~/lib/url';
 import heroPoster from '~/assets/site/hero-poster.jpg';
@@ -25,21 +27,33 @@ const heroPosterImg = await getImage({ src: heroPoster, width: 1920, format: 'jp
 const filmPosterImg = await getImage({ src: filmPoster, width: 1600, format: 'jpg', quality: 70 });
 
 /* Leistungen: Bilder folgen der Diagonale der Linie */
-const svcInfo: Record<string, { a: string; b: string; text: string }> = {
+const svcInfo: Record<string, { label: string; text: string; facts: [PictoName, string][] }> = {
   rohbau: {
-    a: 'Rohbau &',
-    b: 'Stahlbetonbau',
-    text: 'Rohbauten in Beton- und Stahlbetonbauweise. Vom Fundament über die Tiefgarage bis zur letzten Decke.',
+    label: 'Unser Schwerpunkt',
+    text: 'Rohbauten in Beton- und Stahlbetonbauweise für Wohnanlagen, Büro- und Geschäftshäuser sowie Lagergebäude. Mit eigener Mannschaft, vom Fundament bis zur letzten Decke.',
+    facts: [
+      ['rohbau', 'Fundamente und Bodenplatten'],
+      ['gebaeude', 'Tiefgaragen und Untergeschosse'],
+      ['bewehrung', 'Wände und Decken in Ortbeton'],
+    ],
   },
   'schluesselfertiges-bauen': {
-    a: 'Schlüssel\u00adfertiges',
-    b: 'Bauen',
-    text: 'Vom Rohbau bis zur Übergabe koordinieren wir alle Gewerke. Mit einem festen Ansprechpartner.',
+    label: 'Alles aus einer Hand',
+    text: 'Den Rohbau führen wir selbst aus, alle weiteren Gewerke koordinieren wir. Sie haben einen festen Ansprechpartner, der Termine, Qualität und Kosten im Blick behält.',
+    facts: [
+      ['helm', 'Rohbau in eigener Ausführung'],
+      ['kalender', 'Termine und Gewerke im Griff'],
+      ['schluessel', 'Übergabe aus einer Hand'],
+    ],
   },
   'umbau-sanierung': {
-    a: 'Umbau &',
-    b: 'Sanierung',
-    text: 'Umbauten, Erweiterungen und Sanierungen im Bestand. Von der Stadtvilla bis zum Alsterpalais.',
+    label: 'Bauen im Bestand',
+    text: 'Umbauten, Erweiterungen und Sanierungen, von der Stadtvilla bis zum historischen Gebäude. Wir schauen genau hin, bevor wir loslegen, und arbeiten sauber bis zum Schluss.',
+    facts: [
+      ['umbau', 'Umbau und Erweiterung'],
+      ['hammer', 'Sanierung im Bestand'],
+      ['siegel', 'Sorgfalt bis ins Detail'],
+    ],
   },
 };
 const services = await Promise.all(
@@ -145,7 +159,6 @@ const werte = [
           leistungen.map((l) => (
             <a class="ov-col" href={url(`/leistungen/${l.slug}/`)} data-line-up>
               <h3 class="ov-t" set:html={l.title} />
-              <span class="ov-k">{l.stichworte.join(' · ')}</span>
             </a>
           ))
         }
@@ -166,8 +179,17 @@ const werte = [
               </span>
             </a>
             <div class="svc-text">
+              <span class="svc-label">{s.nr} · {s.label}</span>
               <h3 class="svc-title">{s.title}</h3>
               <p>{s.text}</p>
+              <ul class="svc-facts">
+                {s.facts.map(([icon, t]) => (
+                  <li>
+                    <Picto name={icon} class="svc-ico" />
+                    <span>{t}</span>
+                  </li>
+                ))}
+              </ul>
               <a class="svc-more" href={url(`/leistungen/${s.slug}/`)} data-follow data-line-link>
                 <span>Mal genauer hingucken</span>
                 <Icon name="arrow" />
@@ -266,7 +288,6 @@ const werte = [
   <!-- ======================= FILM (Raute) ======================= -->
   <section class="film" data-film>
     <div class="film-sticky">
-      <span class="film-feed" data-film-feed aria-hidden="true"></span>
       <div class="film-frame" data-film-frame>
         <video autoplay muted loop playsinline preload="none" poster={filmPosterImg.src} data-autoplay aria-hidden="true">
           <source src={url('/video/film-loop.mp4')} type="video/mp4" />
@@ -282,7 +303,7 @@ const werte = [
   <div class="join">
     <div class="join-pos">
       <a class="career-stamp" href={url('/karriere/')} data-follow>
-        <span class="cl-a"><QHammer class="cl-hammer" color="#fff" highlight="#3948A4" />Mit anpacken</span>
+        <span class="cl-a"><QHammer class="cl-hammer" color="#121735" highlight="#3948A4" />Mit anpacken</span>
         <span class="cl-b">Werde Teil des Teams</span>
         <span class="cl-c">Zur Karriere <Icon name="arrow" /></span>
       </a>
@@ -537,22 +558,19 @@ const werte = [
   }
   .ov-top {
     display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: clamp(2rem, 4vw, 4rem);
-    align-items: end;
+    gap: clamp(1.4rem, 2.5vw, 2rem);
+    max-width: 46rem;
   }
   .ov-top .svc-head {
-    grid-column: 1 / 7;
     margin: 0;
     padding: 0;
   }
   .ov-p {
-    grid-column: 7 / 13;
     margin: 0;
-    font-size: 1.0625rem;
+    font-size: clamp(1.1rem, 1.3vw, 1.25rem);
     font-weight: 300;
-    line-height: 1.7;
-    color: var(--ink-2);
+    line-height: 1.65;
+    color: var(--ink);
   }
   .services {
     position: relative;
@@ -606,8 +624,8 @@ const werte = [
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: clamp(2rem, 4vw, 4rem);
-    margin-top: clamp(3rem, 6vw, 5rem);
-    padding-bottom: clamp(4.5rem, 7vw, 6rem);
+    margin-top: clamp(3.5rem, 6vw, 5rem);
+    padding-bottom: clamp(4rem, 6vw, 5rem);
   }
   .ov-col {
     display: grid;
@@ -622,28 +640,19 @@ const werte = [
     font-stretch: 68%;
     font-weight: 800;
     text-transform: uppercase;
-    font-size: clamp(1.8rem, 2.6vw, 2.7rem);
-    line-height: 0.97;
+    font-size: clamp(1.45rem, 2vw, 2.1rem);
+    line-height: 1;
     color: var(--blue);
     margin: 0;
     hyphens: manual;
   }
-  .ov-k {
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--ink-3);
-  }
   .ov-col:hover .ov-t {
-    text-decoration: underline;
-    text-decoration-thickness: 2px;
-    text-underline-offset: 0.12em;
+    color: var(--navy);
   }
 
   /* Leistungen einzeln: Bilder abwechselnd links / rechts, bis an den Bildschirmrand */
   .svc {
-    padding-block: clamp(2.75rem, 5vw, 4.5rem);
+    padding-block: clamp(2rem, 3.5vw, 3rem);
   }
   .svc-grid {
     display: grid;
@@ -654,20 +663,20 @@ const werte = [
   }
   .svc-1 .svc-visual,
   .svc-3 .svc-visual {
-    grid-column: 1 / 6;
+    grid-column: 1 / 5;
     margin-left: calc(-1 * var(--content-left));
   }
   .svc-1 .svc-text,
   .svc-3 .svc-text {
-    grid-column: 6 / 12;
+    grid-column: 5 / 13;
   }
   .svc-2 .svc-visual {
-    grid-column: 8 / 13;
+    grid-column: 9 / 13;
     grid-row: 1;
     margin-right: calc(-1 * var(--content-left));
   }
   .svc-2 .svc-text {
-    grid-column: 2 / 8;
+    grid-column: 1 / 9;
     grid-row: 1;
   }
   .svc-visual {
@@ -678,7 +687,7 @@ const werte = [
 
   .svc-img {
     position: relative;
-    aspect-ratio: 4 / 5;
+    aspect-ratio: 5 / 6;
     /* nur die Innenkante ist schräg, die Außenkante liegt am Bildschirmrand */
     clip-path: polygon(0 0, 100% 0, 86% 100%, 0 100%);
   }
@@ -723,8 +732,6 @@ const werte = [
     align-items: center;
     gap: 0.7rem;
     margin-top: 0.8rem;
-    padding-bottom: 0.3rem;
-    border-bottom: 2px solid currentColor;
     font-family: var(--font-head);
     font-stretch: 68%;
     font-weight: 800;
@@ -762,10 +769,45 @@ const werte = [
   .svc-more[data-follow].is-in {
     transform: none;
   }
+  .svc-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 0.9rem;
+  }
   .svc-text p {
-    font-size: 0.95rem;
     color: var(--ink-2);
-    margin-bottom: 2rem;
+    max-width: 52ch;
+    margin: 0 0 1.8rem;
+  }
+  .svc-facts {
+    list-style: none;
+    margin: 0 0 1.4rem;
+    padding: 1.4rem 0 0;
+    border-top: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.2rem 1.6rem;
+  }
+  .svc-facts li {
+    display: grid;
+    gap: 0.6rem;
+    align-content: start;
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: clamp(1rem, 1.2vw, 1.15rem);
+    line-height: 1.1;
+    color: var(--navy);
+  }
+  .svc-facts :global(.svc-ico) {
+    width: 40px;
+    height: 40px;
+    color: var(--blue);
   }
 
   /* ======================= PROJEKTE ======================= */
@@ -1050,7 +1092,6 @@ const werte = [
   }
   .cl-a,
   .cl-b {
-    background: var(--blue);
     color: #fff;
     font-family: var(--font-head);
     font-stretch: 125%;
@@ -1064,6 +1105,9 @@ const werte = [
     font-weight: 800;
     font-size: clamp(2rem, 4.4vw, 4.2rem);
     padding: 0.8rem 1.4rem 0.7rem;
+    /* helles Blau wie „Projekte, die stehen.“ */
+    background: #9aa6ee;
+    color: var(--navy);
   }
   .cl-a :global(.cl-hammer) {
     width: 1.1em;
@@ -1097,10 +1141,11 @@ const werte = [
   .cl-b {
     font-weight: 300;
     font-size: clamp(1.1rem, 2vw, 1.8rem);
-    padding: 0.45rem 1.4rem 0.6rem;
-    margin-left: 0.7rem;
-    background: #fff;
-    color: var(--navy);
+    padding: 0.5rem 0 0.6rem;
+    margin-left: 1.4rem;
+    background: none;
+    color: #fff;
+    text-shadow: 0 1px 12px rgb(18 23 53 / 0.6);
   }
   /* ======================= FILM ======================= */
   .film {
@@ -1302,16 +1347,12 @@ const werte = [
       padding-top: 5rem;
     }
     .intro-grid,
-    .ov,
-    .ov-top {
+    .ov {
       grid-template-columns: minmax(0, 1fr);
     }
     .intro-h,
     .intro-text,
-    .ov-top .svc-head,
-    .ov-p {
-      grid-column: 1 / -1;
-    }
+
     .figs-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
@@ -1347,6 +1388,17 @@ const werte = [
     }
     .svc-visual {
       margin-bottom: 2.5rem;
+    }
+    .svc-facts {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .svc-facts li {
+      grid-template-columns: 32px 1fr;
+      align-items: center;
+    }
+    .svc-facts :global(.svc-ico) {
+      width: 32px;
+      height: 32px;
     }
     .rail-values {
       right: 8px;
@@ -1636,7 +1688,6 @@ const werte = [
     const film = box(document.querySelector('[data-film]'))!;
     const vh = window.innerHeight;
     const ax = W * 0.78; // Spitze der Hero-Unterkante
-    const cx = W / 2;
     const tipY = film.top + vh * 0.22;
     const defs: { d: string; y: number }[] = [];
 
@@ -1654,18 +1705,44 @@ const werte = [
       defs.push({ d: `M${x} ${yU} V${end} M${x - 7} ${end + 9} L${x} ${end} L${x + 7} ${end + 9}`, y: yU });
     });
 
-    // Leistungen einzeln: kurze Teillinie von der schrägen Bildkante zum Link (keine durchgehende Linie)
+    // Leistungen einzeln: senkrechte Teillinie entlang der schrägen Bildkante und des Navy-Blocks,
+    // von dort ein Abzweig zum Link
+    const svcLines: string[] = [];
+    let lastSvc: { x: number; y: number } | null = null;
     document.querySelectorAll<HTMLElement>('[data-svc]').forEach((r) => {
       const img = box(r.querySelector('.svc-img'))!;
+      const blk = box(r.querySelector('.block-in'))!;
       const link = r.querySelector<HTMLElement>('[data-line-link]');
-      if (!link) return;
-      const lb = box(link)!;
-      const y = (lb.top + lb.bottom) / 2;
-      const f = Math.min(1, Math.max(0, (y - img.top) / (img.bottom - img.top)));
+      const text = box(r.querySelector('.svc-text'))!;
+      const imageLeft = img.right <= text.left;
       const w = img.right - img.left;
-      const imageLeft = img.right <= lb.left;
-      // Bildkante auf Höhe des Links (Innenkante ist um 14 % geneigt)
-      link.dataset.lineX = String(imageLeft ? img.right - w * 0.14 * f + 10 : img.left + w * 0.14 * (1 - f) - 10);
+      const h = img.bottom - img.top;
+      const gap = 22;
+      // Außenkante von Bild und Block auf Höhe y (Bildkante um 14 % geneigt)
+      const edge = (y: number) => {
+        const f = Math.min(1, Math.max(0, (y - img.top) / h));
+        const xi = imageLeft ? img.right - w * 0.14 * f : img.left + w * 0.14 * f;
+        if (y < blk.top) return xi;
+        const g = Math.min(1, (y - blk.top) / (blk.bottom - blk.top));
+        const bw = blk.right - blk.left;
+        const xb = imageLeft ? blk.left + bw * (0.64 + 0.36 * g) : blk.left + bw * 0.36 * (1 - g);
+        return imageLeft ? Math.max(xi, xb) : Math.min(xi, xb);
+      };
+      const y0 = img.top - 40;
+      const y1 = blk.bottom + 30;
+      const pts: string[] = [];
+      for (let k = 0; k <= 24; k++) {
+        const y = y0 + ((y1 - y0) * k) / 24;
+        const x = edge(Math.min(y, blk.bottom)) + (imageLeft ? gap : -gap);
+        pts.push(`${k === 0 ? 'M' : 'L'}${x.toFixed(1)} ${y.toFixed(1)}`);
+        if (k === 24) lastSvc = { x, y };
+      }
+      svcLines.push(pts.join(' '));
+      if (link) {
+        const lb = box(link)!;
+        const y = (lb.top + lb.bottom) / 2;
+        link.dataset.lineX = String(edge(y) + (imageLeft ? gap : -gap));
+      }
     });
 
     // Zahlen: die Linie kommt am rechten Rand herunter, läuft über die vier Spalten und zeigt von oben auf jede Zahl
@@ -1678,24 +1755,21 @@ const werte = [
     });
     const figsLink = document.querySelector<HTMLElement>('.figs [data-line-link]');
     if (figsLink) figsLink.dataset.lineX = String(R);
-    const figsHead = box(document.querySelector('.figs-head'))!;
-    const show = box(document.querySelector('[data-show]'))!;
 
+    const values = box(document.querySelector('[data-values]'))!;
+    const end = lastSvc as { x: number; y: number } | null;
     const d = [
       // Hero → Einstieg → Übersicht
       `M${ax} ${hero.bottom}`,
       `L${R} ${hero.bottom + 140}`,
       `V${yU}`,
       `H${colX[0] ?? L}`,
-      // Zahlen: kommt aus dem Familienbetrieb am rechten Rand
-      `M${R} ${figsHead.top - 80}`,
+      // Leistungen: Teillinien an den Bildern; die letzte führt weiter zum rechten Rand
+      ...svcLines,
+      // durch „Familienbetrieb“ (dort als helle Randlinie sichtbar) direkt weiter zu den Zahlen
+      end ? `V${Math.max(end.y + 24, values.top - 70)} H${R}` : `M${R} ${values.top - 70}`,
       `V${yF}`,
       `H${figCols[0] ? figCols[0].left + 8 : L}`,
-      // Projekte → Raute
-      `M${R} ${show.top}`,
-      `V${film.top + 40}`,
-      `H${cx}`,
-      `V${tipY}`,
     ].join(' ');
 
     // Koordinaten relativ zu <main>; die Grafik ist so hoch wie <main> und endet damit vor dem Footer
