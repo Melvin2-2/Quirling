@@ -30,8 +30,9 @@ const heroPosterImg = await getImage({ src: heroPoster, width: 1920, format: 'jp
 const filmPosterImg = await getImage({ src: filmPoster, width: 1600, format: 'jpg', quality: 70 });
 
 /* Leistungen: Bilder folgen der Diagonale der Linie */
-const svcInfo: Record<string, { text: string; facts: [PictoName, string][] }> = {
+const svcInfo: Record<string, { text: string; more: string; facts: [PictoName, string][] }> = {
   rohbau: {
+    more: 'Rohbau aus der Nähe',
     text: 'Rohbauten in Beton- und Stahlbetonbauweise für Wohnanlagen, Büro- und Geschäftshäuser sowie Lagergebäude. Mit eigener Mannschaft, vom Fundament bis zur letzten Decke.',
     facts: [
       ['rohbau', 'Fundamente und Bodenplatten'],
@@ -40,6 +41,7 @@ const svcInfo: Record<string, { text: string; facts: [PictoName, string][] }> = 
     ],
   },
   'schluesselfertiges-bauen': {
+    more: 'So läuft schlüsselfertig',
     text: 'Den Rohbau führen wir selbst aus, alle weiteren Gewerke koordinieren wir. Sie haben einen festen Ansprechpartner, der Termine, Qualität und Kosten im Blick behält.',
     facts: [
       ['helm', 'Rohbau in eigener Ausführung'],
@@ -48,6 +50,7 @@ const svcInfo: Record<string, { text: string; facts: [PictoName, string][] }> = 
     ],
   },
   'umbau-sanierung': {
+    more: 'Umbauten angucken',
     text: 'Umbauten, Erweiterungen und Sanierungen, von der Stadtvilla bis zum historischen Gebäude. Wir schauen genau hin, bevor wir loslegen, und arbeiten sauber bis zum Schluss.',
     facts: [
       ['umbau', 'Umbau und Erweiterung'],
@@ -196,7 +199,7 @@ const werte = [
                 ))}
               </ul>
               <a class="svc-more" href={url(`/leistungen/${s.slug}/`)} data-follow data-line-link>
-                <span>Mal genauer hingucken</span>
+                <span>{s.more}</span>
                 <Icon name="arrow" />
               </a>
             </div>
@@ -208,7 +211,6 @@ const werte = [
 
   <!-- ======================= WERTE ======================= -->
   <section class="values on-blue" data-values>
-    <span class="rail rail-values" aria-hidden="true"><span data-values-bar></span></span>
     <div class="container values-grid">
       <div class="values-head">
         <h2 class="values-h">Familien&shy;betrieb.</h2>
@@ -216,13 +218,14 @@ const werte = [
       </div>
       <ul class="values-list">
         {
-          werte.map((w) => (
-            <li class="value" data-follow data-to-rail>
+          werte.map((w, i) => (
+            <li class="value" data-follow data-band>
               <div class="value-text">
                 <h3>{w.t}</h3>
                 <p>{w.d}</p>
               </div>
               <ValueIcon name={w.icon} class="value-icon" frame={false} />
+              <span class="value-n" aria-hidden="true">0{i + 1}</span>
             </li>
           ))
         }
@@ -577,12 +580,16 @@ const werte = [
     width: 100%;
     height: 112%;
     object-fit: cover;
-    object-position: 50% 40%;
+    object-position: 80% 0%;
   }
   .figs-btn {
     left: 100%;
     top: 52%;
     transform: translate(-72%, -50%);
+  }
+  .fg[data-follow] {
+    opacity: 1;
+    transform: none;
   }
   .figs-side {
     grid-column: 7 / 13;
@@ -838,12 +845,12 @@ const werte = [
   .svc-2 .svc-text {
     grid-column: 5 / 13;
   }
-  /* Link immer außen, damit die Linie lang über die Zeile läuft */
+  /* Link mit Abstand unter den Stichpunkten, mittig in der Textspalte */
   @media (min-width: 901px) {
-    .svc-2 .svc-more {
+    .svc .svc-more {
       display: flex;
       width: fit-content;
-      margin-left: auto;
+      margin: clamp(1.5rem, 3vw, 2.5rem) auto 0;
     }
   }
   .svc-visual {
@@ -1102,39 +1109,45 @@ const werte = [
     color: #fff !important;
     margin: 0;
   }
+  /* drei Bänder mit schräger Kante wie die Raute, laufen bis an den rechten Rand und fahren beim Scrollen herein */
   .values-list {
     list-style: none;
-    margin: 0;
+    margin: 0 calc(-1 * var(--content-left)) 0 0;
     padding: 0;
     display: grid;
-    gap: clamp(2.4rem, 4.4vw, 3.8rem);
+    gap: clamp(0.9rem, 1.6vw, 1.3rem);
   }
   .value {
-    --icon-gap: clamp(4rem, 11vw, 11rem);
     position: relative;
     display: flex;
-    align-items: center;
+    flex-direction: row-reverse;
     justify-content: flex-end;
-    gap: clamp(1.25rem, 2.5vw, 2rem);
-    padding-right: var(--icon-gap);
-    text-align: right;
+    align-items: center;
+    gap: clamp(1.25rem, 2.4vw, 2.2rem);
+    padding: clamp(1.4rem, 2.4vw, 2rem) calc(var(--content-left) + 1rem) clamp(1.4rem, 2.4vw, 2rem) clamp(2.6rem, 4.5vw, 4rem);
+    background: var(--navy);
+    clip-path: polygon(clamp(1.6rem, 3vw, 2.6rem) 0, 100% 0, 100% 100%, 0 100%);
+    text-align: left;
   }
-  /* Abzweig: von der Randlinie zum Piktogramm */
-  .value::after {
-    content: '';
+  .value:nth-child(2) {
+    margin-left: 9%;
+  }
+  .value:nth-child(3) {
+    margin-left: 18%;
+  }
+  .value-n {
     position: absolute;
+    right: calc(var(--content-left) + 1rem);
     top: 50%;
-    /* Lage und Länge werden per Skript gemessen: vom Piktogramm bis exakt zur Linie */
-    left: var(--branch-left, 100%);
-    width: var(--branch-w, 0px);
-    height: 1.5px;
-    background: rgb(255 255 255 / 0.7);
-    transform: scaleX(0);
-    transform-origin: right;
-    transition: transform 0.6s var(--ease);
-  }
-  .value.is-in::after {
-    transform: scaleX(1);
+    translate: 0 -50%;
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    font-size: clamp(3.4rem, 5.6vw, 5.6rem);
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 1.2px rgb(154 166 238 / 0.45);
+    pointer-events: none;
   }
   .values[data-values] .value[data-follow] {
     opacity: 1;
@@ -1151,8 +1164,8 @@ const werte = [
   }
   .value :global(.value-icon) {
     flex: none;
-    color: #fff;
-    --vicon-bg: #3948a4;
+    color: #9aa6ee;
+    --vicon-bg: #121735;
   }
   .value :global(.vicon-art) {
     width: 62px;
@@ -1309,9 +1322,8 @@ const werte = [
   /* ======================= FILM ======================= */
   .film {
     position: relative;
-    height: 260vh;
-    background: var(--navy);
-    margin-top: -1px;
+    height: 240vh;
+    background: #e6e9f6;
   }
   .film-sticky {
     position: sticky;
@@ -1376,7 +1388,7 @@ const werte = [
     content: '';
     position: absolute;
     inset: 0;
-    background: rgb(18 23 53 / 0.35);
+    background: rgb(18 23 53 / 0.2);
   }
   .film-ui {
     position: relative;
@@ -1629,11 +1641,20 @@ const werte = [
     .svc-2 .svc-img {
       clip-path: polygon(0 6%, 100% 0, 100% 100%, 0 100%);
     }
-    .rail-values {
-      right: 8px;
+    .values-list {
+      margin-right: calc(-1 * var(--gutter));
     }
-    .values {
-      --rail-gap: 8px;
+    .value {
+      padding: 1.2rem var(--gutter) 1.2rem 2rem;
+    }
+    .value:nth-child(2) {
+      margin-left: 5%;
+    }
+    .value:nth-child(3) {
+      margin-left: 10%;
+    }
+    .value-n {
+      display: none;
     }
     .svc-grid > *,
     .intro-grid > * {
@@ -1693,7 +1714,6 @@ const werte = [
       font-size: clamp(1.9rem, 8.6vw, 2.6rem);
     }
     .value {
-      --icon-gap: 1.25rem;
       gap: 1rem;
     }
     .value :global(.vicon-art) {
@@ -1833,7 +1853,7 @@ const werte = [
   };
   mm.add(
     { desktop: '(prefers-reduced-motion: no-preference) and (min-width: 901px)', mobile: '(prefers-reduced-motion: no-preference) and (max-width: 900px)' },
-    (ctx) => {
+    () => {
       const film = document.querySelector<HTMLElement>('[data-film]');
       const frame = document.querySelector<HTMLElement>('[data-film-frame]');
       const logo = document.querySelector<SVGSVGElement>('[data-film-logo]');
@@ -1841,21 +1861,22 @@ const werte = [
       const raute = logo?.querySelector('.fl-raute');
       const ui = document.querySelector('[data-film-ui]');
       if (!film || !frame || !logo || !q || !raute) return;
-      const desktop = !!ctx.conditions?.desktop;
-      const st = { trigger: film, start: desktop ? 'top top' : 'top 20%', end: 'bottom bottom', scrub: 0.6 };
+      // beginnt schon beim Hereinscrollen, damit sich das Logo ohne Halt auflöst
+      const st = { trigger: film, start: 'top 75%', end: 'bottom bottom', scrub: 0.6 };
       const state = { f: 1 };
       const apply = () => (frame.style.clipPath = filmClip(frame, logo, state.f));
       apply();
       const tl = gsap.timeline({ scrollTrigger: { ...st, onRefresh: apply } });
       // 1. Q und Hammer lösen sich, die graue Fläche gibt das Video frei
-      tl.to(q, { opacity: 0, scale: 1.35, duration: 0.22, ease: 'power2.in' }, 0.04);
-      tl.to(raute, { opacity: 0, duration: 0.18, ease: 'none' }, 0.1);
-      // 2. die Raute öffnet sich weich über den ganzen Bildschirm
-      tl.to(state, { f: 5.2, duration: 0.7, ease: 'power2.inOut', onUpdate: apply }, 0.22);
+      tl.to(q, { opacity: 0, scale: 1.35, duration: 0.2, ease: 'power1.in' }, 0.1);
+      tl.to(raute, { opacity: 0, duration: 0.16, ease: 'none' }, 0.16);
+      // 2. die Raute öffnet sich ohne Halt, bis das ganze Video zu sehen ist
+      tl.to(state, { f: 11, duration: 0.6, ease: 'power1.inOut', onUpdate: apply }, 0.26);
       if (ui) {
         gsap.set(ui, { autoAlpha: 0, y: 30 });
-        tl.to(ui, { autoAlpha: 1, y: 0, duration: 0.2 }, 0.72);
+        tl.to(ui, { autoAlpha: 1, y: 0, duration: 0.16 }, 0.7);
       }
+      tl.to({}, { duration: 0.1 });
       window.addEventListener('resize', apply);
       return () => {
         window.removeEventListener('resize', apply);
@@ -1879,15 +1900,6 @@ const werte = [
   const toRail = () => {
     const valuesRail = document.querySelector('.rail-values');
     const vx = valuesRail ? valuesRail.getBoundingClientRect().left + 0.75 : railX;
-    // Werte: Abzweig beginnt rechts neben dem Piktogramm und endet genau auf der Linie
-    document.querySelectorAll<HTMLElement>('.value').forEach((el) => {
-      const icon = el.querySelector('.value-icon');
-      if (!icon || !vx) return;
-      const r = el.getBoundingClientRect();
-      const start = icon.getBoundingClientRect().right + 14;
-      el.style.setProperty('--branch-left', `${start - r.left}px`);
-      el.style.setProperty('--branch-w', `${Math.max(0, vx - start)}px`);
-    });
     document.querySelectorAll<HTMLElement>('[data-to-rail]').forEach((el) => {
       const inValues = !!el.closest('[data-values]');
       const x = inValues ? vx : railX;
@@ -1996,10 +2008,8 @@ const werte = [
       }
     });
 
-    // Die Linie beginnt an der Spitze der Leistungsübersicht und endet mit der letzten Leistung
-    const ov = box(document.querySelector('.overview'))!;
-    const kink = Math.min(56, Math.max(32, W * 0.04));
-    const d = [`M${ax} ${ov.top + kink}`, `L${R} ${ov.top + kink + 140}`, `V${yU}`, `H${colX[0] ?? L}`].join(' ');
+    // Leistungsübersicht: eine gerade Grundlinie über die ganze Breite, Pfeile zeigen von unten hinein
+    const d = `M0 ${yU} H${W}`;
 
     // Koordinaten relativ zu <main>; die Grafik ist so hoch wie <main> und endet damit vor dem Footer
     const mainEl = svg.parentElement!;
@@ -2140,6 +2150,30 @@ const werte = [
     img.style.clipPath = `polygon(${pts.join(', ')})`;
   };
 
+  /* ---------- Über uns: untere Fotokante setzt die schräge Kante der Projekte fort ---------- */
+  const fitFigs = () => {
+    const photo = document.querySelector<HTMLElement>('.figs-photo');
+    const img = photo?.querySelector<HTMLElement>('.figs-img');
+    const stage = document.querySelector('.show-stage');
+    if (!photo || !img || !stage) return;
+    if (window.innerWidth <= 900) {
+      photo.style.removeProperty('width');
+      img.style.removeProperty('clip-path');
+      return;
+    }
+    const st = stage.getBoundingClientRect();
+    const ph = photo.getBoundingClientRect();
+    const h = ph.height;
+    // Kante der Projekte: oben bei 14 % der Bühne, unten bei 0 %
+    const x0 = st.left + st.width * 0.14 - ph.left;
+    const slope = (st.width * 0.14) / st.height;
+    const kinkY = h * 0.52;
+    const kinkX = x0 + slope * (h - kinkY);
+    const topX = kinkX - slope * kinkY;
+    photo.style.width = `${kinkX}px`;
+    img.style.clipPath = `polygon(0 0, ${topX.toFixed(1)}px 0, ${kinkX.toFixed(1)}px ${kinkY.toFixed(1)}px, ${x0.toFixed(1)}px ${h.toFixed(1)}px, 0 ${h.toFixed(1)}px)`;
+  };
+
   /* ---------- Zahlen zählen hoch, sobald sie erscheinen ---------- */
   const counters = Array.from(document.querySelectorAll<HTMLElement>('[data-num]'));
   if (!reduce) counters.forEach((c) => (c.textContent = c.dataset.numFrom ?? '0'));
@@ -2163,6 +2197,33 @@ const werte = [
     requestAnimationFrame(step);
   };
 
+  /* ---------- Familienbetrieb: Bänder fahren nacheinander von rechts herein ---------- */
+  mm.add('(prefers-reduced-motion: no-preference)', () => {
+    document.querySelectorAll<HTMLElement>('[data-band]').forEach((band) => {
+      gsap.fromTo(
+        band,
+        { xPercent: 100 },
+        { xPercent: 0, ease: 'power2.out', scrollTrigger: { trigger: band, start: 'top 100%', end: 'top 62%', scrub: 0.6 } },
+      );
+    });
+  });
+
+  /* ---------- Über uns: die drei Zahlen klappen beim Scrollen schräg auf ---------- */
+  mm.add('(prefers-reduced-motion: no-preference)', () => {
+    const steps = document.querySelector('.figs-steps');
+    if (!steps) return;
+    const items = Array.from(steps.querySelectorAll<HTMLElement>('.fg'));
+    const tl = gsap.timeline({ scrollTrigger: { trigger: steps, start: 'top 92%', end: 'bottom 62%', scrub: 0.6 } });
+    items.forEach((el, i) => {
+      tl.fromTo(
+        el,
+        { clipPath: 'polygon(0 0, 0 0, 0 0, 0 0)' },
+        { clipPath: 'polygon(0 0, 240% 0, 0 240%, 0 0)', ease: 'none', duration: 1 },
+        i * 0.6,
+      );
+    });
+  });
+
   /* ---------- Über uns: Foto und Zahlen bewegen sich unterschiedlich schnell ---------- */
   mm.add('(prefers-reduced-motion: no-preference) and (min-width: 901px)', () => {
     const sec = document.querySelector('[data-figs-sec]');
@@ -2183,20 +2244,24 @@ const werte = [
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', () => {
     fitIntro();
+    fitFigs();
     build();
     toRail();
   });
   window.addEventListener('load', () => {
     ScrollTrigger.refresh();
     fitIntro();
+    fitFigs();
     build();
     follow();
   });
   ScrollTrigger.addEventListener('refresh', () => {
     fitIntro();
+    fitFigs();
     build();
   });
   fitIntro();
+  fitFigs();
   build();
   toRail();
   follow();
