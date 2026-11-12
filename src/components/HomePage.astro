@@ -525,8 +525,8 @@ const werte = [
     gap: 1.2rem;
     padding: 1.3rem 1.5rem 1.2rem;
     line-height: 0.95;
-    background: #9aa6ee;
-    color: var(--navy);
+    background: var(--navy);
+    color: #fff;
     font-family: var(--font-head);
     font-stretch: 68%;
     font-weight: 800;
@@ -546,8 +546,7 @@ const werte = [
     transition: transform 0.35s var(--ease);
   }
   .intro-btn:hover {
-    background: var(--navy);
-    color: #fff;
+    background: var(--blue);
   }
   .intro-btn:hover :global(svg) {
     transform: translateX(4px);
@@ -667,7 +666,7 @@ const werte = [
     font-family: var(--font-head);
     font-stretch: 68%;
     font-weight: 800;
-    font-size: clamp(2.6rem, 4vw, 4.2rem);
+    font-size: clamp(3rem, 5vw, 5.2rem);
     line-height: 1.08;
     color: var(--blue);
     font-variant-numeric: tabular-nums;
@@ -686,17 +685,16 @@ const werte = [
     line-height: 1.45;
     color: var(--ink);
   }
-  /* Klapptafel wie am Flughafen: jede Ziffer ein Navy-Täfelchen mit Mittelfuge */
+  /* Klapptafel-Effekt in der Quirling-Schrift: ohne Täfelchen, nur die Ziffern klappen um */
   .flap {
     display: inline-flex;
-    gap: 0.06em;
   }
   .flap :global(.sf) {
     position: relative;
     display: inline-block;
-    width: 0.66em;
+    width: 0.5em;
     height: 1.08em;
-    perspective: 4em;
+    perspective: 3em;
   }
   .flap :global(.sf-h) {
     position: absolute;
@@ -704,8 +702,7 @@ const werte = [
     right: 0;
     height: 50%;
     overflow: hidden;
-    background: var(--navy);
-    color: #fff;
+    color: var(--blue);
     backface-visibility: hidden;
   }
   .flap :global(.sf-h > span) {
@@ -717,22 +714,16 @@ const werte = [
   .flap :global(.sf-top),
   .flap :global(.sf-ft) {
     top: 0;
-    border-radius: 2px 2px 0 0;
     transform-origin: 50% 100%;
   }
   .flap :global(.sf-bot),
   .flap :global(.sf-fb) {
     bottom: 0;
-    border-radius: 0 0 2px 2px;
     transform-origin: 50% 0;
   }
   .flap :global(.sf-bot > span),
   .flap :global(.sf-fb > span) {
     transform: translateY(-50%);
-  }
-  .flap :global(.sf-top),
-  .flap :global(.sf-ft) {
-    background: #1c2350;
   }
   .flap :global(.sf-ft),
   .flap :global(.sf-fb) {
@@ -740,17 +731,6 @@ const werte = [
   }
   .flap :global(.sf-fb) {
     transform: rotateX(90deg);
-  }
-  /* Fuge zwischen oberer und unterer Hälfte */
-  .flap :global(.sf::after) {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: calc(50% - 0.5px);
-    height: 1px;
-    background: rgb(0 0 0 / 0.55);
-    z-index: 3;
   }
   /* Einblenden, sobald die Linie die Stelle erreicht */
   [data-follow] {
@@ -2264,9 +2244,16 @@ const werte = [
   if (!reduce) {
     flapEls.forEach((el) => {
       const target = el.dataset.flap ?? '';
+      // jede Zelle so breit wie ihr Zielzeichen, damit am Ende nichts springt
+      el.innerHTML = [...target].map((ch) => `<span style="display:inline-block">${ch}</span>`).join('');
+      const widths = Array.from(el.children).map((c) => c.getBoundingClientRect().width);
       el.textContent = '';
       el.setAttribute('aria-label', target);
-      [...target].forEach(() => el.appendChild(flapCell(' ')));
+      widths.forEach((w) => {
+        const cell = flapCell(' ');
+        cell.style.width = `${w}px`;
+        el.appendChild(cell);
+      });
     });
   }
   const runFlap = async (el: HTMLElement) => {
@@ -2284,6 +2271,8 @@ const werte = [
         await flapStep(cell, ch);
       }),
     );
+    // danach wieder normaler Text, ohne Fuge zwischen den Hälften
+    el.textContent = el.dataset.flap ?? '';
   };
 
   /* ---------- Über uns: Foto und Zahlen bewegen sich unterschiedlich schnell ---------- */
