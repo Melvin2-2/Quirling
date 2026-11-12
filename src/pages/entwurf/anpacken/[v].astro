@@ -1,0 +1,11 @@
+---
+// Nur für die Auswahl des Stempels „Mit anpacken“, wird nach der Entscheidung gelöscht.
+import HomePage from '~/components/HomePage.astro';
+
+export function getStaticPaths() {
+  return (['a', 'b', 'c'] as const).map((v) => ({ params: { v }, props: { v } }));
+}
+const { v } = Astro.props;
+---
+
+<HomePage join={v} noindex title={`Entwurf Mit anpacken ${v.toUpperCase()}`} />
