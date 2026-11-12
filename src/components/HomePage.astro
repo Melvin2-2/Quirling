@@ -19,7 +19,7 @@ interface Props {
   noindex?: boolean;
   title?: string;
 }
-const { typo = 'c', svcBg = 'farbe', noindex = false, title = 'Start' } = Astro.props;
+const { typo = 'c', noindex = false, title = 'Start' } = Astro.props;
 
 const heroPosterImg = await getImage({ src: heroPoster, width: 1920, format: 'jpg', quality: 70 });
 const filmPosterImg = await getImage({ src: filmPoster, width: 1600, format: 'jpg', quality: 70 });
@@ -62,6 +62,13 @@ const showcase = await Promise.all(
 );
 
 
+
+const zahlen = [
+  { v: String(GRUENDUNGSJAHR), l: 'Gegründet in Hamburg', t: 'Von Thomas Quirling gegründet und bis heute inhabergeführt.' },
+  { v: `${firma.projekteAnzahl}<sup>+</sup>`, l: 'Projekte realisiert', t: 'Vom Einfamilienhaus bis zum Bürogebäude mit Tiefgarage.' },
+  { v: String(firma.mitarbeiter), l: 'Profis im Team', t: 'Eine eingespielte Mannschaft, die sich aufeinander verlassen kann.' },
+  { v: 'HH', l: 'Hamburg und Umgebung', t: 'Kurze Wege zu jeder Baustelle in der Region.' },
+];
 
 const werte = [
   {
@@ -115,45 +122,39 @@ const werte = [
           Mannschaft Wohnhäuser, Büros und Hallen. Und wir freuen uns jedes Mal, wenn aus einem Plan ein Gebäude wird.
         </p>
         <a class="svc-more" href={url('/unternehmen/')} data-follow data-line-link>
-          <span>Mehr über uns</span>
+          <span>Kennste uns schon?</span>
           <Icon name="arrow" />
         </a>
       </div>
     </div>
   </section>
 
-  <!-- ======================= LEISTUNGEN ======================= -->
-  <section class="services" id="leistungen" data-services aria-labelledby="svc-h">
-    <div class:list={['svc-bg', `svc-bg-${svcBg}`]} data-svc-bg aria-hidden="true">
-      {
-        svcBg === 'rauten' && (
-          <>
-            <span class="rh rh-1" data-rh="-160" />
-            <span class="rh rh-2" data-rh="120" />
-            <span class="rh rh-3" data-rh="-80" />
-            <span class="rh rh-4" data-rh="200" />
-          </>
-        )
-      }
-    </div>
+  <!-- ======================= LEISTUNGEN: Übersicht (eigene blaue Fläche) ======================= -->
+  <section class="overview" id="leistungen" aria-labelledby="svc-h">
     <div class="container">
-      <h2 id="svc-h" class="svc-head" data-follow data-svc-head>Was wir <span class="lt">bauen.</span></h2>
-      <!-- Übersicht: alle drei Leistungen nebeneinander, die Linie kommt von unten mit Pfeilen -->
+      <div class="ov-top">
+        <h2 id="svc-h" class="svc-head" data-follow data-svc-head>Was wir <span class="lt">bauen.</span></h2>
+        <p class="ov-p">
+          Vom ersten Spatenstich bis zur Schlüsselübergabe: Wir übernehmen den Rohbau in Beton und Stahlbeton, bauen auf Wunsch schlüsselfertig und
+          bringen Bestandsgebäude wieder in Form. Immer mit eigener Mannschaft und einem festen Ansprechpartner.
+        </p>
+      </div>
+      <!-- nur Stichworte, die Linie zeigt mit Pfeilen von unten hinein -->
       <div class="ov">
         {
           leistungen.map((l) => (
             <a class="ov-col" href={url(`/leistungen/${l.slug}/`)} data-line-up>
               <h3 class="ov-t" set:html={l.title} />
-              <p>{l.kurz}</p>
-              <span class="text-link">
-                <span>Mehr erfahren</span>
-                <Icon name="arrow" />
-              </span>
+              <span class="ov-k">{l.stichworte.join(' · ')}</span>
             </a>
           ))
         }
       </div>
     </div>
+  </section>
+
+  <!-- ======================= LEISTUNGEN: einzeln ======================= -->
+  <section class="services">
     {
       services.map((s, i) => (
         <article class:list={['svc', `svc-${i + 1}`]} data-svc>
@@ -168,7 +169,7 @@ const werte = [
               <h3 class="svc-title">{s.title}</h3>
               <p>{s.text}</p>
               <a class="svc-more" href={url(`/leistungen/${s.slug}/`)} data-follow data-line-link>
-                <span>Mehr erfahren</span>
+                <span>Mal genauer hingucken</span>
                 <Icon name="arrow" />
               </a>
             </div>
@@ -202,31 +203,27 @@ const werte = [
     </div>
   </section>
 
-  <!-- ======================= KENNZAHLEN (diagonal) ======================= -->
-  <section class="figs" aria-label="Quirling in Zahlen">
+  <!-- ======================= KENNZAHLEN ======================= -->
+  <section class="figs" aria-labelledby="figs-h">
     <div class="container">
-      <div class="figs-field" data-figs>
-        <div class="fg fg-1" data-follow>
-          <strong>{GRUENDUNGSJAHR}</strong>
-          <span>Gegründet in Hamburg</span>
-        </div>
-        <div class="fg fg-2" data-follow>
-          <strong>{firma.mitarbeiter}</strong>
-          <span>Profis im Team</span>
-        </div>
-        <div class="fg fg-3" data-follow>
-          <strong>{firma.projekteAnzahl}<sup>+</sup></strong>
-          <span>Projekte realisiert</span>
-        </div>
-        <div class="fg fg-4" data-follow>
-          <strong>Hamburg &amp; Umgebung</strong>
-          <span>Unser Einsatzgebiet</span>
-        </div>
+      <div class="figs-head">
+        <h2 id="figs-h" class="figs-h">Gebaut auf<br /><span class="lt">Erfahrung.</span></h2>
+        <a class="svc-more" href={url('/unternehmen/')} data-follow data-line-link>
+          <span>Wer steckt dahinter?</span>
+          <Icon name="arrow" />
+        </a>
       </div>
-      <a class="svc-more figs-more" href={url('/unternehmen/')} data-follow data-line-link>
-        <span>Mehr über uns</span>
-        <Icon name="arrow" />
-      </a>
+      <div class="figs-grid" data-figs>
+        {
+          zahlen.map((z) => (
+            <div class="fg" data-follow data-line-down>
+              <strong set:html={z.v} />
+              <span class="fg-l">{z.l}</span>
+              <p>{z.t}</p>
+            </div>
+          ))
+        }
+      </div>
     </div>
   </section>
 
@@ -248,7 +245,7 @@ const werte = [
             ))
           }
         </div>
-        <a class="text-link show-all" href={url('/referenzen/')}><span>Alle Referenzen</span><Icon name="arrow" /></a>
+        <a class="svc-more show-all" href={url('/referenzen/')}><span>Alle Projekte angucken</span><Icon name="arrow" /></a>
       </div>
       <div class="show-stage">
         {
@@ -281,16 +278,16 @@ const werte = [
     </div>
   </section>
 
-  <!-- ======================= MIT ANPACKEN (Stempel) ======================= -->
-  <section class="join" aria-label="Karriere">
-    <div class="container join-in">
-      <div class="career-stamp" data-follow>
+  <!-- ======================= MIT ANPACKEN: Stempel zwischen Video und Footer ======================= -->
+  <div class="join">
+    <div class="join-pos">
+      <a class="career-stamp" href={url('/karriere/')} data-follow>
         <span class="cl-a"><QHammer class="cl-hammer" color="#fff" highlight="#3948A4" />Mit anpacken</span>
         <span class="cl-b">Werde Teil des Teams</span>
-      </div>
-      <a class="pill join-btn" href={url('/karriere/')}><span>Zur Karriere</span><Icon name="arrow" /></a>
+        <span class="cl-c">Zur Karriere <Icon name="arrow" /></span>
+      </a>
     </div>
-  </section>
+  </div>
 </Base>
 
 <style>
@@ -434,7 +431,7 @@ const werte = [
   .intro-text {
     grid-column: 8 / 13;
     display: grid;
-    gap: 1.4rem;
+    gap: 2.2rem;
     justify-items: start;
     padding-bottom: 0.6rem;
   }
@@ -448,41 +445,67 @@ const werte = [
 
   /* ======================= KENNZAHLEN ======================= */
   .figs {
-    padding-block: clamp(2rem, 4vw, 3rem) clamp(4rem, 7vw, 6rem);
+    padding-block: clamp(6rem, 10vw, 9rem) clamp(5rem, 9vw, 8rem);
   }
-  .figs-field {
-    position: relative;
-    height: clamp(560px, 56vw, 760px);
+  .figs-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 1.5rem 3rem;
+  }
+  .figs-h {
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: clamp(2.6rem, 5vw, 5.2rem);
+    line-height: 0.95;
+    color: var(--blue);
+    margin: 0;
+  }
+  .figs-h .lt {
+    font-weight: 300;
+  }
+  /* vier Spalten; die Linie läuft darüber und zeigt mit Pfeilen von oben auf jede Zahl */
+  .figs-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(2rem, 4vw, 4rem);
+    margin-top: clamp(6rem, 9vw, 8rem);
   }
   .fg {
-    position: absolute;
     display: grid;
-    gap: 0.6rem;
+    gap: 0.7rem;
+    align-content: start;
   }
   .fg strong {
     font-family: var(--font-head);
-    font-stretch: 125%;
+    font-stretch: 68%;
     font-weight: 800;
+    font-size: clamp(3.6rem, 6.4vw, 6.6rem);
     line-height: 0.9;
     color: var(--blue);
-    letter-spacing: -0.02em;
   }
-  .fg sup {
+  .fg strong :global(sup) {
     font-size: 0.45em;
     vertical-align: top;
     margin-left: 0.05em;
   }
-  .fg span {
-    font-family: var(--font-head);
-    font-stretch: 115%;
-    font-weight: 600;
-    font-size: 0.78rem;
-    letter-spacing: 0.12em;
+  .fg-l {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
-    color: var(--ink-3);
+    color: var(--blue);
   }
-  .figs-more {
-    margin-top: clamp(2rem, 4vw, 3rem);
+  .fg p {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1.6;
+    color: var(--ink-2);
+    max-width: 22ch;
   }
   /* Einblenden, sobald die Linie die Stelle erreicht */
   [data-follow] {
@@ -497,7 +520,7 @@ const werte = [
     transform: none;
   }
   .fg[data-follow].is-in {
-    transition-delay: 0.12s;
+    transition-delay: 0.25s;
   }
   @media (prefers-reduced-motion: reduce) {
     [data-follow] {
@@ -505,110 +528,36 @@ const werte = [
       transform: none;
     }
   }
-  /* Zickzack entlang der Diagonale: links oben → rechts → links → rechts unten */
-  .fg-1 {
-    left: 0;
-    top: 0;
-  }
-  .fg-1 strong {
-    font-size: clamp(4.5rem, 12vw, 11rem);
-  }
-  .fg-2 {
-    left: 64%;
-    top: 24%;
-  }
-  .fg-2 strong {
-    font-size: clamp(3.4rem, 8vw, 7.4rem);
-  }
-  .fg-3 {
-    left: 3%;
-    top: 46%;
-  }
-  .fg-3 strong {
-    font-size: clamp(3.8rem, 9vw, 8.4rem);
-  }
-  .fg-4 {
-    left: 50%;
-    top: 78%;
-  }
-  .fg-4 strong {
-    font-size: clamp(1.4rem, 2.6vw, 2.3rem);
-    text-transform: uppercase;
-  }
-
   /* ======================= LEISTUNGEN ======================= */
+  /* Übersicht: abgegrenzte blaue Fläche, Oberkante als angedeutete Raute */
+  .overview {
+    background: #e6e9f6;
+    padding-block: clamp(6rem, 10vw, 8.5rem) clamp(4rem, 7vw, 6rem);
+    clip-path: polygon(0 0, 78% clamp(2rem, 4vw, 3.5rem), 100% clamp(0.8rem, 1.6vw, 1.4rem), 100% 100%, 0 100%);
+  }
+  .ov-top {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: clamp(2rem, 4vw, 4rem);
+    align-items: end;
+  }
+  .ov-top .svc-head {
+    grid-column: 1 / 7;
+    margin: 0;
+    padding: 0;
+  }
+  .ov-p {
+    grid-column: 7 / 13;
+    margin: 0;
+    font-size: 1.0625rem;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--ink-2);
+  }
   .services {
     position: relative;
     overflow-x: clip;
     padding-block: clamp(4rem, 7vw, 6rem);
-  }
-  .services > .container,
-  .services > .svc {
-    position: relative;
-    z-index: 1;
-  }
-  /* Eigener Hintergrund für die Leistungen: zartes Blau mit Bauplan-Raster.
-     Ränder laufen weich aus, die Deckkraft folgt dem Scrollen (kein harter Übergang). */
-  .svc-bg {
-    position: absolute;
-    inset: -22vh 0;
-    z-index: 0;
-    pointer-events: none;
-    background-color: var(--tint);
-    background-image:
-      linear-gradient(rgb(57 72 164 / 0.075) 1px, transparent 1px),
-      linear-gradient(90deg, rgb(57 72 164 / 0.075) 1px, transparent 1px);
-    background-size: 56px 56px;
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 22vh, #000 calc(100% - 22vh), transparent 100%);
-    mask-image: linear-gradient(to bottom, transparent 0, #000 22vh, #000 calc(100% - 22vh), transparent 100%);
-    opacity: 0;
-  }
-  /* Variante „nur Farbe“: ruhige Fläche ohne Textur */
-  .svc-bg-farbe {
-    background-image: none;
-    background-color: #e6e9f6;
-  }
-  /* Variante „Rauten“: große, transparente Rauten in Logo-Proportion, die beim Scrollen
-     unterschiedlich schnell wandern (Tiefenwirkung) */
-  .svc-bg-rauten {
-    background-image: none;
-    background-color: #e9ecf8;
-    overflow: hidden;
-  }
-  .rh {
-    position: absolute;
-    aspect-ratio: 352 / 245;
-    clip-path: polygon(49.8% 0, 100% 53.3%, 48% 100%, 0 49.6%);
-    will-change: transform;
-  }
-  .rh-1 {
-    width: 74vw;
-    left: -24vw;
-    top: 14%;
-    background: rgb(57 72 164 / 0.08);
-  }
-  .rh-2 {
-    width: 46vw;
-    right: -10vw;
-    top: 30%;
-    background: rgb(57 72 164 / 0.11);
-  }
-  .rh-3 {
-    width: 30vw;
-    left: 30vw;
-    top: 62%;
-    background: rgb(18 23 53 / 0.06);
-  }
-  .rh-4 {
-    width: 58vw;
-    right: -18vw;
-    top: 66%;
-    background: rgb(57 72 164 / 0.06);
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .svc-bg {
-      opacity: 1;
-    }
   }
   .svc-head {
     position: relative;
@@ -652,17 +601,17 @@ const werte = [
       background-position: 0 0;
     }
   }
-  /* Übersicht: drei Spalten, die Linie läuft darunter und zeigt mit Pfeilen von unten hinein */
+  /* Stichworte: drei Spalten, die Linie läuft darunter und zeigt mit Pfeilen von unten hinein */
   .ov {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: clamp(2rem, 4vw, 4rem);
-    margin-top: clamp(1.5rem, 3vw, 2.5rem);
-    padding-bottom: clamp(5rem, 8vw, 7rem);
+    margin-top: clamp(3rem, 6vw, 5rem);
+    padding-bottom: clamp(4.5rem, 7vw, 6rem);
   }
   .ov-col {
     display: grid;
-    gap: 1rem;
+    gap: 0.7rem;
     align-content: start;
     justify-items: start;
     color: inherit;
@@ -679,12 +628,12 @@ const werte = [
     margin: 0;
     hyphens: manual;
   }
-  .ov-col p {
-    margin: 0;
-    font-size: 1.0625rem;
-    font-weight: 300;
-    line-height: 1.6;
-    color: var(--ink-2);
+  .ov-k {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink-3);
   }
   .ov-col:hover .ov-t {
     text-decoration: underline;
@@ -705,20 +654,20 @@ const werte = [
   }
   .svc-1 .svc-visual,
   .svc-3 .svc-visual {
-    grid-column: 1 / 8;
+    grid-column: 1 / 6;
     margin-left: calc(-1 * var(--content-left));
   }
   .svc-1 .svc-text,
   .svc-3 .svc-text {
-    grid-column: 8 / 13;
+    grid-column: 6 / 12;
   }
   .svc-2 .svc-visual {
-    grid-column: 6 / 13;
+    grid-column: 8 / 13;
     grid-row: 1;
     margin-right: calc(-1 * var(--content-left));
   }
   .svc-2 .svc-text {
-    grid-column: 1 / 6;
+    grid-column: 2 / 8;
     grid-row: 1;
   }
   .svc-visual {
@@ -729,12 +678,12 @@ const werte = [
 
   .svc-img {
     position: relative;
-    aspect-ratio: 16 / 10;
+    aspect-ratio: 4 / 5;
     /* nur die Innenkante ist schräg, die Außenkante liegt am Bildschirmrand */
-    clip-path: polygon(0 0, 100% 0, 91% 100%, 0 100%);
+    clip-path: polygon(0 0, 100% 0, 86% 100%, 0 100%);
   }
   .svc-2 .svc-img {
-    clip-path: polygon(9% 0, 100% 0, 100% 100%, 0 100%);
+    clip-path: polygon(14% 0, 100% 0, 100% 100%, 0 100%);
   }
   /* Navy-Block an der Innenkante unten */
   .block-in {
@@ -768,18 +717,24 @@ const werte = [
     margin-bottom: 1.2rem;
     hyphens: manual;
   }
+  /* Links als eigenständige Schaltflächen: kräftig, groß, mit Unterstrich */
   .svc-more {
     display: inline-flex;
     align-items: center;
     gap: 0.7rem;
+    margin-top: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 2px solid currentColor;
     font-family: var(--font-head);
-    font-stretch: 120%;
-    font-weight: 700;
-    font-size: 0.8rem;
-    letter-spacing: 0.1em;
+    font-stretch: 68%;
+    font-weight: 800;
+    font-size: clamp(1.2rem, 1.5vw, 1.45rem);
+    letter-spacing: 0.02em;
+    line-height: 1;
     text-transform: uppercase;
     color: var(--blue);
     text-decoration: none;
+    transition: color 0.25s ease;
   }
   .svc-more :global(svg) {
     width: 1.15rem;
@@ -789,9 +744,8 @@ const werte = [
   .svc-more:hover :global(svg) {
     transform: translateX(5px);
   }
-  .svc-more:hover span {
-    text-decoration: underline;
-    text-underline-offset: 0.35em;
+  .svc-more:hover {
+    color: var(--navy);
   }
   /* auf dem Desktop übernimmt die Linie den Pfeil */
   @media (min-width: 901px) {
@@ -811,7 +765,7 @@ const werte = [
   .svc-text p {
     font-size: 0.95rem;
     color: var(--ink-2);
-    margin-bottom: 1.8rem;
+    margin-bottom: 2rem;
   }
 
   /* ======================= PROJEKTE ======================= */
@@ -885,6 +839,12 @@ const werte = [
   .show .show-all {
     align-self: flex-start;
     color: #fff;
+  }
+  .show .show-all:hover {
+    color: #c9d0f5;
+  }
+  .show .show-all :global(svg) {
+    display: inline;
   }
   .show-stage {
     position: relative;
@@ -1057,20 +1017,22 @@ const werte = [
   }
 
   /* ======================= MIT ANPACKEN ======================= */
+  /* liegt auf der Kante zwischen Video und Footer, halb im Bild, halb im Footer */
   .join {
     position: relative;
-    padding-block: clamp(5rem, 10vw, 8rem);
-    overflow-x: clip;
+    z-index: 6;
+    height: 0;
   }
-  .join-in {
-    display: grid;
-    justify-items: center;
-    gap: clamp(1.8rem, 3vw, 2.6rem);
+  .join-pos {
+    position: absolute;
+    right: calc(var(--content-left) + 6%);
+    top: 0;
+    transform: translateY(-50%);
   }
-  /* Stempel ploppt auf, sobald man ihn erreicht */
   .career-stamp {
     display: grid;
-    justify-items: center;
+    justify-items: start;
+    text-decoration: none;
   }
   .career-stamp[data-follow] {
     transform: rotate(-4deg) scale(1.35);
@@ -1080,6 +1042,11 @@ const werte = [
   }
   .career-stamp[data-follow].is-in {
     transform: rotate(-4deg) scale(1);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .career-stamp[data-follow] {
+      transform: rotate(-4deg);
+    }
   }
   .cl-a,
   .cl-b {
@@ -1102,11 +1069,38 @@ const werte = [
     width: 1.1em;
     height: 1.1em;
   }
+  .cl-c {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-left: 1.4rem;
+    padding: 0.55rem 1.1rem 0.5rem;
+    background: var(--blue);
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: clamp(0.75rem, 1vw, 0.9rem);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: background 0.25s ease;
+  }
+  .cl-c :global(svg) {
+    width: 1.1em;
+    height: 1.1em;
+    transition: transform 0.35s var(--ease);
+  }
+  .career-stamp:hover .cl-c {
+    background: var(--navy);
+  }
+  .career-stamp:hover .cl-c :global(svg) {
+    transform: translateX(4px);
+  }
   .cl-b {
     font-weight: 300;
     font-size: clamp(1.1rem, 2vw, 1.8rem);
     padding: 0.45rem 1.4rem 0.6rem;
-    background: var(--navy);
+    margin-left: 0.7rem;
+    background: #fff;
+    color: var(--navy);
   }
   /* ======================= FILM ======================= */
   .film {
@@ -1201,9 +1195,6 @@ const werte = [
     font-weight: 900;
     font-size: clamp(1.6rem, 2.4vw, 2.5rem);
   }
-  :global(html.typo-b) .fg strong {
-    font-weight: 900;
-  }
   /* Fließtexte kleiner, ruhiger */
   :global(html.typo-b) .intro-p,
   :global(html.typo-b) .svc-text p,
@@ -1221,8 +1212,6 @@ const werte = [
     line-height: 1.6;
   }
   /* technische Beschriftungen in Mono */
-  :global(html.typo-b) .fg span,
-  :global(html.typo-b) .svc-more,
   :global(html.typo-b) .show-meta,
   :global(html.typo-b) .cl-b {
     font-family: var(--font-mono);
@@ -1230,11 +1219,6 @@ const werte = [
     font-weight: 500;
     letter-spacing: 0.08em;
   }
-  :global(html.typo-b) .fg span {
-    font-size: 0.72rem;
-  }
-  :global(html.typo-b) .fg span,
-  :global(html.typo-b) .svc-more,
   :global(html.typo-b) .show-meta,
   :global(html.typo-b) .cl-b {
     letter-spacing: 0.04em;
@@ -1250,7 +1234,6 @@ const werte = [
   :global(html.typo-c) .show-title,
   :global(html.typo-c) .values-h,
   :global(html.typo-c) .value h3,
-  :global(html.typo-c) .fg strong,
   :global(html.typo-c) .cl-a {
     font-stretch: 68%;
     letter-spacing: -0.005em;
@@ -1267,8 +1250,8 @@ const werte = [
   }
   :global(html.typo-c) .svc-head {
     font-weight: 800;
-    font-size: clamp(3.6rem, 9vw, 9.6rem);
-    line-height: 0.86;
+    font-size: clamp(2.6rem, 5vw, 5.2rem);
+    line-height: 0.95;
   }
   :global(html.typo-c) .svc-title {
     font-weight: 800;
@@ -1292,18 +1275,6 @@ const werte = [
   :global(html.typo-c) .value h3 {
     font-weight: 800;
     font-size: clamp(2rem, 3.2vw, 3.2rem);
-  }
-  :global(html.typo-c) .fg strong {
-    font-weight: 800;
-  }
-  :global(html.typo-c) .fg-1 strong {
-    font-size: clamp(5.5rem, 15vw, 14rem);
-  }
-  :global(html.typo-c) .fg-3 strong {
-    font-size: clamp(4.6rem, 11vw, 10.4rem);
-  }
-  :global(html.typo-c) .fg-2 strong {
-    font-size: clamp(4rem, 9.5vw, 9rem);
   }
 
   /* ======================= RESPONSIVE ======================= */
@@ -1331,28 +1302,31 @@ const werte = [
       padding-top: 5rem;
     }
     .intro-grid,
-    .ov {
+    .ov,
+    .ov-top {
       grid-template-columns: minmax(0, 1fr);
     }
     .intro-h,
-    .intro-text {
+    .intro-text,
+    .ov-top .svc-head,
+    .ov-p {
       grid-column: 1 / -1;
+    }
+    .figs-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .join-pos {
+      right: var(--gutter);
+      transform: translateY(-78%);
+    }
+    .cl-a {
+      font-size: clamp(1.5rem, 7.4vw, 2.2rem);
+    }
+    .cl-b {
+      font-size: clamp(0.85rem, 3.8vw, 1.1rem);
     }
     .ov {
       padding-bottom: 2rem;
-    }
-    .figs-field {
-      height: auto;
-      display: grid;
-      gap: 2.5rem;
-    }
-    .fg {
-      position: static;
-    }
-    .fg-2,
-    .fg-4 {
-      justify-self: end;
-      text-align: right;
     }
     .svc-grid {
       grid-template-columns: 1fr;
@@ -1469,11 +1443,17 @@ const werte = [
       position: relative;
       height: 80svh;
     }
+    /* mobil: Rautenspitze oben, unten läuft das Video gerade bis zum Footer */
     .film-frame {
-      clip-path: polygon(50% 4%, 100% 50%, 50% 96%, 0% 50%);
+      clip-path: polygon(50% 4%, 100% 42%, 100% 100%, 0 100%, 0 42%);
     }
     .film-feed {
       display: none;
+    }
+  }
+  @media (max-width: 560px) {
+    .figs-grid {
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 </style>
@@ -1660,13 +1640,13 @@ const werte = [
     const tipY = film.top + vh * 0.22;
     const defs: { d: string; y: number }[] = [];
 
-    // Einstieg: „Mehr über uns“ hängt an der rechten Randspur
+    // Einstieg: der Link hängt an der rechten Randspur
     const introLink = document.querySelector<HTMLElement>('[data-intro] [data-line-link]');
     if (introLink) introLink.dataset.lineX = String(R);
 
-    // Übersicht: die Linie läuft unter den drei Spalten durch, je ein Pfeil zeigt von unten hinein
+    // Übersicht: die Linie läuft unter den drei Stichworten durch, je ein Pfeil zeigt von unten hinein
     const cols = Array.from(document.querySelectorAll<HTMLElement>('[data-line-up]')).map((c) => box(c)!);
-    const yU = Math.max(...cols.map((c) => c.bottom)) + 56;
+    const yU = Math.max(...cols.map((c) => c.bottom)) + 48;
     const colX = cols.map((c) => c.left + 8);
     cols.forEach((c, i) => {
       const x = colX[i]!;
@@ -1674,67 +1654,67 @@ const werte = [
       defs.push({ d: `M${x} ${yU} V${end} M${x - 7} ${end + 9} L${x} ${end} L${x + 7} ${end + 9}`, y: yU });
     });
 
-    // Leistungen einzeln: die Linie läuft im Zickzack durch die Fuge zwischen Bild und Text
-    const rows = Array.from(document.querySelectorAll<HTMLElement>('[data-svc]')).map((r) => {
-      const v = box(r.querySelector('.svc-visual'))!;
-      const t = box(r.querySelector('.svc-text'))!;
-      const seam = v.right <= t.left ? (v.right + t.left) / 2 : (t.right + v.left) / 2;
+    // Leistungen einzeln: kurze Teillinie von der schrägen Bildkante zum Link (keine durchgehende Linie)
+    document.querySelectorAll<HTMLElement>('[data-svc]').forEach((r) => {
+      const img = box(r.querySelector('.svc-img'))!;
       const link = r.querySelector<HTMLElement>('[data-line-link]');
-      if (link) link.dataset.lineX = String(seam);
-      return { top: Math.min(v.top, t.top), bottom: Math.max(v.bottom, t.bottom), seam };
+      if (!link) return;
+      const lb = box(link)!;
+      const y = (lb.top + lb.bottom) / 2;
+      const f = Math.min(1, Math.max(0, (y - img.top) / (img.bottom - img.top)));
+      const w = img.right - img.left;
+      const imageLeft = img.right <= lb.left;
+      // Bildkante auf Höhe des Links (Innenkante ist um 14 % geneigt)
+      link.dataset.lineX = String(imageLeft ? img.right - w * 0.14 * f + 10 : img.left + w * 0.14 * (1 - f) - 10);
     });
 
-    // Zahlen: „Mehr über uns“ hängt an der linken Randspur
+    // Zahlen: die Linie kommt am rechten Rand herunter, läuft über die vier Spalten und zeigt von oben auf jede Zahl
+    const figCols = Array.from(document.querySelectorAll<HTMLElement>('[data-line-down]')).map((c) => box(c)!);
+    const yF = figs.top - 48;
+    figCols.forEach((c) => {
+      const x = c.left + 8;
+      const end = c.top - 14;
+      defs.push({ d: `M${x} ${yF} V${end} M${x - 7} ${end - 9} L${x} ${end} L${x + 7} ${end - 9}`, y: yF });
+    });
     const figsLink = document.querySelector<HTMLElement>('.figs [data-line-link]');
-    if (figsLink) figsLink.dataset.lineX = String(L);
-    const figsLinkY = figsLink ? (box(figsLink)!.top + box(figsLink)!.bottom) / 2 : figs.bottom;
+    if (figsLink) figsLink.dataset.lineX = String(R);
+    const figsHead = box(document.querySelector('.figs-head'))!;
+    const show = box(document.querySelector('[data-show]'))!;
 
-    const d: string[] = [`M${ax} ${hero.bottom}`, `L${R} ${hero.bottom + 140}`, `V${yU}`, `H${colX[0] ?? L}`];
-    rows.forEach((r, i) => {
-      const above = i === 0 ? r.top - 56 : (rows[i - 1]!.bottom + r.top) / 2;
-      d.push(`V${above}`, `H${r.seam}`);
-    });
-    const last = rows[rows.length - 1];
-    if (last) d.push(`V${last.bottom + 56}`);
-    // weiter am rechten Rand durch „Familienbetrieb“, dann diagonal durch die Zahlen
-    d.push(`H${R}`, `V${figs.top}`, `H${ax}`, `L${L} ${figs.bottom}`, `V${figsLinkY + 64}`, `H${R}`, `V${film.top + 40}`, `H${cx}`, `V${tipY}`);
+    const d = [
+      // Hero → Einstieg → Übersicht
+      `M${ax} ${hero.bottom}`,
+      `L${R} ${hero.bottom + 140}`,
+      `V${yU}`,
+      `H${colX[0] ?? L}`,
+      // Zahlen: kommt aus dem Familienbetrieb am rechten Rand
+      `M${R} ${figsHead.top - 80}`,
+      `V${yF}`,
+      `H${figCols[0] ? figCols[0].left + 8 : L}`,
+      // Projekte → Raute
+      `M${R} ${show.top}`,
+      `V${film.top + 40}`,
+      `H${cx}`,
+      `V${tipY}`,
+    ].join(' ');
 
     // Koordinaten relativ zu <main>; die Grafik ist so hoch wie <main> und endet damit vor dem Footer
     const mainEl = svg.parentElement!;
     const mainTop = box(mainEl)!.top;
     svg.setAttribute('viewBox', `0 ${mainTop} ${W} ${mainEl.offsetHeight}`);
     svg.setAttribute('preserveAspectRatio', 'none');
-    path.setAttribute('d', d.join(' '));
+    path.setAttribute('d', d);
 
-    // Abzweige von der Diagonale zu den Kennzahlen (gleiche Linienstärke)
-    const xOnDiag = (y: number) => ax + ((y - figs.top) / (figs.bottom - figs.top)) * (L - ax);
-    // Zahlen mit festem Abstand neben die Diagonale setzen (auch auf breiten Bildschirmen nie auf der Linie)
-    const fieldW = figs.right - figs.left;
-    document.querySelectorAll<HTMLElement>('.fg').forEach((fg) => {
-      const num = box(fg.querySelector('strong'))!;
-      const y = (num.top + num.bottom) / 2;
-      const x = xOnDiag(y);
-      const w = fg.offsetWidth;
-      const rightSide = fg.classList.contains('fg-2') || fg.classList.contains('fg-4');
-      // rechts der Linie mit deutlich mehr Abstand, links mit mindestens 72 px
-      const gap = rightSide ? 150 : 72;
-      const left = rightSide ? Math.min(x + gap - figs.left, fieldW - w) : Math.max(0, Math.min(fg.offsetLeft, x - gap - w - figs.left));
-      fg.style.left = `${left}px`;
-      const fb = box(fg)!;
-      const end = fb.right < x ? fb.right + 24 : fb.left - 24;
-      defs.push({ d: `M${x} ${y} H${end}`, y });
-      fg.dataset.followY = String(y);
-    });
     // Abzweige mit Pfeilspitze zu „Mehr über uns“ und „Mehr erfahren“, je nach Seite von links oder rechts
     document.querySelectorAll<HTMLElement>('[data-line-link]').forEach((a) => {
       const b = box(a)!;
       const y = (b.top + b.bottom) / 2;
       const from = Number(a.dataset.lineX ?? R);
       if (from < b.left) {
-        const e = b.left - 14;
+        const e = b.left - 20;
         defs.push({ d: `M${from} ${y} H${e} M${e - 8} ${y - 7} L${e} ${y} L${e - 8} ${y + 7}`, y });
       } else {
-        const e = b.right + 16;
+        const e = b.right + 20;
         defs.push({ d: `M${from} ${y} H${e} M${e + 8} ${y - 7} L${e} ${y} L${e + 8} ${y + 7}`, y });
       }
       a.dataset.followY = String(y);
