@@ -12,6 +12,7 @@ import { url } from '~/lib/url';
 import heroPoster from '~/assets/site/hero-poster.jpg';
 import filmPoster from '~/assets/site/film-poster.jpg';
 import { leistungBild } from '~/data/leistung-bilder';
+import { mark } from '~/lib/logo-paths';
 import handwerkFoto from '~/assets/site/handwerk-schalung.jpg';
 import historisch from '~/assets/site/historisch.jpg';
 
@@ -22,10 +23,8 @@ interface Props {
   svcBg?: 'raster' | 'farbe' | 'rauten';
   noindex?: boolean;
   title?: string;
-  /** Entwurf für den Stempel „Mit anpacken“ */
-  join?: 'a' | 'b' | 'c';
 }
-const { typo = 'c', noindex = false, title = 'Start', join = 'a' } = Astro.props;
+const { typo = 'c', noindex = false, title = 'Start' } = Astro.props;
 
 const heroPosterImg = await getImage({ src: heroPoster, width: 1920, format: 'jpg', quality: 70 });
 const filmPosterImg = await getImage({ src: filmPoster, width: 1600, format: 'jpg', quality: 70 });
@@ -78,11 +77,11 @@ const showcase = await Promise.all(
 
 
 
-/* Zahlen: die Gründung groß am Foto, die übrigen drei als Treppe daneben */
+/* Zahlen: drei Stufen, die nach rechts ansteigen */
 const zahlen = [
-  { n: firma.projekteAnzahl, plus: true, l: 'Projekte realisiert', t: 'Vom Einfamilienhaus bis zum Bürogebäude mit Tiefgarage.' },
-  { n: firma.mitarbeiter, plus: false, l: 'Profis im Team', t: 'Eine eingespielte Mannschaft.' },
-  { n: null, txt: 'HH', plus: false, l: 'Hamburg und Umgebung', t: 'Kurze Wege zu jeder Baustelle.' },
+  { n: GRUENDUNGSJAHR, from: 1960, plus: false, l: 'Gegründet in Hamburg', t: 'Bis heute inhabergeführt.' },
+  { n: firma.projekteAnzahl, from: 0, plus: true, l: 'Projekte realisiert', t: 'Vom Einfamilienhaus bis zum Bürogebäude.' },
+  { n: null, txt: 'HH', from: 0, plus: false, l: 'Hamburg und Umgebung', t: 'Kurze Wege zu jeder Baustelle.' },
 ];
 
 const werte = [
@@ -144,7 +143,7 @@ const werte = [
         </div>
         <!-- Knopf liegt halb über dem Bild -->
         <a class="intro-btn" href={url('/unternehmen/')}>
-          <span>Kennste uns schon?</span>
+          <span>Kennste<br />uns schon?</span>
           <Icon name="arrow" />
         </a>
       </div>
@@ -233,31 +232,27 @@ const werte = [
 
   <!-- ======================= KENNZAHLEN / ÜBER UNS ======================= -->
   <section class="figs" data-figs-sec aria-labelledby="figs-h">
+    <!-- Foto randlos von Kante zu Kante, Knopf liegt auf dem Knick -->
+    <div class="figs-photo">
+      <span class="figs-img" data-figs-img>
+        <Image src={historisch} alt="Historisches Foto einer Baumannschaft auf einem Gerüst" widths={[800, 1200, 1600]} sizes="(min-width: 900px) 52vw, 100vw" />
+      </span>
+      <a class="intro-btn figs-btn" href={url('/unternehmen/')}>
+        <span>Wer steckt<br />dahinter?</span>
+        <Icon name="arrow" />
+      </a>
+    </div>
     <div class="container figs-in">
-      <div class="figs-photo">
-        <span class="figs-img" data-figs-img>
-          <Image src={historisch} alt="Historisches Foto einer Baumannschaft auf einem Gerüst" widths={[700, 1100, 1500]} sizes="(min-width: 900px) 55vw, 100vw" />
-        </span>
-        <div class="figs-since" data-follow>
-          <span class="fs-l">Gegründet</span>
-          <strong><span data-num={GRUENDUNGSJAHR} data-num-from="1960">{GRUENDUNGSJAHR}</span></strong>
-          <span class="fs-l">in Hamburg</span>
-        </div>
-      </div>
       <div class="figs-side">
         <h2 id="figs-h" class="figs-h">Gebaut auf<br /><span class="lt">Erfahrung.</span></h2>
         <p class="figs-p">Von Thomas Quirling gegründet und bis heute inhabergeführt. Was damals mit einer kleinen Mannschaft begann, ist heute ein fester Name im Hamburger Rohbau.</p>
-        <a class="svc-more" href={url('/unternehmen/')}>
-          <span>Wer steckt dahinter?</span>
-          <Icon name="arrow" />
-        </a>
         <div class="figs-steps">
           {
             zahlen.map((z, i) => (
               <div class:list={['fg-par', `fg-par-${i + 1}`]} data-par={String(i + 1)}>
                 <div class="fg" data-follow>
                   <strong>
-                    {z.n !== null ? <span data-num={z.n} data-num-from="0">{z.n}</span> : z.txt}
+                    {z.n !== null ? <span data-num={z.n} data-num-from={z.from}>{z.n}</span> : z.txt}
                     {z.plus && <sup>+</sup>}
                   </strong>
                   <span class="fg-l">{z.l}</span>
@@ -315,6 +310,13 @@ const werte = [
           <source src={url('/video/film-loop.mp4')} type="video/mp4" />
         </video>
       </div>
+      <!-- Bildmarke: die graue Raute des Logos wird zum Fenster für das Video -->
+      <svg class="film-logo" data-film-logo viewBox="120 62 354.5 247" aria-hidden="true">
+        {mark.map((m, i) => (i === 0 ? <path class="fl-raute" fill="#868484" d={m.d} /> : null))}
+        <g class="fl-q" data-film-q>
+          {mark.slice(1).map((m) => <path fill={m.role === 'white' ? '#ffffff' : m.role === 'grey' ? '#868484' : '#3948A4'} d={m.d} />)}
+        </g>
+      </svg>
       <div class="film-ui" data-film-ui>
         <h2 class="h-display">Quirling<br /><span class="lt">von oben.</span></h2>
       </div>
@@ -322,47 +324,14 @@ const werte = [
   </section>
 
   <!-- ======================= MIT ANPACKEN: zwischen Video und Footer ======================= -->
-  <div class:list={['join', `join-${join}`]}>
-    {
-      join === 'a' && (
-        <div class="join-pos">
-          <a class="ja" href={url('/karriere/')} data-follow>
-            <span class="ja-l">Werde Teil des Teams</span>
-            <span class="ja-h"><QHammer class="ja-hammer" color="#121735" highlight="#3948A4" />Mit anpacken</span>
-            <span class="ja-btn">Zur Karriere <Icon name="arrow" /></span>
-          </a>
-        </div>
-      )
-    }
-    {
-      join === 'b' && (
-        <a class="jb" href={url('/karriere/')} data-follow>
-          <span class="jb-in">
-            <QHammer class="jb-hammer" color="#121735" highlight="#3948A4" />
-            <span class="jb-h">Mit anpacken</span>
-            <span class="jb-l">Werde Teil<br />des Teams</span>
-            <span class="jb-btn">Zur Karriere <Icon name="arrow" /></span>
-          </span>
-        </a>
-      )
-    }
-    {
-      join === 'c' && (
-        <div class="join-pos">
-          <a class="jc" href={url('/karriere/')} data-follow>
-            <span class="jc-echo" aria-hidden="true" />
-            <span class="jc-dia">
-              <span class="jc-in">
-                <QHammer class="jc-hammer" color="#121735" highlight="#3948A4" />
-                <span class="jc-h">Mit<br />anpacken</span>
-                <span class="jc-l">Werde Teil des Teams</span>
-              </span>
-            </span>
-            <span class="jc-btn">Zur Karriere <Icon name="arrow" /></span>
-          </a>
-        </div>
-      )
-    }
+  <div class="join">
+    <div class="join-pos">
+      <a class="ja" href={url('/karriere/')} data-follow>
+        <span class="ja-l">Werde Teil des Teams</span>
+        <span class="ja-h"><QHammer class="ja-hammer" color="#121735" highlight="#3948A4" />Mit anpacken</span>
+        <span class="ja-btn">Zur Karriere <Icon name="arrow" /></span>
+      </a>
+    </div>
   </div>
 </Base>
 
@@ -541,25 +510,28 @@ const werte = [
     object-fit: cover;
   }
   /* Knopf liegt halb auf der Bildkante */
+  /* sitzt genau auf dem Knick der Bildkante (Lage setzt fitIntro) */
   .intro-btn {
     position: absolute;
-    left: 0;
-    bottom: clamp(2rem, 5vw, 3.5rem);
-    transform: translateX(-42%);
+    left: var(--kx, 0px);
+    top: var(--ky, 58%);
+    transform: translate(-30%, -50%);
     display: inline-flex;
-    align-items: center;
-    gap: 0.8rem;
-    padding: 1.1rem 1.6rem 1rem;
+    align-items: flex-end;
+    gap: 1.2rem;
+    padding: 1.3rem 1.5rem 1.2rem;
+    line-height: 0.95;
     background: var(--navy);
     color: #fff;
     font-family: var(--font-head);
     font-stretch: 68%;
     font-weight: 800;
-    font-size: clamp(1.2rem, 1.6vw, 1.5rem);
+    font-size: clamp(1.4rem, 1.9vw, 1.85rem);
     letter-spacing: 0.02em;
     text-transform: uppercase;
     text-decoration: none;
     box-shadow: 0 20px 40px -20px rgb(18 23 53 / 0.6);
+    z-index: 2;
     transition: background 0.25s ease;
   }
   .intro-btn :global(svg) {
@@ -578,26 +550,27 @@ const werte = [
   .figs {
     position: relative;
     overflow-x: clip;
-    padding-block: clamp(5rem, 8vw, 7rem) clamp(5rem, 8vw, 7rem);
+    padding-block: clamp(4.5rem, 7vw, 6.5rem);
   }
   .figs-in {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
     gap: clamp(2rem, 4vw, 4rem);
-    align-items: center;
   }
-  /* Foto randlos bis an den linken Rand, Innenkante mit Knick nach rechts */
+  /* Foto füllt die linke Hälfte von Ober- bis Unterkante, Innenkante mit Knick nach rechts */
   .figs-photo {
-    grid-column: 1 / 7;
-    position: relative;
-    margin-left: calc(-1 * var(--content-left));
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 50%;
+    z-index: 2;
   }
   .figs-img {
-    display: block;
-    position: relative;
-    aspect-ratio: 5 / 4.2;
+    position: absolute;
+    inset: 0;
     overflow: hidden;
-    clip-path: polygon(0 0, 88% 0, 100% 46%, 90% 100%, 0 100%);
+    clip-path: polygon(0 0, 86% 0, 100% 52%, 90% 100%, 0 100%);
     background: var(--stone-200);
   }
   .figs-img :global(img) {
@@ -605,54 +578,15 @@ const werte = [
     height: 112%;
     object-fit: cover;
     object-position: 50% 40%;
-    filter: grayscale(1) contrast(1.08);
   }
-  /* Duoton im Quirling-Blau: helle Flächen werden hellblau, dunkle bleiben dunkel */
-  .figs-img::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: #9aa6ee;
-    mix-blend-mode: multiply;
-    pointer-events: none;
-  }
-  /* Gründungsjahr: blaue Fläche, halb über der Bildkante, zählt hoch */
-  .figs-since {
-    position: absolute;
-    right: 0;
-    bottom: clamp(-2.5rem, -3vw, -1.5rem);
-    transform: translateX(35%);
-    display: grid;
-    justify-items: start;
-    gap: 0.35rem;
-    padding: 1.2rem 1.6rem 1.3rem;
-    background: var(--blue);
-    color: #fff;
-    box-shadow: 0 24px 50px -24px rgb(18 23 53 / 0.6);
-  }
-  .figs-since[data-follow] {
-    transform: translateX(35%) translateY(18px);
-  }
-  .figs-since[data-follow].is-in {
-    transform: translateX(35%);
-  }
-  .figs-since strong {
-    font-family: var(--font-head);
-    font-stretch: 68%;
-    font-weight: 800;
-    font-size: clamp(4rem, 7.4vw, 7.6rem);
-    line-height: 0.82;
-    font-variant-numeric: tabular-nums;
-  }
-  .fs-l {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: #c9d0f5;
+  .figs-btn {
+    left: 100%;
+    top: 52%;
+    transform: translate(-72%, -50%);
   }
   .figs-side {
-    grid-column: 8 / 13;
+    grid-column: 7 / 13;
+    padding-left: clamp(1rem, 3vw, 3rem);
     display: grid;
     gap: clamp(1.2rem, 2vw, 1.6rem);
     justify-items: start;
@@ -677,9 +611,6 @@ const werte = [
     font-weight: 300;
     line-height: 1.65;
     color: var(--ink-2);
-  }
-  .figs-side .svc-more {
-    margin-top: 0;
   }
   /* drei Zahlen als Treppe, die nach rechts ansteigt; jede Stufe mit eigener Linie */
   .figs-steps {
@@ -906,6 +837,14 @@ const werte = [
   }
   .svc-2 .svc-text {
     grid-column: 5 / 13;
+  }
+  /* Link immer außen, damit die Linie lang über die Zeile läuft */
+  @media (min-width: 901px) {
+    .svc-2 .svc-more {
+      display: flex;
+      width: fit-content;
+      margin-left: auto;
+    }
   }
   .svc-visual {
     position: relative;
@@ -1134,7 +1073,7 @@ const werte = [
     z-index: 2;
     /* überlappt die Projekt-Sektion minimal: keine helle Haarlinie durch Subpixel-Rundung */
     margin-top: -2px;
-    padding-block: clamp(4rem, 7vw, 6rem) clamp(5rem, 8vw, 7rem);
+    padding-block: clamp(5rem, 9vw, 8rem) clamp(6rem, 10vw, 9rem);
   }
   .values-grid {
     display: grid;
@@ -1168,7 +1107,7 @@ const werte = [
     margin: 0;
     padding: 0;
     display: grid;
-    gap: clamp(1.8rem, 3vw, 2.6rem);
+    gap: clamp(2.4rem, 4.4vw, 3.8rem);
   }
   .value {
     --icon-gap: clamp(4rem, 11vw, 11rem);
@@ -1277,9 +1216,7 @@ const werte = [
     top: 0;
     transform: translateY(-50%);
   }
-  .ja-btn,
-  .jb-btn,
-  .jc-btn {
+  .ja-btn {
     display: inline-flex;
     align-items: center;
     gap: 0.6rem;
@@ -1295,21 +1232,15 @@ const werte = [
     white-space: nowrap;
     transition: background 0.25s ease;
   }
-  .ja-btn :global(svg),
-  .jb-btn :global(svg),
-  .jc-btn :global(svg) {
+  .ja-btn :global(svg) {
     width: 1.1em;
     height: 1.1em;
     transition: transform 0.35s var(--ease);
   }
-  .ja:hover .ja-btn,
-  .jb:hover .jb-btn,
-  .jc:hover .jc-btn {
+  .ja:hover .ja-btn {
     background: #2b3889;
   }
-  .ja:hover .ja-btn :global(svg),
-  .jb:hover .jb-btn :global(svg),
-  .jc:hover .jc-btn :global(svg) {
+  .ja:hover .ja-btn :global(svg) {
     transform: translateX(4px);
   }
 
@@ -1369,158 +1300,18 @@ const werte = [
     transform: rotate(-3deg);
   }
 
-  /* --- B: schräges Band wie ein Absperrband, fährt von rechts herein --- */
-  .jb {
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: min(64vw, 1000px);
-    transform-origin: right center;
-    color: var(--navy);
-    text-decoration: none;
-  }
-  .jb-in {
-    display: flex;
-    align-items: center;
-    gap: clamp(0.8rem, 1.6vw, 1.6rem);
-    padding: clamp(1.1rem, 1.8vw, 1.5rem) calc(var(--content-left) + 1rem) clamp(1.1rem, 1.8vw, 1.5rem) clamp(3rem, 6vw, 6rem);
-    background: #9aa6ee;
-    clip-path: polygon(clamp(2rem, 4vw, 4rem) 0, 100% 0, 100% 100%, 0 100%);
-    box-shadow: 0 20px 40px -20px rgb(18 23 53 / 0.5);
-  }
-  .jb :global(.jb-hammer) {
-    flex: none;
-    width: clamp(2.4rem, 4vw, 3.8rem);
-    height: clamp(2.4rem, 4vw, 3.8rem);
-  }
-  .jb-h {
-    font-family: var(--font-head);
-    font-stretch: 68%;
-    font-weight: 800;
-    text-transform: uppercase;
-    font-size: clamp(2.2rem, 4.4vw, 4.2rem);
-    line-height: 0.9;
-    white-space: nowrap;
-  }
-  .jb-l {
-    font-family: var(--font-mono);
-    font-size: clamp(0.72rem, 0.9vw, 0.85rem);
-    line-height: 1.3;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    white-space: nowrap;
-    padding-left: clamp(0.8rem, 1.4vw, 1.2rem);
-    border-left: 1.5px solid rgb(18 23 53 / 0.5);
-  }
-  .jb-btn {
-    margin-left: auto;
-  }
-  .jb[data-follow] {
-    opacity: 1;
-    transform: translateY(-50%) rotate(-4deg) translateX(105%);
-    transition: transform 0.9s cubic-bezier(0.2, 0.9, 0.25, 1);
-  }
-  .jb[data-follow].is-in {
-    transform: translateY(-50%) rotate(-4deg);
-  }
-
-  /* --- C: Raute wie im Logo, mit versetzter Kontur, Knopf an der unteren Spitze --- */
-  .join-c .join-pos {
-    right: calc(var(--content-left) + 26%);
-    transform: translateY(-58%);
-  }
-  .jc {
-    --d: clamp(13rem, 19vw, 18rem);
-    position: relative;
-    display: grid;
-    place-items: center;
-    width: calc(var(--d) * 1.414);
-    height: calc(var(--d) * 1.414);
-    color: var(--navy);
-    text-decoration: none;
-  }
-  .jc-dia,
-  .jc-echo {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: var(--d);
-    height: var(--d);
-    translate: -50% -50%;
-    rotate: 45deg;
-  }
-  .jc-dia {
-    background: #9aa6ee;
-    box-shadow: 0 24px 50px -20px rgb(18 23 53 / 0.55);
-  }
-  .jc-echo {
-    border: 1.5px solid #9aa6ee;
-    translate: calc(-50% + 14px) calc(-50% - 14px);
-    transition: translate 0.6s var(--ease) 0.4s;
-  }
-  .jc-in {
-    position: absolute;
-    inset: 0;
-    rotate: -45deg;
-    display: grid;
-    place-content: center;
-    justify-items: center;
-    gap: 0.4rem;
-    text-align: center;
-  }
-  .jc :global(.jc-hammer) {
-    width: clamp(2.2rem, 3.4vw, 3.2rem);
-    height: clamp(2.2rem, 3.4vw, 3.2rem);
-  }
-  .jc-h {
-    font-family: var(--font-head);
-    font-stretch: 68%;
-    font-weight: 800;
-    text-transform: uppercase;
-    font-size: clamp(1.9rem, 3vw, 2.9rem);
-    line-height: 0.88;
-  }
-  .jc-l {
-    font-family: var(--font-mono);
-    font-size: clamp(0.62rem, 0.8vw, 0.75rem);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-  .jc-btn {
-    position: absolute;
-    left: 50%;
-    bottom: 4%;
-    translate: -50% 50%;
-  }
-  .jc[data-follow] {
-    transform: scale(0.6) rotate(-20deg);
-    transition:
-      opacity 0.35s ease,
-      transform 0.7s cubic-bezier(0.3, 1.5, 0.5, 1);
-  }
-  .jc[data-follow].is-in {
-    transform: none;
-  }
-  .jc:hover .jc-echo {
-    translate: calc(-50% + 22px) calc(-50% - 22px);
-  }
   @media (prefers-reduced-motion: reduce) {
     .ja[data-follow],
     .ja[data-follow].is-in {
       transform: rotate(-3deg);
     }
-    .jb[data-follow],
-    .jb[data-follow].is-in {
-      transform: translateY(-50%) rotate(-4deg);
-    }
-    .jc[data-follow] {
-      transform: none;
-    }
   }
   /* ======================= FILM ======================= */
   .film {
     position: relative;
-    height: 200vh;
+    height: 260vh;
+    background: var(--navy);
+    margin-top: -1px;
   }
   .film-sticky {
     position: sticky;
@@ -1531,11 +1322,35 @@ const werte = [
     place-items: center;
     z-index: 2;
   }
+  /* Startform = Raute des Logos (Punkte aus der Bildmarke, Breite 34 vw, mittig); das Skript rechnet sie exakt nach */
   .film-frame {
     position: absolute;
     inset: 0;
     background: var(--navy);
-    clip-path: polygon(50% 22%, 70% 50%, 50% 78%, 30% 50%);
+    clip-path: polygon(33% 50%, 50.4% 30%, 67.8% 51.5%, 49.8% 70.5%);
+  }
+  .film-logo {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: min(34vw, 62vh);
+    height: auto;
+    translate: -50% -50%;
+    z-index: 3;
+    overflow: visible;
+    pointer-events: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .film-logo {
+      display: none;
+    }
+    .film-frame {
+      clip-path: none;
+    }
+  }
+  .fl-q {
+    transform-box: view-box;
+    transform-origin: 297px 185px;
   }
   /* Linienende im stehenden Bereich: läuft von oben genau in die Rautenspitze */
   .film-feed {
@@ -1721,31 +1536,30 @@ const werte = [
     .intro-visual {
       grid-column: 1 / -1;
     }
+    .figs {
+      padding-top: 0;
+    }
     .figs-in {
       grid-template-columns: minmax(0, 1fr);
-      gap: 4.5rem;
     }
-    .figs-photo,
     .figs-side {
       grid-column: 1 / -1;
       min-width: 0;
+      padding-left: 0;
     }
     .figs-photo {
-      margin-inline: calc(-1 * var(--gutter));
+      position: relative;
+      width: auto;
+      aspect-ratio: 4 / 3;
+      margin-bottom: 5rem;
     }
     .figs-img {
-      aspect-ratio: 4 / 3;
       clip-path: polygon(0 0, 100% 0, 100% 94%, 0 100%);
     }
-    .figs-since,
-    .figs-since[data-follow],
-    .figs-since[data-follow].is-in {
-      right: var(--gutter);
-      transform: none;
-      bottom: -2.5rem;
-    }
-    .figs-since strong {
-      font-size: 3.6rem;
+    .figs-btn {
+      left: var(--gutter);
+      top: 100%;
+      transform: translateY(-50%);
     }
     .fg-par-2 {
       margin-bottom: 1.5rem;
@@ -1763,41 +1577,8 @@ const werte = [
       right: var(--gutter);
       transform: translateY(-92%);
     }
-    .jb[data-follow] {
-      transform: translateY(-96%) rotate(-4deg) translateX(105%);
-    }
-    .jb[data-follow].is-in {
-      transform: translateY(-96%) rotate(-4deg);
-    }
     .ja-h {
       font-size: clamp(1.7rem, 8vw, 2.4rem);
-    }
-    .jb {
-      width: 92vw;
-    }
-    .jb-in {
-      flex-wrap: wrap;
-      padding: 1rem var(--gutter) 1rem 2.6rem;
-      gap: 0.5rem 0.8rem;
-    }
-    .jb-h {
-      font-size: clamp(1.7rem, 8vw, 2.4rem);
-    }
-    .jb-l {
-      display: none;
-    }
-    .jb-btn {
-      margin-left: 0;
-    }
-    .jc {
-      --d: 11rem;
-    }
-    .join-c .join-pos {
-      right: var(--gutter);
-      transform: translateY(-84%);
-    }
-    .jc-h {
-      font-size: 1.7rem;
     }
     .intro-visual {
       position: relative;
@@ -1934,15 +1715,13 @@ const werte = [
       min-width: 0;
     }
     .film {
-      height: auto;
+      height: 220svh;
     }
     .film-sticky {
-      position: relative;
-      height: 80svh;
+      height: 100svh;
     }
-    /* mobil: Rautenspitze oben, unten läuft das Video gerade bis zum Footer */
-    .film-frame {
-      clip-path: polygon(50% 4%, 100% 42%, 100% 100%, 0 100%, 0 42%);
+    .film-logo {
+      width: 66vw;
     }
     .film-feed {
       display: none;
@@ -2031,25 +1810,59 @@ const werte = [
     });
   });
 
-  /* ---------- Film: Raute öffnet sich ---------- */
-  mm.add('(prefers-reduced-motion: no-preference) and (min-width: 901px)', () => {
-    const film = document.querySelector('[data-film]');
-    const frame = document.querySelector('[data-film-frame]');
-    const ui = document.querySelector('[data-film-ui]');
-    if (!film || !frame) return;
-    const tl = gsap.timeline({ scrollTrigger: { trigger: film, start: 'top top', end: 'bottom bottom', scrub: 0.6 } });
-    tl.fromTo(frame, { clipPath: 'polygon(50% 22%, 70% 50%, 50% 78%, 30% 50%)' }, { clipPath: 'polygon(50% -60%, 160% 50%, 50% 160%, -60% 50%)', ease: 'none', duration: 1 });
-    // Spitze wandert von 22 % nach oben aus dem Bild: bei 22/82 der Strecke erreicht sie den Rand
-    const feed = document.querySelector('[data-film-feed]');
-    if (feed) {
-      const h0 = window.innerHeight * 0.22 - 40;
-      tl.fromTo(feed, { height: h0 }, { height: 0, ease: 'none', duration: Math.max(0.01, h0 / (window.innerHeight * 0.82)) }, 0);
-    }
-    if (ui) {
-      gsap.set(ui, { autoAlpha: 0, y: 30 });
-      tl.to(ui, { autoAlpha: 1, y: 0, duration: 0.35 }, 0.55);
-    }
-  });
+  /* ---------- Film: das Logo erscheint, die Raute wird zum Video und öffnet sich ---------- */
+  const RAUTE = [
+    [120.73, 184.07],
+    [296.89, 63.0],
+    [473.44, 192.9],
+    [290.58, 308.03],
+  ];
+  const filmClip = (frame: HTMLElement, logo: SVGSVGElement, f: number) => {
+    // Raute des Logos in Bildschirmkoordinaten, um ihre Mitte um Faktor f vergrößert
+    const fr = frame.getBoundingClientRect();
+    const lr = logo.getBoundingClientRect();
+    const sx = lr.width / 354.5;
+    const sy = lr.height / 247;
+    const cx = lr.left - fr.left + (297 - 120) * sx;
+    const cy = lr.top - fr.top + (185 - 62) * sy;
+    return `polygon(${RAUTE.map(([x, y]) => {
+      const px = lr.left - fr.left + (x! - 120) * sx;
+      const py = lr.top - fr.top + (y! - 62) * sy;
+      return `${(cx + (px - cx) * f).toFixed(1)}px ${(cy + (py - cy) * f).toFixed(1)}px`;
+    }).join(', ')})`;
+  };
+  mm.add(
+    { desktop: '(prefers-reduced-motion: no-preference) and (min-width: 901px)', mobile: '(prefers-reduced-motion: no-preference) and (max-width: 900px)' },
+    (ctx) => {
+      const film = document.querySelector<HTMLElement>('[data-film]');
+      const frame = document.querySelector<HTMLElement>('[data-film-frame]');
+      const logo = document.querySelector<SVGSVGElement>('[data-film-logo]');
+      const q = document.querySelector('[data-film-q]');
+      const raute = logo?.querySelector('.fl-raute');
+      const ui = document.querySelector('[data-film-ui]');
+      if (!film || !frame || !logo || !q || !raute) return;
+      const desktop = !!ctx.conditions?.desktop;
+      const st = { trigger: film, start: desktop ? 'top top' : 'top 20%', end: 'bottom bottom', scrub: 0.6 };
+      const state = { f: 1 };
+      const apply = () => (frame.style.clipPath = filmClip(frame, logo, state.f));
+      apply();
+      const tl = gsap.timeline({ scrollTrigger: { ...st, onRefresh: apply } });
+      // 1. Q und Hammer lösen sich, die graue Fläche gibt das Video frei
+      tl.to(q, { opacity: 0, scale: 1.35, duration: 0.22, ease: 'power2.in' }, 0.04);
+      tl.to(raute, { opacity: 0, duration: 0.18, ease: 'none' }, 0.1);
+      // 2. die Raute öffnet sich weich über den ganzen Bildschirm
+      tl.to(state, { f: 5.2, duration: 0.7, ease: 'power2.inOut', onUpdate: apply }, 0.22);
+      if (ui) {
+        gsap.set(ui, { autoAlpha: 0, y: 30 });
+        tl.to(ui, { autoAlpha: 1, y: 0, duration: 0.2 }, 0.72);
+      }
+      window.addEventListener('resize', apply);
+      return () => {
+        window.removeEventListener('resize', apply);
+        frame.style.removeProperty('clip-path');
+      };
+    },
+  );
 
   /* ---------- Die blaue Linie ---------- */
   const svg = document.querySelector<SVGSVGElement>('[data-flow]');
@@ -2295,6 +2108,8 @@ const werte = [
       img.style.removeProperty('top');
       img.style.removeProperty('bottom');
       img.style.removeProperty('clip-path');
+      vis.style.removeProperty('--kx');
+      vis.style.removeProperty('--ky');
       return;
     }
     const W = document.documentElement.clientWidth;
@@ -2318,6 +2133,8 @@ const werte = [
     const bottom = Math.max(...bots.map((p) => p.y));
     const kinkY = tops[0]!.y + (bots[0]!.y - tops[0]!.y) * 0.58;
     const pts = [...tops, ...bots.reverse(), { x: v.left, y: kinkY }].map((p) => `${(p.x - v.left).toFixed(1)}px ${(p.y - top).toFixed(1)}px`);
+    vis.style.setProperty('--kx', '0px');
+    vis.style.setProperty('--ky', `${kinkY - v.top}px`);
     img.style.top = `${top - v.top}px`;
     img.style.bottom = `${v.bottom - bottom}px`;
     img.style.clipPath = `polygon(${pts.join(', ')})`;
