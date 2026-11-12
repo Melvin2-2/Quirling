@@ -1,0 +1,391 @@
+---
+// Nur für die Auswahl, wird vor dem Veröffentlichen gelöscht.
+import Base from '~/layouts/Base.astro';
+import Icon from '~/components/Icon.astro';
+import { leistungen } from '~/data/site';
+import { url } from '~/lib/url';
+
+const einstieg = [
+  {
+    k: 'E1',
+    a: 'Wir lieben',
+    b: 'Beton.',
+    t: 'Schalen, bewehren, betonieren: Seit 1992 ist der Rohbau unser Handwerk. Als Familienbetrieb aus Hamburg bauen wir mit eigener Mannschaft Wohnhäuser, Büros und Hallen. Und wir freuen uns jedes Mal, wenn aus einem Plan ein Gebäude wird.',
+  },
+  {
+    k: 'E2',
+    a: 'Rohbau ist',
+    b: 'unser Ding.',
+    t: 'Wir sind ein Familienbetrieb aus Hamburg und bauen seit 1992 das, worauf alles andere steht: Fundamente, Wände und Decken. Mit eigener Mannschaft, kurzen Wegen und einem Wort, auf das Sie sich verlassen können.',
+  },
+  {
+    k: 'E3',
+    a: 'Hamburg baut',
+    b: 'auf uns.',
+    t: 'Seit 1992 stehen wir dort, wo Neues entsteht. Mit unserem eingespielten Team erstellen wir Rohbauten in Beton und Stahlbeton, bauen schlüsselfertig und bringen Altbauten wieder in Form. Persönlich, verlässlich und mit Freude am Bauen.',
+  },
+];
+---
+
+<Base title="Entwurf Startseite" noindex>
+  <div style="height: 120px; background: var(--navy)"></div>
+
+  {
+    einstieg.map((e) => (
+      <section class="section v e" data-v={e.k}>
+        <div class="container e-in">
+          <span class="tag">{e.k}</span>
+          <h2 class="e-h">
+            {e.a}
+            <br />
+            <span class="lt">{e.b}</span>
+          </h2>
+          <div class="e-text">
+            <p>{e.t}</p>
+            <a class="text-link" href={url('/unternehmen/')}>
+              <span>Mehr über uns</span>
+              <Icon name="arrow" />
+            </a>
+          </div>
+        </div>
+      </section>
+    ))
+  }
+
+  <!-- L1: drei Spalten, Linie quer darüber mit Pfeilen nach unten -->
+  <section class="section v" data-v="L1">
+    <div class="container">
+      <span class="tag">L1</span>
+      <h2 class="o-h">Was wir <span class="lt">bauen.</span></h2>
+      <div class="l1">
+        <span class="l1-line" aria-hidden="true"></span>
+        {
+          leistungen.map((l) => (
+            <a class="l1-col" href={url(`/leistungen/${l.slug}/`)}>
+              <span class="drop" aria-hidden="true" />
+              <h3 class="o-t" set:html={l.title} />
+              <p>{l.kurz}</p>
+              <span class="text-link">
+                <span>Mehr erfahren</span>
+                <Icon name="arrow" />
+              </span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- L2: Liste, Linie links senkrecht, Pfeile in jede Zeile -->
+  <section class="section v" data-v="L2">
+    <div class="container">
+      <span class="tag">L2</span>
+      <h2 class="o-h">Was wir <span class="lt">bauen.</span></h2>
+      <div class="l2">
+        <span class="l2-line" aria-hidden="true"></span>
+        {
+          leistungen.map((l) => (
+            <a class="l2-row" href={url(`/leistungen/${l.slug}/`)}>
+              <span class="branch" aria-hidden="true" />
+              <h3 class="o-t" set:html={l.title} />
+              <p>{l.kurz}</p>
+              <span class="l2-go">
+                <Icon name="arrow" />
+              </span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- L3: Treppe entlang der Diagonale -->
+  <section class="section v" data-v="L3">
+    <div class="container">
+      <span class="tag">L3</span>
+      <h2 class="o-h">Was wir <span class="lt">bauen.</span></h2>
+      <div class="l3">
+        {
+          leistungen.map((l, i) => (
+            <a class:list={['l3-step', `s${i + 1}`]} href={url(`/leistungen/${l.slug}/`)}>
+              <span class="branch" aria-hidden="true" />
+              <h3 class="o-t" set:html={l.title} />
+              <p>{l.kurz}</p>
+              <span class="text-link">
+                <span>Mehr erfahren</span>
+                <Icon name="arrow" />
+              </span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .v + .v {
+    border-top: 8px solid var(--navy);
+  }
+  .tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: #fff;
+    background: var(--todo);
+    padding: 0.2rem 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  /* Einstieg */
+  .e-in {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: clamp(2rem, 4vw, 4rem);
+    align-items: end;
+  }
+  .e-in .tag {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+  .e-h {
+    grid-column: 1 / 8;
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: clamp(3.4rem, 8vw, 8.4rem);
+    line-height: 0.92;
+    color: var(--blue);
+    margin: 0;
+  }
+  .e-h .lt {
+    font-weight: 300;
+  }
+  .e-text {
+    grid-column: 8 / 13;
+    display: grid;
+    gap: 1.4rem;
+    justify-items: start;
+    padding-bottom: 0.6rem;
+  }
+  .e-text p {
+    margin: 0;
+    font-size: clamp(1.1rem, 1.3vw, 1.25rem);
+    line-height: 1.6;
+    font-weight: 300;
+    color: var(--ink);
+  }
+
+  /* gemeinsam */
+  .o-h {
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: clamp(2.6rem, 5vw, 5rem);
+    line-height: 0.95;
+    color: var(--blue);
+    margin: 0 0 clamp(2.5rem, 5vw, 4rem);
+  }
+  .o-h .lt {
+    font-weight: 300;
+  }
+  .o-t {
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: clamp(1.8rem, 2.6vw, 2.7rem);
+    line-height: 0.97;
+    color: var(--blue);
+    margin: 0;
+  }
+  .l1 p,
+  .l2 p,
+  .l3 p {
+    margin: 0;
+    font-size: 1.0625rem;
+    font-weight: 300;
+    line-height: 1.6;
+    color: var(--ink-2);
+  }
+  a.l1-col,
+  a.l2-row,
+  a.l3-step {
+    text-decoration: none;
+    color: inherit;
+  }
+  /* Pfeilspitze wie an der Linie */
+  .drop::after,
+  .branch::after {
+    content: '';
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    border-right: 1.5px solid var(--blue);
+    border-bottom: 1.5px solid var(--blue);
+  }
+
+  /* L1 */
+  .l1 {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(2rem, 4vw, 4rem);
+    padding-top: 4rem;
+  }
+  .l1-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1.5px;
+    background: var(--blue);
+  }
+  .l1-col {
+    position: relative;
+    display: grid;
+    gap: 1rem;
+    align-content: start;
+    justify-items: start;
+  }
+  .drop {
+    position: absolute;
+    left: 0;
+    top: -4rem;
+    width: 1.5px;
+    height: 3rem;
+    background: var(--blue);
+  }
+  .drop::after {
+    left: -4.5px;
+    bottom: 0;
+    transform: rotate(45deg);
+  }
+
+  /* L2 */
+  .l2 {
+    position: relative;
+    display: grid;
+    gap: 6px;
+    padding-left: 4rem;
+  }
+  .l2-line {
+    position: absolute;
+    left: 0;
+    top: -2rem;
+    /* endet auf Höhe der letzten Zeile (3 gleich hohe Zeilen, 2 × 6 px Abstand) */
+    bottom: calc((100% - 12px) / 6);
+    width: 1.5px;
+    background: var(--blue);
+  }
+  .l2-row {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.4fr) auto;
+    gap: 2rem;
+    align-items: center;
+    padding: clamp(1.4rem, 2.5vw, 2.2rem) clamp(1.4rem, 2.5vw, 2.2rem);
+    background: #fff;
+    transition: background 0.3s ease;
+  }
+  .l2-row:hover {
+    background: var(--tint);
+  }
+  .l2-row .branch {
+    position: absolute;
+    left: -4rem;
+    top: 50%;
+    width: calc(4rem - 8px);
+    height: 1.5px;
+    background: var(--blue);
+  }
+  .l2-row .branch::after {
+    right: -2px;
+    top: -4px;
+    transform: rotate(-45deg);
+  }
+  .l2-row:last-child {
+    /* Linie endet in der letzten Zeile */
+  }
+  .l2-go {
+    width: 46px;
+    height: 46px;
+    display: grid;
+    place-items: center;
+    border: 1.5px solid var(--blue);
+    color: var(--blue);
+  }
+  .l2-go :global(svg) {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* L3 */
+  .l3 {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: repeat(3, auto);
+    column-gap: clamp(2rem, 4vw, 4rem);
+    row-gap: clamp(1.5rem, 3vw, 2.5rem);
+  }
+  .l3-step {
+    position: relative;
+    display: grid;
+    gap: 0.9rem;
+    justify-items: start;
+    padding-left: 2.6rem;
+  }
+  .l3-step.s1 {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .l3-step.s2 {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  .l3-step.s3 {
+    grid-column: 3;
+    grid-row: 3;
+  }
+  /* Linie als Treppe in der Lücke links neben jedem Block, dann waagerecht zum nächsten */
+  .l3-step::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: calc(clamp(1.5rem, 3vw, 2.5rem) * -0.5);
+    bottom: calc(clamp(1.5rem, 3vw, 2.5rem) * -0.5);
+    width: 1.5px;
+    background: var(--blue);
+  }
+  .l3-step.s1::before {
+    top: -2rem;
+  }
+  .l3-step:not(.s3)::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: calc(clamp(1.5rem, 3vw, 2.5rem) * -0.5);
+    width: calc(100% + clamp(2rem, 4vw, 4rem));
+    height: 1.5px;
+    background: var(--blue);
+  }
+  .l3-step.s3::before {
+    bottom: auto;
+    height: calc(1rem + clamp(1.5rem, 3vw, 2.5rem) * 0.5);
+  }
+  .l3-step .branch {
+    position: absolute;
+    left: 0;
+    top: 1rem;
+    width: 2rem;
+    height: 1.5px;
+    background: var(--blue);
+  }
+  .l3-step .branch::after {
+    right: -2px;
+    top: -4px;
+    transform: rotate(-45deg);
+  }
+</style>

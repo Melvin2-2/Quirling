@@ -1477,6 +1477,29 @@ const werte = [
   const mm = gsap.matchMedia();
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* ---------- Hero: Navy-Schräge wandert beim Scrollen nach rechts und deckt das Video zu ---------- */
+  mm.add('(prefers-reduced-motion: no-preference)', () => {
+    const hero = document.querySelector<HTMLElement>('[data-hero]');
+    const slab = hero?.querySelector<HTMLElement>('.hero-slab');
+    if (!hero || !slab) return;
+    const desktop = window.matchMedia('(min-width: 901px)').matches;
+    const trigger = { trigger: hero, start: 'top top', end: 'bottom top', scrub: true };
+    if (desktop) {
+      // Breite so weit, dass auch die schräge Unterkante (66 %) den rechten Rand überdeckt
+      gsap.fromTo(
+        slab,
+        { width: () => getComputedStyle(slab).width, backgroundColor: 'rgba(18, 23, 53, 0.82)' },
+        { width: () => `${window.innerWidth * 1.6}px`, backgroundColor: 'rgba(18, 23, 53, 1)', ease: 'none', scrollTrigger: trigger },
+      );
+    } else {
+      gsap.fromTo(
+        slab,
+        { clipPath: 'polygon(0 0, 100% 0, 100% 52%, 0 78%)', backgroundColor: 'rgba(18, 23, 53, 0.82)' },
+        { clipPath: 'polygon(0 0, 100% 0, 100% 110%, 0 110%)', backgroundColor: 'rgba(18, 23, 53, 1)', ease: 'none', scrollTrigger: trigger },
+      );
+    }
+  });
+
   /* ---------- Projekte: 3 große Bilder, 3 × scrollen (Desktop) ---------- */
   mm.add('(prefers-reduced-motion: no-preference) and (min-width: 901px)', () => {
     const show = document.querySelector<HTMLElement>('[data-show]');
