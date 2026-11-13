@@ -18,35 +18,66 @@ const vorteile = [
 ];
 
 // Wen wir suchen: bewusst ohne Datum, die Stellen sind dauerhaft offen.
-// Weitere Berufe einfach hier ergänzen.
-const stellen = [
+// Ein Teil ist entweder Fließtext (d) oder eine Liste mit Stichpunkten (punkte).
+type Teil = { t: string; d?: string; punkte?: string[] };
+const adresse = `${firma.strasse}, ${firma.plz} ${firma.ort}`;
+const stellen: { titel: string; meta: string; kurz: string; teile: Teil[] }[] = [
   {
     titel: 'Beton- und Stahlbetonbauer (m/w/d)',
-    meta: 'Hamburg und Umgebung · Vollzeit',
-    kurz: 'Schalen, bewehren, betonieren und noch einiges mehr.',
+    meta: 'Hamburg und Umgebung · Vollzeit · unbefristet',
+    kurz: 'Schalen, bewehren, betonieren: Rohbau mit einem festen, eingespielten Team.',
     teile: [
       {
+        t: 'Wer wir sind',
+        d: 'Die Quirling GmbH ist ein inhabergeführtes Bauunternehmen aus Hamburg. Seit 1992 bauen wir Rohbauten in Beton und Stahlbeton, schlüsselfertige Gebäude und Umbauten im Bestand, vom Mehrfamilienhaus mit Tiefgarage bis zur Stadtvilla.',
+      },
+      {
         t: 'Deine Aufgaben',
-        d: 'Du schalst, bewehrst und betonierst Fundamente, Wände und Decken, mauerst mit und packst auch bei Umbauten im Bestand an. Jede Baustelle ist anders, vom Mehrfamilienhaus mit Tiefgarage bis zur Stadtvilla.',
+        punkte: [
+          'Schalen von Fundamenten, Wänden, Stützen und Decken, auch mit Systemschalung',
+          'Verlegen und Einbauen der Bewehrung nach Plan',
+          'Betonieren, Verdichten und Nachbehandeln',
+          'Mitarbeit bei Mauerarbeiten und bei Umbauten im Bestand',
+          'Lesen von Bau- und Bewehrungsplänen',
+          'Sorgfältiges Arbeiten nach den Vorgaben von Polier und Bauleitung',
+        ],
       },
       {
         t: 'Dein Profil',
-        d: 'Du hast eine Ausbildung im Bauhandwerk oder Erfahrung im Rohbau, bist zuverlässig und arbeitest gern im Team. Flexibilität hilft, denn kein Tag ist wie der andere.',
+        punkte: [
+          'Abgeschlossene Ausbildung als Beton- und Stahlbetonbauer, Maurer oder Erfahrung im Rohbau',
+          'Sicherer Umgang mit Schalung und Bewehrung',
+          'Zuverlässigkeit, Sorgfalt und Freude an der Arbeit im Team',
+          'Führerschein Klasse B',
+        ],
       },
       {
         t: 'Was wir dir bieten',
-        d: 'Bezahlung über dem Branchendurchschnitt, moderne Firmenwagen, gut ausgestattete Baustellen und ein festes Team, in dem viele seit Jahrzehnten dabei sind. Als Familienbetrieb nehmen wir uns Zeit für unsere Leute.',
+        punkte: [
+          'Unbefristete Festanstellung in Vollzeit',
+          'Bezahlung über dem Branchendurchschnitt, pünktlich und fair',
+          'Moderne Firmenwagen',
+          'Arbeitskleidung und persönliche Schutzausrüstung werden gestellt',
+          'Gut ausgestattete Baucontainer und Sanitäranlagen, Gemeinschaftsraum und Umkleide auf dem Bauplatz',
+          'Ein festes Team, in dem viele Kollegen seit Jahrzehnten dabei sind',
+          'Abwechslungsreiche Baustellen in Hamburg und Umgebung',
+          'Kurze Wege und direkter Draht zur Geschäftsführung',
+        ],
+      },
+      {
+        t: 'So bewirbst du dich',
+        d: `Schick uns deine vollständigen Bewerbungsunterlagen (Anschreiben, Lebenslauf und Zeugnisse) per E-Mail an ${firma.email} oder per Post an ${adresse}. Bei Fragen vorab erreichst du uns unter ${firma.telefon}.`,
       },
     ],
   },
   {
     titel: 'Initiativ\u00adbewerbung',
     meta: 'Baustelle oder Büro',
-    kurz: 'Dein Beruf ist nicht dabei? Melde dich trotzdem.',
+    kurz: 'Dein Beruf ist nicht dabei? Bewirb dich trotzdem.',
     teile: [
       {
         t: 'Gute Leute suchen wir immer',
-        d: 'Ob Maurer, Polier oder Auszubildender: Schick uns ein paar Zeilen und deinen Lebenslauf. Wir melden uns zeitnah und lernen dich gern persönlich kennen.',
+        d: `Ob Maurer, Polier oder Auszubildender: Schick uns deine vollständigen Bewerbungsunterlagen (Anschreiben, Lebenslauf und Zeugnisse) per E-Mail an ${firma.email} oder per Post an ${adresse}. Wir melden uns zeitnah und lernen dich gern persönlich kennen.`,
       },
     ],
   },
@@ -74,7 +105,6 @@ const mailFor = (titel: string) => `mailto:${firma.email}?subject=${encodeURICom
     <div class="container vt-wrap">
       <div class="vt-head">
         <h2 class="h-sec">Was dich<br /><span class="lt">erwartet.</span></h2>
-        <p class="vt-fact"><b>30+</b>Jahre sind einige unserer Kollegen schon dabei. Das spricht für sich.</p>
       </div>
       <div class="vorteile">
         {
@@ -99,9 +129,9 @@ const mailFor = (titel: string) => `mailto:${firma.email}?subject=${encodeURICom
           Straße.
         </p>
         <ul class="steps">
-          <li>Du schickst uns ein paar Zeilen und deinen Lebenslauf.</li>
+          <li>Du sendest uns deine vollständigen Bewerbungsunterlagen: Anschreiben, Lebenslauf und Zeugnisse.</li>
           <li>Wir melden uns zeitnah bei dir.</li>
-          <li>Wir lernen uns persönlich kennen.</li>
+          <li>Wir lernen uns in einem persönlichen Gespräch kennen.</li>
         </ul>
       </div>
       <div class="jobs">
@@ -119,9 +149,16 @@ const mailFor = (titel: string) => `mailto:${firma.email}?subject=${encodeURICom
               <div class="job-body">
                 <div class="job-cols">
                   {j.teile.map((t) => (
-                    <div>
+                    <div class:list={['job-part', { 'is-wide': !t.punkte || t.punkte.length > 6 }]}>
                       <h3 class="job-h">{t.t}</h3>
-                      <p class="small">{t.d}</p>
+                      {t.d && <p class="small">{t.d}</p>}
+                      {t.punkte && (
+                        <ul class="job-list">
+                          {t.punkte.map((pk) => (
+                            <li>{pk}</li>
+                          ))}
+                        </ul>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -190,34 +227,12 @@ const mailFor = (titel: string) => `mailto:${firma.email}?subject=${encodeURICom
     background: var(--blue);
     transform: rotate(45deg);
   }
-  /* ruhige Kennzahl unter der Überschrift */
-  .vt-fact {
-    margin: 0.6rem 0 0;
-    display: grid;
-    gap: 0.3rem;
-    max-width: 22ch;
-    font-size: 1.125rem;
-    font-weight: 300;
-    line-height: 1.5;
-    color: var(--ink-2);
-  }
-  .vt-fact b {
-    font-family: var(--font-head);
-    font-stretch: 68%;
-    font-weight: 800;
-    font-size: clamp(3.4rem, 5vw, 5rem);
-    line-height: 0.85;
-    color: var(--blue);
-  }
   .vorteile {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: clamp(2rem, 3.6vw, 3rem) clamp(2rem, 4vw, 4rem);
   }
-  .v {
-    padding-top: 1.2rem;
-    border-top: 1px solid var(--line);
-  }
+
   .v-t {
     font-family: var(--font-head);
     font-stretch: 68%;
@@ -322,8 +337,8 @@ const mailFor = (titel: string) => `mailto:${firma.email}?subject=${encodeURICom
   }
   .job-cols {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
-    gap: 1.4rem 2.4rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.8rem 2.4rem;
     width: 100%;
     padding-top: 1.4rem;
     border-top: 1px solid var(--line);
@@ -340,6 +355,41 @@ const mailFor = (titel: string) => `mailto:${firma.email}?subject=${encodeURICom
   }
   .job-cols .small {
     margin: 0;
+    max-width: 62ch;
+  }
+  /* Fließtext-Teile (Wer wir sind, Bewerbung) über die volle Breite */
+  .job-part.is-wide {
+    grid-column: 1 / -1;
+  }
+  /* lange Listen über die volle Breite in zwei Spalten */
+  .job-part.is-wide .job-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 2.4rem;
+  }
+  .job-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.5rem;
+  }
+  .job-list li {
+    position: relative;
+    padding-left: 1.3rem;
+    font-size: 1.05rem;
+    font-weight: 300;
+    line-height: 1.5;
+    color: var(--ink-2);
+  }
+  .job-list li::before {
+    content: '';
+    position: absolute;
+    left: 0.1rem;
+    top: 0.6em;
+    width: 0.4rem;
+    height: 0.4rem;
+    background: var(--blue);
+    transform: rotate(45deg);
   }
 
   @media (max-width: 900px) {
@@ -349,7 +399,9 @@ const mailFor = (titel: string) => `mailto:${firma.email}?subject=${encodeURICom
     }
   }
   @media (max-width: 560px) {
-    .vorteile {
+    .vorteile,
+    .job-cols,
+    .job-part.is-wide .job-list {
       grid-template-columns: minmax(0, 1fr);
     }
     .job-i {
