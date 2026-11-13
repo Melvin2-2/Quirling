@@ -11,7 +11,8 @@ import { leistungBild } from '~/data/leistung-bilder';
 import { url } from '~/lib/url';
 
 export function getStaticPaths() {
-  return leistungenInhalt.map((l) => ({ params: { slug: l.slug }, props: { l } }));
+  // Rohbau hat eine eigene, neu aufgebaute Seite (rohbau.astro)
+  return leistungenInhalt.filter((l) => l.slug !== 'rohbau').map((l) => ({ params: { slug: l.slug }, props: { l } }));
 }
 const { l } = Astro.props;
 const hero = await leistungBild(l.slug, 'hero');
