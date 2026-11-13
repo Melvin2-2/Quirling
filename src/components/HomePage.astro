@@ -1838,7 +1838,7 @@ const werte = [
   const follow = () => {
     const t = target();
     // Leistungen erst, wenn sie gut im Bild sind: so bleibt der Blick länger bei der Übersicht
-    const tLate = reduce ? Infinity : window.scrollY + window.innerHeight * 0.6;
+    const tLate = reduce ? Infinity : window.scrollY + window.innerHeight * 0.74;
     followers.forEach((el) => {
       if (el.classList.contains('is-in')) return;
       if (box(el)!.top + 24 <= (el.closest('.services') ? tLate : t)) {

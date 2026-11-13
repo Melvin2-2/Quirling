@@ -7,16 +7,27 @@ import Icon from '~/components/Icon.astro';
 import { url } from '~/lib/url';
 import { firma, JAHRE_ERFAHRUNG, GRUENDUNGSJAHR } from '~/data/site';
 import historisch from '~/assets/site/historisch.jpg';
-import geruest from '~/assets/site/baustelle-geruest.jpg';
+import headerBild from '~/assets/projects/dorfkoppel/03.jpg';
+import tegelweg from '~/assets/projects/tegelweg/01.jpg';
+import hanseforum from '~/assets/projects/hanseforum/04.jpg';
+import buchholz from '~/assets/projects/reihenhaeuser-buchholz/01.jpg';
+import alsterpalais from '~/assets/projects/kinderwelt/03.jpg';
+import pferdemarkt from '~/assets/projects/pferdemarkt/03.jpg';
 import buero from '~/assets/site/buero-tilsiter-strasse.jpg';
 import thomas from '~/assets/team/thomas-quirling.jpg';
 
 
-// Unser Weg in drei Stationen
+// Unser Weg: Stationen aus Familie, Firmengeschichte und den Referenzen
 const weg = [
-  { k: 'Damals', t: 'Das Handwerk im Blut', d: 'Der Vater unseres Gründers lernt auf dem Bau, was gute Arbeit ausmacht.' },
-  { k: String(GRUENDUNGSJAHR), t: 'Die Gründung', d: 'Thomas Quirling gründet die Quirling GmbH in Hamburg, mit Schwerpunkt Rohbau.' },
-  { k: 'Heute', t: 'Fest in Hamburg', d: `Über ${firma.projekteAnzahl} Projekte, eine eingespielte Mannschaft und ein Büro in der Tilsiter Straße.` },
+  { k: 'Damals', t: 'Das Handwerk im Blut', d: 'Der Vater unseres Gründers lernt auf dem Bau, was gute Arbeit ausmacht. Die Begeisterung für das Bauen gibt er weiter.' },
+  { k: String(GRUENDUNGSJAHR), t: 'Die Gründung', d: 'Thomas Quirling gründet die Quirling GmbH in Hamburg. Von Anfang an mit Schwerpunkt Rohbau in Beton und Stahlbeton.' },
+  { k: '1997', t: 'Schlüsselfertig bis zur Übergabe', d: 'Am Tegelweg bauen wir ein Doppelhaus schlüsselfertig. Neben dem Rohbau übernehmen wir auf Wunsch alles bis zum Einzug.', bild: tegelweg, href: '/referenzen/?p=tegelweg' },
+  { k: '2001', t: 'Das Hanseforum', d: 'Beton- und Stahlbetonarbeiten für ein Bürogebäude mit Tiefgarage. Großer Gewerbebau, ganz in unserem Element.', bild: hanseforum, href: '/referenzen/?p=hanseforum' },
+  { k: '2006', t: '35 Reihenhäuser auf einen Streich', d: 'In Buchholz entsteht der Rohbau für 35 Reihenhäuser. Eines unserer größten Wohnprojekte.', bild: buchholz, href: '/referenzen/?p=reihenhaeuser-buchholz' },
+  { k: '2010', t: 'Umbau im Alsterpalais', d: 'Für die Kinderwelt bauen wir das Alsterpalais um und erweitern es. Arbeiten im Bestand verlangen Sorgfalt, genau unser Ding.', bild: alsterpalais, href: '/referenzen/?p=kinderwelt' },
+  { k: '2016', t: 'Barrierefrei wohnen am Pferdemarkt', d: 'Rohbau für 25 barrierefreie Wohnungen mit Tiefgarage. Wohnraum, der für alle Lebensphasen gemacht ist.', bild: pferdemarkt, href: '/referenzen/?p=pferdemarkt' },
+  { k: '2019', t: 'Neues Büro in Wandsbek', d: 'Wir ziehen in unser neues Bürogebäude in der Tilsiter Straße 174. Mehr Platz für Planung, Angebote und kurze Wege zu allen Baustellen.' },
+  { k: 'Heute', t: 'Fest in Hamburg', d: `Über ${firma.projekteAnzahl} Projekte, eine eingespielte Mannschaft von rund ${firma.mitarbeiter} Leuten und die Familie Quirling an der Spitze.` },
 ];
 
 const zahlen = [
@@ -32,8 +43,9 @@ const zahlen = [
     title="Bauen in Hamburg."
     titleLight={`Seit ${GRUENDUNGSJAHR}.`}
     intro="Familienbetrieb mit Schwerpunkt Rohbau. Inhabergeführt, mit kurzen Wegen und einem eingespielten Team aus jungen und erfahrenen Kollegen."
-    image={geruest}
-    imageAlt="Rohbau mit Gerüst und Kränen auf einer Baustelle der Quirling GmbH"
+    image={headerBild}
+    imageAlt="Wohnanlage Dorfkoppel der Quirling GmbH, im Vordergrund blühende Rhododendren"
+    imagePosition="40% 50%"
     crumbs={[{ label: 'Unternehmen' }]}
   />
 
@@ -84,17 +96,24 @@ const zahlen = [
     </div>
   </section>
 
-  <!-- Unser Weg: drei Stationen auf einer Linie, Rauten als Marken -->
+  <!-- Unser Weg: senkrechte Linie in der Mitte, Stationen abwechselnd links und rechts, Rauten als Marken -->
   <section class="section way">
     <div class="container">
       <h2 class="h-sec way-h">Unser<br /><span class="lt">Weg.</span></h2>
       <ol class="way-list">
         {
           weg.map((w) => (
-            <li class="way-step">
-              <span class="way-k">{w.k}</span>
-              <h3 class="way-t">{w.t}</h3>
-              <p>{w.d}</p>
+            <li class:list={['way-step', { 'has-img': w.bild }]}>
+              <div class="way-text">
+                <span class="way-k">{w.k}</span>
+                <h3 class="way-t">{w.t}</h3>
+                <p>{w.d}</p>
+              </div>
+              {w.bild && (
+                <a class="way-img" href={url(w.href!)} aria-label={`Referenz ansehen: ${w.t}`}>
+                  <Image src={w.bild} alt="" widths={[400, 700, 1000]} sizes="(min-width: 900px) 30vw, 100vw" />
+                </a>
+              )}
             </li>
           ))
         }
@@ -102,30 +121,22 @@ const zahlen = [
     </div>
   </section>
 
-  <!-- Der Mensch dahinter: Porträt mit Rautenknick, daneben der Leitsatz -->
+  <!-- Der Mensch dahinter: Porträt randlos links über die volle Höhe, rechts Leitsatz und Weg zum Team -->
   <section class="lead on-dark">
+    <div class="lead-img">
+      <Image src={thomas} alt="Thomas Quirling" widths={[600, 900, 1300]} sizes="(min-width: 900px) 44vw, 100vw" />
+    </div>
     <div class="container lead-in">
-      <div class="lead-img">
-        <Image src={thomas} alt="Thomas Quirling" widths={[500, 800, 1100]} sizes="(min-width: 900px) 34vw, 100vw" />
-      </div>
       <div class="lead-text">
         <span class="lead-k">Inhabergeführt seit {GRUENDUNGSJAHR}</span>
-        <p class="lead-q">„Was wir zusagen, steht.“</p>
+        <p class="lead-q">„Was wir zusagen,<br />steht.“</p>
         <p class="lead-p">
-          Unser Leitsatz gilt für jedes Bauvorhaben. Thomas Quirling führt das Unternehmen seit der Gründung selbst. Er ist ansprechbar, entscheidet
-          schnell und steht mit seinem Namen für das, was wir bauen.
+          Unser Leitsatz gilt für jedes Bauvorhaben. Thomas Quirling führt das Unternehmen seit der Gründung selbst, unterstützt von Ivonne Quirling in
+          der Assistenz der Geschäftsführung. Bei uns sprechen Sie mit denen, die entscheiden.
         </p>
         <span class="lead-n">Thomas Quirling<small>Geschäftsführender Gesellschafter</small></span>
+        <a class="lead-btn" href={url('/unternehmen/team/')}><span>Das ganze Team</span><Icon name="arrow" /></a>
       </div>
-    </div>
-  </section>
-
-  <!-- Überleitung zum Team -->
-  <section class="section section-tint team-cta">
-    <div class="container team-cta-in">
-      <h2 class="h-sec">Wer steckt<br /><span class="lt">dahinter?</span></h2>
-      <p class="small">Lernen Sie Ihre Ansprechpartner im Büro und unsere Mannschaft auf der Baustelle kennen.</p>
-      <a class="block-btn" href={url('/unternehmen/team/')}><span>Zum Team</span><Icon name="arrow" /></a>
     </div>
   </section>
 
@@ -136,7 +147,7 @@ const zahlen = [
     <div class="container office-in">
       <h2 class="h-sec">Unser Büro.<br /><span class="lt">In Wandsbek.</span></h2>
       <p>
-        In unserem Bürogebäude in der Tilsiter Straße laufen die Fäden zusammen: Angebote, Planung und die Abstimmung mit allen Baustellen. Kommen Sie
+        Seit 2019 laufen in unserem Bürogebäude in der Tilsiter Straße die Fäden zusammen: Angebote, Planung und die Abstimmung mit allen Baustellen. Kommen Sie
         gerne vorbei, wir freuen uns auf Sie.
       </p>
       <address>{firma.strasse}, {firma.plz} {firma.ort}</address>
@@ -272,9 +283,9 @@ const zahlen = [
     background: var(--blue);
     transform: rotate(45deg);
   }
-  /* Unser Weg */
+  /* Unser Weg: Mittellinie, Stationen im Wechsel links und rechts */
   .way-h {
-    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+    margin-bottom: clamp(3rem, 6vw, 5rem);
   }
   .way-list {
     position: relative;
@@ -282,43 +293,80 @@ const zahlen = [
     margin: 0;
     padding: 0;
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: clamp(1.5rem, 3vw, 3rem);
+    gap: clamp(2.5rem, 5vw, 4.5rem);
   }
-  /* durchgehende Linie auf Höhe der Rauten */
   .way-list::before {
     content: '';
     position: absolute;
-    left: 0;
-    right: 0;
-    top: 0.62rem;
-    height: 1.5px;
+    left: 50%;
+    top: 0.6rem;
+    bottom: 0;
+    width: 1.5px;
     background: var(--blue);
   }
   .way-step {
     position: relative;
     display: grid;
-    gap: 0.6rem;
-    align-content: start;
-    padding-top: 2.6rem;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: clamp(3.5rem, 8vw, 7rem);
+    align-items: start;
   }
+  /* Raute auf der Linie */
   .way-step::before {
     content: '';
     position: absolute;
-    left: 0;
-    top: 0;
-    width: 1.25rem;
-    height: 1.25rem;
+    left: 50%;
+    top: 0.5rem;
+    width: 1.2rem;
+    height: 1.2rem;
+    margin-left: -0.6rem;
     background: var(--blue);
     transform: rotate(45deg);
     outline: 6px solid var(--stone-50);
+  }
+  .way-text {
+    grid-column: 1;
+    display: grid;
+    gap: 0.55rem;
+    justify-items: end;
+    text-align: right;
+  }
+  .way-img {
+    grid-column: 2;
+    grid-row: 1;
+    display: block;
+    aspect-ratio: 16 / 10;
+    max-width: 30rem;
+    overflow: hidden;
+    clip-path: polygon(0 0, 100% 0, 100% 86%, 82% 100%, 0 100%);
+    background: var(--stone-200);
+  }
+  .way-img :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1s var(--ease);
+  }
+  .way-img:hover :global(img) {
+    transform: scale(1.05);
+  }
+  /* jede zweite Station gespiegelt */
+  .way-step:nth-child(even) .way-text {
+    grid-column: 2;
+    justify-items: start;
+    text-align: left;
+  }
+  .way-step:nth-child(even) .way-img {
+    grid-column: 1;
+    justify-self: end;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 18% 100%, 0 86%);
   }
   .way-k {
     font-family: var(--font-head);
     font-stretch: 68%;
     font-weight: 800;
-    font-size: clamp(2.6rem, 4vw, 4rem);
-    line-height: 0.9;
+    font-size: clamp(2.8rem, 4.4vw, 4.4rem);
+    line-height: 0.85;
     color: var(--blue);
     text-transform: uppercase;
   }
@@ -326,50 +374,56 @@ const zahlen = [
     font-family: var(--font-head);
     font-stretch: 68%;
     font-weight: 800;
-    font-size: clamp(1.3rem, 1.7vw, 1.7rem);
+    font-size: clamp(1.4rem, 1.9vw, 1.9rem);
     line-height: 1;
     text-transform: uppercase;
     color: var(--navy);
-    margin: 0.4rem 0 0;
+    margin: 0.3rem 0 0;
   }
   .way-step p {
     margin: 0;
-    max-width: 30ch;
+    max-width: 34ch;
     font-size: 1.125rem;
     font-weight: 300;
     line-height: 1.55;
     color: var(--ink-2);
   }
-  /* Der Mensch dahinter */
+  /* Der Mensch dahinter: Porträt randlos links über die volle Höhe */
   .lead {
+    position: relative;
+    overflow-x: clip;
+    min-height: min(92svh, 860px);
+    display: flex;
+    align-items: center;
     background: var(--navy);
     color: #fff;
-    padding-block: clamp(5rem, 8vw, 7rem);
+    padding-block: clamp(6rem, 10vw, 8rem);
     clip-path: polygon(0 0, 78% clamp(2rem, 4vw, 3.5rem), 100% clamp(0.8rem, 1.6vw, 1.4rem), 100% 100%, 0 100%);
   }
-  .lead-in {
-    display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: clamp(2rem, 4vw, 4rem);
-    align-items: center;
-  }
   .lead-img {
-    grid-column: 1 / 5;
-    aspect-ratio: 4 / 5;
-    overflow: hidden;
-    clip-path: polygon(0 0, 100% 0, 100% 90%, 76% 100%, 0 100%);
-    background: var(--stone-200);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 44%;
+    clip-path: polygon(0 0, 100% 0, 84% 100%, 0 100%);
   }
   .lead-img :global(img) {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 20%;
+    object-position: 50% 18%;
+  }
+  .lead-in {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    width: 100%;
   }
   .lead-text {
-    grid-column: 6 / 13;
+    grid-column: 7 / 13;
     display: grid;
-    gap: 1.4rem;
+    gap: 1.5rem;
     justify-items: start;
   }
   .lead-k {
@@ -423,16 +477,34 @@ const zahlen = [
     text-transform: none;
     color: rgb(255 255 255 / 0.7);
   }
-  /* Überleitung zum Team */
-  .team-cta-in {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
-    gap: 1.5rem clamp(2rem, 5vw, 5rem);
-    align-items: end;
+  .lead-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 0.6rem;
+    padding: 1rem 1.4rem 0.9rem;
+    background: #fff;
+    color: var(--navy);
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    font-size: clamp(1.2rem, 1.5vw, 1.45rem);
+    letter-spacing: 0.02em;
+    line-height: 1;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.25s ease;
   }
-  .team-cta-in .small {
-    margin: 0;
-    max-width: 30rem;
+  .lead-btn :global(svg) {
+    width: 1.2rem;
+    height: 1.2rem;
+    transition: transform 0.35s var(--ease);
+  }
+  .lead-btn:hover {
+    background: #9aa6ee;
+  }
+  .lead-btn:hover :global(svg) {
+    transform: translateX(4px);
   }
   .block-btn {
     display: inline-flex;
@@ -525,28 +597,51 @@ const zahlen = [
   @media (max-width: 900px) {
     .about,
     .story-in,
-    .team-cta-in,
     .lead-in,
     .way-list {
       grid-template-columns: minmax(0, 1fr);
     }
-    .lead-img,
     .lead-text {
       grid-column: 1 / -1;
     }
+    .lead {
+      display: block;
+      min-height: 0;
+      padding-top: 0;
+      clip-path: none;
+    }
     .lead-img {
-      max-width: 22rem;
+      position: relative;
+      width: auto;
+      aspect-ratio: 4 / 5;
+      max-height: 70svh;
+      margin-bottom: 3rem;
+      clip-path: polygon(0 0, 100% 0, 100% 94%, 0 100%);
     }
     .way-list::before {
-      left: 0.62rem;
-      right: auto;
-      top: 0;
-      bottom: 0;
-      width: 1.5px;
-      height: auto;
+      left: 0.6rem;
     }
-    .way-step {
-      padding: 0 0 0 3rem;
+    .way-step,
+    .way-step:nth-child(even) {
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: 1.2rem;
+      padding-left: 2.8rem;
+    }
+    .way-step::before {
+      left: 0.6rem;
+    }
+    .way-step .way-text,
+    .way-step:nth-child(even) .way-text {
+      grid-column: 1;
+      grid-row: 1;
+      justify-items: start;
+      text-align: left;
+    }
+    .way-step .way-img,
+    .way-step:nth-child(even) .way-img {
+      grid-column: 1;
+      grid-row: 2;
+      justify-self: start;
     }
     .about-text,
     .zahlen,
@@ -567,10 +662,6 @@ const zahlen = [
     .story-cap {
       left: var(--gutter);
       bottom: 2rem;
-    }
-    .team-cta-in {
-      align-items: start;
-      justify-items: start;
     }
     .office-slab {
       width: 100%;
