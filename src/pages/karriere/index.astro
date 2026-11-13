@@ -19,7 +19,7 @@ const vorteile = [
 
 // Wen wir suchen: bewusst ohne Datum, die Stellen sind dauerhaft offen.
 // Ein Teil ist entweder Fließtext (d) oder eine Liste mit Stichpunkten (punkte).
-type Teil = { t: string; d?: string; punkte?: string[] };
+type Teil = { t: string; d?: string | string[]; punkte?: string[] };
 const adresse = `${firma.strasse}, ${firma.plz} ${firma.ort}`;
 const stellen: { titel: string; ort: string; art: string[]; kurz: string; teile: Teil[] }[] = [
   {
@@ -75,11 +75,21 @@ const stellen: { titel: string; ort: string; art: string[]; kurz: string; teile:
     titel: 'Initiativ\u00adbewerbung',
     ort: 'Hamburg',
     art: ['Baustelle oder Büro'],
-    kurz: 'Dein Beruf ist nicht dabei? Bewirb dich trotzdem.',
+    kurz: 'Keine passende Stelle dabei? Bewirb dich trotzdem.',
     teile: [
       {
         t: 'Gute Leute suchen wir immer',
-        d: `Ob Maurer, Polier oder Auszubildender: Schick uns deine vollständigen Bewerbungsunterlagen (Anschreiben, Lebenslauf und Zeugnisse) per E-Mail an ${firma.email} oder per Post an ${adresse}. Wir melden uns zeitnah und lernen dich gern persönlich kennen.`,
+        d: [
+          'Du arbeitest gern im Team und möchtest Teil eines verlässlichen Familienbetriebs werden? Dann freuen wir uns über deine Bewerbung, auch wenn gerade keine passende Stelle ausgeschrieben ist.',
+          'Ob auf der Baustelle oder im Büro, ob erfahrene Fachkraft, am Anfang deines Berufswegs oder auf der Suche nach einem Ausbildungsplatz: Erzähl uns, was du kannst und was du suchst.',
+        ],
+      },
+      {
+        t: 'So bewirbst du dich',
+        d: [
+          `Schick uns deine vollständigen Bewerbungsunterlagen (Anschreiben, Lebenslauf und Zeugnisse) per E-Mail an ${firma.email} oder per Post an ${adresse}.`,
+          'Wir melden uns zeitnah bei dir und lernen dich gern persönlich kennen.',
+        ],
       },
     ],
   },
@@ -166,7 +176,7 @@ const mailFor = (titel: string) => `mailto:${firma.email}?subject=${encodeURICom
                   {j.teile.map((t) => (
                     <div class:list={['job-part', { 'is-wide': !t.punkte || t.punkte.length > 6 }]}>
                       <h3 class="job-h">{t.t}</h3>
-                      {t.d && <p class="small">{t.d}</p>}
+                      {t.d && (Array.isArray(t.d) ? t.d : [t.d]).map((absatz) => <p class="small">{absatz}</p>)}
                       {t.punkte && (
                         <ul class="job-list">
                           {t.punkte.map((pk) => (
@@ -397,6 +407,9 @@ const mailFor = (titel: string) => `mailto:${firma.email}?subject=${encodeURICom
   .job-cols .small {
     margin: 0;
     max-width: 62ch;
+  }
+  .job-cols .small + .small {
+    margin-top: 0.8rem;
   }
   /* Fließtext-Teile (Wer wir sind, Bewerbung) über die volle Breite */
   .job-part.is-wide {
