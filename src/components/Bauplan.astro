@@ -14,7 +14,6 @@ const etagen = [
   { v: firma.projekteAnzahl, plus: true, l: 'Projekte', hoehe: '+6,00' },
   { v: firma.mitarbeiter, plus: false, l: 'Mitarbeiter', hoehe: '+9,00' },
 ];
-const stufen = ['Fundament', 'Erdgeschoss', 'Obergeschosse', 'Richtfest'];
 
 // Maße der Zeichnung (viewBox 0 0 640 560)
 const G = 470; // Geländeoberkante
@@ -32,14 +31,13 @@ const floorBottom = (k: number) => 430 - k * FH; // Unterkante Geschoss k
       <div class="bp-text">
         <h2 class="h-sec" id="bp-h">Eine Basis,<br /><span class="lt">auf die Sie<br />bauen können.</span></h2>
         <p class="small">
-          Unser Schwerpunkt ist der Rohbau in Beton- und Stahlbetonbauweise. Dazu bauen wir schlüsselfertig und führen Umbauten und Sanierungen aus. Für
-          private Bauherren ebenso wie für Projektentwickler und Unternehmen.
+          Seit {GRUENDUNGSJAHR} bauen wir in Hamburg und Umgebung, vor allem den Rohbau in Beton und Stahlbeton. Auf Wunsch übernehmen wir auch alles bis
+          zur Schlüsselübergabe oder bauen im Bestand um.
         </p>
-        <ol class="bp-steps" aria-hidden="true">
-          <span class="bp-track"><span class="bp-fill" data-bp-fill></span></span>
-          {stufen.map((s) => <li data-bp-step>{s}</li>)}
-        </ol>
-        <p class="bp-hint" data-bp-hint aria-hidden="true">Weiter scrollen, wir bauen.</p>
+        <p class="small">
+          Über {firma.projekteAnzahl} Projekte sind so entstanden, für private Bauherren, Projektentwickler und Unternehmen. Gebaut von einem festen Team
+          aus rund {firma.mitarbeiter} Leuten, das seit Jahren zusammenarbeitet.
+        </p>
       </div>
 
       <figure class="bp-fig">
@@ -190,7 +188,7 @@ const floorBottom = (k: number) => 430 - k * FH; // Unterkante Geschoss k
   .bp {
     position: relative;
     /* Scrollweg für den Bau */
-    height: 280vh;
+    height: 190vh;
   }
   .bp-pin {
     position: sticky;
@@ -210,7 +208,7 @@ const floorBottom = (k: number) => 430 - k * FH; // Unterkante Geschoss k
   }
   .bp-text {
     display: grid;
-    gap: 1.3rem;
+    gap: 1.1rem;
     justify-items: start;
   }
   .bp-text .h-sec {
@@ -219,54 +217,6 @@ const floorBottom = (k: number) => 430 - k * FH; // Unterkante Geschoss k
   .bp-text .small {
     margin: 0;
     max-width: 44ch;
-  }
-  /* Bauabschnitte: dünne Linie füllt sich, aktueller Abschnitt blau */
-  .bp-steps {
-    position: relative;
-    list-style: none;
-    margin: 0.8rem 0 0;
-    padding: 1rem 0 0;
-    display: grid;
-    grid-template-columns: repeat(4, auto);
-    justify-content: space-between;
-    width: min(100%, 30rem);
-    gap: 1rem;
-  }
-  .bp-track {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    height: 2px;
-    background: var(--stone-200);
-  }
-  .bp-fill {
-    position: absolute;
-    inset: 0;
-    background: var(--blue);
-    transform-origin: left;
-    transform: scaleX(var(--p, 0));
-  }
-  .bp-steps li {
-    font-family: var(--font-head);
-    font-stretch: 68%;
-    font-weight: 800;
-    font-size: clamp(0.95rem, 1.15vw, 1.15rem);
-    text-transform: uppercase;
-    color: #b9bdd3;
-    transition: color 0.3s ease;
-  }
-  .bp-steps li.is-on {
-    color: var(--blue);
-  }
-  .bp-hint {
-    margin: 0.4rem 0 0;
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--ink-3);
-    transition: opacity 0.4s ease;
   }
   .bp-fig {
     margin: 0;
@@ -329,14 +279,6 @@ const floorBottom = (k: number) => 430 - k * FH; // Unterkante Geschoss k
     .bp-in {
       grid-template-columns: minmax(0, 1fr);
     }
-    .bp-hint {
-      display: none;
-    }
-    .bp-steps {
-      grid-template-columns: repeat(2, auto);
-      justify-content: start;
-      column-gap: 2rem;
-    }
     .bp-svg {
       max-height: none;
     }
@@ -361,9 +303,6 @@ const floorBottom = (k: number) => 430 - k * FH; // Unterkante Geschoss k
       el.style.strokeDashoffset = `${len}`;
     });
 
-    const steps = q<HTMLElement>('[data-bp-step]');
-    const fill = one<HTMLElement>('[data-bp-fill]');
-    const hint = one<HTMLElement>('[data-bp-hint]');
     const trolley = one<SVGRectElement>('[data-bp-trolley]')!;
     const cable = one<SVGLineElement>('[data-bp-cable]')!;
     const hook = one<SVGPathElement>('[data-bp-hook]')!;
@@ -371,7 +310,7 @@ const floorBottom = (k: number) => 430 - k * FH; // Unterkante Geschoss k
     const floors = q<SVGGElement>('[data-bp-floor]');
 
     // Kranhaken folgt einem Punkt (x = Katze, y = Oberkante der hängenden Decke)
-    const hoist = { x: 340, y: 100 };
+    const hoist = { x: 260, y: 100 };
     let active: SVGGElement | null = null;
     const placeHoist = () => {
       const hy = hoist.y - 34;
@@ -386,76 +325,56 @@ const floorBottom = (k: number) => 430 - k * FH; // Unterkante Geschoss k
       }
     };
 
-    // Bauabschnitt in der Liste markieren
-    const stage = (i: number) => () => steps.forEach((s, k) => s.classList.toggle('is-on', k <= i));
-
     const tl = gsap.timeline({ paused: true, defaults: { ease: 'power2.out' } });
-    // Ausgangslage
-    tl.set(['[data-bp-earth]', '[data-bp-found]', '[data-bp-found-txt]', '[data-bp-kote0]', '[data-bp-dim]', '[data-bp-flag]', '[data-bp-hoist]', ...q('[data-bp-txt]'), ...q('[data-bp-kote]')].map((s) => (typeof s === 'string' ? one(s) : s)), { autoAlpha: 0 }, 0)
-      .set(one('[data-bp-mast]'), { scaleY: 0 }, 0)
-      .set(one('[data-bp-jib]'), { scaleX: 0 }, 0)
+    tl.set(
+      [one('[data-bp-earth]'), one('[data-bp-found]'), one('[data-bp-found-txt]'), one('[data-bp-kote0]'), one('[data-bp-dim]'), one('[data-bp-crane]'), ...q('[data-bp-txt]'), ...q('[data-bp-kote]')],
+      { autoAlpha: 0 },
+      0,
+    )
       .set(q('[data-bp-cols] rect'), { scaleY: 0 }, 0)
       .set(slabs, { autoAlpha: 0 }, 0)
-      .set(one('[data-bp-flag]'), { scale: 0 }, 0);
+      .set(one('[data-bp-flag]'), { autoAlpha: 0, scale: 0 }, 0);
 
-    // 1. Gelände, Baugrube, Fundament
-    tl.to('[data-bp] .bp-ground', { strokeDashoffset: 0, duration: 0.8, ease: 'none' }, 0)
-      .to(one('[data-bp-earth]'), { autoAlpha: 1, duration: 0.4 }, 0.4)
-      .to('[data-bp] .bp-found-line', { strokeDashoffset: 0, duration: 1, ease: 'none' }, 0.6)
-      .to(one('[data-bp-found]'), { autoAlpha: 1, duration: 0.5 }, 1.3)
-      .to(one('[data-bp-found-txt]'), { autoAlpha: 1, duration: 0.4 }, 1.5)
-      .to(one('[data-bp-kote0]'), { autoAlpha: 1, duration: 0.3 }, 1.6)
-      .call(stage(0), [], 0.6);
+    // 1. Gelände und Fundament, der Kran steht schon
+    tl.to('[data-bp] .bp-ground', { strokeDashoffset: 0, duration: 0.6, ease: 'none' }, 0)
+      .to([one('[data-bp-earth]'), one('[data-bp-crane]')], { autoAlpha: 1, duration: 0.4 }, 0.2)
+      .to('[data-bp] .bp-found-line', { strokeDashoffset: 0, duration: 0.7, ease: 'none' }, 0.4)
+      .to([one('[data-bp-found]'), one('[data-bp-found-txt]'), one('[data-bp-kote0]')], { autoAlpha: 1, duration: 0.4 }, 0.9)
+      .call(() => placeHoist(), [], 1.2);
 
-    // 2. Kran richtet sich auf
-    tl.to(one('[data-bp-mast]'), { scaleY: 1, duration: 1, ease: 'power3.out' }, 1.8)
-      .to(one('[data-bp-jib]'), { scaleX: 1, duration: 0.8, ease: 'power3.out' }, 2.5)
-      .to(one('[data-bp-hoist]'), { autoAlpha: 1, duration: 0.3 }, 3.1);
-
-    // 3. Geschoss für Geschoss: Stützen wachsen, Decke wird eingehoben, Zahl zählt hoch
+    // 2. Geschoss für Geschoss: Stützen wachsen, Decke senkt sich senkrecht ein, Zahl zählt hoch
     floors.forEach((f, k) => {
-      const t = 3.4 + k * 2.4;
+      const t = 1.3 + k * 1.5;
       const slab = slabs[k]!;
       const target = Number(slab.dataset.y);
-      tl.to(f.querySelectorAll('[data-bp-cols] rect'), { scaleY: 1, duration: 0.6, stagger: 0.08, ease: 'power3.out' }, t)
+      tl.to(f.querySelectorAll('[data-bp-cols] rect'), { scaleY: 1, duration: 0.5, ease: 'power3.out' }, t)
         .call(() => {
           active = slab;
+          hoist.y = 100;
           placeHoist();
-        }, [], t + 0.5)
-        .set(hoist, { x: 340, y: 100 }, t + 0.5)
-        .to(slab, { autoAlpha: 1, duration: 0.2 }, t + 0.5)
-        .to(hoist, { x: 260, duration: 0.6, ease: 'power1.inOut', onUpdate: placeHoist }, t + 0.6)
-        .to(hoist, { y: target, duration: 0.8, ease: 'power2.inOut', onUpdate: placeHoist }, t + 1.1)
-        .to(slab.querySelectorAll('.bp-sling'), { autoAlpha: 0, duration: 0.2 }, t + 1.9)
-        .to(f.querySelector('[data-bp-txt]'), { autoAlpha: 1, duration: 0.3 }, t + 1.8)
-        .to(f.querySelector('[data-bp-kote]'), { autoAlpha: 1, duration: 0.3 }, t + 1.9);
+        }, [], t + 0.3)
+        .to(slab, { autoAlpha: 1, duration: 0.15 }, t + 0.3)
+        .to(hoist, { y: target, duration: 0.7, ease: 'power2.inOut', onUpdate: placeHoist }, t + 0.35)
+        .to(slab.querySelectorAll('.bp-sling'), { autoAlpha: 0, duration: 0.15 }, t + 1.05)
+        .to([f.querySelector('[data-bp-txt]'), f.querySelector('[data-bp-kote]')], { autoAlpha: 1, duration: 0.3 }, t + 1);
       const n = f.querySelector<SVGTSpanElement>('[data-bp-count]');
       if (n) {
         const to = Number(n.dataset.bpCount);
         const c = { v: 0 };
-        tl.fromTo(c, { v: 0 }, { v: to, duration: 0.6, ease: 'power1.out', onUpdate: () => (n.textContent = String(Math.round(c.v))) }, t + 1.8);
+        tl.fromTo(c, { v: 0 }, { v: to, duration: 0.5, ease: 'power1.out', onUpdate: () => (n.textContent = String(Math.round(c.v))) }, t + 1);
       }
-      tl.call(stage(k === 0 ? 1 : 2), [], t + 1.9);
     });
 
-    // 4. Haken fährt hoch, Richtfest
-    const tEnd = 3.4 + 3 * 2.4;
+    // 3. Haken fährt hoch, Richtfest
+    const tEnd = 1.3 + 3 * 1.5;
     tl.call(() => (active = null), [], tEnd)
-      .to(hoist, { x: 420, y: 92, duration: 0.6, onUpdate: placeHoist }, tEnd)
-      .to(one('[data-bp-dim]'), { autoAlpha: 1, duration: 0.4 }, tEnd + 0.2)
-      .to(one('[data-bp-flag]'), { autoAlpha: 1, scale: 1, duration: 0.6, ease: 'back.out(2)' }, tEnd + 0.4)
-      .call(stage(3), [], tEnd + 0.4)
-      .to({}, { duration: 0.6 }, tEnd + 1);
-
-    const setFill = () => {
-      fill?.style.setProperty('--p', String(tl.progress()));
-      if (hint) hint.style.opacity = tl.progress() > 0.04 ? '0' : '1';
-    };
-    tl.eventCallback('onUpdate', setFill);
+      .to(hoist, { y: 92, duration: 0.4, onUpdate: placeHoist }, tEnd)
+      .to(one('[data-bp-dim]'), { autoAlpha: 1, duration: 0.4 }, tEnd + 0.1)
+      .to(one('[data-bp-flag]'), { autoAlpha: 1, scale: 1, duration: 0.5, ease: 'back.out(2)' }, tEnd + 0.2)
+      .to({}, { duration: 0.4 }, tEnd + 0.7);
 
     if (reduce) {
       tl.progress(1);
-      setFill();
     } else {
       const mm = gsap.matchMedia();
       mm.add('(min-width: 901px)', () => {

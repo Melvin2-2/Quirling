@@ -8,59 +8,10 @@ import { url } from '~/lib/url';
 import { firma, GRUENDUNGSJAHR } from '~/data/site';
 import historisch from '~/assets/site/historisch.jpg';
 import buero from '~/assets/site/buero-tilsiter-strasse.jpg';
-import handwerk from '~/assets/site/handwerk-schalung.jpg';
-import buero2 from '~/assets/team/kontakt-ivonne-michaela.jpg';
-import mannschaft from '~/assets/team/baustellenteam.jpg';
 import thomas from '~/assets/team/thomas-quirling.jpg';
 import Bauplan from '~/components/Bauplan.astro';
+import Bauband from '~/components/Bauband.astro';
 
-// Geschichte und Werte: drei Werte, jeder durch den eigenen Weg belegt.
-// insight: kurzer Satz von Thomas Quirling je Wert; wird nur angezeigt, wenn gefüllt.
-type Station = { k: string; d: string; href?: string; link?: string };
-const kapitel = [
-  {
-    id: 'persoenlich',
-    wert: 'Persönlich',
-    d: 'Bei uns sprechen Sie mit Menschen, die für ihr Wort einstehen.',
-    bild: buero2,
-    bildAlt: 'Ivonne Quirling und Michaela Venghaus im Büro',
-    bildPos: '74% 30%',
-    insight: '',
-    stationen: [
-      { k: 'Damals', d: 'Der Vater unseres Gründers lernt auf dem Bau das Handwerk.' },
-      { k: String(GRUENDUNGSJAHR), d: 'Thomas Quirling gründet die Quirling GmbH in Hamburg.' },
-    ] as Station[],
-  },
-  {
-    id: 'sorgfaeltig',
-    wert: 'Sorgfältig',
-    d: 'Jeder Bau ist eine Referenz für den nächsten.',
-    bild: handwerk,
-    bildAlt: 'Schalungselement mit Quirling-Logo auf einer Baustelle',
-    bildPos: '62% 50%',
-    insight: '',
-    stationen: [
-      { k: '1997', link: 'Tegelweg', d: 'ein Doppelhaus, schlüsselfertig gebaut.', href: '/referenzen/?p=tegelweg' },
-      { k: '2001', link: 'Hanseforum', d: 'Bürogebäude mit Tiefgarage.', href: '/referenzen/?p=hanseforum' },
-      { k: '2006', link: 'Buchholz', d: 'Rohbau für 35 Reihenhäuser.', href: '/referenzen/?p=reihenhaeuser-buchholz' },
-      { k: '2016', link: 'Pferdemarkt', d: '25 barrierefreie Wohnungen.', href: '/referenzen/?p=pferdemarkt' },
-    ] as Station[],
-  },
-  {
-    id: 'verbindlich',
-    wert: 'Verbindlich',
-    d: 'Langjährige Kollegen, eingespielte Abläufe, kurze Wege.',
-    bild: mannschaft,
-    bildAlt: 'Die Mannschaft der Quirling GmbH',
-    bildPos: '50% 70%',
-    insight: '',
-    stationen: [
-      { k: '30+', d: 'Jahre sind einige unserer Kollegen schon an Bord.' },
-      { k: '2019', d: 'Umzug ins neue Büro in der Tilsiter Straße.' },
-      { k: 'Heute', d: `${firma.projekteAnzahl}+ Projekte, rund ${firma.mitarbeiter} Leute, die Familie an der Spitze.` },
-    ] as Station[],
-  },
-];
 ---
 
 <Base title="Über uns" description={`Die Quirling GmbH ist seit ${GRUENDUNGSJAHR} als Bauunternehmen in Hamburg tätig. Familienbetrieb mit Schwerpunkt Rohbau, Beton- und Stahlbetonbau.`}>
@@ -95,61 +46,8 @@ const kapitel = [
     </div>
   </section>
 
-  <!-- 3. Geschichte und Werte: links ein ruhiger Textfluss, rechts ein stehendes Foto, das mit jedem Wert wechselt -->
-  <section class="story" data-story>
-    <div class="container story-in">
-      <div class="story-main">
-        <header class="story-head">
-          <h2 class="h-sec">Bauen liegt<br /><span class="lt">in der Familie.</span></h2>
-          <p class="story-intro">
-            Schon der Vater unseres Gründers stand auf dem Gerüst, das Foto oben zeigt ihn in seiner Lehrzeit. Drei Dinge tragen uns seitdem.
-          </p>
-        </header>
-        {
-          kapitel.map((c, i) => (
-            <article class="ch" data-ch={i}>
-              <div class="ch-img">
-                <Image src={c.bild} alt={c.bildAlt} widths={[500, 800]} sizes="100vw" style={`object-position:${c.bildPos}`} />
-              </div>
-              <h3 class="ch-w">{c.wert}.</h3>
-              <p class="ch-d">{c.d}</p>
-              <ul class="ch-list">
-                {c.stationen.map((st) => (
-                  <li>
-                    <span class="ch-k">{st.k}</span>
-                    <span class="ch-t">
-                      {st.href && <a href={url(st.href)}>{st.link}</a>}
-                      {st.href ? `: ${st.d}` : st.d}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-              {c.insight && (
-                <figure class="ins">
-                  <blockquote>„{c.insight}“</blockquote>
-                  <figcaption>Thomas Quirling</figcaption>
-                </figure>
-              )}
-            </article>
-          ))
-        }
-      </div>
-      <div class="story-side" aria-hidden="true">
-        <div class="story-photo">
-          {
-            kapitel.map((c, i) => (
-              <div class:list={['sp', { 'is-on': i === 0 }]} data-sp={i}>
-                <Image src={c.bild} alt="" widths={[700, 1000, 1400]} sizes="(min-width: 900px) 45vw, 100vw" style={`object-position:${c.bildPos}`} />
-              </div>
-            ))
-          }
-          <ol class="sp-dots">
-            {kapitel.map((c, i) => <li class:list={{ 'is-on': i === 0 }} data-spd={i}>{c.wert}</li>)}
-          </ol>
-        </div>
-      </div>
-    </div>
-  </section>
+  <!-- 3. Geschichte: Bauband, das beim Scrollen seitlich durchfährt -->
+  <Bauband />
 
   <!-- Unser Büro: großes Bild mit Navy-Schräge wie im Seitenkopf -->
   <section class="office on-dark">
@@ -277,193 +175,6 @@ const kapitel = [
   .lead-btn:hover :global(svg) {
     transform: translateX(4px);
   }
-  /* ---------- 3. Geschichte und Werte ---------- */
-  .story {
-    padding-block: clamp(5rem, 8vw, 7rem) clamp(6rem, 9vw, 8rem);
-  }
-  .story-in {
-    display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: clamp(2rem, 4vw, 4rem);
-  }
-  .story-main {
-    grid-column: 1 / 7;
-    display: grid;
-    gap: clamp(4rem, 8vw, 6.5rem);
-  }
-  .story-head {
-    display: grid;
-    gap: 1.3rem;
-  }
-  .story-intro,
-  .ch-d {
-    margin: 0;
-    max-width: 40ch;
-    font-size: 1.1875rem;
-    font-weight: 300;
-    line-height: 1.6;
-    color: var(--ink-2);
-  }
-  /* ein Kapitel: Wert, ein Satz, kurze Zeilen mit Jahr */
-  .ch {
-    display: grid;
-    gap: 1.1rem;
-    transition: color 0.4s ease;
-  }
-  .ch-img {
-    display: none;
-  }
-  .ch-w {
-    margin: 0;
-    font-family: var(--font-head);
-    font-stretch: 68%;
-    font-weight: 800;
-    font-size: clamp(3rem, 5.4vw, 5.6rem);
-    line-height: 0.86;
-    text-transform: uppercase;
-    color: var(--blue);
-    transition: color 0.4s ease;
-  }
-  .ch-list {
-    list-style: none;
-    margin: 0.6rem 0 0;
-    padding: 0;
-    display: grid;
-    border-top: 1px solid var(--stone-200);
-  }
-  .ch-list li {
-    display: grid;
-    grid-template-columns: 6.2rem minmax(0, 1fr);
-    gap: 1rem;
-    align-items: baseline;
-    padding: 0.85rem 0 0.8rem;
-    border-bottom: 1px solid var(--stone-200);
-  }
-  .ch-k {
-    font-family: var(--font-head);
-    font-stretch: 68%;
-    font-weight: 800;
-    font-size: 1.5rem;
-    line-height: 1;
-    color: var(--blue);
-    transition: color 0.4s ease;
-  }
-  .ch-t {
-    font-size: 1.05rem;
-    font-weight: 300;
-    line-height: 1.5;
-    color: var(--ink-2);
-    transition: color 0.4s ease;
-  }
-  .ch-t a {
-    color: inherit;
-    font-weight: 400;
-    text-decoration: underline;
-    text-decoration-color: #9aa6ee;
-    text-underline-offset: 3px;
-  }
-  .ch-t a:hover {
-    color: var(--blue);
-    text-decoration-color: var(--blue);
-  }
-  /* Fokus: nur das Kapitel, das gerade gelesen wird, steht in voller Farbe */
-  .story.is-live .ch:not(.is-on) .ch-w,
-  .story.is-live .ch:not(.is-on) .ch-k {
-    color: #c9cee3;
-  }
-  .story.is-live .ch:not(.is-on) .ch-d,
-  .story.is-live .ch:not(.is-on) .ch-t {
-    color: #a9aec6;
-  }
-  /* Insight von Thomas Quirling */
-  .ins {
-    margin: 0.4rem 0 0;
-    padding-left: 1.2rem;
-    border-left: 3px solid var(--blue);
-    display: grid;
-    gap: 0.5rem;
-  }
-  .ins blockquote {
-    margin: 0;
-    font-size: 1.25rem;
-    font-weight: 300;
-    line-height: 1.5;
-    color: var(--navy);
-  }
-  .ins figcaption {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--blue);
-  }
-  /* rechts: stehendes Foto mit Knick, wechselt mit dem Kapitel */
-  .story-side {
-    grid-column: 8 / 13;
-  }
-  .story-photo {
-    position: sticky;
-    top: 120px;
-    height: calc(100svh - 160px);
-    max-height: 760px;
-    overflow: hidden;
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 92%);
-    background: var(--stone-200);
-  }
-  .sp {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    transform: scale(1.06);
-    transition:
-      opacity 0.8s ease,
-      transform 1.4s var(--ease);
-  }
-  .sp.is-on {
-    opacity: 1;
-    transform: none;
-  }
-  .sp :global(img) {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  /* kleine Rauten unten links zeigen, welcher Wert gerade dran ist */
-  .sp-dots {
-    position: absolute;
-    left: 1.4rem;
-    bottom: calc(8% + 1.2rem);
-    z-index: 1;
-    list-style: none;
-    margin: 0;
-    padding: 0.55rem 0.9rem 0.5rem;
-    display: flex;
-    gap: 1.1rem;
-    background: #fff;
-  }
-  .sp-dots li {
-    display: flex;
-    align-items: center;
-    gap: 0.45rem;
-    font-family: var(--font-head);
-    font-stretch: 68%;
-    font-weight: 800;
-    font-size: 0.95rem;
-    text-transform: uppercase;
-    color: #b9bdd3;
-    transition: color 0.3s ease;
-  }
-  .sp-dots li::before {
-    content: '';
-    width: 0.5rem;
-    height: 0.5rem;
-    background: currentColor;
-    transform: rotate(45deg);
-  }
-  .sp-dots li.is-on {
-    color: var(--blue);
-  }
-
   /* Büro */
   .office {
     position: relative;
@@ -525,28 +236,11 @@ const kapitel = [
   }
 
   @media (max-width: 900px) {
-    .lead-in,
-    .story-in {
+    .lead-in {
       grid-template-columns: minmax(0, 1fr);
     }
-    .lead-text,
-    .story-main {
+    .lead-text {
       grid-column: 1 / -1;
-    }
-    .story-side {
-      display: none;
-    }
-    .ch-img {
-      display: block;
-      aspect-ratio: 16 / 10;
-      overflow: hidden;
-      margin-bottom: 0.6rem;
-      clip-path: polygon(0 0, 100% 0, 100% 92%, 0 100%);
-    }
-    .ch-img :global(img) {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
     }
     .lead {
       display: block;
@@ -574,41 +268,5 @@ const kapitel = [
     }
   }
   @media (max-width: 560px) {
-    .ch-list li {
-      grid-template-columns: 4.6rem minmax(0, 1fr);
-      gap: 0.8rem;
-    }
   }
 </style>
-
-<script>
-  import { gsap } from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-  gsap.registerPlugin(ScrollTrigger);
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  /* Geschichte: das Kapitel in der Bildschirmmitte ist aktiv, rechts wechselt das Foto mit */
-  const story = document.querySelector<HTMLElement>('[data-story]');
-  if (story) {
-    const chapters = Array.from(story.querySelectorAll<HTMLElement>('[data-ch]'));
-    const photos = Array.from(story.querySelectorAll<HTMLElement>('[data-sp]'));
-    const dots = Array.from(story.querySelectorAll<HTMLElement>('[data-spd]'));
-    let current = -1;
-    const update = () => {
-      let a = 0;
-      chapters.forEach((c, i) => {
-        if (c.getBoundingClientRect().top < window.innerHeight * 0.55) a = i;
-      });
-      if (a === current) return;
-      current = a;
-      chapters.forEach((c, i) => c.classList.toggle('is-on', i === a));
-      photos.forEach((p, i) => p.classList.toggle('is-on', i === a));
-      dots.forEach((d, i) => d.classList.toggle('is-on', i === a));
-    };
-    if (!reduce && window.matchMedia('(min-width: 901px)').matches) {
-      story.classList.add('is-live');
-      ScrollTrigger.create({ trigger: story, start: 'top bottom', end: 'bottom top', onUpdate: update, onRefresh: update });
-      update();
-    }
-  }
-</script>
