@@ -31,51 +31,23 @@ const floorBottom = (k: number) => 430 - k * FH; // Unterkante Geschoss k
       <div class="bp-text">
         <h2 class="h-sec" id="bp-h">Eine Basis,<br /><span class="lt">auf die Sie<br />bauen können.</span></h2>
         <p class="small">
-          Seit {GRUENDUNGSJAHR} bauen wir in Hamburg und Umgebung, vor allem den Rohbau in Beton und Stahlbeton. Auf Wunsch übernehmen wir auch alles bis
-          zur Schlüsselübergabe oder bauen im Bestand um.
-        </p>
-        <p class="small">
-          Über {firma.projekteAnzahl} Projekte sind so entstanden, für private Bauherren, Projektentwickler und Unternehmen. Gebaut von einem festen Team
-          aus rund {firma.mitarbeiter} Leuten, das seit Jahren zusammenarbeitet.
+          Seit {GRUENDUNGSJAHR} bauen wir in Hamburg, vor allem Rohbau in Beton und Stahlbeton. Mit einem festen Team, das seit Jahren zusammen
+          anpackt.
         </p>
       </div>
 
       <figure class="bp-fig">
-        <svg class="bp-svg" viewBox="0 0 640 560" role="img" aria-labelledby="bp-title">
-          <title id="bp-title">
-            {`Bauzeichnung: Fundament ${GRUENDUNGSJAHR}, darauf drei Geschosse mit ${JAHRE_ERFAHRUNG} Jahren Erfahrung, über ${firma.projekteAnzahl} Projekten und ${firma.mitarbeiter} Mitarbeitern.`}
-          </title>
-          <defs>
-            <pattern id="bp-dots" width="20" height="20" patternUnits="userSpaceOnUse">
-              <circle cx="1" cy="1" r="1" fill="#dfe3f0"></circle>
-            </pattern>
-            <pattern id="bp-earth" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-              <line x1="0" y1="0" x2="0" y2="10" stroke="#b9bdd3" stroke-width="1.5"></line>
-            </pattern>
-            <pattern id="bp-concrete" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
-              <line x1="0" y1="0" x2="0" y2="8" stroke="currentColor" stroke-width="1"></line>
-            </pattern>
-            <clipPath id="bp-earth-clip"><rect x="20" y={G} width="600" height="40"></rect></clipPath>
-          </defs>
-
-          <!-- Zeichenraster -->
-          <rect class="bp-grid" x="0" y="0" width="640" height="560" fill="url(#bp-dots)"></rect>
-
-          <!-- Gelände und Erdreich -->
-          <g class="bp-earth" data-bp-earth>
-            <rect x="20" y={G} width="600" height="36" fill="url(#bp-earth)"></rect>
-          </g>
+        <svg
+          class="bp-svg"
+          viewBox="0 0 640 520"
+          role="img"
+          aria-label={`Rohbau mit Fundament ${GRUENDUNGSJAHR} und drei Geschossen: ${JAHRE_ERFAHRUNG} Jahre Erfahrung, über ${firma.projekteAnzahl} Projekte, ${firma.mitarbeiter} Mitarbeiter.`}
+        >
           <line class="bp-ground" data-draw x1="20" y1={G} x2="620" y2={G} stroke="currentColor" stroke-width="2"></line>
 
-          <!-- Fundament mit Schraffur und zwei Streifenfundamenten -->
-          <g class="bp-found" data-bp-found>
-            <rect x="80" y="430" width="360" height="40" fill="url(#bp-concrete)"></rect>
-            <rect x="100" y={G} width="40" height="24" fill="url(#bp-concrete)"></rect>
-            <rect x="380" y={G} width="40" height="24" fill="url(#bp-concrete)"></rect>
-          </g>
+          <!-- Fundament mit zwei Streifenfundamenten -->
           <path class="bp-found-line" data-draw d={`M80 430 H440 V470 H420 V494 H380 V470 H140 V494 H100 V470 H80 Z`} fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="miter"></path>
           <g class="bp-found-txt" data-bp-found-txt>
-            <rect x="112" y="436" width="226" height="28" fill="#f6f7fb"></rect>
             <text class="bp-num bp-num-s" x="118" y="461">{GRUENDUNGSJAHR}</text>
             <text class="bp-lab" x="196" y="455">Gegründet in Hamburg</text>
           </g>
@@ -101,24 +73,10 @@ const floorBottom = (k: number) => 430 - k * FH; // Unterkante Geschoss k
                       {e.l}
                     </text>
                   </g>
-                  <g class="bp-kote" data-bp-kote>
-                    <path d={`M440 ${top - SL} l6 -9 h-12 z`} fill="currentColor" />
-                    <line x1="430" y1={top - SL} x2="470" y2={top - SL} stroke="currentColor" stroke-width="1" />
-                    <text class="bp-k" x="452" y={top - SL - 4}>
-                      {e.hoehe}
-                    </text>
-                  </g>
                 </g>
               );
             })
           }
-          <!-- Höhenkote Erdgeschoss -->
-          <g class="bp-kote bp-kote0" data-bp-kote0>
-            <path d="M440 430 l6 -9 h-12 z" fill="currentColor"></path>
-            <line x1="430" y1="430" x2="470" y2="430" stroke="currentColor" stroke-width="1"></line>
-            <text class="bp-k" x="452" y="426">±0,00</text>
-          </g>
-
           <!-- Decken: werden vom Kran eingehoben -->
           {
             etagen.map((_, k) => {
@@ -132,16 +90,6 @@ const floorBottom = (k: number) => 430 - k * FH; // Unterkante Geschoss k
               );
             })
           }
-
-          <!-- Maßkette links: Gesamthöhe -->
-          <g class="bp-dim" data-bp-dim>
-            <line x1="62" y1="122" x2="62" y2="430" stroke="currentColor" stroke-width="1"></line>
-            <line x1="56" y1="122" x2="68" y2="122" stroke="currentColor" stroke-width="1"></line>
-            <line x1="56" y1="430" x2="68" y2="430" stroke="currentColor" stroke-width="1"></line>
-            <line x1="57" y1="127" x2="67" y2="117" stroke="currentColor" stroke-width="1"></line>
-            <line x1="57" y1="435" x2="67" y2="425" stroke="currentColor" stroke-width="1"></line>
-            <text class="bp-k" x="0" y="0" transform="translate(54 300) rotate(-90)">9,00 m</text>
-          </g>
 
           <!-- Turmdrehkran -->
           <g class="bp-crane" data-bp-crane>
@@ -188,7 +136,7 @@ const floorBottom = (k: number) => 430 - k * FH; // Unterkante Geschoss k
   .bp {
     position: relative;
     /* Scrollweg für den Bau */
-    height: 190vh;
+    height: 145vh;
   }
   .bp-pin {
     position: sticky;
@@ -212,7 +160,7 @@ const floorBottom = (k: number) => 430 - k * FH; // Unterkante Geschoss k
     justify-items: start;
   }
   .bp-text .h-sec {
-    font-size: clamp(2.4rem, 4.4vw, 4.6rem);
+    font-size: clamp(2.8rem, 5.6vw, 6rem);
   }
   .bp-text .small {
     margin: 0;
@@ -327,7 +275,7 @@ const floorBottom = (k: number) => 430 - k * FH; // Unterkante Geschoss k
 
     const tl = gsap.timeline({ paused: true, defaults: { ease: 'power2.out' } });
     tl.set(
-      [one('[data-bp-earth]'), one('[data-bp-found]'), one('[data-bp-found-txt]'), one('[data-bp-kote0]'), one('[data-bp-dim]'), one('[data-bp-crane]'), ...q('[data-bp-txt]'), ...q('[data-bp-kote]')],
+      [one('[data-bp-found-txt]'), one('[data-bp-crane]'), ...q('[data-bp-txt]')],
       { autoAlpha: 0 },
       0,
     )
@@ -337,9 +285,9 @@ const floorBottom = (k: number) => 430 - k * FH; // Unterkante Geschoss k
 
     // 1. Gelände und Fundament, der Kran steht schon
     tl.to('[data-bp] .bp-ground', { strokeDashoffset: 0, duration: 0.6, ease: 'none' }, 0)
-      .to([one('[data-bp-earth]'), one('[data-bp-crane]')], { autoAlpha: 1, duration: 0.4 }, 0.2)
+      .to(one('[data-bp-crane]'), { autoAlpha: 1, duration: 0.4 }, 0.2)
       .to('[data-bp] .bp-found-line', { strokeDashoffset: 0, duration: 0.7, ease: 'none' }, 0.4)
-      .to([one('[data-bp-found]'), one('[data-bp-found-txt]'), one('[data-bp-kote0]')], { autoAlpha: 1, duration: 0.4 }, 0.9)
+      .to(one('[data-bp-found-txt]'), { autoAlpha: 1, duration: 0.4 }, 0.9)
       .call(() => placeHoist(), [], 1.2);
 
     // 2. Geschoss für Geschoss: Stützen wachsen, Decke senkt sich senkrecht ein, Zahl zählt hoch
@@ -356,7 +304,7 @@ const floorBottom = (k: number) => 430 - k * FH; // Unterkante Geschoss k
         .to(slab, { autoAlpha: 1, duration: 0.15 }, t + 0.3)
         .to(hoist, { y: target, duration: 0.7, ease: 'power2.inOut', onUpdate: placeHoist }, t + 0.35)
         .to(slab.querySelectorAll('.bp-sling'), { autoAlpha: 0, duration: 0.15 }, t + 1.05)
-        .to([f.querySelector('[data-bp-txt]'), f.querySelector('[data-bp-kote]')], { autoAlpha: 1, duration: 0.3 }, t + 1);
+        .to(f.querySelector('[data-bp-txt]'), { autoAlpha: 1, duration: 0.3 }, t + 1);
       const n = f.querySelector<SVGTSpanElement>('[data-bp-count]');
       if (n) {
         const to = Number(n.dataset.bpCount);
@@ -369,7 +317,6 @@ const floorBottom = (k: number) => 430 - k * FH; // Unterkante Geschoss k
     const tEnd = 1.3 + 3 * 1.5;
     tl.call(() => (active = null), [], tEnd)
       .to(hoist, { y: 92, duration: 0.4, onUpdate: placeHoist }, tEnd)
-      .to(one('[data-bp-dim]'), { autoAlpha: 1, duration: 0.4 }, tEnd + 0.1)
       .to(one('[data-bp-flag]'), { autoAlpha: 1, scale: 1, duration: 0.5, ease: 'back.out(2)' }, tEnd + 0.2)
       .to({}, { duration: 0.4 }, tEnd + 0.7);
 

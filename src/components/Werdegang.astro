@@ -1,0 +1,281 @@
+---
+/**
+ * „Bauen liegt in der Familie.“ – senkrecht, ohne Fotos.
+ * Links bleibt eine große Jahreszahl stehen, die beim Scrollen weiterblättert,
+ * darunter der Wert, für den dieser Abschnitt steht. Rechts je Station ein Satz,
+ * der sich Wort für Wort einfärbt, sobald er in die Bildschirmmitte kommt.
+ * Platz für kurze Geschichten von Thomas Quirling: Feld „story“ füllen, dann erscheint sie.
+ */
+import { url } from '~/lib/url';
+import { firma, GRUENDUNGSJAHR } from '~/data/site';
+
+type Station = { k: string; wert: string; satz: string; href?: string; story?: string };
+const stationen: Station[] = [
+  { k: 'Damals', wert: 'Persönlich', satz: 'Der Vater unseres Gründers lernt auf dem Bau, was gute Arbeit ausmacht. Die Begeisterung gibt er weiter.', story: '' },
+  { k: String(GRUENDUNGSJAHR), wert: 'Persönlich', satz: 'Thomas Quirling gründet die Quirling GmbH in Hamburg. Er führt sie bis heute selbst.', story: '' },
+  { k: '1997', wert: 'Sorgfältig', satz: 'Am Tegelweg bauen wir ein Doppelhaus schlüsselfertig, vom Fundament bis zum Schlüssel.', href: '/referenzen/?p=tegelweg', story: '' },
+  { k: '2006', wert: 'Sorgfältig', satz: 'In Buchholz entsteht der Rohbau für 35 Reihenhäuser, alle aus einer Hand.', href: '/referenzen/?p=reihenhaeuser-buchholz', story: '' },
+  { k: '2019', wert: 'Verbindlich', satz: 'Wir ziehen in unser neues Büro in der Tilsiter Straße. Kurze Wege zu allen Baustellen.', story: '' },
+  { k: 'Heute', wert: 'Verbindlich', satz: `Über ${firma.projekteAnzahl} Projekte. Einige Kollegen sind seit über 30 Jahren dabei.`, story: '' },
+];
+const words = (t: string) => t.split(' ');
+---
+
+<section class="wg" data-wg aria-labelledby="wg-h">
+  <div class="container wg-in">
+    <div class="wg-side">
+      <div class="wg-sticky">
+        <h2 class="h-sec" id="wg-h">Bauen liegt<br /><span class="lt">in der Familie.</span></h2>
+        <div class="wg-now" aria-hidden="true">
+          <span class="wg-year" data-wg-year>{stationen[0]!.k}</span>
+          <span class="wg-wert" data-wg-wert>{stationen[0]!.wert}.</span>
+        </div>
+      </div>
+    </div>
+
+    <ol class="wg-list">
+      {
+        stationen.map((s) => (
+          <li class="wg-st" data-wg-st data-k={s.k} data-wert={s.wert}>
+            <span class="wg-k">{s.k}</span>
+            <p class="wg-satz" data-wg-satz>
+              {words(s.satz).map((w) => (
+                <span class="wg-w">{w} </span>
+              ))}
+            </p>
+            {s.href && (
+              <a class="wg-link" href={url(s.href)}>
+                Zur Referenz
+              </a>
+            )}
+            {s.story && (
+              <blockquote class="wg-story">
+                „{s.story}“<cite>Thomas Quirling</cite>
+              </blockquote>
+            )}
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .wg {
+    padding-block: clamp(5rem, 9vw, 8rem);
+  }
+  .wg-in {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: clamp(2rem, 4vw, 4rem);
+  }
+  .wg-side {
+    grid-column: 1 / 6;
+  }
+  .wg-sticky {
+    position: sticky;
+    top: 22vh;
+    display: grid;
+    gap: clamp(2rem, 5vh, 3.5rem);
+  }
+  .wg-sticky .h-sec {
+    font-size: clamp(2.2rem, 3.6vw, 3.8rem);
+  }
+  /* große Jahreszahl, darunter der Wert */
+  .wg-now {
+    display: grid;
+    gap: 0.6rem;
+  }
+  .wg-year,
+  .wg-wert {
+    display: block;
+    overflow: hidden;
+  }
+  .wg-year {
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    font-size: clamp(4.5rem, 8.6vw, 9.5rem);
+    line-height: 0.8;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--blue);
+  }
+  .wg-wert {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    font-size: clamp(1.4rem, 2vw, 2rem);
+    text-transform: uppercase;
+    color: var(--navy);
+  }
+  .wg-wert::before {
+    content: '';
+    flex: none;
+    width: 0.55em;
+    height: 0.55em;
+    background: var(--blue);
+    transform: rotate(45deg);
+  }
+  .wg-year.is-in,
+  .wg-wert.is-in {
+    animation: wg-in 0.5s var(--ease);
+  }
+  @keyframes wg-in {
+    from {
+      transform: translateY(40%);
+      opacity: 0;
+    }
+  }
+  /* rechts: ein Satz je Station */
+  .wg-list {
+    grid-column: 7 / 13;
+    list-style: none;
+    margin: 0;
+    padding: 18vh 0 22vh;
+    display: grid;
+    gap: clamp(5rem, 22vh, 12rem);
+  }
+  .wg-st {
+    display: grid;
+    gap: 0.9rem;
+    justify-items: start;
+  }
+  .wg-k {
+    display: none;
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    font-size: 1.6rem;
+    line-height: 1;
+    color: var(--blue);
+  }
+  .wg-satz {
+    margin: 0;
+    font-size: clamp(1.5rem, 2.2vw, 2.15rem);
+    font-weight: 300;
+    line-height: 1.35;
+    letter-spacing: -0.005em;
+    color: var(--navy);
+  }
+  /* Wort für Wort einfärben (nur mit Bewegung) */
+  .wg.is-live .wg-w {
+    color: #c3c8de;
+    transition: color 0.25s ease;
+  }
+  .wg.is-live .wg-w.is-on {
+    color: var(--navy);
+  }
+  .wg-link {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--blue);
+    text-decoration: none;
+    border-bottom: 1px solid #9aa6ee;
+    padding-bottom: 2px;
+  }
+  .wg-link:hover {
+    border-color: var(--blue);
+  }
+  .wg-story {
+    margin: 0.4rem 0 0;
+    padding-left: 1rem;
+    border-left: 3px solid var(--blue);
+    font-size: 1.1rem;
+    font-weight: 300;
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
+  .wg-story cite {
+    display: block;
+    margin-top: 0.4rem;
+    font-family: var(--font-mono);
+    font-style: normal;
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--blue);
+  }
+
+  @media (max-width: 900px) {
+    .wg-in {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .wg-side,
+    .wg-list {
+      grid-column: 1 / -1;
+    }
+    .wg-sticky {
+      position: static;
+    }
+    .wg-now {
+      display: none;
+    }
+    .wg-list {
+      padding: 1rem 0 0;
+      gap: 2.6rem;
+    }
+    .wg-k {
+      display: block;
+    }
+    .wg-satz {
+      font-size: 1.35rem;
+    }
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-wg]');
+  if (root && window.matchMedia('(min-width: 901px) and (prefers-reduced-motion: no-preference)').matches) {
+    const stations = Array.from(root.querySelectorAll<HTMLElement>('[data-wg-st]'));
+    const year = root.querySelector<HTMLElement>('[data-wg-year]')!;
+    const wert = root.querySelector<HTMLElement>('[data-wg-wert]')!;
+    root.classList.add('is-live');
+    let current = '';
+    let currentWert = '';
+    const swap = (el: HTMLElement, text: string) => {
+      el.textContent = text;
+      el.classList.remove('is-in');
+      void el.offsetWidth;
+      el.classList.add('is-in');
+    };
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const vh = window.innerHeight;
+      let active = stations[0]!;
+      stations.forEach((s) => {
+        const r = s.getBoundingClientRect();
+        if (r.top < vh * 0.55) active = s;
+        // Satz färbt sich ein, während er von 80 % auf 45 % der Bildschirmhöhe wandert
+        const satz = s.querySelector<HTMLElement>('[data-wg-satz]')!;
+        const sr = satz.getBoundingClientRect();
+        const p = Math.min(1, Math.max(0, (vh * 0.8 - sr.top) / (vh * 0.35)));
+        const ws = satz.children;
+        const n = Math.round(p * ws.length);
+        for (let i = 0; i < ws.length; i++) ws[i]!.classList.toggle('is-on', i < n);
+      });
+      const k = active.dataset.k!;
+      if (k !== current) {
+        current = k;
+        swap(year, k);
+      }
+      const w = `${active.dataset.wert}.`;
+      if (w !== currentWert) {
+        currentWert = w;
+        swap(wert, w);
+      }
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    update();
+  }
+</script>
