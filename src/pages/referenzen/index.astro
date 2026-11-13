@@ -39,33 +39,33 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
     <!-- Filter: Gebäudeart und Leistung, die Leiste läuft beim Scrollen mit -->
     <div class="fbar" data-fbar>
       <div class="container fbar-in">
-        <div class="frow" role="group" aria-label="Nach Gebäudeart filtern" data-filters="kategorie">
-          <button type="button" class="f is-active" data-filter="alle" aria-pressed="true">Alle</button>
-          {
-            kategorien.map((k) => (
-              <button type="button" class="f" data-filter={k} aria-pressed="false">
-                {k}
-              </button>
-            ))
-          }
+        <!-- Reiter: zeigt, dass es zwei Filter gibt; die Optionen stehen daneben in einer Zeile -->
+        <div class="ftabs" role="tablist" aria-label="Filter wählen">
+          <button type="button" class="ftab is-on" role="tab" aria-selected="true" data-tab="kategorie">Gebäude</button>
+          <button type="button" class="ftab" role="tab" aria-selected="false" data-tab="leistung">Leistung</button>
         </div>
-        <button type="button" class="ftog" data-ftog aria-expanded="false" aria-controls="f-leistung">
-          <span>Leistung</span>
-          <span class="ftog-v" data-ftog-v></span>
-          <Icon name="chevron" />
-        </button>
-        <div class="fmore" id="f-leistung" data-fmore>
-          <div class="fmore-in">
-            <div class="frow" role="group" aria-label="Nach Leistung filtern" data-filters="leistung">
-              <button type="button" class="f is-active" data-filter="alle" aria-pressed="true">Alle Leistungen</button>
-              {
-                leistungen.map((l) => (
-                  <button type="button" class="f" data-filter={l.slug} aria-pressed="false" set:html={l.title} />
-                ))
-              }
-            </div>
+        <div class="fpanes">
+          <div class="frow" role="group" aria-label="Nach Gebäudeart filtern" data-filters="kategorie" data-pane="kategorie">
+            <button type="button" class="f is-active" data-filter="alle" aria-pressed="true">Alle</button>
+            {
+              kategorien.map((k) => (
+                <button type="button" class="f" data-filter={k} aria-pressed="false">
+                  {k}
+                </button>
+              ))
+            }
+          </div>
+          <div class="frow" role="group" aria-label="Nach Leistung filtern" data-filters="leistung" data-pane="leistung" hidden>
+            <button type="button" class="f is-active" data-filter="alle" aria-pressed="true">Alle</button>
+            {
+              leistungen.map((l) => (
+                <button type="button" class="f" data-filter={l.slug} aria-pressed="false" set:html={l.title} />
+              ))
+            }
           </div>
         </div>
+        <!-- aktiver Filter aus dem anderen Reiter als kleines Schild -->
+        <div class="fchips" data-fchips></div>
       </div>
     </div>
 
@@ -182,65 +182,76 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
   .fbar-in {
     position: relative;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: auto minmax(0, 1fr) auto;
     align-items: center;
-    column-gap: 2rem;
-    padding-block: 0.3rem;
+    column-gap: 1.6rem;
+    padding-block: 0.55rem;
   }
-  /* Knopf „Leistung“ rechts, klappt die zweite Filterzeile auf */
-  .ftog {
+  .ftabs {
     display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: none;
+    padding: 3px;
+    background: #e6e9f6;
+  }
+  .ftab {
     border: 0;
-    padding: 0.7rem 0 0.6rem;
+    background: none;
+    padding: 0.5rem 0.85rem 0.42rem;
     cursor: pointer;
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: 0.74rem;
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--ink-2);
+    transition:
+      background 0.25s ease,
+      color 0.25s ease;
   }
-  .ftog-v {
-    font-family: var(--font-head);
-    font-stretch: 68%;
-    font-weight: 800;
-    font-size: 1.1rem;
-    letter-spacing: 0.02em;
-    color: var(--blue);
+  .ftab.is-on {
+    background: var(--navy);
+    color: #fff;
   }
-  .ftog-v:empty {
-    display: none;
-  }
-  .ftog :global(svg) {
-    width: 0.9rem;
-    height: 0.9rem;
-    transition: transform 0.35s var(--ease);
-  }
-  .ftog[aria-expanded='true'] :global(svg) {
-    transform: rotate(180deg);
-  }
-  .fmore {
-    grid-column: 1 / -1;
-    display: grid;
-    grid-template-rows: 0fr;
-    transition: grid-template-rows 0.4s var(--ease);
-  }
-  .fmore.is-open {
-    grid-template-rows: 1fr;
-  }
-  .fmore-in {
-    overflow: hidden;
-  }
-  .fmore .frow {
-    border-top: 1px solid var(--line);
+  .fpanes {
+    min-width: 0;
   }
   .frow {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 0 1.6rem;
+    padding-left: 1.6rem;
+    border-left: 1px solid var(--line);
+  }
+  .frow[hidden] {
+    display: none;
+  }
+  .fchips {
+    display: flex;
+    gap: 0.5rem;
+  }
+  .fchips :global(.fchip) {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid var(--blue);
+    background: #fff;
+    padding: 0.4rem 0.55rem 0.35rem 0.7rem;
+    cursor: pointer;
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    color: var(--blue);
+  }
+  .fchips :global(.fchip span[aria-hidden]) {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 1.1rem;
+    line-height: 0.6;
+  }
+  .fchips :global(.fchip:hover) {
+    background: var(--blue);
+    color: #fff;
   }
   .f {
     position: relative;
@@ -280,7 +291,7 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
     opacity: 0.35;
   }
 
-  /* ---------- Kacheln: Galerie, dicht an dicht, Titel erscheint auf dem Bild ---------- */
+  /* ---------- Kacheln: Galerie mit dezentem Titel darunter ---------- */
   /* Galerie in Containerbreite, nicht bis an den Rand */
   .grid-wrap {
     padding-inline: var(--content-left);
@@ -291,22 +302,23 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
     padding: 0;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 8px;
+    gap: clamp(1.4rem, 2.2vw, 2rem) 10px;
   }
   .tile[hidden] {
     display: none;
   }
+  /* Bild mit dezentem Titel darunter */
   .tile-in {
-    position: relative;
-    display: block;
-    overflow: hidden;
-    color: #fff;
+    display: grid;
+    gap: 0.6rem;
+    color: var(--navy);
     text-decoration: none;
-    background: var(--stone-200);
   }
   .tile-img {
     display: block;
     aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--stone-200);
   }
   .tile-img :global(img) {
     width: 100%;
@@ -317,83 +329,63 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
   .tile-in:hover .tile-img :global(img) {
     transform: scale(1.04);
   }
-  /* Verlauf und Titel nur beim Überfahren */
-  .tile-in::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgb(18 23 53 / 0.75), rgb(18 23 53 / 0) 55%);
-    opacity: 0;
-    transition: opacity 0.4s ease;
+  .tile.is-current .tile-img {
+    outline: 3px solid var(--blue);
+    outline-offset: -3px;
   }
   .tile-info {
-    position: absolute;
-    left: 1.2rem;
-    right: 1rem;
-    bottom: 1rem;
-    z-index: 1;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    opacity: 0;
-    transform: translateY(8px);
-    transition:
-      opacity 0.4s ease,
-      transform 0.5s var(--ease);
-  }
-  .tile-in:hover::after,
-  .tile-in:focus-visible::after,
-  .tile.is-current .tile-in::after {
-    opacity: 1;
-  }
-  .tile-in:hover .tile-info,
-  .tile-in:focus-visible .tile-info,
-  .tile.is-current .tile-info {
-    opacity: 1;
-    transform: none;
-  }
-  .tile.is-current .tile-in {
-    outline: 3px solid var(--blue);
-    outline-offset: -3px;
   }
   .tile-title {
     font-family: var(--font-head);
     font-stretch: 68%;
     font-weight: 800;
-    font-size: clamp(1.3rem, 1.6vw, 1.7rem);
+    font-size: clamp(1.05rem, 1.25vw, 1.25rem);
     line-height: 1;
+    letter-spacing: 0.01em;
     text-transform: uppercase;
+    transition: color 0.25s ease;
   }
-  /* Pfeil in einer kleinen Raute */
+  .tile-in:hover .tile-title,
+  .tile.is-current .tile-title {
+    color: var(--blue);
+  }
+  /* kleine Pfeil-Raute, füllt sich beim Überfahren */
   .tile-more {
     position: relative;
     flex: none;
-    width: 2.2rem;
-    height: 2.2rem;
+    width: 1.8rem;
+    height: 1.8rem;
     display: grid;
     place-items: center;
-    color: var(--navy);
+    color: var(--blue);
+    transition: color 0.3s ease;
   }
   .tile-more::before {
     content: '';
     position: absolute;
-    inset: 0.35rem;
-    background: #fff;
+    inset: 0.3rem;
+    border: 1.5px solid currentColor;
     transform: rotate(45deg);
+    transition:
+      transform 0.4s var(--ease),
+      background 0.3s ease;
   }
   .tile-more :global(svg) {
     position: relative;
-    width: 0.95rem;
-    height: 0.95rem;
+    width: 0.8rem;
+    height: 0.8rem;
   }
-  /* Touch-Geräte ohne Überfahren: Titel immer sichtbar */
-  @media (hover: none) {
-    .tile-in::after,
-    .tile-info {
-      opacity: 1;
-      transform: none;
-    }
+  .tile-in:hover .tile-more {
+    color: #fff;
+  }
+  .tile-in:hover .tile-more::before {
+    background: var(--blue);
+    border-color: var(--blue);
+    transform: rotate(135deg);
   }
   /* bei offenem Seitenfenster: links nur noch eine Spalte */
   :global(body.panel-open) .tiles {
@@ -656,22 +648,27 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
       flex: none;
     }
     .fbar-in {
-      column-gap: 1rem;
+      grid-template-columns: auto minmax(0, 1fr);
+      row-gap: 0.4rem;
+      column-gap: 0.8rem;
     }
-    .ftog-v {
-      display: none;
+    .fpanes {
+      grid-column: 1 / -1;
+      grid-row: 2;
+    }
+    .frow {
+      padding-left: 0;
+      border-left: 0;
+    }
+    .fchips {
+      justify-self: end;
     }
     .tiles {
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 6px;
-    }
-    .tile-info {
-      left: 0.7rem;
-      right: 0.6rem;
-      bottom: 0.6rem;
+      gap: 1.1rem 6px;
     }
     .tile-title {
-      font-size: 1rem;
+      font-size: 0.95rem;
     }
     .tile-more {
       display: none;
@@ -697,14 +694,48 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
   /* ---------- Filter: Gebäudeart und Leistung lassen sich kombinieren ---------- */
   const state: Record<string, string> = { kategorie: 'alle', leistung: 'alle' };
   const groups = Array.from(document.querySelectorAll<HTMLElement>('[data-filters]'));
-  const tog = document.querySelector<HTMLButtonElement>('[data-ftog]');
-  const togV = document.querySelector<HTMLElement>('[data-ftog-v]');
-  const more = document.querySelector<HTMLElement>('[data-fmore]');
-  tog?.addEventListener('click', () => {
-    const openNow = tog.getAttribute('aria-expanded') !== 'true';
-    tog.setAttribute('aria-expanded', String(openNow));
-    more?.classList.toggle('is-open', openNow);
-  });
+  // Reiter: Gebäude oder Leistung; der jeweils andere aktive Filter erscheint als Schild
+  const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-tab]'));
+  const chips = document.querySelector<HTMLElement>('[data-fchips]');
+  let tab = 'kategorie';
+  const renderChips = () => {
+    if (!chips) return;
+    chips.replaceChildren();
+    groups.forEach((g) => {
+      const key = g.dataset.filters!;
+      if (key === tab || state[key] === 'alle') return;
+      const label = (g.querySelector<HTMLElement>('.is-active')?.textContent ?? '').replace(/\u00ad/g, '');
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'fchip';
+      b.setAttribute('aria-label', `Filter ${label} entfernen`);
+      const t = document.createElement('span');
+      t.textContent = label;
+      const x = document.createElement('span');
+      x.setAttribute('aria-hidden', 'true');
+      x.textContent = '×';
+      b.append(t, x);
+      b.addEventListener('click', () => {
+        state[key] = 'alle';
+        applyFilter();
+        const u = new URL(location.href);
+        u.searchParams.delete(key);
+        history.replaceState(null, '', u);
+      });
+      chips.append(b);
+    });
+  };
+  const showTab = (t: string) => {
+    tab = t;
+    tabs.forEach((b) => {
+      const on = b.dataset.tab === t;
+      b.classList.toggle('is-on', on);
+      b.setAttribute('aria-selected', String(on));
+    });
+    groups.forEach((g) => (g.hidden = g.dataset.pane !== t));
+    renderChips();
+  };
+  tabs.forEach((b) => b.addEventListener('click', () => showTab(b.dataset.tab!)));
   const matches = (t: HTMLElement, k: string, l: string) =>
     (k === 'alle' || (t.dataset.cats ?? '').split('|').includes(k)) && (l === 'alle' || t.dataset.bereich === l);
   const applyFilter = () => {
@@ -725,9 +756,7 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
         b.classList.toggle('is-empty', !hits);
       });
     });
-    // gewählte Leistung im eingeklappten Knopf anzeigen
-    const activeL = groups.find((g) => g.dataset.filters === 'leistung')?.querySelector<HTMLElement>('.is-active');
-    if (togV) togV.innerHTML = state.leistung === 'alle' ? '' : (activeL?.innerHTML ?? '');
+    renderChips();
     reveal();
   };
   groups.forEach((g) =>
