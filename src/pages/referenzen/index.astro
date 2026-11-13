@@ -40,7 +40,6 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
     <div class="fbar" data-fbar>
       <div class="container fbar-in">
         <div class="frow" role="group" aria-label="Nach Gebäudeart filtern" data-filters="kategorie">
-          <span class="flab">Gebäude</span>
           <button type="button" class="f is-active" data-filter="alle" aria-pressed="true">Alle</button>
           {
             kategorien.map((k) => (
@@ -50,14 +49,22 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
             ))
           }
         </div>
-        <div class="frow" role="group" aria-label="Nach Leistung filtern" data-filters="leistung">
-          <span class="flab">Leistung</span>
-          <button type="button" class="f is-active" data-filter="alle" aria-pressed="true">Alle</button>
-          {
-            leistungen.map((l) => (
-              <button type="button" class="f" data-filter={l.slug} aria-pressed="false" set:html={l.title} />
-            ))
-          }
+        <button type="button" class="ftog" data-ftog aria-expanded="false" aria-controls="f-leistung">
+          <span>Leistung</span>
+          <span class="ftog-v" data-ftog-v></span>
+          <Icon name="chevron" />
+        </button>
+        <div class="fmore" id="f-leistung" data-fmore>
+          <div class="fmore-in">
+            <div class="frow" role="group" aria-label="Nach Leistung filtern" data-filters="leistung">
+              <button type="button" class="f is-active" data-filter="alle" aria-pressed="true">Alle Leistungen</button>
+              {
+                leistungen.map((l) => (
+                  <button type="button" class="f" data-filter={l.slug} aria-pressed="false" set:html={l.title} />
+                ))
+              }
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -175,22 +182,65 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
   .fbar-in {
     position: relative;
     display: grid;
-    gap: 0;
-    padding-block: 0.4rem;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: 2rem;
+    padding-block: 0.3rem;
+  }
+  /* Knopf „Leistung“ rechts, klappt die zweite Filterzeile auf */
+  .ftog {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: none;
+    border: 0;
+    padding: 0.7rem 0 0.6rem;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+  }
+  .ftog-v {
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    font-size: 1.1rem;
+    letter-spacing: 0.02em;
+    color: var(--blue);
+  }
+  .ftog-v:empty {
+    display: none;
+  }
+  .ftog :global(svg) {
+    width: 0.9rem;
+    height: 0.9rem;
+    transition: transform 0.35s var(--ease);
+  }
+  .ftog[aria-expanded='true'] :global(svg) {
+    transform: rotate(180deg);
+  }
+  .fmore {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.4s var(--ease);
+  }
+  .fmore.is-open {
+    grid-template-rows: 1fr;
+  }
+  .fmore-in {
+    overflow: hidden;
+  }
+  .fmore .frow {
+    border-top: 1px solid var(--line);
   }
   .frow {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 0 1.6rem;
-  }
-  .flab {
-    min-width: 5.5rem;
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--ink-3);
   }
   .f {
     position: relative;
@@ -230,11 +280,10 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
     opacity: 0.35;
   }
 
-  /* ---------- Kacheln: ruhiges Raster, drei Spalten, kein Projekt über die ganze Breite ---------- */
+  /* ---------- Kacheln: Galerie, dicht an dicht, Titel erscheint auf dem Bild ---------- */
   /* Galerie in Containerbreite, nicht bis an den Rand */
   .grid-wrap {
     padding-inline: var(--content-left);
-    transition: padding 0.6s var(--ease);
   }
   .tiles {
     list-style: none;
@@ -242,23 +291,22 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
     padding: 0;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: clamp(2.2rem, 3.4vw, 3rem) clamp(1.2rem, 2vw, 1.8rem);
+    gap: 8px;
   }
   .tile[hidden] {
     display: none;
   }
-  /* Bild ohne Verlauf, Titel darunter: das Projekt wirkt für sich */
   .tile-in {
-    display: grid;
-    gap: 0.9rem;
-    color: var(--navy);
+    position: relative;
+    display: block;
+    overflow: hidden;
+    color: #fff;
     text-decoration: none;
+    background: var(--stone-200);
   }
   .tile-img {
     display: block;
     aspect-ratio: 4 / 3;
-    overflow: hidden;
-    background: var(--stone-200);
   }
   .tile-img :global(img) {
     width: 100%;
@@ -269,15 +317,45 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
   .tile-in:hover .tile-img :global(img) {
     transform: scale(1.04);
   }
-  .tile.is-current .tile-img {
-    outline: 3px solid var(--blue);
-    outline-offset: -3px;
+  /* Verlauf und Titel nur beim Überfahren */
+  .tile-in::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgb(18 23 53 / 0.75), rgb(18 23 53 / 0) 55%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
   }
   .tile-info {
+    position: absolute;
+    left: 1.2rem;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 1;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
+    opacity: 0;
+    transform: translateY(8px);
+    transition:
+      opacity 0.4s ease,
+      transform 0.5s var(--ease);
+  }
+  .tile-in:hover::after,
+  .tile-in:focus-visible::after,
+  .tile.is-current .tile-in::after {
+    opacity: 1;
+  }
+  .tile-in:hover .tile-info,
+  .tile-in:focus-visible .tile-info,
+  .tile.is-current .tile-info {
+    opacity: 1;
+    transform: none;
+  }
+  .tile.is-current .tile-in {
+    outline: 3px solid var(--blue);
+    outline-offset: -3px;
   }
   .tile-title {
     font-family: var(--font-head);
@@ -286,11 +364,6 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
     font-size: clamp(1.3rem, 1.6vw, 1.7rem);
     line-height: 1;
     text-transform: uppercase;
-    transition: color 0.25s ease;
-  }
-  .tile-in:hover .tile-title,
-  .tile.is-current .tile-title {
-    color: var(--blue);
   }
   /* Pfeil in einer kleinen Raute */
   .tile-more {
@@ -300,31 +373,27 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
     height: 2.2rem;
     display: grid;
     place-items: center;
-    color: var(--blue);
-    transition: color 0.3s ease;
+    color: var(--navy);
   }
   .tile-more::before {
     content: '';
     position: absolute;
     inset: 0.35rem;
-    border: 1.5px solid currentColor;
+    background: #fff;
     transform: rotate(45deg);
-    transition:
-      transform 0.4s var(--ease),
-      background 0.3s ease;
   }
   .tile-more :global(svg) {
     position: relative;
     width: 0.95rem;
     height: 0.95rem;
   }
-  .tile-in:hover .tile-more {
-    color: #fff;
-  }
-  .tile-in:hover .tile-more::before {
-    background: var(--blue);
-    border-color: var(--blue);
-    transform: rotate(135deg);
+  /* Touch-Geräte ohne Überfahren: Titel immer sichtbar */
+  @media (hover: none) {
+    .tile-in::after,
+    .tile-info {
+      opacity: 1;
+      transform: none;
+    }
   }
   /* bei offenem Seitenfenster: links nur noch eine Spalte */
   :global(body.panel-open) .tiles {
@@ -583,14 +652,31 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
       scrollbar-width: none;
       gap: 1.4rem;
     }
-    .f,
-    .flab {
+    .f {
       flex: none;
     }
-    .flab {
-      min-width: 0;
+    .fbar-in {
+      column-gap: 1rem;
+    }
+    .ftog-v {
+      display: none;
     }
     .tiles {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 6px;
+    }
+    .tile-info {
+      left: 0.7rem;
+      right: 0.6rem;
+      bottom: 0.6rem;
+    }
+    .tile-title {
+      font-size: 1rem;
+    }
+    .tile-more {
+      display: none;
+    }
+    :global(body.panel-open) .tiles {
       grid-template-columns: minmax(0, 1fr);
     }
     .panel-body :global(.pp-galerie) {
@@ -611,6 +697,14 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
   /* ---------- Filter: Gebäudeart und Leistung lassen sich kombinieren ---------- */
   const state: Record<string, string> = { kategorie: 'alle', leistung: 'alle' };
   const groups = Array.from(document.querySelectorAll<HTMLElement>('[data-filters]'));
+  const tog = document.querySelector<HTMLButtonElement>('[data-ftog]');
+  const togV = document.querySelector<HTMLElement>('[data-ftog-v]');
+  const more = document.querySelector<HTMLElement>('[data-fmore]');
+  tog?.addEventListener('click', () => {
+    const openNow = tog.getAttribute('aria-expanded') !== 'true';
+    tog.setAttribute('aria-expanded', String(openNow));
+    more?.classList.toggle('is-open', openNow);
+  });
   const matches = (t: HTMLElement, k: string, l: string) =>
     (k === 'alle' || (t.dataset.cats ?? '').split('|').includes(k)) && (l === 'alle' || t.dataset.bereich === l);
   const applyFilter = () => {
@@ -631,7 +725,9 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
         b.classList.toggle('is-empty', !hits);
       });
     });
-    // nach dem Filtern sanft wieder zum Anfang der Galerie
+    // gewählte Leistung im eingeklappten Knopf anzeigen
+    const activeL = groups.find((g) => g.dataset.filters === 'leistung')?.querySelector<HTMLElement>('.is-active');
+    if (togV) togV.innerHTML = state.leistung === 'alle' ? '' : (activeL?.innerHTML ?? '');
     reveal();
   };
   groups.forEach((g) =>
@@ -684,6 +780,25 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
   /* ---------- Seitenfenster ---------- */
   const visibleIds = () => tiles.filter((t) => !t.hidden).map((t) => t.dataset.id!);
 
+  /* Beim Umschalten des Rasters bleibt die gewählte Kachel im Blick */
+  const lenis = () => (window as unknown as { __lenis?: { scrollTo: (y: number, o?: object) => void } }).__lenis;
+  const keepInView = (id: string | null, change: () => void) => {
+    const tile = id ? document.querySelector<HTMLElement>(`.tile[data-id="${CSS.escape(id)}"]`) : null;
+    const before = tile?.getBoundingClientRect().top ?? 0;
+    change();
+    if (!tile) return;
+    const r = tile.getBoundingClientRect();
+    const barBottom = document.querySelector<HTMLElement>('[data-fbar]')?.getBoundingClientRect().bottom ?? 0;
+    const minTop = barBottom + 16;
+    // gleiche Bildschirmposition wie vorher, aber nie unter der Filterleiste oder unten aus dem Bild
+    let wanted = Math.max(before, minTop);
+    if (wanted + Math.min(r.height, window.innerHeight * 0.5) > window.innerHeight) wanted = minTop;
+    const y = window.scrollY + r.top - wanted;
+    const l = lenis();
+    if (l) l.scrollTo(y, { immediate: true, force: true });
+    else window.scrollTo({ top: y, behavior: 'instant' as ScrollBehavior });
+  };
+
   const open = (id: string, updateUrl = true) => {
     const tpl = document.querySelector<HTMLTemplateElement>(`template[data-project="${CSS.escape(id)}"]`);
     if (!tpl) return;
@@ -693,7 +808,7 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
     tiles.forEach((t) => t.classList.toggle('is-current', t.dataset.id === id));
     panel.classList.add('is-open');
     panel.setAttribute('aria-hidden', 'false');
-    document.body.classList.add('panel-open');
+    if (!document.body.classList.contains('panel-open')) keepInView(id, () => document.body.classList.add('panel-open'));
     if (updateUrl) {
       const u = new URL(location.href);
       u.searchParams.set('p', id);
@@ -703,9 +818,9 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
   const close = () => {
     panel.classList.remove('is-open');
     panel.setAttribute('aria-hidden', 'true');
-    document.body.classList.remove('panel-open');
-    tiles.forEach((t) => t.classList.remove('is-current'));
     const last = current;
+    keepInView(last, () => document.body.classList.remove('panel-open'));
+    tiles.forEach((t) => t.classList.remove('is-current'));
     current = null;
     const u = new URL(location.href);
     u.searchParams.delete('p');

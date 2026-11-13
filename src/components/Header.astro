@@ -32,9 +32,8 @@ const mainItems = nav;
               {item.children && (
                 <div class="sub">
                   <div class="sub-inner">
-                    {item.children.map((c, i) => (
+                    {item.children.map((c) => (
                       <a href={url(c.href)} class="sub-link">
-                        <span class="sub-nr">0{i + 1}</span>
                         <span class="sub-title">{c.label}</span>
                         {c.text && <span class="sub-text">{c.text}</span>}
                       </a>
@@ -259,13 +258,6 @@ const mainItems = nav;
   }
   .sub-link:hover {
     background: var(--stone-50);
-  }
-  .sub-nr {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    font-weight: 500;
-    color: var(--blue);
-    letter-spacing: 0.04em;
   }
   .sub-text {
     margin-top: 0.15rem;

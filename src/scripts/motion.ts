@@ -21,6 +21,7 @@ const $$ = <T extends Element = HTMLElement>(sel: string, root: ParentNode = doc
 let lenis: Lenis | null = null;
 if (!reduce) {
   lenis = new Lenis({ lerp: 0.11, wheelMultiplier: 1, anchors: { offset: -80 } });
+  (window as unknown as { __lenis?: Lenis }).__lenis = lenis;
   lenis.on('scroll', ScrollTrigger.update);
   gsap.ticker.add((t) => lenis?.raf(t * 1000));
   gsap.ticker.lagSmoothing(0);

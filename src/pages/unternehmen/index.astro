@@ -96,7 +96,7 @@ const kapitel: { n: string; wert: string; t: string; d: string; insight: string;
         }
         <div class="rb-found" role="listitem">
           <span class="rb-v">{GRUENDUNGSJAHR}</span>
-          <span class="rb-l">Das Fundament: gegründet in Hamburg</span>
+          <span class="rb-l">Gegründet in Hamburg</span>
         </div>
       </div>
     </div>
@@ -109,7 +109,6 @@ const kapitel: { n: string; wert: string; t: string; d: string; insight: string;
     </div>
     <div class="container lead-in">
       <div class="lead-text">
-        <span class="lead-k">Inhabergeführt seit {GRUENDUNGSJAHR}</span>
         <p class="lead-q">„Was wir zusagen,<br />steht.“</p>
         <p class="lead-p">
           Unser Leitsatz gilt für jedes Bauvorhaben. Thomas Quirling führt das Unternehmen seit der Gründung selbst, unterstützt von Ivonne Quirling in
@@ -126,7 +125,6 @@ const kapitel: { n: string; wert: string; t: string; d: string; insight: string;
     <div class="container story-in">
       <div class="story-side">
         <div class="story-sticky">
-          <span class="story-k">Unsere Geschichte</span>
           <h2 class="h-sec">Bauen liegt<br /><span class="lt">in der Familie.</span></h2>
           <p class="small">
             Schon der Vater unseres Gründers stand auf dem Gerüst, das Foto oben zeigt ihn in seiner Lehrzeit. {GRUENDUNGSJAHR} hat Thomas Quirling daraus
@@ -135,10 +133,7 @@ const kapitel: { n: string; wert: string; t: string; d: string; insight: string;
           <ol class="story-nav">
             {
               kapitel.map((c) => (
-                <li data-nav={c.n}>
-                  <span>{c.n}</span>
-                  {c.wert}
-                </li>
+                <li data-nav={c.n}>{c.wert}</li>
               ))
             }
           </ol>
@@ -153,7 +148,6 @@ const kapitel: { n: string; wert: string; t: string; d: string; insight: string;
           kapitel.map((c) => (
             <div class="ch" data-ch={c.n}>
               <header class="ch-head">
-                <span class="ch-n">{c.n}</span>
                 <h3 class="ch-w">{c.wert}.</h3>
                 <p class="ch-t">{c.t}</p>
                 <p class="ch-d">{c.d}</p>
@@ -230,6 +224,8 @@ const kapitel: { n: string; wert: string; t: string; d: string; insight: string;
   /* Rohbau als feine Linienzeichnung in einer Farbe: Decken, Stützen, Fundament */
   .rb {
     grid-column: 7 / 13;
+    justify-self: center;
+    width: min(100%, 26rem);
     --slab: 3px;
     --col: 2px;
     display: grid;
@@ -317,19 +313,19 @@ const kapitel: { n: string; wert: string; t: string; d: string; insight: string;
   }
   .rb.is-built .rb-found {
     clip-path: inset(0 0 -2rem 0);
-    transition: clip-path 0.7s var(--ease);
+    transition: clip-path 0.45s var(--ease);
   }
   .rb.is-built .rb-floor::after {
     transform: none;
-    transition: transform 0.5s var(--ease) calc(0.35s + (var(--i) - 1) * 0.55s);
+    transition: transform 0.5s var(--ease) calc(0.3s + (var(--i) - 1) * 0.45s);
   }
   .rb.is-built .rb-floor::before {
     transform: none;
-    transition: transform 0.5s var(--ease) calc(0.65s + (var(--i) - 1) * 0.55s);
+    transition: transform 0.5s var(--ease) calc(0.55s + (var(--i) - 1) * 0.45s);
   }
   .rb.is-built .rb-floor > * {
     opacity: 1;
-    transition: opacity 0.5s ease calc(0.75s + (var(--i) - 1) * 0.55s);
+    transition: opacity 0.5s ease calc(0.65s + (var(--i) - 1) * 0.45s);
   }
 
   /* ---------- 2. Inhaber ---------- */
@@ -377,23 +373,6 @@ const kapitel: { n: string; wert: string; t: string; d: string; insight: string;
     display: grid;
     gap: 1.5rem;
     justify-items: start;
-  }
-  .lead-k {
-    display: flex;
-    align-items: center;
-    gap: 0.7rem;
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: #c9d0f5;
-  }
-  .lead-k::before {
-    content: '';
-    width: 0.55rem;
-    height: 0.55rem;
-    background: #9aa6ee;
-    transform: rotate(45deg);
   }
   .lead-q {
     margin: 0;
@@ -477,14 +456,6 @@ const kapitel: { n: string; wert: string; t: string; d: string; insight: string;
     gap: 1.3rem;
     justify-items: start;
   }
-  .story-k,
-  .ch-n {
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--blue);
-  }
   .story-sticky .small {
     margin: 0;
     max-width: 44ch;
@@ -510,11 +481,6 @@ const kapitel: { n: string; wert: string; t: string; d: string; insight: string;
     text-transform: uppercase;
     color: #b9bdd3;
     transition: color 0.35s ease;
-  }
-  .story-nav li span {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    font-weight: 400;
   }
   .story-nav li.is-on {
     color: var(--blue);
@@ -849,7 +815,7 @@ const kapitel: { n: string; wert: string; t: string; d: string; insight: string;
         stack.classList.add('is-built');
         io.disconnect();
       },
-      { rootMargin: '0px 0px -18% 0px' },
+      { rootMargin: '0px 0px -5% 0px' },
     );
     io.observe(stack);
   }
@@ -867,10 +833,10 @@ const kapitel: { n: string; wert: string; t: string; d: string; insight: string;
         const pos = (s.getBoundingClientRect().top - wr.top) / wr.height;
         s.classList.toggle('is-on', p >= pos - 0.001);
       });
-      // aktives Kapitel: das letzte, dessen Kopf die Linie schon erreicht hat
+      // aktives Kapitel: das letzte, dessen Kopf die obere Bildschirmhälfte erreicht hat
       let active = chapters[0]?.dataset.ch;
       chapters.forEach((c) => {
-        if (p >= (c.getBoundingClientRect().top - wr.top) / wr.height - 0.001) active = c.dataset.ch;
+        if (c.getBoundingClientRect().top < window.innerHeight * 0.45) active = c.dataset.ch;
       });
       navItems.forEach((n) => n.classList.toggle('is-on', n.dataset.nav === active));
     };
