@@ -1709,10 +1709,12 @@ const werte = [
     if (!show) return;
     const imgs = Array.from(show.querySelectorAll<HTMLElement>('[data-show-img]'));
     const items = Array.from(show.querySelectorAll<HTMLElement>('[data-show-item]'));
-    let active = 0;
+    // -1: noch kein Titel sichtbar; der erste klappt herein, sobald der Abschnitt ankommt
+    let active = -1;
+    items.forEach((it) => it.classList.remove('is-active'));
     const setActive = (i: number) => {
       if (i === active) return;
-      const prev = items[active];
+      const prev = active >= 0 ? items[active] : undefined;
       active = i;
       items.forEach((it, j) => {
         it.classList.toggle('is-active', j === i);
@@ -1721,6 +1723,12 @@ const werte = [
       // nach dem Wegklappen wieder in die Ausgangslage, damit das Blatt beim nächsten Mal von oben kommt
       window.setTimeout(() => prev?.classList.remove('is-out'), 380);
     };
+    const arrive = ScrollTrigger.create({
+      trigger: show,
+      start: 'top 18%',
+      onEnter: () => setActive(0),
+      onLeaveBack: () => setActive(-1),
+    });
     imgs.forEach((img, i) => i > 0 && gsap.set(img, { clipPath: 'inset(100% 0% 0% 0%)' }));
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -1730,8 +1738,9 @@ const werte = [
         scrub: 0.5,
         invalidateOnRefresh: true,
         onUpdate: (self) => {
-          // der Titel wechselt schon, wenn das nächste Bild etwa ein Viertel aufgedeckt ist
-          setActive(Math.min(imgs.length - 1, Math.floor(self.progress * (imgs.length - 1) + 0.75)));
+          // der Titel wechselt, wenn das nächste Bild gut zur Hälfte aufgedeckt ist
+          if (active < 0) return;
+          setActive(Math.min(imgs.length - 1, Math.floor(self.progress * (imgs.length - 1) + 0.4)));
         },
       },
     });
@@ -1742,6 +1751,10 @@ const werte = [
       if (i < imgs.length - 2) tl.to({}, { duration: 0.05 });
     });
     tl.to({}, { duration: 0.06 });
+    return () => {
+      arrive.kill();
+      items.forEach((it, j) => it.classList.toggle('is-active', j === 0));
+    };
   });
 
   /* ---------- Leistungen: Hintergrund blendet weich ein und aus ---------- */
@@ -1824,9 +1837,11 @@ const werte = [
   const followers = Array.from(document.querySelectorAll<HTMLElement>('[data-follow]'));
   const follow = () => {
     const t = target();
+    // Leistungen erst, wenn sie gut im Bild sind: so bleibt der Blick länger bei der Übersicht
+    const tLate = reduce ? Infinity : window.scrollY + window.innerHeight * 0.6;
     followers.forEach((el) => {
       if (el.classList.contains('is-in')) return;
-      if (box(el)!.top + 24 <= t) {
+      if (box(el)!.top + 24 <= (el.closest('.services') ? tLate : t)) {
         el.classList.add('is-in');
         el.querySelectorAll<HTMLElement>('[data-flap]').forEach((f) => setTimeout(() => runFlap(f), 200));
       }
