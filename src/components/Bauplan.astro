@@ -3,8 +3,7 @@
  * „Eine Basis, auf die Sie bauen können.“ als Bauzeichnung, die beim Scrollen entsteht:
  * Baugrube und Fundament, dann richtet sich ein Turmdrehkran auf und hebt Decke um Decke ein.
  * Jede Etage trägt eine Zahl. Zum Schluss Richtfest mit der Quirling-Raute auf dem Dach.
- * Desktop: Abschnitt bleibt stehen (sticky), der Bau folgt dem Scrollen.
- * Mobil: der Bau läuft einmal ab, sobald er ins Bild kommt.
+ * Der Bau startet, sobald die Zeichnung ins Bild kommt, und ist nach drei Sekunden fertig.
  */
 import { firma, JAHRE_ERFAHRUNG, GRUENDUNGSJAHR } from '~/data/site';
 
@@ -135,17 +134,7 @@ const floorBottom = (k: number) => 430 - k * FH; // Unterkante Geschoss k
 <style>
   .bp {
     position: relative;
-    /* Scrollweg für den Bau */
-    height: 145vh;
-  }
-  .bp-pin {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    height: 100svh;
-    display: flex;
-    align-items: center;
-    overflow: hidden;
+    padding-block: clamp(5rem, 9vw, 8rem);
   }
   .bp-in {
     display: grid;
@@ -173,7 +162,7 @@ const floorBottom = (k: number) => 430 - k * FH; // Unterkante Geschoss k
     display: block;
     width: 100%;
     height: auto;
-    max-height: calc(100svh - 7rem);
+    max-height: 78svh;
     color: var(--blue);
     overflow: visible;
   }
@@ -215,15 +204,6 @@ const floorBottom = (k: number) => 430 - k * FH; // Unterkante Geschoss k
   }
 
   @media (max-width: 900px) {
-    .bp {
-      height: auto;
-      padding-block: clamp(4rem, 10vw, 6rem);
-    }
-    .bp-pin {
-      position: static;
-      height: auto;
-      display: block;
-    }
     .bp-in {
       grid-template-columns: minmax(0, 1fr);
     }
@@ -323,25 +303,13 @@ const floorBottom = (k: number) => 430 - k * FH; // Unterkante Geschoss k
     if (reduce) {
       tl.progress(1);
     } else {
-      const mm = gsap.matchMedia();
-      mm.add('(min-width: 901px)', () => {
-        const st = ScrollTrigger.create({
-          trigger: root,
-          start: 'top top',
-          end: 'bottom bottom',
-          scrub: 0.6,
-          animation: tl,
-        });
-        return () => st.kill();
-      });
-      mm.add('(max-width: 900px)', () => {
-        const st = ScrollTrigger.create({
-          trigger: root.querySelector('.bp-fig')!,
-          start: 'top 75%',
-          once: true,
-          onEnter: () => tl.duration(tl.duration()).timeScale(1.8).play(0),
-        });
-        return () => st.kill();
+      // einmal abspielen, sobald die Zeichnung ins Bild kommt; Gesamtdauer drei Sekunden
+      tl.duration(3);
+      ScrollTrigger.create({
+        trigger: root.querySelector('.bp-fig')!,
+        start: 'top 72%',
+        once: true,
+        onEnter: () => tl.play(0),
       });
     }
   }

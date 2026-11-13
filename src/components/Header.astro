@@ -160,6 +160,7 @@ const mainItems = nav;
     margin-left: auto;
   }
   .main-nav > ul {
+    position: relative;
     display: flex;
     gap: 0.25rem;
     list-style: none;
@@ -201,8 +202,9 @@ const mainItems = nav;
     height: 1rem;
     transition: transform 0.3s var(--ease);
   }
+  /* Untermenüs hängen am Anfang der Navigation, nicht am Menüpunkt: so bleiben sie bei jeder Fensterbreite im Bild */
   .has-sub {
-    position: relative;
+    position: static;
   }
   .has-sub:hover :global(.chev),
   .has-sub:focus-within :global(.chev) {
@@ -211,9 +213,9 @@ const mainItems = nav;
   .sub {
     position: absolute;
     top: 100%;
-    left: 50%;
+    left: 0;
     padding-top: 0.9rem;
-    transform: translate(-50%, 10px);
+    transform: translate(0, 10px);
     opacity: 0;
     visibility: hidden;
     transition:
@@ -225,18 +227,8 @@ const mainItems = nav;
   .has-sub:focus-within .sub {
     opacity: 1;
     visibility: visible;
-    transform: translate(-50%, 0);
-    transition-delay: 0s;
-  }
-  /* „Unternehmen“ steht weit rechts: Untermenü rechtsbündig, damit es nie über den Rand ragt */
-  .main-nav > ul > li:nth-child(3) .sub {
-    left: auto;
-    right: 0;
-    transform: translate(0, 10px);
-  }
-  .main-nav > ul > li:nth-child(3):hover .sub,
-  .main-nav > ul > li:nth-child(3):focus-within .sub {
     transform: translate(0, 0);
+    transition-delay: 0s;
   }
   .sub-inner {
     display: grid;

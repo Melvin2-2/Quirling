@@ -27,9 +27,14 @@ const words = (t: string) => t.split(' ');
       <div class="wg-sticky">
         <h2 class="h-sec" id="wg-h">Bauen liegt<br /><span class="lt">in der Familie.</span></h2>
         <div class="wg-now" aria-hidden="true">
-          <span class="wg-year" data-wg-year>{stationen[0]!.k}</span>
+          <span class="wg-year" data-wg-year><span>{stationen[0]!.k}</span></span>
           <span class="wg-wert" data-wg-wert>{stationen[0]!.wert}.</span>
         </div>
+        <!-- alle Stationen als Leiste: Linie füllt sich, aktuelle Station blau -->
+        <ol class="wg-rail" aria-hidden="true">
+          <span class="wg-rail-line"><span class="wg-rail-fill" data-wg-fill></span></span>
+          {stationen.map((s) => <li data-wg-rail={s.k}>{s.k}</li>)}
+        </ol>
       </div>
     </div>
 
@@ -74,9 +79,9 @@ const words = (t: string) => t.split(' ');
   }
   .wg-sticky {
     position: sticky;
-    top: 22vh;
+    top: 16vh;
     display: grid;
-    gap: clamp(2rem, 5vh, 3.5rem);
+    gap: clamp(1.6rem, 4vh, 2.8rem);
   }
   .wg-sticky .h-sec {
     font-size: clamp(2.2rem, 3.6vw, 3.8rem);
@@ -86,10 +91,97 @@ const words = (t: string) => t.split(' ');
     display: grid;
     gap: 0.6rem;
   }
-  .wg-year,
   .wg-wert {
     display: block;
     overflow: hidden;
+  }
+  /* zwei Zahlen übereinander: die alte verblasst nach oben, die neue fliegt von unten ein */
+  .wg-year {
+    position: relative;
+    display: grid;
+    overflow: hidden;
+    padding-bottom: 0.04em;
+  }
+  .wg-year > :global(span) {
+    grid-area: 1 / 1;
+  }
+  .wg-year > :global(span.is-out) {
+    animation: wg-out 0.45s var(--ease) forwards;
+  }
+  .wg-year > :global(span.is-in) {
+    animation: wg-fly 0.6s var(--ease);
+  }
+  @keyframes wg-out {
+    to {
+      transform: translateY(-45%);
+      opacity: 0;
+    }
+  }
+  @keyframes wg-fly {
+    from {
+      transform: translateY(70%);
+      opacity: 0;
+    }
+  }
+  /* Leiste mit allen Stationen */
+  .wg-rail {
+    position: relative;
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 1.4rem;
+    display: grid;
+    gap: 0.55rem;
+  }
+  .wg-rail-line {
+    position: absolute;
+    left: 0.3rem;
+    top: 0.45rem;
+    bottom: 0.45rem;
+    width: 2px;
+    background: var(--stone-200);
+  }
+  .wg-rail-fill {
+    position: absolute;
+    inset: 0;
+    background: var(--blue);
+    transform-origin: top;
+    transform: scaleY(var(--p, 0));
+  }
+  .wg-rail li {
+    position: relative;
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    font-size: 1.05rem;
+    line-height: 1;
+    text-transform: uppercase;
+    color: #b9bdd3;
+    transition: color 0.3s ease;
+  }
+  .wg-rail li::before {
+    content: '';
+    position: absolute;
+    left: calc(-1.4rem + 0.31rem - 4px);
+    top: 0.22em;
+    width: 8px;
+    height: 8px;
+    background: var(--stone-50);
+    border: 1.5px solid #b9bdd3;
+    transform: rotate(45deg);
+    transition:
+      background 0.3s ease,
+      border-color 0.3s ease;
+  }
+  .wg-rail li.is-past {
+    color: var(--navy);
+  }
+  .wg-rail li.is-past::before,
+  .wg-rail li.is-on::before {
+    background: var(--blue);
+    border-color: var(--blue);
+  }
+  .wg-rail li.is-on {
+    color: var(--blue);
   }
   .wg-year {
     font-family: var(--font-head);
@@ -120,7 +212,6 @@ const words = (t: string) => t.split(' ');
     background: var(--blue);
     transform: rotate(45deg);
   }
-  .wg-year.is-in,
   .wg-wert.is-in {
     animation: wg-in 0.5s var(--ease);
   }
@@ -213,7 +304,8 @@ const words = (t: string) => t.split(' ');
     .wg-sticky {
       position: static;
     }
-    .wg-now {
+    .wg-now,
+    .wg-rail {
       display: none;
     }
     .wg-list {
@@ -234,10 +326,14 @@ const words = (t: string) => t.split(' ');
   if (root && window.matchMedia('(min-width: 901px) and (prefers-reduced-motion: no-preference)').matches) {
     const stations = Array.from(root.querySelectorAll<HTMLElement>('[data-wg-st]'));
     const year = root.querySelector<HTMLElement>('[data-wg-year]')!;
+    const fill = root.querySelector<HTMLElement>('[data-wg-fill]')!;
+    const rail = Array.from(root.querySelectorAll<HTMLElement>('[data-wg-rail]'));
+    const list = root.querySelector<HTMLElement>('.wg-list')!;
     const wert = root.querySelector<HTMLElement>('[data-wg-wert]')!;
     root.classList.add('is-live');
-    let current = '';
-    let currentWert = '';
+    let current = stations[0]?.dataset.k ?? '';
+    rail[0]?.classList.add('is-on');
+    let currentWert = `${stations[0]?.dataset.wert}.`;
     const swap = (el: HTMLElement, text: string) => {
       el.textContent = text;
       el.classList.remove('is-in');
@@ -263,8 +359,26 @@ const words = (t: string) => t.split(' ');
       const k = active.dataset.k!;
       if (k !== current) {
         current = k;
-        swap(year, k);
+        // alte Zahl verblasst, neue fliegt ein
+        year.querySelectorAll('span').forEach((old) => {
+          old.classList.remove('is-in');
+          old.classList.add('is-out');
+          setTimeout(() => old.remove(), 460);
+        });
+        const n = document.createElement('span');
+        n.textContent = k;
+        n.className = 'is-in';
+        year.append(n);
+        const idx = stations.indexOf(active);
+        rail.forEach((r, i) => {
+          r.classList.toggle('is-on', i === idx);
+          r.classList.toggle('is-past', i < idx);
+        });
       }
+      // Fortschritt über den ganzen Abschnitt
+      const lr = list.getBoundingClientRect();
+      const prog = Math.min(1, Math.max(0, (vh * 0.55 - lr.top) / Math.max(1, lr.height - vh * 0.3)));
+      fill.style.setProperty('--p', prog.toFixed(3));
       const w = `${active.dataset.wert}.`;
       if (w !== currentWert) {
         currentWert = w;

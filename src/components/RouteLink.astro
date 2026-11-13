@@ -11,14 +11,16 @@ interface Props {
   light?: boolean;
   /** als eckiger Button (Pill) statt als Textlink */
   pill?: boolean;
+  /** Auswahl nach oben aufklappen, z. B. kurz vor dem Footer */
+  up?: boolean;
 }
-const { light = false, pill = false } = Astro.props;
+const { light = false, pill = false, up = false } = Astro.props;
 const ziel = encodeURIComponent(`${firma.langname}, ${firma.strasse}, ${firma.plz} ${firma.ort}`);
 const google = `https://www.google.com/maps/dir/?api=1&destination=${ziel}`;
 const apple = `https://maps.apple.com/?daddr=${ziel}&dirflg=d`;
 ---
 
-<details class:list={['route', { light }]} data-route>
+<details class:list={['route', { light, up }]} data-route>
   <summary class={pill ? 'pill' : 'text-link'}><span>Route planen</span><Icon name="chevron" /></summary>
   <div class="route-menu">
     <a href={google} target="_blank" rel="noopener"><span>Google Maps</span><Icon name="arrow" /></a>
@@ -56,6 +58,10 @@ const apple = `https://maps.apple.com/?daddr=${ziel}&dirflg=d`;
     display: grid;
     background: #fff;
     box-shadow: 0 20px 40px -16px rgb(18 23 53 / 0.35);
+  }
+  .up .route-menu {
+    top: auto;
+    bottom: calc(100% + 0.6rem);
   }
   .route-menu a {
     display: flex;

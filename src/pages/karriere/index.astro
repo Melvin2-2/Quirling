@@ -7,11 +7,14 @@ import hero from '~/assets/site/baustelle-team.jpg';
 
 const mailBewerbung = `mailto:${firma.email}?subject=${encodeURIComponent('Bewerbung')}`;
 
+// Was dich erwartet: konkret und ehrlich, ohne Werbesprech
 const vorteile = [
-  { t: 'Beständiges Team', d: 'Junge und erfahrene Kollegen arbeiten bei uns seit vielen Jahren zusammen. Man kennt sich und kann sich aufeinander verlassen.' },
-  { t: 'Vielseitige Bauten', d: 'Wohnungsbau, Büro- und Gewerbebauten, Umbauten von Stadtvillen. Kein Projekt ist wie das andere.' },
-  { t: 'Kurze Wege', d: 'Als inhabergeführtes Unternehmen entscheiden wir schnell und sprechen direkt miteinander.' },
-  { t: 'Gutes Klima', d: 'Wir bauen auf Partnerschaft mit unseren Mitarbeitern, denn ein zufriedenes Team baut besser.' },
+  { t: 'Ein Team, das bleibt', d: 'Viele Kollegen sind seit Jahrzehnten dabei, einige seit über 30 Jahren. Man kennt sich und kann sich aufeinander verlassen.' },
+  { t: 'Faire Bezahlung', d: 'Wir zahlen über dem Branchendurchschnitt, pünktlich und fair. Gute Arbeit soll sich lohnen.' },
+  { t: 'Moderne Firmenwagen', d: 'Du fährst mit modernen Firmenfahrzeugen zur Baustelle. Werkzeug und Material sind da, wenn du sie brauchst.' },
+  { t: 'Ordentliche Baustellen', d: 'Gut ausgestattete Baucontainer und saubere Sanitäranlagen. Auf dem Bauplatz gibt es einen Gemeinschaftsraum und eine Umkleide.' },
+  { t: 'Familiär und verlässlich', d: 'Ein inhabergeführter Betrieb mit kurzen Wegen. Du sprichst direkt mit der Geschäftsführung, und Absprachen gelten.' },
+  { t: 'Abwechslung', d: 'Wohnungsbau, Büro- und Gewerbebauten, Umbauten im Bestand. Kein Projekt ist wie das andere.' },
 ];
 
 // Wen wir suchen: bewusst ohne Datum, die Stellen sind dauerhaft offen.
@@ -23,27 +26,27 @@ const stellen = [
     kurz: 'Schalen, bewehren, betonieren und noch einiges mehr.',
     teile: [
       {
-        t: 'Ihre Aufgaben',
-        d: 'Bei uns wird es nie langweilig. Sie schalen, bewehren und betonieren Fundamente, Wände und Decken, mauern mit und packen auch bei Umbauten im Bestand an. Jede Baustelle ist anders, vom Mehrfamilienhaus mit Tiefgarage bis zur Stadtvilla.',
+        t: 'Deine Aufgaben',
+        d: 'Du schalst, bewehrst und betonierst Fundamente, Wände und Decken, mauerst mit und packst auch bei Umbauten im Bestand an. Jede Baustelle ist anders, vom Mehrfamilienhaus mit Tiefgarage bis zur Stadtvilla.',
       },
       {
-        t: 'Ihr Profil',
-        d: 'Eine Ausbildung im Bauhandwerk oder Erfahrung im Rohbau, Zuverlässigkeit und Freude an der Arbeit im Team. Flexibilität ist bei uns gefragt, denn kein Tag ist wie der andere.',
+        t: 'Dein Profil',
+        d: 'Du hast eine Ausbildung im Bauhandwerk oder Erfahrung im Rohbau, bist zuverlässig und arbeitest gern im Team. Flexibilität hilft, denn kein Tag ist wie der andere.',
       },
       {
-        t: 'Was wir bieten',
-        d: 'Ein festes, eingespieltes Team, abwechslungsreiche Baustellen in Hamburg und Umgebung und kurze Wege zur Geschäftsführung. Als Familienbetrieb nehmen wir uns Zeit für unsere Leute.',
+        t: 'Was wir dir bieten',
+        d: 'Bezahlung über dem Branchendurchschnitt, moderne Firmenwagen, gut ausgestattete Baustellen und ein festes Team, in dem viele seit Jahrzehnten dabei sind. Als Familienbetrieb nehmen wir uns Zeit für unsere Leute.',
       },
     ],
   },
   {
     titel: 'Initiativ\u00adbewerbung',
     meta: 'Baustelle oder Büro',
-    kurz: 'Ihr Beruf ist nicht dabei? Melden Sie sich trotzdem.',
+    kurz: 'Dein Beruf ist nicht dabei? Melde dich trotzdem.',
     teile: [
       {
         t: 'Gute Leute suchen wir immer',
-        d: 'Ob Maurer, Polier oder Auszubildender: Schicken Sie uns ein paar Zeilen und Ihren Lebenslauf. Wir melden uns zeitnah und lernen Sie gerne persönlich kennen.',
+        d: 'Ob Maurer, Polier oder Auszubildender: Schick uns ein paar Zeilen und deinen Lebenslauf. Wir melden uns zeitnah und lernen dich gern persönlich kennen.',
       },
     ],
   },
@@ -52,11 +55,11 @@ const mailFor = (titel: string) => `mailto:${firma.email}?subject=${encodeURICom
 
 ---
 
-<Base title="Karriere" description="Karriere bei der Quirling GmbH in Hamburg: Werden Sie Teil unseres Teams auf der Baustelle oder im Büro. Bewerbung gerne per E-Mail.">
+<Base title="Karriere" description="Karriere bei der Quirling GmbH in Hamburg: Werde Teil unseres Teams auf der Baustelle oder im Büro. Faire Bezahlung, moderne Firmenwagen, ein Team, das bleibt.">
   <PageHero
     title="Mit anpacken"
     titleLight="bei Quirling."
-    intro="Gute Leute suchen wir immer. Wer gerne baut und Teil eines eingespielten Teams sein möchte, ist bei uns richtig."
+    intro="Gute Leute suchen wir immer. Wenn du gern baust und Teil eines eingespielten Teams sein willst, bist du bei uns richtig."
     image={hero}
     imageAlt="Zwei Kollegen mit Schutzhelm auf einer Baustelle der Quirling GmbH"
     imageSide="right"
@@ -70,7 +73,8 @@ const mailFor = (titel: string) => `mailto:${firma.email}?subject=${encodeURICom
   <section class="section">
     <div class="container vt-wrap">
       <div class="vt-head">
-        <h2 class="h-sec">Was Sie<br /><span class="lt">erwartet.</span></h2>
+        <h2 class="h-sec">Was dich<br /><span class="lt">erwartet.</span></h2>
+        <p class="vt-fact"><b>30+</b>Jahre sind einige unserer Kollegen schon dabei. Das spricht für sich.</p>
       </div>
       <div class="vorteile">
         {
@@ -91,8 +95,14 @@ const mailFor = (titel: string) => `mailto:${firma.email}?subject=${encodeURICom
       <div class="jobs-head">
         <h2 class="h-sec">Wir suchen<br /><span class="lt">Verstärkung.</span></h2>
         <p class="small">
-          Bewerben Sie sich einfach per E-Mail an <a href={mailBewerbung}>{firma.email}</a>. Gerne auch per Post oder persönlich bei uns im Büro.
+          Bewirb dich einfach per E-Mail an <a href={mailBewerbung}>{firma.email}</a>. Gern auch per Post oder persönlich bei uns im Büro in der Tilsiter
+          Straße.
         </p>
+        <ul class="steps">
+          <li>Du schickst uns ein paar Zeilen und deinen Lebenslauf.</li>
+          <li>Wir melden uns zeitnah bei dir.</li>
+          <li>Wir lernen uns persönlich kennen.</li>
+        </ul>
       </div>
       <div class="jobs">
         {
@@ -154,23 +164,69 @@ const mailFor = (titel: string) => `mailto:${firma.email}?subject=${encodeURICom
   .jobs-head a {
     color: var(--blue);
   }
+  /* Ablauf der Bewerbung: drei kurze Schritte mit Raute */
+  .steps {
+    list-style: none;
+    margin: 0.4rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 0.6rem;
+  }
+  .steps li {
+    position: relative;
+    padding-left: 1.4rem;
+    font-size: 1.05rem;
+    font-weight: 300;
+    line-height: 1.5;
+    color: var(--ink-2);
+  }
+  .steps li::before {
+    content: '';
+    position: absolute;
+    left: 0.1rem;
+    top: 0.55em;
+    width: 0.45rem;
+    height: 0.45rem;
+    background: var(--blue);
+    transform: rotate(45deg);
+  }
+  /* ruhige Kennzahl unter der Überschrift */
+  .vt-fact {
+    margin: 0.6rem 0 0;
+    display: grid;
+    gap: 0.3rem;
+    max-width: 22ch;
+    font-size: 1.125rem;
+    font-weight: 300;
+    line-height: 1.5;
+    color: var(--ink-2);
+  }
+  .vt-fact b {
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    font-size: clamp(3.4rem, 5vw, 5rem);
+    line-height: 0.85;
+    color: var(--blue);
+  }
   .vorteile {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(2rem, 4vw, 3.5rem) clamp(2rem, 4vw, 4rem);
+    gap: clamp(2rem, 3.6vw, 3rem) clamp(2rem, 4vw, 4rem);
   }
   .v {
-    position: relative;
+    padding-top: 1.2rem;
+    border-top: 1px solid var(--line);
   }
   .v-t {
     font-family: var(--font-head);
     font-stretch: 68%;
     font-weight: 800;
     text-transform: uppercase;
-    font-size: clamp(2rem, 3vw, 3rem);
+    font-size: clamp(1.6rem, 2.2vw, 2.2rem);
     line-height: 0.97;
     color: var(--blue);
-    margin: 0 0 0.8rem;
+    margin: 0 0 0.6rem;
   }
   .v .small {
     margin: 0;
