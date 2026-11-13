@@ -9,7 +9,15 @@ import { firma, JAHRE_ERFAHRUNG, GRUENDUNGSJAHR } from '~/data/site';
 import historisch from '~/assets/site/historisch.jpg';
 import geruest from '~/assets/site/baustelle-geruest.jpg';
 import buero from '~/assets/site/buero-tilsiter-strasse.jpg';
+import thomas from '~/assets/team/thomas-quirling.jpg';
 
+
+// Unser Weg in drei Stationen
+const weg = [
+  { k: 'Damals', t: 'Das Handwerk im Blut', d: 'Der Vater unseres Gründers lernt auf dem Bau, was gute Arbeit ausmacht.' },
+  { k: String(GRUENDUNGSJAHR), t: 'Die Gründung', d: 'Thomas Quirling gründet die Quirling GmbH in Hamburg, mit Schwerpunkt Rohbau.' },
+  { k: 'Heute', t: 'Fest in Hamburg', d: `Über ${firma.projekteAnzahl} Projekte, eine eingespielte Mannschaft und ein Büro in der Tilsiter Straße.` },
+];
 
 const zahlen = [
   { v: String(GRUENDUNGSJAHR), l: 'Gegründet in Hamburg' },
@@ -72,6 +80,42 @@ const zahlen = [
           <li>Verbindlich</li>
           <li>Sorgfältig</li>
         </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Unser Weg: drei Stationen auf einer Linie, Rauten als Marken -->
+  <section class="section way">
+    <div class="container">
+      <h2 class="h-sec way-h">Unser<br /><span class="lt">Weg.</span></h2>
+      <ol class="way-list">
+        {
+          weg.map((w) => (
+            <li class="way-step">
+              <span class="way-k">{w.k}</span>
+              <h3 class="way-t">{w.t}</h3>
+              <p>{w.d}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- Der Mensch dahinter: Porträt mit Rautenknick, daneben der Leitsatz -->
+  <section class="lead on-dark">
+    <div class="container lead-in">
+      <div class="lead-img">
+        <Image src={thomas} alt="Thomas Quirling" widths={[500, 800, 1100]} sizes="(min-width: 900px) 34vw, 100vw" />
+      </div>
+      <div class="lead-text">
+        <span class="lead-k">Inhabergeführt seit {GRUENDUNGSJAHR}</span>
+        <p class="lead-q">„Was wir zusagen, steht.“</p>
+        <p class="lead-p">
+          Unser Leitsatz gilt für jedes Bauvorhaben. Thomas Quirling führt das Unternehmen seit der Gründung selbst. Er ist ansprechbar, entscheidet
+          schnell und steht mit seinem Namen für das, was wir bauen.
+        </p>
+        <span class="lead-n">Thomas Quirling<small>Geschäftsführender Gesellschafter</small></span>
       </div>
     </div>
   </section>
@@ -228,6 +272,157 @@ const zahlen = [
     background: var(--blue);
     transform: rotate(45deg);
   }
+  /* Unser Weg */
+  .way-h {
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+  .way-list {
+    position: relative;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1.5rem, 3vw, 3rem);
+  }
+  /* durchgehende Linie auf Höhe der Rauten */
+  .way-list::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0.62rem;
+    height: 1.5px;
+    background: var(--blue);
+  }
+  .way-step {
+    position: relative;
+    display: grid;
+    gap: 0.6rem;
+    align-content: start;
+    padding-top: 2.6rem;
+  }
+  .way-step::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+    background: var(--blue);
+    transform: rotate(45deg);
+    outline: 6px solid var(--stone-50);
+  }
+  .way-k {
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    font-size: clamp(2.6rem, 4vw, 4rem);
+    line-height: 0.9;
+    color: var(--blue);
+    text-transform: uppercase;
+  }
+  .way-t {
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    font-size: clamp(1.3rem, 1.7vw, 1.7rem);
+    line-height: 1;
+    text-transform: uppercase;
+    color: var(--navy);
+    margin: 0.4rem 0 0;
+  }
+  .way-step p {
+    margin: 0;
+    max-width: 30ch;
+    font-size: 1.125rem;
+    font-weight: 300;
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
+  /* Der Mensch dahinter */
+  .lead {
+    background: var(--navy);
+    color: #fff;
+    padding-block: clamp(5rem, 8vw, 7rem);
+    clip-path: polygon(0 0, 78% clamp(2rem, 4vw, 3.5rem), 100% clamp(0.8rem, 1.6vw, 1.4rem), 100% 100%, 0 100%);
+  }
+  .lead-in {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: clamp(2rem, 4vw, 4rem);
+    align-items: center;
+  }
+  .lead-img {
+    grid-column: 1 / 5;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    clip-path: polygon(0 0, 100% 0, 100% 90%, 76% 100%, 0 100%);
+    background: var(--stone-200);
+  }
+  .lead-img :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 20%;
+  }
+  .lead-text {
+    grid-column: 6 / 13;
+    display: grid;
+    gap: 1.4rem;
+    justify-items: start;
+  }
+  .lead-k {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #c9d0f5;
+  }
+  .lead-k::before {
+    content: '';
+    width: 0.55rem;
+    height: 0.55rem;
+    background: #9aa6ee;
+    transform: rotate(45deg);
+  }
+  .lead-q {
+    margin: 0;
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    font-size: clamp(3rem, 5.6vw, 6rem);
+    line-height: 0.9;
+    text-transform: uppercase;
+    color: #9aa6ee;
+  }
+  .lead-p {
+    margin: 0;
+    max-width: 34rem;
+    font-weight: 300;
+    color: rgb(255 255 255 / 0.85);
+  }
+  .lead-n {
+    display: grid;
+    gap: 0.3rem;
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+  .lead-n small {
+    font-family: var(--font-body);
+    font-stretch: normal;
+    font-weight: 300;
+    font-size: 1rem;
+    text-transform: none;
+    color: rgb(255 255 255 / 0.7);
+  }
   /* Überleitung zum Team */
   .team-cta-in {
     display: grid;
@@ -330,8 +525,28 @@ const zahlen = [
   @media (max-width: 900px) {
     .about,
     .story-in,
-    .team-cta-in {
+    .team-cta-in,
+    .lead-in,
+    .way-list {
       grid-template-columns: minmax(0, 1fr);
+    }
+    .lead-img,
+    .lead-text {
+      grid-column: 1 / -1;
+    }
+    .lead-img {
+      max-width: 22rem;
+    }
+    .way-list::before {
+      left: 0.62rem;
+      right: auto;
+      top: 0;
+      bottom: 0;
+      width: 1.5px;
+      height: auto;
+    }
+    .way-step {
+      padding: 0 0 0 3rem;
     }
     .about-text,
     .zahlen,

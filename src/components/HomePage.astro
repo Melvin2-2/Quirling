@@ -176,7 +176,7 @@ const werte = [
     {
       services.map((s, i) => (
         <article class:list={['svc', `svc-${i + 1}`]} data-svc>
-          <a class="svc-visual" href={url(`/leistungen/${s.slug}/`)} tabindex="-1" aria-hidden="true" data-follow>
+          <a class="svc-visual" href={url(`/leistungen/${s.slug}/`)} tabindex="-1" aria-hidden="true">
             <span class="cut-img svc-img">
               <Image src={s.img} alt="" widths={[600, 1000, 1400]} sizes="(min-width: 900px) 40vw, 100vw" />
             </span>
@@ -252,6 +252,9 @@ const werte = [
     <div class="container figs-in">
       <div class="figs-side">
         <h2 id="figs-h" class="figs-h">Bauen liegt<br /><span class="lt">in der Familie.</span></h2>
+        <ul class="vals">
+          {werte.map((w) => <li>{w.t}</li>)}
+        </ul>
         <p class="figs-p">
           Schon der Vater unseres Gründers stand auf dem Gerüst. Seit {GRUENDUNGSJAHR} führt die Familie Quirling das Unternehmen selbst. Hinter jedem
           Bauvorhaben stehen Menschen mit Namen, die für ihr Wort einstehen.
@@ -269,9 +272,6 @@ const werte = [
             ))
           }
         </div>
-        <ul class="vals">
-          {werte.map((w) => <li>{w.t}</li>)}
-        </ul>
         <a class="block-btn" href={url('/unternehmen/team/')}>
           <span>Wer steckt dahinter?</span>
           <Icon name="arrow" />
@@ -542,7 +542,8 @@ const werte = [
     grid-template-columns: repeat(12, minmax(0, 1fr));
     gap: clamp(2rem, 4vw, 4rem);
   }
-  /* Foto füllt die linke Seite von Ober- bis Unterkante, Innenkante mit Knick nach rechts */
+  /* Foto füllt die linke Seite von Ober- bis Unterkante. Die Innenkante setzt die schräge Kante
+     der Projekte darüber gerade fort (fitFigs setzt Breite und Form). */
   .figs-photo {
     position: absolute;
     top: 0;
@@ -556,7 +557,7 @@ const werte = [
     position: absolute;
     inset: 0;
     overflow: hidden;
-    clip-path: polygon(0 0, 86% 0, 100% 46%, 90% 100%, 0 100%);
+    clip-path: polygon(0 0, 100% 0, 86% 100%, 0 100%);
     background: var(--stone-200);
   }
   .figs-img :global(img) {
@@ -578,7 +579,8 @@ const werte = [
     text-transform: uppercase;
   }
   .figs-side {
-    grid-column: 7 / 13;
+    grid-column: 6 / 13;
+    padding-left: clamp(1rem, 3vw, 3rem);
     display: grid;
     gap: clamp(1.6rem, 2.6vw, 2.2rem);
     justify-items: start;
@@ -648,7 +650,7 @@ const werte = [
   /* drei Werte als eine ruhige Zeile, jeweils mit Raute */
   .vals {
     list-style: none;
-    margin: 0;
+    margin: -0.4rem 0 0.2rem;
     padding: 0;
     display: flex;
     flex-wrap: wrap;
@@ -661,17 +663,17 @@ const werte = [
     font-family: var(--font-head);
     font-stretch: 68%;
     font-weight: 800;
-    font-size: clamp(1.2rem, 1.5vw, 1.45rem);
+    font-size: clamp(1.5rem, 2vw, 2rem);
     letter-spacing: 0.02em;
     line-height: 1;
     text-transform: uppercase;
-    color: var(--blue);
+    color: var(--navy);
   }
   .vals li::before {
     content: '';
     width: 0.55rem;
     height: 0.55rem;
-    background: var(--blue);
+    background: var(--navy);
     transform: rotate(45deg);
   }
   /* Klapptafel-Effekt in der Quirling-Schrift: ohne Täfelchen, nur die Ziffern klappen um */
@@ -932,16 +934,13 @@ const werte = [
     /* Bild links: gespiegelt */
     clip-path: polygon(0 0, 86% 0, 100% 56%, 92% 100%, 0 100%);
   }
+  /* Bild steht immer; etwas höher als der Ausschnitt, damit es beim Scrollen leicht mitlaufen kann */
   .svc-img :global(img) {
-    height: 100%;
-  }
-  /* Bild und Texte blenden leicht ein */
-  .svc-visual[data-follow] .svc-img {
-    opacity: 0;
-    transition: opacity 1.2s ease;
-  }
-  .svc-visual.is-in .svc-img {
-    opacity: 1;
+    position: absolute;
+    left: 0;
+    top: -8%;
+    width: 100%;
+    height: 116%;
   }
   .svc-text[data-follow] {
     opacity: 1;
@@ -1051,8 +1050,7 @@ const werte = [
   @media (prefers-reduced-motion: reduce) {
     .svc-title,
     .svc-text > p,
-    .svc-facts li,
-    .svc-visual[data-follow] .svc-img {
+    .svc-facts li {
       opacity: 1;
       transform: none;
       transition: none;
@@ -1136,13 +1134,13 @@ const werte = [
     margin-bottom: 2.5rem;
     perspective: 900px;
   }
-  /* Titel klappen um wie die Blätter einer Anzeigetafel: das neue klappt von unten hoch, das alte nach oben weg */
+  /* Titel klappen um wie die Blätter einer Anzeigetafel: das alte fällt nach unten weg, das neue klappt von oben herein */
   .show-item {
     grid-area: 1 / 1;
     opacity: 0;
     visibility: hidden;
-    transform: rotateX(92deg);
-    transform-origin: 50% 100%;
+    transform: rotateX(-92deg);
+    transform-origin: 50% 0;
     backface-visibility: hidden;
     transition:
       transform 0.55s cubic-bezier(0.3, 1.3, 0.5, 1) 0.22s,
@@ -1157,8 +1155,8 @@ const werte = [
   .show-item.is-out {
     opacity: 0;
     visibility: hidden;
-    transform: rotateX(-92deg);
-    transform-origin: 50% 0;
+    transform: rotateX(92deg);
+    transform-origin: 50% 100%;
     transition:
       transform 0.32s cubic-bezier(0.6, 0, 0.9, 0.4),
       opacity 0.12s ease 0.22s,
@@ -1229,9 +1227,10 @@ const werte = [
   }
   .join-pos {
     position: absolute;
-    right: calc(var(--content-left) + 24%);
+    right: calc(var(--content-left) + 18%);
     top: 0;
-    transform: translateY(-50%);
+    /* sitzt überwiegend im Video, damit die Telefonnummer darunter frei bleibt */
+    transform: translateY(-76%);
   }
   /* schmale, gestapelte blaue Fläche mit schrägen Seiten: Zeile, Titel mit Hammer, Knopf */
   .ja {
@@ -1942,6 +1941,13 @@ const werte = [
     el.textContent = el.dataset.flap ?? '';
   };
 
+  /* ---------- Leistungen: Bilder laufen beim Scrollen leicht mit ---------- */
+  mm.add('(prefers-reduced-motion: no-preference)', () => {
+    document.querySelectorAll<HTMLElement>('.svc-img img').forEach((img) => {
+      gsap.fromTo(img, { yPercent: -5 }, { yPercent: 5, ease: 'none', scrollTrigger: { trigger: img.closest('.svc'), start: 'top bottom', end: 'bottom top', scrub: true } });
+    });
+  });
+
   /* ---------- Leistungen: der Link gleitet mit dem Scrollweg herein, die Raute dreht sich dabei ein ---------- */
   mm.add('(prefers-reduced-motion: no-preference)', () => {
     const links = Array.from(document.querySelectorAll<HTMLElement>('.svc .svc-more'));
@@ -1954,6 +1960,27 @@ const werte = [
     };
   });
 
+  /* ---------- Familie: Fotokante setzt die schräge Kante der Projekte (oben 14 %, unten 0 %) fort ---------- */
+  const fitFigs = () => {
+    const photo = document.querySelector<HTMLElement>('.figs-photo');
+    const img = photo?.querySelector<HTMLElement>('.figs-img');
+    const stage = document.querySelector('.show-stage');
+    if (!photo || !img || !stage) return;
+    if (window.innerWidth <= 900) {
+      photo.style.removeProperty('width');
+      img.style.removeProperty('clip-path');
+      return;
+    }
+    const st = stage.getBoundingClientRect();
+    const h = photo.getBoundingClientRect().height;
+    const slope = (st.width * 0.14) / st.height;
+    // oben genau dort, wo die Kante der Projekte endet; nach unten im selben Winkel weiter
+    const x0 = st.left;
+    const x1 = x0 - slope * h;
+    photo.style.width = `${x0}px`;
+    img.style.clipPath = `polygon(0 0, ${x0.toFixed(1)}px 0, ${x1.toFixed(1)}px ${h.toFixed(1)}px, 0 ${h.toFixed(1)}px)`;
+  };
+
   /* ---------- Familie: das Foto bewegt sich beim Scrollen leicht mit ---------- */
   mm.add('(prefers-reduced-motion: no-preference) and (min-width: 901px)', () => {
     const sec = document.querySelector('[data-figs-sec]');
@@ -1965,15 +1992,21 @@ const werte = [
   window.addEventListener('scroll', follow, { passive: true });
   window.addEventListener('resize', () => {
     fitIntro();
+    fitFigs();
     follow();
   });
   window.addEventListener('load', () => {
     ScrollTrigger.refresh();
     fitIntro();
+    fitFigs();
     follow();
   });
-  ScrollTrigger.addEventListener('refresh', fitIntro);
+  ScrollTrigger.addEventListener('refresh', () => {
+    fitIntro();
+    fitFigs();
+  });
   fitIntro();
+  fitFigs();
   follow();
   document.fonts?.ready.then(fitIntro);
 </script>

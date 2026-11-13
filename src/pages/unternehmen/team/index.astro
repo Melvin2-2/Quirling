@@ -7,6 +7,7 @@ import QHammer from '~/components/QHammer.astro';
 import { url } from '~/lib/url';
 import { firma } from '~/data/site';
 import mannschaft from '~/assets/team/baustellenteam.jpg';
+import kran from '~/assets/site/kran.jpg';
 import thomas from '~/assets/team/thomas-quirling.jpg';
 import ivonne from '~/assets/team/ivonne-quirling.jpg';
 import michaela from '~/assets/team/michaela-venghaus.jpg';
@@ -23,9 +24,9 @@ const personen = [
     title="Wir stellen"
     titleLight="uns vor."
     intro="Ein eingespieltes Team aus jungen und erfahrenen Kollegen. Im Büro und auf der Baustelle."
-    image={mannschaft}
-    imageAlt="Die Mannschaft der Quirling GmbH vor Schalungselementen"
-    imagePosition="50% 40%"
+    image={kran}
+    imageAlt="Baukran der Quirling GmbH vor bewölktem Himmel"
+    imagePosition="40% 50%"
     crumbs={[{ label: 'Unternehmen', href: '/unternehmen/' }, { label: 'Team' }]}
   />
 
@@ -56,6 +57,10 @@ const personen = [
 
   <!-- Mannschaft auf der Baustelle -->
   <section class="crew on-dark">
+    <!-- Gruppenfoto randlos rechts, Innenkante schräg wie im Seitenkopf -->
+    <div class="crew-photo">
+      <Image src={mannschaft} alt="Die Mannschaft der Quirling GmbH vor Schalungselementen" widths={[800, 1200, 1600]} sizes="(min-width: 900px) 55vw, 100vw" />
+    </div>
     <div class="container crew-in">
       <div class="crew-text">
         <h2 class="h-sec">Unsere<br /><span class="lt">Mannschaft.</span></h2>
@@ -63,12 +68,12 @@ const personen = [
           Das Herz des Unternehmens sind die Facharbeiter auf der Baustelle. Junge und erfahrene Kollegen, die seit vielen Jahren zusammenarbeiten und
           sich aufeinander verlassen können. Sie sind der Grund, warum unsere Bauten stehen.
         </p>
+        <a class="crew-cta" href={url('/karriere/')}>
+          <span class="crew-l">Werde Teil des Teams</span>
+          <span class="crew-h"><QHammer class="crew-hammer" color="#ffffff" highlight="#9aa6ee" />Mit anpacken</span>
+          <span class="crew-btn">Zur Karriere <Icon name="arrow" /></span>
+        </a>
       </div>
-      <a class="crew-cta" href={url('/karriere/')}>
-        <span class="crew-l">Werde Teil des Teams</span>
-        <span class="crew-h"><QHammer class="crew-hammer" color="#ffffff" highlight="#9aa6ee" />Mit anpacken</span>
-        <span class="crew-btn">Zur Karriere <Icon name="arrow" /></span>
-      </a>
     </div>
   </section>
 </Base>
@@ -140,29 +145,46 @@ const personen = [
     color: var(--ink-2);
   }
 
-  /* Mannschaft: Navy-Fläche mit Rautenknick oben, rechts der Karriere-Aufruf */
+  /* Mannschaft: Navy-Fläche mit Rautenknick oben, rechts das Gruppenfoto bis an den Rand */
   .crew {
+    position: relative;
+    overflow-x: clip;
     background: var(--navy);
     color: #fff;
-    padding-block: clamp(5.5rem, 9vw, 8rem) clamp(4.5rem, 7vw, 6.5rem);
+    padding-block: clamp(6rem, 10vw, 9rem) clamp(5rem, 8vw, 7rem);
     clip-path: polygon(0 clamp(0.8rem, 1.6vw, 1.4rem), 22% clamp(2rem, 4vw, 3.5rem), 100% 0, 100% 100%, 0 100%);
   }
+  .crew-photo {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 54%;
+    clip-path: polygon(18% 0, 100% 0, 100% 100%, 0 100%);
+  }
+  .crew-photo :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 45%;
+  }
   .crew-in {
+    position: relative;
     display: grid;
-    grid-template-columns: minmax(0, 1.2fr) auto;
-    gap: 2.5rem clamp(3rem, 8vw, 8rem);
-    align-items: center;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
   }
   .crew-text {
+    grid-column: 1 / 6;
     display: grid;
     gap: 1.4rem;
+    justify-items: start;
   }
   .crew-text .h-sec {
     color: #fff;
   }
   .crew-text p {
     margin: 0;
-    max-width: 38rem;
+    max-width: 30rem;
     font-weight: 300;
     color: rgb(255 255 255 / 0.85);
   }
@@ -171,7 +193,8 @@ const personen = [
     display: grid;
     justify-items: start;
     gap: 0.7rem;
-    padding: 1.6rem 2.6rem 1.7rem 2.8rem;
+    margin-top: 0.8rem;
+    padding: 1.4rem 2.4rem 1.5rem 2.6rem;
     color: #fff;
     text-decoration: none;
   }
@@ -235,9 +258,22 @@ const personen = [
   }
 
   @media (max-width: 900px) {
-    .head,
-    .crew-in {
+    .head {
       grid-template-columns: minmax(0, 1fr);
+    }
+    .crew {
+      padding-top: 0;
+      clip-path: none;
+    }
+    .crew-photo {
+      position: relative;
+      width: auto;
+      aspect-ratio: 16 / 10;
+      margin-bottom: 3rem;
+      clip-path: polygon(0 0, 100% 0, 100% 92%, 0 100%);
+    }
+    .crew-text {
+      grid-column: 1 / -1;
     }
     .people {
       grid-template-columns: repeat(2, minmax(0, 1fr));

@@ -11,15 +11,10 @@ const year = new Date().getFullYear();
   <div class="container">
     {claim && (
     <div class="claim">
-      <div class="claim-l">
-        <p class="h2 claim-t">Projekt geplant?<br /><span class="lt">Sprechen wir.</span></p>
-        <a class="claim-btn" href={url('/kontakt/')}><span>Projekt anfragen</span><Icon name="arrow" /></a>
-      </div>
-      <!-- rechts, Zeile für Zeile auf Höhe der Überschrift: Telefon (fett) und E-Mail (leicht) -->
-      <p class="h2 claim-ways">
-        <a class="claim-tel" href={firma.telefonHref}>{firma.telefon}</a><br />
-        <a class="claim-mail lt" href={`mailto:${firma.email}`}>{firma.email}</a>
-      </p>
+      <p class="h2 claim-t">Projekt geplant?</p>
+      <a class="h2 claim-tel" href={firma.telefonHref}>{firma.telefon}</a>
+      <a class="claim-btn" href={url('/kontakt/')}><span>Sprechen wir.</span><Icon name="arrow" /></a>
+      <a class="h2 claim-mail" href={`mailto:${firma.email}`}>{firma.email}</a>
     </div>
     )}
 
@@ -81,11 +76,10 @@ const year = new Date().getFullYear();
     overflow: hidden;
   }
   .claim {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 1.5rem 2rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: clamp(1rem, 1.6vw, 1.4rem) 2rem;
     padding-bottom: clamp(2rem, 3.2vw, 2.6rem);
     border-bottom: 1px solid var(--line-light);
   }
@@ -93,23 +87,39 @@ const year = new Date().getFullYear();
     color: #fff !important;
     margin: 0;
   }
-  .claim-l {
-    display: grid;
-    gap: clamp(1.1rem, 1.8vw, 1.5rem);
-    justify-items: start;
+  /* Telefon und E-Mail in der Größe der Überschrift, rechtsbündig */
+  .claim-tel,
+  .claim-mail {
+    justify-self: end;
+    margin: 0;
+    color: #fff !important;
+    text-decoration: none;
+    white-space: nowrap;
+    line-height: 1;
+    transition: color 0.2s ease;
   }
-  /* deutlicher Knopf für die Anfrage */
+  .claim-mail {
+    text-transform: none;
+    font-weight: 300 !important;
+  }
+  .claim-tel:hover,
+  .claim-mail:hover {
+    color: #c9d0f5 !important;
+  }
+  /* „Sprechen wir.“ als Knopf, so hoch wie eine Zeile der Überschrift */
   .claim-btn {
+    justify-self: start;
     display: inline-flex;
     align-items: center;
     gap: 1rem;
-    padding: 1rem 1.4rem 0.9rem;
+    padding: 0 1.5rem;
+    height: clamp(2.6rem, 3.6vw, 3.4rem);
     background: #fff;
     color: var(--navy);
     font-family: var(--font-head);
     font-stretch: 68%;
     font-weight: 800;
-    font-size: clamp(1.2rem, 1.5vw, 1.45rem);
+    font-size: clamp(1.35rem, 2vw, 1.85rem);
     letter-spacing: 0.02em;
     line-height: 1;
     text-transform: uppercase;
@@ -117,8 +127,8 @@ const year = new Date().getFullYear();
     transition: background 0.25s ease;
   }
   .claim-btn :global(svg) {
-    width: 1.2rem;
-    height: 1.2rem;
+    width: 1.2em;
+    height: 1.2em;
     transition: transform 0.35s var(--ease);
   }
   .claim-btn:hover {
@@ -127,29 +137,26 @@ const year = new Date().getFullYear();
   .claim-btn:hover :global(svg) {
     transform: translateX(4px);
   }
-  /* Telefon und E-Mail: gleiche Schrift, Größe und Zeilenhöhe wie die Überschrift links */
-  /* etwas kleiner als die Überschrift, unten bündig mit „Sprechen wir.“ */
-  .claim-ways {
-    margin: 0;
-    text-align: right;
-    color: #fff;
-    font-size: clamp(1.5rem, 2.6vw, 2.4rem) !important;
-  }
-  .claim-ways a {
-    color: #fff;
-    text-decoration: none;
-    white-space: nowrap;
-  }
-  .claim-mail {
-    text-transform: none;
-    font-weight: 300;
-  }
-  .claim-ways a:hover {
-    color: #c9d0f5;
-  }
   @media (max-width: 700px) {
-    .claim-ways {
-      text-align: left;
+    .claim {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .claim-tel,
+    .claim-mail {
+      justify-self: start;
+    }
+    .claim-t {
+      order: 1;
+    }
+    .claim-btn {
+      order: 2;
+      margin-bottom: 0.6rem;
+    }
+    .claim-tel {
+      order: 3;
+    }
+    .claim-mail {
+      order: 4;
     }
   }
   .cols {
