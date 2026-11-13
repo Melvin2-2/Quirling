@@ -4,7 +4,6 @@ import { getEntry } from 'astro:content';
 import Base from '~/layouts/Base.astro';
 import Icon from '~/components/Icon.astro';
 import QHammer from '~/components/QHammer.astro';
-import ValueIcon from '~/components/ValueIcon.astro';
 import Picto from '~/components/Picto.astro';
 import type { PictoName } from '~/components/Picto.astro';
 import { firma, leistungen, GRUENDUNGSJAHR } from '~/data/site';
@@ -177,14 +176,14 @@ const werte = [
     {
       services.map((s, i) => (
         <article class:list={['svc', `svc-${i + 1}`]} data-svc>
+          <a class="svc-visual" href={url(`/leistungen/${s.slug}/`)} tabindex="-1" aria-hidden="true" data-follow>
+            <span class="cut-img svc-img">
+              <Image src={s.img} alt="" widths={[600, 1000, 1400]} sizes="(min-width: 900px) 40vw, 100vw" />
+            </span>
+          </a>
           <div class="container svc-grid">
-            <a class="svc-visual" href={url(`/leistungen/${s.slug}/`)} tabindex="-1" aria-hidden="true">
-              <span class="cut-img svc-img">
-                <Image src={s.img} alt="" widths={[600, 1000, 1400]} sizes="(min-width: 900px) 50vw, 100vw" />
-              </span>
-            </a>
-            <div class="svc-text">
-              <h3 class="svc-title">{s.title}</h3>
+            <div class="svc-text" data-follow>
+              <h3 class="svc-title"><span>{s.title}</span></h3>
               <p>{s.text}</p>
               <ul class="svc-facts">
                 {s.facts.map(([icon, t]) => (
@@ -194,7 +193,7 @@ const werte = [
                   </li>
                 ))}
               </ul>
-              <a class="svc-more" href={url(`/leistungen/${s.slug}/`)} data-follow>
+              <a class="svc-more" href={url(`/leistungen/${s.slug}/`)}>
                 <span>{s.more}</span>
                 <Icon name="arrow" />
               </a>
@@ -270,18 +269,8 @@ const werte = [
             ))
           }
         </div>
-        <ul class="values-list">
-          {
-            werte.map((w) => (
-              <li class="value" data-follow>
-                <ValueIcon name={w.icon} class="value-icon" frame={false} />
-                <div class="value-text">
-                  <h3>{w.t}</h3>
-                  <p>{w.d}</p>
-                </div>
-              </li>
-            ))
-          }
+        <ul class="vals">
+          {werte.map((w) => <li>{w.t}</li>)}
         </ul>
         <a class="block-btn" href={url('/unternehmen/#team')}>
           <span>Wer steckt dahinter?</span>
@@ -317,11 +306,8 @@ const werte = [
   <div class="join">
     <div class="join-pos">
       <a class="ja" href={url('/karriere/')} data-follow>
-        <QHammer class="ja-hammer" color="#ffffff" highlight="#9aa6ee" />
-        <span class="ja-txt">
-          <span class="ja-l">Werde Teil des Teams</span>
-          <span class="ja-h">Mit anpacken</span>
-        </span>
+        <span class="ja-l">Werde Teil des Teams</span>
+        <span class="ja-h"><QHammer class="ja-hammer" color="#ffffff" highlight="#9aa6ee" />Mit anpacken</span>
         <span class="ja-btn">Zur Karriere <Icon name="arrow" /></span>
       </a>
     </div>
@@ -365,6 +351,7 @@ const werte = [
   /* ---------- Linie ---------- */
   :global(main) {
     position: relative;
+    --ov-cut: clamp(2rem, 4vw, 3.5rem);
   }
 
   /* ======================= HERO ======================= */
@@ -463,7 +450,7 @@ const werte = [
   .intro {
     position: relative;
     overflow-x: clip;
-    padding-block: clamp(4rem, 6.5vw, 5.5rem) clamp(4.5rem, 7.5vw, 6.5rem);
+    padding-block: clamp(3.4rem, 5.4vw, 4.6rem) clamp(3.8rem, 6.2vw, 5.4rem);
   }
   .intro-grid {
     display: grid;
@@ -489,7 +476,7 @@ const werte = [
   .intro-p {
     margin: 0;
     max-width: 34rem;
-    font-size: clamp(1.1rem, 1.3vw, 1.25rem);
+    font-size: clamp(1.16rem, 1.36vw, 1.32rem);
     line-height: 1.65;
     font-weight: 300;
     color: var(--ink);
@@ -596,8 +583,11 @@ const werte = [
   .figs-side {
     grid-column: 7 / 13;
     display: grid;
-    gap: clamp(1.4rem, 2.2vw, 1.9rem);
+    gap: clamp(1.6rem, 2.6vw, 2.2rem);
     justify-items: start;
+  }
+  .figs-side .block-btn {
+    margin-top: 0.4rem;
   }
   .figs-h {
     font-family: var(--font-head);
@@ -615,7 +605,7 @@ const werte = [
   .figs-p {
     margin: 0;
     max-width: 34rem;
-    font-size: 1.0625rem;
+    font-size: 1.125rem;
     font-weight: 300;
     line-height: 1.65;
     color: var(--ink-2);
@@ -624,41 +614,25 @@ const werte = [
   .figs-steps {
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: clamp(1rem, 2vw, 2rem);
-    margin-top: 0.4rem;
+    grid-template-columns: repeat(3, auto);
+    justify-content: start;
+    gap: clamp(2rem, 4.5vw, 4.5rem);
+    margin-top: 0.6rem;
   }
   .fg {
-    position: relative;
     display: grid;
-    gap: 0.3rem;
+    gap: 0.1rem;
     align-content: start;
-    padding-top: 0.9rem;
   }
   .fg[data-follow] {
     opacity: 1;
     transform: none;
   }
-  .fg::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 1.5px;
-    background: var(--blue);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.9s var(--ease) 0.2s;
-  }
-  .fg.is-in::before {
-    transform: scaleX(1);
-  }
   .fg strong {
     font-family: var(--font-head);
     font-stretch: 68%;
     font-weight: 800;
-    font-size: clamp(2.8rem, 4.6vw, 4.8rem);
+    font-size: clamp(3rem, 5vw, 5.2rem);
     line-height: 1.08;
     color: var(--blue);
     font-variant-numeric: tabular-nums;
@@ -677,88 +651,34 @@ const werte = [
     line-height: 1.4;
     color: var(--ink);
   }
-  /* drei Werte, schlicht: Piktogramm, Wort, ein Satz */
-  .values-list {
+  /* drei Werte als eine ruhige Zeile, jeweils mit Raute */
+  .vals {
     list-style: none;
-    width: 100%;
     margin: 0;
     padding: 0;
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: clamp(1rem, 2vw, 2rem);
-  }
-  .value {
-    display: grid;
-    gap: 0.7rem;
-    align-content: start;
-    justify-items: start;
-  }
-  .value[data-follow] {
-    opacity: 1;
-    transform: none;
-  }
-  .value :global(.value-icon) {
-    color: var(--blue);
-    --vicon-bg: var(--stone-50);
-    height: 44px;
     display: flex;
-    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 0.6rem clamp(1.4rem, 2.6vw, 2.4rem);
   }
-  .value :global(.vicon-art) {
-    width: 42px;
-    height: 42px;
-  }
-  .value :global(.vicon-hammer) {
-    width: 38px;
-    height: 38px;
-    clip-path: inset(0 0 0 100%);
-    transition: clip-path 1s ease 0.2s;
-  }
-  .value.is-in :global(.vicon-hammer) {
-    clip-path: inset(0 0 0 0);
-  }
-  .value :global(.vicon-art path) {
-    stroke-dasharray: 1;
-    stroke-dashoffset: 1;
-    transition: stroke-dashoffset 1.2s ease 0.2s;
-  }
-  .value.is-in :global(.vicon-art path) {
-    stroke-dashoffset: 0;
-  }
-  .value h3 {
+  .vals li {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
     font-family: var(--font-head);
     font-stretch: 68%;
     font-weight: 800;
-    text-transform: uppercase;
-    font-size: clamp(1.25rem, 1.6vw, 1.6rem);
+    font-size: clamp(1.2rem, 1.5vw, 1.45rem);
+    letter-spacing: 0.02em;
     line-height: 1;
+    text-transform: uppercase;
     color: var(--blue);
-    margin: 0 0 0.35rem;
   }
-  .value p {
-    margin: 0;
-    font-size: 0.98rem;
-    font-weight: 300;
-    line-height: 1.45;
-    color: var(--ink-2);
-  }
-  .value-text {
-    opacity: 0;
-    transition: opacity 0.6s ease 0.4s;
-  }
-  .value.is-in .value-text {
-    opacity: 1;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .value-text {
-      opacity: 1;
-    }
-    .value :global(.vicon-art path) {
-      stroke-dashoffset: 0;
-    }
-    .value :global(.vicon-hammer) {
-      clip-path: none;
-    }
+  .vals li::before {
+    content: '';
+    width: 0.55rem;
+    height: 0.55rem;
+    background: var(--blue);
+    transform: rotate(45deg);
   }
   /* Klapptafel-Effekt in der Quirling-Schrift: ohne Täfelchen, nur die Ziffern klappen um */
   .flap {
@@ -829,6 +749,7 @@ const werte = [
   /* Übersicht: abgegrenzte blaue Fläche, Oberkante als angedeutete Raute */
   .overview {
     position: relative;
+    z-index: 3;
     background: #e6e9f6;
     padding-block: clamp(6rem, 10vw, 8.5rem) clamp(5.5rem, 8vw, 7rem);
     /* Ober- und Unterkante mit Knick wie die angedeutete Raute */
@@ -852,7 +773,7 @@ const werte = [
   }
   .ov-p {
     margin: 0;
-    font-size: clamp(1.1rem, 1.3vw, 1.25rem);
+    font-size: clamp(1.16rem, 1.36vw, 1.32rem);
     font-weight: 300;
     line-height: 1.65;
     color: var(--ink);
@@ -860,7 +781,9 @@ const werte = [
   .services {
     position: relative;
     overflow-x: clip;
-    padding-block: clamp(3rem, 5vw, 4.5rem);
+    /* schiebt sich unter die geknickte Unterkante der Übersicht: das erste Bild schließt dort bündig an */
+    margin-top: calc(-1 * var(--ov-cut));
+    --band: clamp(1.6rem, 3.2vw, 3rem);
   }
   .svc-head {
     position: relative;
@@ -920,7 +843,7 @@ const werte = [
   }
   /* Raute: dreht sich beim Erscheinen ein */
   .ov-col::before,
-  .svc .svc-more::before {
+  .svc-more::before {
     content: '';
     flex: none;
     width: 0.62rem;
@@ -929,13 +852,15 @@ const werte = [
     transform: rotate(45deg);
     transition: transform 0.8s var(--ease) 0.25s;
   }
-  .ov-col[data-follow]:not(.is-in)::before,
-  .svc .svc-more[data-follow]:not(.is-in)::before {
+  .ov-col[data-follow]:not(.is-in)::before {
     transform: rotate(-135deg) scale(0);
   }
   .ov-col:hover::before,
-  .svc .svc-more:hover::before {
+  .svc-more:hover::before {
     transform: rotate(135deg);
+  }
+  .show .svc-more::before {
+    display: none;
   }
   .ov-t {
     font-family: var(--font-head);
@@ -952,56 +877,223 @@ const werte = [
     color: var(--navy);
   }
 
-  /* Leistungen einzeln: Bilder abwechselnd links / rechts, bis an den Bildschirmrand */
+  /* Leistungen einzeln: drei Bänder ohne Abstand. Die Bilder füllen die volle Bandhöhe und schließen
+     oben und unten bündig an; das mittlere Band liegt hellblau mit schrägen Kanten darüber. */
   .svc {
-    padding-block: clamp(1.2rem, 2vw, 1.8rem);
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: clamp(26rem, 36vw, 34rem);
+  }
+  .svc-1 {
+    padding-block: calc(var(--ov-cut) + 3.5rem) calc(var(--band) + 3.5rem);
+  }
+  .svc-2 {
+    z-index: 2;
+    margin-block: calc(-1 * var(--band));
+    padding-block: calc(var(--band) + 3.5rem);
+    background: #e6e9f6;
+    clip-path: polygon(0 var(--band), 100% 0, 100% 100%, 0 calc(100% - var(--band)));
+  }
+  .svc-3 {
+    padding-block: calc(var(--band) + 3.5rem) 3.5rem;
   }
   .svc-grid {
+    width: 100%;
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
     column-gap: clamp(2.5rem, 5vw, 5rem);
-    align-items: center;
-  }
-  /* Bilder rechts, links, rechts; jeweils randlos bis an den Bildschirmrand */
-  .svc-1 .svc-visual,
-  .svc-3 .svc-visual {
-    grid-column: 8 / 13;
-    grid-row: 1;
-    margin-right: calc(-1 * var(--content-left));
   }
   .svc-1 .svc-text,
   .svc-3 .svc-text {
-    grid-column: 1 / 8;
-    grid-row: 1;
-  }
-  .svc-2 .svc-visual {
-    grid-column: 1 / 6;
-    margin-left: calc(-1 * var(--content-left));
+    grid-column: 1 / 7;
   }
   .svc-2 .svc-text {
-    grid-column: 6 / 13;
+    grid-column: 7 / 13;
   }
+  /* Bilder rechts, links, rechts: volle Bandhöhe, bis an den Bildschirmrand */
   .svc-visual {
-    position: relative;
-    z-index: 2;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 42%;
     display: block;
   }
-
+  .svc-2 .svc-visual {
+    right: auto;
+    left: 0;
+  }
+  .svc-visual[data-follow] {
+    opacity: 1;
+    transform: none;
+  }
   .svc-img {
-    position: relative;
-    aspect-ratio: 4 / 3;
-    /* Bild rechts: Innenkante links mit Knick, Unterkante steigt leicht an */
-    clip-path: polygon(14% 0, 100% 0, 100% 93%, 8% 100%, 0 58%);
+    position: absolute;
+    inset: 0;
+    /* Bild rechts: Innenkante links mit Knick */
+    clip-path: polygon(14% 0, 100% 0, 100% 100%, 8% 100%, 0 56%);
   }
   .svc-2 .svc-img {
     /* Bild links: gespiegelt */
-    clip-path: polygon(0 0, 86% 0, 100% 58%, 92% 100%, 0 93%);
+    clip-path: polygon(0 0, 86% 0, 100% 56%, 92% 100%, 0 100%);
   }
   .svc-img :global(img) {
-    transition: transform 1.2s var(--ease);
+    height: 116%;
+    transform: scale(1.14);
+    transition: transform 1.6s var(--ease);
   }
-  .svc-visual:hover .svc-img :global(img) {
-    transform: scale(1.03);
+  .svc-visual.is-in .svc-img :global(img) {
+    transform: none;
+  }
+  /* Schleier in Seitenfarbe gleitet beim Erscheinen von der Knickkante her weg */
+  .svc-img::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: #9aa6ee;
+    transform-origin: right;
+    transition: transform 1.1s cubic-bezier(0.7, 0, 0.2, 1);
+  }
+  .svc-2 .svc-img::after {
+    transform-origin: left;
+  }
+  .svc-visual.is-in .svc-img::after {
+    transform: scaleX(0);
+  }
+  /* Text baut sich gestaffelt auf */
+  .svc-text[data-follow] {
+    opacity: 1;
+    transform: none;
+  }
+  .svc-title {
+    overflow: hidden;
+    padding-bottom: 0.08em;
+  }
+  .svc-title > span {
+    display: block;
+    transform: translateY(108%);
+    transition: transform 0.9s var(--ease);
+  }
+  .svc-text.is-in .svc-title > span {
+    transform: none;
+  }
+  .svc-text > p,
+  .svc-facts li,
+  .svc .svc-more {
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+      opacity 0.7s ease,
+      transform 0.8s var(--ease);
+  }
+  .svc-text.is-in > p,
+  .svc-text.is-in .svc-facts li,
+  .svc-text.is-in .svc-more {
+    opacity: 1;
+    transform: none;
+  }
+  .svc-text.is-in > p {
+    transition-delay: 0.18s;
+  }
+  .svc-text.is-in .svc-facts li:nth-child(1) {
+    transition-delay: 0.36s;
+  }
+  .svc-text.is-in .svc-facts li:nth-child(2) {
+    transition-delay: 0.5s;
+  }
+  .svc-text.is-in .svc-facts li:nth-child(3) {
+    transition-delay: 0.64s;
+  }
+  .svc-text.is-in .svc-more {
+    transition-delay: 0.86s;
+  }
+  /* Icons: Striche zeichnen sich, sobald das Stichwort erscheint */
+  .svc-facts :global(.svc-ico path:not(.picto-accent)) {
+    stroke-dasharray: 220;
+    stroke-dashoffset: 220;
+    transition: stroke-dashoffset 1.4s ease;
+  }
+  .svc-facts :global(.picto-accent) {
+    transform-box: fill-box;
+    transform-origin: center;
+    transform: scale(0) rotate(-90deg);
+    transition: transform 0.6s var(--ease);
+  }
+  .svc-text.is-in .svc-facts :global(.svc-ico path:not(.picto-accent)) {
+    stroke-dashoffset: 0;
+  }
+  .svc-text.is-in .svc-facts :global(.picto-accent) {
+    transform: none;
+  }
+  .svc-text.is-in .svc-facts li:nth-child(1) :global(path) {
+    transition-delay: 0.45s;
+  }
+  .svc-text.is-in .svc-facts li:nth-child(2) :global(path) {
+    transition-delay: 0.6s;
+  }
+  .svc-text.is-in .svc-facts li:nth-child(3) :global(path) {
+    transition-delay: 0.75s;
+  }
+  .svc-text.is-in .svc-facts :global(.picto-accent) {
+    transition-delay: 1.3s !important;
+  }
+  /* Raute vor dem Link dreht sich als Letztes ein */
+  .svc .svc-more::before {
+    transform: rotate(-135deg) scale(0);
+    transition: transform 0.8s var(--ease) 1.05s;
+  }
+  .svc-text.is-in .svc-more::before {
+    transform: rotate(45deg);
+  }
+  .svc-text.is-in .svc-more:hover::before {
+    transform: rotate(135deg);
+    transition-delay: 0s;
+  }
+  /* beim Überfahren läuft eine feine Linie unter dem Text durch */
+  .svc-more > span {
+    position: relative;
+    padding-bottom: 0.3em;
+  }
+  .svc-more > span::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.45s var(--ease);
+  }
+  .svc-more:hover > span::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .svc-title > span,
+    .svc-text > p,
+    .svc-facts li,
+    .svc .svc-more,
+    .svc-img :global(img),
+    .svc .svc-more::before {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+    .svc .svc-more::before {
+      transform: rotate(45deg);
+    }
+    .svc-img::after {
+      display: none;
+    }
+    .svc-facts :global(.svc-ico path:not(.picto-accent)) {
+      stroke-dashoffset: 0;
+    }
+    .svc-facts :global(.picto-accent) {
+      transform: none;
+    }
   }
   .svc-title {
     font-family: var(--font-head);
@@ -1043,44 +1135,34 @@ const werte = [
   .svc-more:hover {
     color: var(--navy);
   }
-  .svc-more[data-follow] {
-    transform: translateX(14px);
-    transition:
-      opacity 0.5s ease 0.35s,
-      transform 0.6s var(--ease) 0.35s;
-  }
-  .svc-more[data-follow].is-in {
-    transform: none;
-  }
   .svc-text p {
     color: var(--ink-2);
     max-width: 52ch;
-    margin: 0 0 1.4rem;
+    margin: 0 0 1.6rem;
   }
   .svc-facts {
     list-style: none;
-    margin: 0 0 1.6rem;
+    margin: 0 0 2rem;
     padding: 0;
     display: flex;
     flex-wrap: wrap;
-    gap: 0.9rem 2rem;
-    max-width: 36rem;
+    gap: 1rem 1.5rem;
   }
   /* Icon neben dem Text, Text zurückhaltend und kurz */
   .svc-facts li {
     display: grid;
-    grid-template-columns: 30px auto;
-    gap: 0.6rem;
+    grid-template-columns: 36px auto;
+    gap: 0.65rem;
     white-space: nowrap;
     align-items: center;
-    font-size: 0.95rem;
+    font-size: 1.06rem;
     font-weight: 300;
     line-height: 1.4;
     color: var(--ink-2);
   }
   .svc-facts :global(.svc-ico) {
-    width: 30px;
-    height: 30px;
+    width: 36px;
+    height: 36px;
     color: var(--blue);
   }
 
@@ -1094,7 +1176,7 @@ const werte = [
   /* Desktop: die Bühne bleibt per CSS stehen (kein Einrasten durch Pinning), die Höhe gibt die Scrollstrecke vor */
   @media (min-width: 901px) {
     .show {
-      height: calc(100vh + 2 * 65vh);
+      height: calc(100vh + 2 * 50vh);
     }
     .show-in {
       position: sticky;
@@ -1129,19 +1211,42 @@ const werte = [
   .show-items {
     display: grid;
     margin-bottom: 2.5rem;
+    perspective: 900px;
   }
+  /* Titel klappen um wie die Blätter einer Anzeigetafel: das alte fällt nach unten weg, das neue klappt von oben herein */
   .show-item {
     grid-area: 1 / 1;
     opacity: 0;
     visibility: hidden;
+    transform: rotateX(-92deg);
+    transform-origin: 50% 0;
+    backface-visibility: hidden;
     transition:
-      opacity 0.5s ease,
-      visibility 0s 0.5s;
+      transform 0.55s cubic-bezier(0.3, 1.3, 0.5, 1) 0.22s,
+      opacity 0.2s ease 0.22s,
+      visibility 0s 0.22s;
   }
   .show-item.is-active {
     opacity: 1;
     visibility: visible;
-    transition-delay: 0s;
+    transform: none;
+  }
+  .show-item.is-out {
+    opacity: 0;
+    visibility: hidden;
+    transform: rotateX(92deg);
+    transform-origin: 50% 100%;
+    transition:
+      transform 0.32s cubic-bezier(0.6, 0, 0.9, 0.4),
+      opacity 0.12s ease 0.22s,
+      visibility 0s 0.34s;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .show-item,
+    .show-item.is-out {
+      transform: none;
+      transition: opacity 0.3s ease;
+    }
   }
   .show-title {
     font-stretch: 125%;
@@ -1205,13 +1310,13 @@ const werte = [
     top: 0;
     transform: translateY(-50%);
   }
-  /* blaue Fläche mit schrägen Seiten wie die Hero-Schräge, Knopf in Hellblau integriert */
+  /* schmale, gestapelte blaue Fläche mit schrägen Seiten: Zeile, Titel mit Hammer, Knopf */
   .ja {
     position: relative;
-    display: flex;
-    align-items: center;
-    gap: clamp(1rem, 1.8vw, 1.6rem);
-    padding: clamp(0.8rem, 1.3vw, 1.05rem) clamp(1.8rem, 2.6vw, 2.3rem) clamp(0.8rem, 1.3vw, 1.05rem) clamp(2rem, 2.9vw, 2.6rem);
+    display: grid;
+    justify-items: start;
+    gap: 0.55rem;
+    padding: 1.05rem 2rem 1.15rem 2.1rem;
     color: #fff;
     text-decoration: none;
     filter: drop-shadow(0 10px 16px rgb(18 23 53 / 0.3));
@@ -1221,46 +1326,45 @@ const werte = [
     position: absolute;
     inset: 0;
     background: var(--blue);
-    clip-path: polygon(clamp(1.4rem, 2.2vw, 2rem) 0, 100% 0, calc(100% - clamp(1.4rem, 2.2vw, 2rem)) 100%, 0 100%);
+    clip-path: polygon(1.1rem 0, 100% 0, calc(100% - 1.1rem) 100%, 0 100%);
     z-index: -1;
-  }
-  .ja :global(.ja-hammer) {
-    flex: none;
-    width: clamp(1.9rem, 2.6vw, 2.4rem);
-    height: clamp(1.9rem, 2.6vw, 2.4rem);
-  }
-  .ja-txt {
-    display: grid;
-    gap: 0.35rem;
   }
   .ja-l {
     font-family: var(--font-mono);
-    font-size: clamp(0.7rem, 0.9vw, 0.82rem);
+    font-size: 0.68rem;
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: #c9d0f5;
   }
   .ja-h {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     font-family: var(--font-head);
     font-stretch: 68%;
     font-weight: 800;
     text-transform: uppercase;
-    font-size: clamp(1.5rem, 2.3vw, 2.2rem);
+    font-size: clamp(1.45rem, 1.9vw, 1.85rem);
     line-height: 0.9;
     white-space: nowrap;
+  }
+  .ja :global(.ja-hammer) {
+    flex: none;
+    width: 1.15em;
+    height: 1.15em;
   }
   .ja-btn {
     display: inline-flex;
     align-items: center;
-    gap: 0.6rem;
-    margin-left: clamp(0.4rem, 1.2vw, 1.2rem);
-    padding: 0.6rem 0.9rem 0.55rem;
+    gap: 0.5rem;
+    margin-top: 0.3rem;
+    padding: 0.5rem 0.8rem 0.45rem;
     background: #9aa6ee;
     color: var(--navy);
     font-family: var(--font-head);
     font-stretch: 68%;
     font-weight: 800;
-    font-size: clamp(1rem, 1.3vw, 1.2rem);
+    font-size: 0.98rem;
     letter-spacing: 0.03em;
     text-transform: uppercase;
     white-space: nowrap;
@@ -1283,10 +1387,13 @@ const werte = [
       opacity 0.6s ease,
       transform 0.8s var(--ease);
   }
+  .ja[data-follow].is-in {
+    transform: none;
+  }
   /* ======================= FILM ======================= */
   .film {
     position: relative;
-    height: 135vh;
+    height: 160vh;
     background: #e6e9f6;
   }
   .film-sticky {
@@ -1389,7 +1496,7 @@ const werte = [
   :global(html.typo-b) .intro-p,
   :global(html.typo-b) .svc-text p,
   :global(html.typo-b) .show-desc {
-    font-size: 1.0625rem;
+    font-size: 1.125rem;
     font-weight: 300;
     line-height: 1.7;
   }
@@ -1418,8 +1525,7 @@ const werte = [
   :global(html.typo-c) .svc-head,
   :global(html.typo-c) .svc-title,
   :global(html.typo-c) .show-h,
-  :global(html.typo-c) .show-title,
-  :global(html.typo-c) .value h3 {
+  :global(html.typo-c) .show-title {
     font-stretch: 68%;
     letter-spacing: -0.005em;
   }
@@ -1430,8 +1536,10 @@ const werte = [
   }
   :global(html.typo-c) .intro-h {
     font-weight: 800;
-    font-size: clamp(3.6rem, 8.6vw, 9.2rem);
+    /* immer zwei Zeilen: die Größe folgt der Spaltenbreite, jede Zeile bleibt zusammen */
+    font-size: clamp(3.2rem, 7.8vw, 8.2rem);
     line-height: 0.9;
+    white-space: nowrap;
   }
   :global(html.typo-c) .svc-head {
     font-weight: 800;
@@ -1505,14 +1613,8 @@ const werte = [
       left: var(--gutter);
       bottom: 2rem;
     }
-    .values-list {
-      grid-template-columns: minmax(0, 1fr);
-      gap: 1.4rem;
-    }
-    .value {
-      grid-template-columns: 44px minmax(0, 1fr);
-      align-items: center;
-      gap: 1rem;
+    .figs-steps {
+      gap: 1.6rem;
     }
     .hero-sub {
       max-width: 19rem;
@@ -1526,17 +1628,6 @@ const werte = [
     .join-pos {
       right: var(--gutter);
       transform: translateY(-92%);
-    }
-    .ja {
-      flex-wrap: wrap;
-      padding: 1.1rem 2rem 1.1rem 2.2rem;
-      gap: 0.8rem 1rem;
-    }
-    .ja-h {
-      font-size: clamp(1.7rem, 8vw, 2.4rem);
-    }
-    .ja-btn {
-      margin-left: 0;
     }
     .intro-visual {
       position: relative;
@@ -1557,35 +1648,36 @@ const werte = [
     .ov {
       gap: 1.2rem;
     }
-    .svc-grid {
-      grid-template-columns: 1fr;
+    /* Leistungen: drei Blöcke ohne Abstand, Bild oben, Text darunter, Mittelteil hellblau */
+    .svc,
+    .svc-1,
+    .svc-2,
+    .svc-3 {
+      display: block;
+      min-height: 0;
+      padding-block: 0 calc(var(--band) + 2.6rem);
     }
-    .svc .svc-visual,
-    .svc .svc-text {
-      grid-column: auto;
-      grid-row: auto;
+    .svc-3 {
+      padding-bottom: 3.2rem;
     }
     .svc .svc-visual {
-      margin-inline: calc(-1 * var(--gutter));
-    }
-    .svc .svc-img {
-      clip-path: none;
-    }
-    .svc-visual {
-      margin-bottom: 1.8rem;
-    }
-    .svc .svc-img {
-      aspect-ratio: 16 / 9;
-    }
-    .svc {
-      padding-block: 1.6rem;
-    }
-    .svc-facts {
-      flex-direction: column;
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 10;
     }
     .svc .svc-img,
     .svc-2 .svc-img {
-      clip-path: polygon(0 6%, 100% 0, 100% 100%, 0 100%);
+      clip-path: none;
+    }
+    .svc-grid {
+      grid-template-columns: minmax(0, 1fr);
+      padding-top: 2rem;
+    }
+    .svc .svc-text {
+      grid-column: 1 / -1;
+    }
+    .svc-facts {
+      flex-direction: column;
     }
 
     .svc-grid > *,
@@ -1646,11 +1738,8 @@ const werte = [
       white-space: normal;
     }
 
-    .value-text {
-      min-width: 0;
-    }
     .film {
-      height: 140svh;
+      height: 155svh;
     }
     .film-sticky {
       height: 100svh;
@@ -1698,11 +1787,18 @@ const werte = [
     if (!show) return;
     const imgs = Array.from(show.querySelectorAll<HTMLElement>('[data-show-img]'));
     const items = Array.from(show.querySelectorAll<HTMLElement>('[data-show-item]'));
-    const setActive = (i: number) =>
+    let active = 0;
+    const setActive = (i: number) => {
+      if (i === active) return;
+      const prev = items[active];
+      active = i;
       items.forEach((it, j) => {
         it.classList.toggle('is-active', j === i);
-        it.querySelector('a')?.setAttribute('tabindex', j === i ? '0' : '-1');
+        it.classList.toggle('is-out', it === prev);
       });
+      // nach dem Wegklappen wieder in die Ausgangslage, damit das Blatt beim nächsten Mal von oben kommt
+      window.setTimeout(() => prev?.classList.remove('is-out'), 380);
+    };
     imgs.forEach((img, i) => i > 0 && gsap.set(img, { clipPath: 'inset(100% 0% 0% 0%)' }));
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -1712,7 +1808,8 @@ const werte = [
         scrub: 0.5,
         invalidateOnRefresh: true,
         onUpdate: (self) => {
-          setActive(Math.min(imgs.length - 1, Math.round(self.progress * (imgs.length - 1))));
+          // der Titel wechselt schon, wenn das nächste Bild etwa ein Viertel aufgedeckt ist
+          setActive(Math.min(imgs.length - 1, Math.floor(self.progress * (imgs.length - 1) + 0.75)));
         },
       },
     });
@@ -1772,19 +1869,20 @@ const werte = [
       const ui = document.querySelector('[data-film-ui]');
       if (!film || !frame || !logo || !q || !raute) return;
       // beginnt schon beim Hereinscrollen, damit sich das Logo ohne Halt auflöst
-      const st = { trigger: film, start: 'top 75%', end: 'bottom bottom', scrub: 0.6 };
+      // startet erst, wenn das Logo fast mittig steht: man sieht es in Ruhe und dann wegfliegen
+      const st = { trigger: film, start: 'top 22%', end: 'bottom bottom', scrub: 0.6 };
       const state = { f: 1 };
       const apply = () => (frame.style.clipPath = filmClip(frame, logo, state.f));
       apply();
       const tl = gsap.timeline({ scrollTrigger: { ...st, onRefresh: apply } });
       // 1. Q und Hammer lösen sich, die graue Fläche gibt das Video frei
-      tl.to(q, { opacity: 0, scale: 1.35, duration: 0.22, ease: 'power1.in' }, 0.06);
-      tl.to(raute, { opacity: 0, duration: 0.18, ease: 'none' }, 0.12);
+      tl.to(q, { opacity: 0, scale: 1.6, duration: 0.26, ease: 'power1.in' }, 0.16);
+      tl.to(raute, { opacity: 0, duration: 0.18, ease: 'none' }, 0.3);
       // 2. die Raute öffnet sich ohne Halt, bis das ganze Video zu sehen ist
-      tl.to(state, { f: 11, duration: 0.62, ease: 'power1.inOut', onUpdate: apply }, 0.24);
+      tl.to(state, { f: 11, duration: 0.52, ease: 'power1.inOut', onUpdate: apply }, 0.4);
       if (ui) {
         gsap.set(ui, { autoAlpha: 0, y: 30 });
-        tl.to(ui, { autoAlpha: 1, y: 0, duration: 0.14 }, 0.72);
+        tl.to(ui, { autoAlpha: 1, y: 0, duration: 0.12 }, 0.84);
       }
       window.addEventListener('resize', apply);
       return () => {

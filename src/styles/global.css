@@ -482,9 +482,9 @@ html.typo-b {
 }
 html.typo-b body {
   /* gut lesbar und trotzdem filigran: 18 px in der feinen Schnittstärke (IBM Plex Light) */
-  font-size: 1.125rem;
+  font-size: 1.1875rem;
   font-weight: 300;
-  line-height: 1.72;
+  line-height: 1.7;
   letter-spacing: 0.005em;
 }
 html.typo-b .h-display,
@@ -570,7 +570,7 @@ html.typo-c .lt {
   margin: 0;
 }
 .small {
-  font-size: 1.0625rem;
+  font-size: 1.125rem;
   font-weight: 300;
   line-height: 1.7;
   color: var(--ink-2);
