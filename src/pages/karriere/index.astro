@@ -21,10 +21,11 @@ const vorteile = [
 // Ein Teil ist entweder Fließtext (d) oder eine Liste mit Stichpunkten (punkte).
 type Teil = { t: string; d?: string; punkte?: string[] };
 const adresse = `${firma.strasse}, ${firma.plz} ${firma.ort}`;
-const stellen: { titel: string; meta: string; kurz: string; teile: Teil[] }[] = [
+const stellen: { titel: string; ort: string; art: string[]; kurz: string; teile: Teil[] }[] = [
   {
     titel: 'Beton- und Stahlbetonbauer (m/w/d)',
-    meta: 'Hamburg und Umgebung · Vollzeit · unbefristet',
+    ort: 'Hamburg und Umgebung',
+    art: ['Vollzeit', 'Unbefristet'],
     kurz: 'Schalen, bewehren, betonieren: Rohbau mit einem festen, eingespielten Team.',
     teile: [
       {
@@ -72,7 +73,8 @@ const stellen: { titel: string; meta: string; kurz: string; teile: Teil[] }[] = 
   },
   {
     titel: 'Initiativ\u00adbewerbung',
-    meta: 'Baustelle oder Büro',
+    ort: 'Hamburg',
+    art: ['Baustelle oder Büro'],
     kurz: 'Dein Beruf ist nicht dabei? Bewirb dich trotzdem.',
     teile: [
       {
@@ -136,15 +138,28 @@ const mailFor = (titel: string) => `mailto:${firma.email}?subject=${encodeURICom
       </div>
       <div class="jobs">
         {
-          stellen.map((j, i) => (
-            <details class="job" open={i === 0}>
+          stellen.map((j) => (
+            <details class="job">
               <summary>
-                <span class="job-top">
-                  <span class="job-t" set:html={j.titel} />
-                  <span class="job-m">{j.meta}</span>
-                </span>
+                <span class="job-t" set:html={j.titel} />
                 <span class="job-k">{j.kurz}</span>
-                <span class="job-i" aria-hidden="true"><Icon name="plus" /></span>
+                <span class="job-tags">
+                  <span class="job-tag">
+                    <Icon name="pin" />
+                    {j.ort}
+                  </span>
+                  {j.art.map((a) => (
+                    <span class="job-tag">
+                      <Icon name="clock" />
+                      {a}
+                    </span>
+                  ))}
+                </span>
+                <span class="job-i" aria-hidden="true">
+                  <span class="job-i-l job-i-more">Details ansehen</span>
+                  <span class="job-i-l job-i-less">Schließen</span>
+                  <Icon name="plus" />
+                </span>
               </summary>
               <div class="job-body">
                 <div class="job-cols">
@@ -261,8 +276,8 @@ const mailFor = (titel: string) => `mailto:${firma.email}?subject=${encodeURICom
     cursor: pointer;
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
-    gap: 0.5rem 1.5rem;
-    align-items: center;
+    gap: 0.45rem 2rem;
+    align-items: start;
     padding: clamp(1.3rem, 2.4vw, 2rem) clamp(1.3rem, 2.4vw, 2rem);
     transition: background 0.25s ease;
   }
@@ -271,12 +286,6 @@ const mailFor = (titel: string) => `mailto:${firma.email}?subject=${encodeURICom
   }
   .job summary:hover {
     background: var(--stone-50);
-  }
-  .job-top {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 0.4rem 1.4rem;
   }
   .job-t {
     font-family: var(--font-head);
@@ -287,44 +296,76 @@ const mailFor = (titel: string) => `mailto:${firma.email}?subject=${encodeURICom
     line-height: 0.97;
     color: var(--blue);
   }
-  .job-m {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--ink-3);
-  }
   .job-k {
-    grid-row: 2;
     font-size: 1.125rem;
     font-weight: 300;
     color: var(--ink-2);
   }
+  /* Standort und Anstellungsart als klare Schilder */
+  .job-tags {
+    grid-column: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.4rem;
+  }
+  .job-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.45rem 0.75rem 0.4rem;
+    background: #e6e9f6;
+    font-size: 0.95rem;
+    font-weight: 400;
+    line-height: 1;
+    color: var(--navy);
+  }
+  .job-tag :global(svg) {
+    width: 1rem;
+    height: 1rem;
+    color: var(--blue);
+  }
+  /* deutlicher Knopf zum Aufklappen */
   .job-i {
-    grid-row: 1 / 3;
     grid-column: 2;
-    width: 46px;
-    height: 46px;
-    display: grid;
-    place-items: center;
+    grid-row: 1 / 4;
+    align-self: center;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.85rem 1.1rem 0.8rem;
     border: 1.5px solid var(--blue);
     color: var(--blue);
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    font-size: 1.1rem;
+    letter-spacing: 0.02em;
+    line-height: 1;
+    text-transform: uppercase;
+    white-space: nowrap;
     transition:
       background 0.3s ease,
-      color 0.3s ease,
-      transform 0.4s var(--ease);
+      color 0.3s ease;
   }
   .job-i :global(svg) {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
+    transition: transform 0.4s var(--ease);
+  }
+  .job-i-less {
+    display: none;
+  }
+  .job[open] .job-i-more {
+    display: none;
+  }
+  .job[open] .job-i-less {
+    display: inline;
   }
   .job summary:hover .job-i,
   .job[open] .job-i {
     background: var(--blue);
     color: #fff;
-  }
-  .job-i :global(svg) {
-    transition: transform 0.4s var(--ease);
   }
   .job[open] .job-i :global(svg) {
     transform: rotate(45deg);
@@ -404,9 +445,14 @@ const mailFor = (titel: string) => `mailto:${firma.email}?subject=${encodeURICom
     .job-part.is-wide .job-list {
       grid-template-columns: minmax(0, 1fr);
     }
+    .job summary {
+      grid-template-columns: minmax(0, 1fr);
+    }
     .job-i {
-      width: 40px;
-      height: 40px;
+      grid-column: 1;
+      grid-row: auto;
+      justify-self: start;
+      margin-top: 0.6rem;
     }
   }
 </style>

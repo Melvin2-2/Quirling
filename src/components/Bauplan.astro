@@ -3,8 +3,7 @@
  * „Eine Basis, auf die Sie bauen können.“ als Bauzeichnung, die beim Scrollen entsteht:
  * Baugrube und Fundament, dann richtet sich ein Turmdrehkran auf und hebt Decke um Decke ein.
  * Jede Etage trägt eine Zahl. Zum Schluss Richtfest mit der Quirling-Raute auf dem Dach.
- * Die Zeichnung blendet mit dem Scrollen ein; der Bau startet, wenn sie zur Hälfte im Bild ist,
- * und ist nach sechs Sekunden fertig.
+ * Der Bau startet, wenn die Zeichnung zur Hälfte im Bild ist, und ist nach sechs Sekunden fertig.
  */
 import { firma, JAHRE_ERFAHRUNG, GRUENDUNGSJAHR } from '~/data/site';
 
@@ -239,7 +238,9 @@ const floorBottom = (k: number) => 430 - k * FH; // Unterkante Geschoss k
     const floors = q<SVGGElement>('[data-bp-floor]');
 
     // Kranhaken folgt einem Punkt (x = Katze, y = Oberkante der hängenden Decke)
-    const hoist = { x: 260, y: 100 };
+    // Ruheposition des Hakens: knapp über der Raute auf dem Dach
+    const REST = 98;
+    const hoist = { x: 260, y: REST };
     let active: SVGGElement | null = null;
     const placeHoist = () => {
       const hy = hoist.y - 34;
@@ -271,7 +272,8 @@ const floorBottom = (k: number) => 430 - k * FH; // Unterkante Geschoss k
       .to(one('[data-bp-found-txt]'), { autoAlpha: 1, duration: 0.4 }, 0.9)
       .call(() => placeHoist(), [], 1.2);
 
-    // 2. Geschoss für Geschoss: Stützen wachsen, Decke senkt sich senkrecht ein, Zahl zählt hoch
+    // 2. Geschoss für Geschoss: Stützen wachsen, Decke hängt am Haken und senkt sich ein,
+    //    danach fährt der Haken ruhig zurück in die Ruheposition
     floors.forEach((f, k) => {
       const t = 1.3 + k * 1.5;
       const slab = slabs[k]!;
@@ -279,12 +281,13 @@ const floorBottom = (k: number) => 430 - k * FH; // Unterkante Geschoss k
       tl.to(f.querySelectorAll('[data-bp-cols] rect'), { scaleY: 1, duration: 0.5, ease: 'power3.out' }, t)
         .call(() => {
           active = slab;
-          hoist.y = 100;
           placeHoist();
         }, [], t + 0.3)
         .to(slab, { autoAlpha: 1, duration: 0.15 }, t + 0.3)
         .to(hoist, { y: target, duration: 0.7, ease: 'power2.inOut', onUpdate: placeHoist }, t + 0.35)
+        .call(() => (active = null), [], t + 1.05)
         .to(slab.querySelectorAll('.bp-sling'), { autoAlpha: 0, duration: 0.15 }, t + 1.05)
+        .to(hoist, { y: REST, duration: 0.4, ease: 'power2.inOut', onUpdate: placeHoist }, t + 1.08)
         .to(f.querySelector('[data-bp-txt]'), { autoAlpha: 1, duration: 0.3 }, t + 1);
       const n = f.querySelector<SVGTSpanElement>('[data-bp-count]');
       if (n) {
@@ -294,24 +297,19 @@ const floorBottom = (k: number) => 430 - k * FH; // Unterkante Geschoss k
       }
     });
 
-    // 3. Haken fährt hoch, Richtfest
+    // 3. Richtfest: Raute auf dem Dach, der Haken bleibt in Ruheposition
     const tEnd = 1.3 + 3 * 1.5;
-    tl.call(() => (active = null), [], tEnd)
-      .to(hoist, { y: 92, duration: 0.4, onUpdate: placeHoist }, tEnd)
-      .to(one('[data-bp-flag]'), { autoAlpha: 1, scale: 1, duration: 0.5, ease: 'back.out(2)' }, tEnd + 0.2)
-      .to({}, { duration: 0.4 }, tEnd + 0.7);
+    tl.to(one('[data-bp-flag]'), { autoAlpha: 1, scale: 1, duration: 0.5, ease: 'back.out(2)' }, tEnd - 0.1).to({}, { duration: 0.3 }, tEnd + 0.4);
+
+    // Anfangszustand sofort zeigen (leere Zeichnung), damit beim Start nichts springt
+    tl.progress(0.001, true).progress(0, true);
+    placeHoist();
 
     if (reduce) {
       tl.progress(1);
     } else {
       const fig = root.querySelector<HTMLElement>('.bp-fig')!;
-      // die Zeichnung blendet mit dem Scrollen weich ein …
-      gsap.fromTo(
-        fig,
-        { autoAlpha: 0, y: 40 },
-        { autoAlpha: 1, y: 0, ease: 'none', scrollTrigger: { trigger: fig, start: 'top bottom', end: 'center 75%', scrub: 0.8 } },
-      );
-      // … und der Bau startet, wenn sie zur Hälfte im Bild ist; Gesamtdauer sechs Sekunden
+      // der Bau startet, wenn die Zeichnung zur Hälfte im Bild ist; Gesamtdauer sechs Sekunden
       tl.duration(6);
       ScrollTrigger.create({
         trigger: fig,
