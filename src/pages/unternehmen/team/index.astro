@@ -5,7 +5,6 @@ import PageHero from '~/components/PageHero.astro';
 import Icon from '~/components/Icon.astro';
 import QHammer from '~/components/QHammer.astro';
 import { url } from '~/lib/url';
-import { firma } from '~/data/site';
 import mannschaft from '~/assets/team/baustellenteam.jpg';
 import kopfbild from '~/assets/site/baustelle-team.jpg';
 import thomas from '~/assets/team/thomas-quirling.jpg';
@@ -13,9 +12,9 @@ import ivonne from '~/assets/team/ivonne-quirling.jpg';
 import michaela from '~/assets/team/michaela-venghaus.jpg';
 
 const personen = [
-  { name: 'Thomas Quirling', rolle: 'Geschäftsführender Gesellschafter', bild: thomas },
-  { name: 'Ivonne Quirling', rolle: 'Assistentin der Geschäftsführung', bild: ivonne },
-  { name: 'Michaela Venghaus', rolle: 'Büroangestellte', bild: michaela },
+  { name: 'Thomas Quirling', rolle: 'Inhaber & Geschäftsführer', bild: thomas },
+  { name: 'Ivonne Quirling', rolle: 'Assistenz der Geschäftsführung', bild: ivonne },
+  { name: 'Michaela Venghaus', rolle: 'Büromanagement & Organisation', bild: michaela },
 ];
 ---
 
@@ -35,9 +34,7 @@ const personen = [
     <div class="container">
       <div class="head">
         <h2 class="h-sec">Ihre<br /><span class="lt">Ansprechpartner.</span></h2>
-        <p class="small">
-          Sie erreichen uns direkt im Büro in der Tilsiter Straße: <a href={firma.telefonHref}>{firma.telefon}</a>{' oder '}<a href={`mailto:${firma.email}`}>{firma.email}</a>.
-        </p>
+        <a class="head-btn" href={url('/kontakt/')}><span>Kontakt aufnehmen</span><Icon name="arrow" /></a>
       </div>
       <div class="people">
         {
@@ -64,7 +61,7 @@ const personen = [
         sich aufeinander verlassen können. Sie sind der Grund, warum unsere Bauten stehen.
       </p>
       <div class="crew-cta">
-        <span class="crew-h"><QHammer class="crew-hammer" color="#121735" highlight="#3948A4" />Bock auf Beton?</span>
+        <span class="crew-h"><QHammer class="crew-hammer" color="#3948A4" highlight="#9aa6ee" />Bock auf Beton?</span>
         <a class="crew-btn" href={url('/karriere/')}><span>Mit anpacken</span><Icon name="arrow" /></a>
       </div>
     </div>
@@ -86,13 +83,34 @@ const personen = [
     font-size: clamp(2.6rem, 4.6vw, 4.8rem);
     overflow-wrap: normal;
   }
-  .head .small {
-    margin: 0;
-    max-width: 30rem;
+  .head-btn {
+    justify-self: end;
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.05rem 1.4rem 0.95rem;
+    background: var(--navy);
+    color: #fff;
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    font-size: clamp(1.2rem, 1.5vw, 1.4rem);
+    letter-spacing: 0.02em;
+    line-height: 1;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.25s ease;
   }
-  .head a {
-    color: var(--blue);
-    white-space: nowrap;
+  .head-btn :global(svg) {
+    width: 1.2rem;
+    height: 1.2rem;
+    transition: transform 0.35s var(--ease);
+  }
+  .head-btn:hover {
+    background: var(--blue);
+  }
+  .head-btn:hover :global(svg) {
+    transform: translateX(4px);
   }
   .people {
     display: grid;
@@ -105,14 +123,14 @@ const personen = [
     gap: 0.4rem;
     justify-items: start;
   }
-  /* Porträt mit angedeutetem Rautenknick unten rechts */
+  /* Porträt mit leicht schräger Unterkante wie die übrigen Bilder */
   .pimg {
     width: 100%;
     aspect-ratio: 4 / 5;
     overflow: hidden;
     margin-bottom: 0.9rem;
     background: var(--stone-200);
-    clip-path: polygon(0 0, 100% 0, 100% 92%, 78% 100%, 0 100%);
+    clip-path: polygon(0 0, 100% 0, 100% 94%, 0 100%);
   }
   .pimg :global(img) {
     width: 100%;
@@ -145,10 +163,9 @@ const personen = [
   .crew {
     display: grid;
     grid-template-columns: var(--content-left) minmax(0, 28rem) clamp(2.5rem, 6vw, 6rem) minmax(0, 1fr);
-    align-items: center;
+    align-items: stretch;
     background: #e6e9f6;
     color: var(--navy);
-    padding-block: clamp(5rem, 8vw, 7rem) clamp(4rem, 6vw, 5.5rem);
     clip-path: polygon(0 clamp(0.8rem, 1.6vw, 1.4rem), 22% clamp(2rem, 4vw, 3.5rem), 100% 0, 100% 100%, 0 100%);
   }
   .crew-text {
@@ -156,6 +173,8 @@ const personen = [
     display: grid;
     gap: 1.4rem;
     justify-items: start;
+    align-content: center;
+    padding-block: clamp(5rem, 8vw, 7rem) clamp(3.5rem, 5vw, 4.5rem);
   }
   .crew-text p {
     margin: 0;
@@ -165,17 +184,27 @@ const personen = [
     color: var(--ink-2);
   }
   /* Foto im Seitenverhältnis des Originals, Knick nur oben links im Bereich der Schalung: alle Personen bleiben ganz sichtbar */
+  /* Foto füllt die Section von Kante zu Kante; Höhe aus dem Seitenverhältnis, damit niemand abgeschnitten wird */
   .crew-photo {
     grid-column: 4;
+    position: relative;
     margin: 0;
-    aspect-ratio: 3 / 2;
     overflow: hidden;
     clip-path: polygon(10% 0, 100% 0, 100% 100%, 0 100%, 0 55%);
   }
+  /* Mindesthöhe aus dem Seitenverhältnis 3:2 */
+  .crew-photo::before {
+    content: '';
+    display: block;
+    padding-top: 66.667%;
+  }
   .crew-photo :global(img) {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: 50% 70%;
   }
   .crew-cta {
     display: flex;
@@ -195,6 +224,7 @@ const personen = [
     font-size: clamp(1.6rem, 2.2vw, 2.1rem);
     line-height: 1;
     white-space: nowrap;
+    color: var(--blue);
   }
   .crew-cta :global(.crew-hammer) {
     width: 1em;
@@ -236,7 +266,9 @@ const personen = [
     }
     .crew {
       grid-template-columns: var(--gutter) minmax(0, 1fr) var(--gutter);
-      row-gap: 3rem;
+    }
+    .head-btn {
+      justify-self: start;
     }
     .crew-photo {
       grid-column: 1 / -1;
