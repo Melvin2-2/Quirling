@@ -50,7 +50,7 @@ import Werdegang from '~/components/Werdegang.astro';
   <Werdegang />
 
   <!-- Unser Büro: großes Bild mit Navy-Schräge wie im Seitenkopf -->
-  <section class="office on-dark">
+  <section class="office">
     <Image src={buero} alt="Bürogebäude der Quirling GmbH in der Tilsiter Straße 174, Hamburg" widths={[1000, 1600, 2400]} sizes="100vw" class="office-img" />
     <div class="office-slab" aria-hidden="true"></div>
     <div class="container office-in">
@@ -60,7 +60,7 @@ import Werdegang from '~/components/Werdegang.astro';
         gerne vorbei, wir freuen uns auf Sie.
       </p>
       <address>{firma.strasse}, {firma.plz} {firma.ort}</address>
-      <RouteLink light up />
+      <RouteLink up />
     </div>
   </section>
 </Base>
@@ -186,8 +186,8 @@ import Werdegang from '~/components/Werdegang.astro';
     display: flex;
     align-items: center;
     overflow: hidden;
-    background: var(--blue);
-    color: #fff;
+    background: #e6e9f6;
+    color: var(--navy);
   }
   /* Bild nur rechts, damit das Gebäude neben der Navy-Fläche ganz zu sehen ist */
   .office :global(.office-img) {
@@ -205,7 +205,7 @@ import Werdegang from '~/components/Werdegang.astro';
     position: absolute;
     inset: 0 auto 0 0;
     width: calc(var(--content-left) + min(50vw, 820px));
-    background: var(--blue);
+    background: #e6e9f6;
     clip-path: polygon(0 0, 100% 0, 78% 100%, 0 100%);
   }
   .office-in {
@@ -216,7 +216,7 @@ import Werdegang from '~/components/Werdegang.astro';
     padding-block: clamp(4rem, 8vw, 7rem);
   }
   .office-in .h-sec {
-    color: #fff;
+    color: var(--navy);
   }
   .office-in p {
     margin: 0;
@@ -224,7 +224,7 @@ import Werdegang from '~/components/Werdegang.astro';
     font-size: 1.125rem;
     font-weight: 300;
     line-height: 1.7;
-    color: rgb(255 255 255 / 0.85);
+    color: var(--navy);
   }
   .office-in address {
     font-style: normal;
@@ -232,7 +232,10 @@ import Werdegang from '~/components/Werdegang.astro';
     font-size: 0.8rem;
     letter-spacing: 0.04em;
     text-transform: uppercase;
-    color: #c9d0f5;
+    color: var(--navy);
+  }
+  .office-in :global(summary) {
+    color: var(--navy);
   }
 
   @media (max-width: 900px) {
@@ -259,7 +262,7 @@ import Werdegang from '~/components/Werdegang.astro';
     .office-slab {
       width: 100%;
       clip-path: none;
-      background: rgb(57 72 164 / 0.86);
+      background: rgb(230 233 246 / 0.9);
     }
     .office :global(.office-img) {
       width: 100%;

@@ -3,7 +3,7 @@
  * „Eine Basis, auf die Sie bauen können.“ als Bauzeichnung, die beim Scrollen entsteht:
  * Baugrube und Fundament, dann richtet sich ein Turmdrehkran auf und hebt Decke um Decke ein.
  * Jede Etage trägt eine Zahl. Zum Schluss Richtfest mit der Quirling-Raute auf dem Dach.
- * Der Bau startet, wenn die Zeichnung zur Hälfte im Bild ist, und ist nach sechs Sekunden fertig.
+ * Der Bau startet, wenn die Zeichnung ins Bild kommt, und ist nach fünf Sekunden fertig.
  */
 import { firma, JAHRE_ERFAHRUNG, GRUENDUNGSJAHR } from '~/data/site';
 
@@ -309,11 +309,11 @@ const floorBottom = (k: number) => 430 - k * FH; // Unterkante Geschoss k
       tl.progress(1);
     } else {
       const fig = root.querySelector<HTMLElement>('.bp-fig')!;
-      // der Bau startet, wenn die Zeichnung zur Hälfte im Bild ist; Gesamtdauer sechs Sekunden
-      tl.duration(6);
+      // der Bau startet, wenn die Zeichnung ins Bild kommt; Gesamtdauer fünf Sekunden
+      tl.duration(5);
       ScrollTrigger.create({
         trigger: fig,
-        start: 'center 75%',
+        start: 'top 70%',
         once: true,
         onEnter: () => tl.play(0),
       });
