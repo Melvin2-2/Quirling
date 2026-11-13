@@ -7,17 +7,8 @@ import Icon from '~/components/Icon.astro';
 import { url } from '~/lib/url';
 import { firma, JAHRE_ERFAHRUNG, GRUENDUNGSJAHR } from '~/data/site';
 import historisch from '~/assets/site/historisch.jpg';
+import geruest from '~/assets/site/baustelle-geruest.jpg';
 import buero from '~/assets/site/buero-tilsiter-strasse.jpg';
-import team from '~/assets/team/baustellenteam.jpg';
-import thomas from '~/assets/team/thomas-quirling.jpg';
-import ivonne from '~/assets/team/ivonne-quirling.jpg';
-import michaela from '~/assets/team/michaela-venghaus.jpg';
-
-const personen = [
-  { name: 'Thomas Quirling', rolle: 'Geschäftsführender Gesellschafter', bild: thomas },
-  { name: 'Ivonne Quirling', rolle: 'Assistentin der Geschäftsführung', bild: ivonne },
-  { name: 'Michaela Venghaus', rolle: 'Büroangestellte', bild: michaela },
-];
 
 
 const zahlen = [
@@ -28,13 +19,13 @@ const zahlen = [
 ];
 ---
 
-<Base title="Über uns" description={`Die Quirling GmbH ist seit ${GRUENDUNGSJAHR} als Bauunternehmen in Hamburg tätig. Familienbetrieb mit Schwerpunkt Rohbau, Beton- und Stahlbetonbau. Lernen Sie unser Team kennen.`}>
+<Base title="Über uns" description={`Die Quirling GmbH ist seit ${GRUENDUNGSJAHR} als Bauunternehmen in Hamburg tätig. Familienbetrieb mit Schwerpunkt Rohbau, Beton- und Stahlbetonbau.`}>
   <PageHero
     title="Bauen in Hamburg."
     titleLight={`Seit ${GRUENDUNGSJAHR}.`}
     intro="Familienbetrieb mit Schwerpunkt Rohbau. Inhabergeführt, mit kurzen Wegen und einem eingespielten Team aus jungen und erfahrenen Kollegen."
-    image={historisch}
-    imageAlt="Historisches Foto einer Baumannschaft"
+    image={geruest}
+    imageAlt="Rohbau mit Gerüst und Kränen auf einer Baustelle der Quirling GmbH"
     crumbs={[{ label: 'Unternehmen' }]}
   />
 
@@ -61,42 +52,36 @@ const zahlen = [
     </div>
   </section>
 
-  <!-- Unsere Mannschaft: eigener Abschnitt, großes Foto -->
-  <section class="section section-tint crew" id="mannschaft">
-    <div class="container crew-in">
-      <div class="para crew-img">
-        <span class="para-img">
-          <Image src={team} alt="Die Mannschaft der Quirling GmbH vor Schalungselementen" widths={[800, 1200, 1600]} sizes="(min-width: 1024px) 60vw, 100vw" />
-        </span>
-      </div>
-      <div class="crew-text">
-        <h2 class="h-sec">Unsere<br /><span class="lt">Mannschaft.</span></h2>
+  <!-- Familiengeschichte: historisches Foto randlos links, Text rechts -->
+  <section class="story">
+    <figure class="story-photo">
+      <span class="story-img">
+        <Image src={historisch} alt="Historisches Foto einer Baumannschaft auf einem Gerüst" widths={[800, 1200, 1600]} sizes="(min-width: 900px) 46vw, 100vw" />
+      </span>
+      <figcaption class="story-cap">Der Vater unseres Gründers in seiner Lehrzeit.</figcaption>
+    </figure>
+    <div class="container story-in">
+      <div class="story-text">
+        <h2 class="h-sec">Bauen liegt<br /><span class="lt">in der Familie.</span></h2>
         <p class="small">
-          Das Herz des Unternehmens sind die Facharbeiter auf der Baustelle. Junge und erfahrene Kollegen, die seit vielen Jahren zusammenarbeiten und
-          sich aufeinander verlassen können. Sie sind der Grund, warum unsere Bauten stehen.
+          Schon der Vater unseres Gründers stand auf dem Gerüst. {GRUENDUNGSJAHR} hat Thomas Quirling das Unternehmen in Hamburg gegründet, und bis heute
+          führt die Familie es selbst. Das heißt für Sie: kurze Wege, klare Absprachen und Menschen mit Namen, die für ihr Wort einstehen.
         </p>
-        <a class="text-link" href={url('/karriere/')}><span>Mit anpacken</span><Icon name="arrow" /></a>
+        <ul class="vals">
+          <li>Persönlich</li>
+          <li>Verbindlich</li>
+          <li>Sorgfältig</li>
+        </ul>
       </div>
     </div>
   </section>
 
-  <!-- Team: Ansprechpartner im Büro -->
-  <section class="section team-sec" id="team">
-    <div class="container">
-      <h2 class="h-sec team-h">Ihre<br /><span class="lt">Ansprechpartner.</span></h2>
-      <div class="people">
-        {
-          personen.map((p) => (
-            <article class="person">
-              <div class="pimg">
-                <Image src={p.bild} alt={p.name} widths={[400, 700, 1000]} sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 100vw" />
-              </div>
-              <span class="label">{p.rolle}</span>
-              <h3 class="p-name">{p.name}</h3>
-            </article>
-          ))
-        }
-      </div>
+  <!-- Überleitung zum Team -->
+  <section class="section section-tint team-cta">
+    <div class="container team-cta-in">
+      <h2 class="h-sec">Wer steckt<br /><span class="lt">dahinter?</span></h2>
+      <p class="small">Lernen Sie Ihre Ansprechpartner im Büro und unsere Mannschaft auf der Baustelle kennen.</p>
+      <a class="block-btn" href={url('/unternehmen/team/')}><span>Zum Team</span><Icon name="arrow" /></a>
     </div>
   </section>
 
@@ -150,26 +135,6 @@ const zahlen = [
     flex-direction: column-reverse;
     gap: 0.6rem;
   }
-  /* Mannschaft */
-  .crew-in {
-    display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: clamp(1.5rem, 3vw, 3rem);
-    align-items: center;
-  }
-  .crew-img {
-    grid-column: 1 / 9;
-  }
-  .crew-text {
-    grid-column: 9 / 13;
-    display: grid;
-    gap: 1.2rem;
-    justify-items: start;
-  }
-  .crew-text .small {
-    margin: 0;
-    max-width: 40ch;
-  }
   .zahl dd {
     margin: 0;
     font-family: var(--font-head);
@@ -180,53 +145,128 @@ const zahlen = [
     color: var(--blue);
   }
 
-  /* Werte */
-
-  /* Zeitstrahl */
-  /* Team */
-  .team-sec {
-    scroll-margin-top: 4rem;
+  /* Familiengeschichte: Foto füllt links die volle Höhe, Innenkante mit Knick */
+  .story {
+    position: relative;
+    overflow-x: clip;
+    padding-block: var(--section);
   }
-  .team-h {
-    margin-bottom: clamp(2.5rem, 5vw, 4rem);
-  }
-  .people {
+  .story-in {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    align-items: start;
-    gap: clamp(1.25rem, 3vw, 2.5rem);
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: clamp(1.5rem, 3vw, 3rem);
   }
-  .person {
-    display: grid;
-    gap: 0.6rem;
-    justify-items: start;
+  .story-photo {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 44%;
+    margin: 0;
   }
-  .pimg {
-    width: 100%;
-    aspect-ratio: 4 / 5;
+  .story-img {
+    position: absolute;
+    inset: 0;
     overflow: hidden;
-    margin-bottom: 0.8rem;
+    clip-path: polygon(0 0, 86% 0, 100% 46%, 90% 100%, 0 100%);
     background: var(--stone-200);
   }
-  .pimg :global(img) {
+  .story-img :global(img) {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 20%;
-    transition: transform 1s var(--ease);
+    object-position: 80% 0%;
   }
-  .person:hover .pimg :global(img) {
-    transform: scale(1.04);
+  .story-cap {
+    position: absolute;
+    left: var(--content-left);
+    bottom: 1.4rem;
+    padding: 0.5rem 0.8rem 0.45rem;
+    background: var(--navy);
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
   }
-  .p-name {
+  .story-text {
+    grid-column: 7 / 13;
+    display: grid;
+    gap: 1.4rem;
+    justify-items: start;
+    padding-block: clamp(2rem, 5vw, 4rem);
+  }
+  .story-text .small {
+    margin: 0;
+    max-width: 36rem;
+  }
+  .vals {
+    list-style: none;
+    margin: 0.4rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 2rem;
+  }
+  .vals li {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
     font-family: var(--font-head);
     font-stretch: 68%;
     font-weight: 800;
-    text-transform: uppercase;
-    font-size: clamp(1.6rem, 2.2vw, 2.2rem);
+    font-size: clamp(1.25rem, 1.6vw, 1.5rem);
+    letter-spacing: 0.02em;
     line-height: 1;
+    text-transform: uppercase;
     color: var(--blue);
+  }
+  .vals li::before {
+    content: '';
+    width: 0.55rem;
+    height: 0.55rem;
+    background: var(--blue);
+    transform: rotate(45deg);
+  }
+  /* Überleitung zum Team */
+  .team-cta-in {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+    gap: 1.5rem clamp(2rem, 5vw, 5rem);
+    align-items: end;
+  }
+  .team-cta-in .small {
     margin: 0;
+    max-width: 30rem;
+  }
+  .block-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.1rem;
+    padding: 1.15rem 1.5rem 1.05rem;
+    line-height: 1;
+    background: var(--navy);
+    color: #fff;
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    font-size: clamp(1.25rem, 1.6vw, 1.55rem);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.25s ease;
+  }
+  .block-btn :global(svg) {
+    width: 1.2rem;
+    height: 1.2rem;
+    transition: transform 0.35s var(--ease);
+  }
+  .block-btn:hover {
+    background: var(--blue);
+  }
+  .block-btn:hover :global(svg) {
+    transform: translateX(4px);
   }
 
   /* Büro */
@@ -289,17 +329,33 @@ const zahlen = [
 
   @media (max-width: 900px) {
     .about,
-    .crew-in {
+    .story-in,
+    .team-cta-in {
       grid-template-columns: minmax(0, 1fr);
     }
     .about-text,
     .zahlen,
-    .crew-img,
-    .crew-text {
+    .story-text {
       grid-column: 1 / -1;
     }
-    .crew-img {
-      margin-inline: 4%;
+    .story {
+      padding-top: 0;
+    }
+    .story-photo {
+      position: relative;
+      width: auto;
+      aspect-ratio: 4 / 3;
+    }
+    .story-img {
+      clip-path: polygon(0 0, 100% 0, 100% 94%, 0 100%);
+    }
+    .story-cap {
+      left: var(--gutter);
+      bottom: 2rem;
+    }
+    .team-cta-in {
+      align-items: start;
+      justify-items: start;
     }
     .office-slab {
       width: 100%;
@@ -310,16 +366,8 @@ const zahlen = [
       -webkit-mask-image: none;
       mask-image: none;
     }
-    .people {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
     .zahlen {
       grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-    }
-  @media (max-width: 560px) {
-    .people {
-      grid-template-columns: minmax(0, 1fr);
     }
   }
 </style>

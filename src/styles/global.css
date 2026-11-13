@@ -131,7 +131,8 @@ h4 {
 }
 /* leichter Teil einer zweistufigen Überschrift */
 .lt {
-  font-weight: 300;
+  /* Überschriften einheitlich kräftig: der zweite Teil übernimmt die Stärke */
+  font-weight: inherit;
 }
 .c-blue {
   color: var(--blue);
@@ -495,7 +496,7 @@ html.typo-b .h2 {
   line-height: 0.9;
 }
 html.typo-b .lt {
-  font-weight: 250;
+  font-weight: inherit;
 }
 html.typo-b .eyebrow,
 html.typo-b .pill,
@@ -519,7 +520,7 @@ html.typo-c .h2 {
   line-height: 0.88;
 }
 html.typo-c .lt {
-  font-weight: 300;
+  font-weight: inherit;
 }
 
 /* ==========================================================================
@@ -553,7 +554,7 @@ html.typo-c .lt {
   margin: 0;
 }
 .h-sec .lt {
-  font-weight: 300;
+  font-weight: inherit;
 }
 .on-dark .h-sec,
 .on-blue .h-sec {
