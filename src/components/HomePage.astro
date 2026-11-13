@@ -305,10 +305,7 @@ const werte = [
   <!-- ======================= KARRIERE: helles Band zwischen Video und Footer ======================= -->
   <aside class="job" aria-label="Karriere">
     <div class="container job-in">
-      <div class="job-t" data-follow>
-        <span class="job-k">Karriere bei Quirling</span>
-        <p class="job-h"><QHammer class="job-hammer" color="#121735" highlight="#3948A4" /><span>Bock auf Beton?</span> <span class="job-lt">Komm ins Team.</span></p>
-      </div>
+      <p class="job-h" data-follow><QHammer class="job-hammer" color="#121735" highlight="#3948A4" />Bock auf Beton? Komm ins Team.</p>
       <a class="job-btn" href={url('/karriere/')} data-follow><span>Mit anpacken</span><Icon name="arrow" /></a>
     </div>
   </aside>
@@ -1222,7 +1219,7 @@ const werte = [
     position: relative;
     z-index: 3;
     margin-top: calc(clamp(1.2rem, 2.4vw, 2rem) * -1);
-    padding-block: clamp(2.8rem, 4.2vw, 3.6rem) clamp(2.2rem, 3.2vw, 2.8rem);
+    padding-block: clamp(2.6rem, 3.8vw, 3.2rem) clamp(1.8rem, 2.6vw, 2.2rem);
     background: #e6e9f6;
     color: var(--navy);
     clip-path: polygon(0 clamp(1.2rem, 2.4vw, 2rem), 78% 0, 100% clamp(0.6rem, 1.2vw, 1rem), 100% 100%, 0 100%);
@@ -1234,27 +1231,6 @@ const werte = [
     flex-wrap: wrap;
     gap: 1.5rem 3rem;
   }
-  .job-t {
-    display: grid;
-    gap: 0.6rem;
-  }
-  .job-k {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    font-family: var(--font-mono);
-    font-size: 0.82rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--blue);
-  }
-  .job-k::before {
-    content: '';
-    width: 0.5rem;
-    height: 0.5rem;
-    background: var(--blue);
-    transform: rotate(45deg);
-  }
   .job-h {
     margin: 0;
     font-family: var(--font-head);
@@ -1264,9 +1240,6 @@ const werte = [
     line-height: 0.95;
     text-transform: uppercase;
   }
-  .job-lt {
-    color: var(--blue);
-  }
   .job :global(.job-hammer) {
     display: inline-block;
     width: 0.95em;
@@ -1274,11 +1247,13 @@ const werte = [
     margin-right: 0.45em;
     vertical-align: -0.1em;
   }
+  /* Knopf genau so hoch wie die Schriftzeile */
   .job-btn {
     display: inline-flex;
     align-items: center;
     gap: 1rem;
-    padding: 1.05rem 1.4rem 0.95rem;
+    height: clamp(1.9rem, 3vw, 2.9rem);
+    padding: 0.1rem 1.3rem 0;
     background: var(--blue);
     color: #fff;
     font-family: var(--font-head);
@@ -1459,10 +1434,17 @@ const werte = [
     font-size: clamp(3.2rem, 6.6vw, 7rem);
     line-height: 0.95;
   }
+  /* immer einzeilig und für alle drei Leistungen gleich groß: die längste („Schlüsselfertiges Bauen“) bestimmt die Größe */
   :global(html.typo-c) .svc-title {
     font-weight: 800;
-    font-size: clamp(2.6rem, 4.4vw, 4.6rem);
+    font-size: clamp(2.2rem, 3.4vw, 3.45rem);
     line-height: 0.92;
+    white-space: nowrap;
+  }
+  @media (max-width: 900px) {
+    :global(html.typo-c) .svc-title {
+      font-size: min(6.4vw, 2.4rem);
+    }
   }
   :global(html.typo-c) .show-h {
     font-weight: 800;

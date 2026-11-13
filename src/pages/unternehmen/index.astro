@@ -8,14 +8,14 @@ import { url } from '~/lib/url';
 import { firma, JAHRE_ERFAHRUNG, GRUENDUNGSJAHR } from '~/data/site';
 import historisch from '~/assets/site/historisch.jpg';
 import buero from '~/assets/site/buero-tilsiter-strasse.jpg';
+import handwerk from '~/assets/site/handwerk-schalung.jpg';
 import thomas from '~/assets/team/thomas-quirling.jpg';
 
-// Die Basis als Geschosse: unten das Fundament, nach oben wird es schmaler
+// Die Basis als Rohbau: Fundament unten, darauf drei Geschosse mit Stützen und Decken
 const geschosse = [
-  { v: firma.mitarbeiter, l: 'Mitarbeiter', count: true },
-  { v: firma.projekteAnzahl, l: 'Projekte', plus: true, count: true },
-  { v: JAHRE_ERFAHRUNG, l: 'Jahre Erfahrung', count: true },
-  { v: GRUENDUNGSJAHR, l: 'Das Fundament: gegründet in Hamburg', count: false },
+  { v: firma.mitarbeiter, l: 'Mitarbeiter' },
+  { v: firma.projekteAnzahl, l: 'Projekte', plus: true },
+  { v: JAHRE_ERFAHRUNG, l: 'Jahre Erfahrung' },
 ];
 
 // Unser Weg: kurz, ohne Fotos
@@ -57,19 +57,23 @@ const werte = [
           private Bauherren ebenso wie für Projektentwickler und Unternehmen.
         </p>
       </div>
-      <ol class="stack" data-stack aria-label="Quirling in Zahlen">
+      <div class="rb" data-stack role="list" aria-label="Quirling in Zahlen">
         {
           geschosse.map((g, i) => (
-            <li class="floor" style={`--i:${i}`}>
-              <span class="floor-v">
-                {g.count ? <span data-count={g.v}>{g.v}</span> : g.v}
+            <div class="rb-floor" role="listitem" style={`--i:${geschosse.length - i}`}>
+              <span class="rb-v">
+                <span data-count={g.v}>{g.v}</span>
                 {g.plus && '+'}
               </span>
-              <span class="floor-l">{g.l}</span>
-            </li>
+              <span class="rb-l">{g.l}</span>
+            </div>
           ))
         }
-      </ol>
+        <div class="rb-found" role="listitem">
+          <span class="rb-v">{GRUENDUNGSJAHR}</span>
+          <span class="rb-l">Das Fundament: gegründet in Hamburg</span>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -120,6 +124,9 @@ const werte = [
 
   <!-- 4. Historie und Werte: Text links, drei Rauten rechts -->
   <section class="roots">
+    <div class="roots-img">
+      <Image src={handwerk} alt="Schalungselement mit Quirling-Logo auf einer Baustelle" widths={[600, 900, 1300]} sizes="(min-width: 900px) 42vw, 100vw" />
+    </div>
     <div class="container roots-in">
       <div class="roots-text">
         <h2 class="h-sec">Bauen liegt<br /><span class="lt">in der Familie.</span></h2>
@@ -181,76 +188,110 @@ const werte = [
     margin: 0;
     max-width: 48ch;
   }
-  /* Geschosse: nach oben schmaler, jede Etage mit schräger rechter Kante */
-  .stack {
+  /* Rohbau: Fundament unten, darauf Geschosse mit drei Stützen und einer Decke */
+  .rb {
     grid-column: 7 / 13;
-    list-style: none;
-    margin: 0;
-    padding: 0;
+    --slab: 10px;
+    --col: 12px;
     display: grid;
-    gap: 6px;
-    justify-items: start;
+    padding-inline: 1.6rem;
   }
-  .floor {
-    --w: calc(64% + var(--i) * 12%);
-    width: var(--w);
+  .rb-floor {
+    position: relative;
+    isolation: isolate;
     display: flex;
     align-items: baseline;
     gap: 1rem;
-    padding: 1.05rem 3.2rem 0.95rem 1.4rem;
-    clip-path: polygon(0 0, calc(100% - 1.8rem) 0, 100% 100%, 0 100%);
-    background: #e6e9f6;
+    padding: calc(var(--slab) + 1.3rem) 2.4rem 1.1rem;
     color: var(--navy);
   }
-  .floor:nth-child(2) {
-    background: #9aa6ee;
-  }
-  .floor:nth-child(3) {
+  /* Decke */
+  .rb-floor::before {
+    content: '';
+    position: absolute;
+    left: -0.6rem;
+    right: -0.6rem;
+    top: 0;
+    height: var(--slab);
     background: var(--blue);
-    color: #fff;
+    transform-origin: center;
   }
-  .floor:nth-child(4) {
+  /* Stützen links, Mitte, rechts */
+  .rb-floor::after {
+    content: '';
+    position: absolute;
+    inset: var(--slab) 0 0;
+    background:
+      linear-gradient(#9aa6ee, #9aa6ee) left / var(--col) 100% no-repeat,
+      linear-gradient(#9aa6ee, #9aa6ee) 62% 0 / var(--col) 100% no-repeat,
+      linear-gradient(#9aa6ee, #9aa6ee) right / var(--col) 100% no-repeat;
+    transform-origin: bottom;
+    z-index: -1;
+  }
+  .rb-floor:first-child::before {
     background: var(--navy);
-    color: #fff;
   }
-  .floor-v {
+  .rb-v {
     font-family: var(--font-head);
     font-stretch: 68%;
     font-weight: 800;
     font-size: clamp(2.4rem, 3.6vw, 3.6rem);
     line-height: 0.85;
+    color: var(--blue);
   }
-  .floor-l {
+  .rb-l {
     font-family: var(--font-mono);
     font-size: 0.78rem;
     letter-spacing: 0.05em;
     text-transform: uppercase;
-    opacity: 0.85;
+    color: var(--ink-2);
   }
-  /* das Gebäude wächst von unten nach oben */
-  .stack.will-build .floor {
+  /* Fundament: breiter als das Gebäude, Navy, darunter das Erdreich angedeutet */
+  .rb-found {
+    position: relative;
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-inline: -1.6rem;
+    padding: 1.2rem 2.4rem 1.1rem 4rem;
+    background: var(--navy);
+    color: #fff;
+    clip-path: polygon(0 0, 100% 0, calc(100% - 1.4rem) 100%, 1.4rem 100%);
+  }
+  .rb-found .rb-v {
+    color: #fff;
+  }
+  .rb-found .rb-l {
+    color: #c9d0f5;
+  }
+  /* Aufbau beim Hereinscrollen: Fundament, dann Geschoss für Geschoss nach oben */
+  .rb.will-build .rb-found {
+    clip-path: polygon(50% 0, 50% 0, 50% 100%, 50% 100%);
+  }
+  .rb.will-build .rb-floor::after {
+    transform: scaleY(0);
+  }
+  .rb.will-build .rb-floor::before {
+    transform: scaleX(0);
+  }
+  .rb.will-build .rb-floor > * {
     opacity: 0;
-    transform: translateY(28px);
   }
-  .stack.is-built .floor {
-    opacity: 1;
+  .rb.is-built .rb-found {
+    clip-path: polygon(0 0, 100% 0, calc(100% - 1.4rem) 100%, 1.4rem 100%);
+    transition: clip-path 0.7s var(--ease);
+  }
+  .rb.is-built .rb-floor::after {
     transform: none;
-    transition:
-      opacity 0.6s ease,
-      transform 0.8s var(--ease);
-    transition-delay: calc(var(--i) * 0.14s);
+    transition: transform 0.5s var(--ease) calc(0.35s + (var(--i) - 1) * 0.55s);
   }
-  .stack.is-built .floor:nth-child(4) {
-    transition-delay: 0s;
+  .rb.is-built .rb-floor::before {
+    transform: none;
+    transition: transform 0.5s var(--ease) calc(0.65s + (var(--i) - 1) * 0.55s);
   }
-  .stack.is-built .floor:nth-child(3) {
-    transition-delay: 0.14s;
-  }
-  .stack.is-built .floor:nth-child(2) {
-    transition-delay: 0.28s;
-  }
-  .stack.is-built .floor:nth-child(1) {
-    transition-delay: 0.42s;
+  .rb.is-built .rb-floor > * {
+    opacity: 1;
+    transition: opacity 0.5s ease calc(0.75s + (var(--i) - 1) * 0.55s);
   }
 
   /* ---------- 2. Inhaber ---------- */
@@ -485,18 +526,35 @@ const werte = [
 
   /* ---------- 4. Historie und Werte ---------- */
   .roots {
+    position: relative;
+    overflow-x: clip;
     background: #e6e9f6;
     padding-block: clamp(6rem, 10vw, 8.5rem) clamp(7rem, 11vw, 9.5rem);
     clip-path: polygon(0 clamp(0.8rem, 1.6vw, 1.4rem), 22% clamp(2rem, 4vw, 3.5rem), 100% 0, 100% 100%, 0 100%);
   }
+  /* Foto links randlos über die volle Höhe, Innenkante schräg */
+  .roots-img {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 40%;
+    clip-path: polygon(0 0, 100% 0, 84% 100%, 0 100%);
+  }
+  .roots-img :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 62% 50%;
+  }
   .roots-in {
+    position: relative;
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: clamp(2rem, 4vw, 4rem);
-    align-items: center;
+    gap: 2.5rem clamp(2rem, 4vw, 4rem);
   }
   .roots-text {
-    grid-column: 1 / 6;
+    grid-column: 6 / 13;
     display: grid;
     gap: 1.2rem;
   }
@@ -507,6 +565,7 @@ const werte = [
   /* drei Rauten wie im Logo, leicht versetzt */
   .values {
     grid-column: 6 / 13;
+    margin-top: 1rem !important;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -674,20 +733,27 @@ const werte = [
       grid-template-columns: minmax(0, 1fr);
     }
     .base-text,
-    .stack,
+    .rb,
     .lead-text,
     .roots-text,
     .values {
       grid-column: 1 / -1;
-    }
-    .floor {
-      --w: calc(70% + var(--i) * 10%);
     }
     .lead {
       display: block;
       min-height: 0;
       padding-top: 0;
       clip-path: polygon(0 0, 100% 0, 100% calc(100% - 1.6rem), 22% 100%, 0 calc(100% - 0.6rem));
+    }
+    .roots {
+      padding-top: 0;
+    }
+    .roots-img {
+      position: relative;
+      width: auto;
+      aspect-ratio: 4 / 3;
+      margin-bottom: 3rem;
+      clip-path: polygon(0 0, 100% 0, 100% 94%, 0 100%);
     }
     .lead-img {
       position: relative;
@@ -720,8 +786,11 @@ const werte = [
     .value p {
       font-size: 0.9rem;
     }
-    .floor {
-      padding-right: 2.4rem;
+    .rb-floor {
+      padding-inline: 1.6rem;
+    }
+    .rb-found {
+      padding-left: 3rem;
     }
   }
 </style>

@@ -69,16 +69,13 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
           projekte.map((p) => (
             <li class="tile" data-cats={p.data.kategorien.join('|')} data-bereich={p.data.bereich} data-id={p.id}>
               <a class="tile-in" href={url(`/referenzen/?p=${p.id}`)} data-open={p.id} aria-controls="projekt-panel">
-                <Image src={p.data.bilder[0]!} alt="" widths={[700, 1100, 1600, 2200]} sizes="(min-width: 900px) 100vw, 100vw" />
-                <span class="tile-info">
-                  <span class="tile-cat">
-                    {p.data.kategorien[0]} · {bereichName(p.data.bereich)}
-                    {p.data.jahr ? ` · ${p.data.jahr}` : ''}
-                  </span>
-                  <span class="tile-title">{p.data.title}</span>
-                  <span class="tile-lead">{p.data.leistung}</span>
+                <span class="tile-img">
+                  <Image src={p.data.bilder[0]!} alt="" widths={[500, 800, 1200]} sizes="(min-width: 1100px) 30vw, (min-width: 700px) 46vw, 100vw" />
                 </span>
-                <span class="tile-more" aria-hidden="true"><Icon name="arrow" /></span>
+                <span class="tile-info">
+                  <span class="tile-title">{p.data.title}</span>
+                  <span class="tile-more" aria-hidden="true"><Icon name="arrow" /></span>
+                </span>
               </a>
             </li>
           ))
@@ -234,8 +231,9 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
   }
 
   /* ---------- Kacheln: ruhiges Raster, drei Spalten, kein Projekt über die ganze Breite ---------- */
+  /* Galerie in Containerbreite, nicht bis an den Rand */
   .grid-wrap {
-    padding-inline: var(--gutter);
+    padding-inline: var(--content-left);
     transition: padding 0.6s var(--ease);
   }
   .tiles {
@@ -244,136 +242,97 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
     padding: 0;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 10px;
+    gap: clamp(2.2rem, 3.4vw, 3rem) clamp(1.2rem, 2vw, 1.8rem);
   }
   .tile[hidden] {
     display: none;
   }
+  /* Bild ohne Verlauf, Titel darunter: das Projekt wirkt für sich */
   .tile-in {
-    position: relative;
+    display: grid;
+    gap: 0.9rem;
+    color: var(--navy);
+    text-decoration: none;
+  }
+  .tile-img {
     display: block;
     aspect-ratio: 4 / 3;
     overflow: hidden;
-    color: #fff;
-    text-decoration: none;
     background: var(--stone-200);
   }
-  .tile-in :global(img) {
+  .tile-img :global(img) {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: transform 1.2s var(--ease);
   }
-  .tile-in::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgb(18 23 53 / 0.82), rgb(18 23 53 / 0) 50%);
-    transition: background 0.4s ease;
-  }
-  .tile-in:hover :global(img) {
+  .tile-in:hover .tile-img :global(img) {
     transform: scale(1.04);
   }
-  .tile-in:hover::after {
-    background: linear-gradient(to top, rgb(18 23 53 / 0.9), rgb(18 23 53 / 0.2) 70%);
-  }
-  .tile.is-current .tile-in {
+  .tile.is-current .tile-img {
     outline: 3px solid var(--blue);
     outline-offset: -3px;
   }
-  /* Kacheln gleiten beim Hereinscrollen ruhig herein */
-  .tile.will-in .tile-in {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  .tile.is-in .tile-in {
-    opacity: 1;
-    transform: none;
-    transition:
-      opacity 0.9s ease,
-      transform 1.1s var(--ease);
-  }
   .tile-info {
-    position: absolute;
-    left: clamp(1.1rem, 2.4vw, 2.2rem);
-    right: 5rem;
-    bottom: clamp(1rem, 2.2vw, 2rem);
-    z-index: 1;
-    display: grid;
-    gap: 0.35rem;
-    row-gap: 0.35rem;
-  }
-  .tile-cat {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: #c9d0f5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
   }
   .tile-title {
     font-family: var(--font-head);
     font-stretch: 68%;
     font-weight: 800;
-    font-size: clamp(1.4rem, 1.9vw, 2rem);
-    line-height: 0.95;
+    font-size: clamp(1.3rem, 1.6vw, 1.7rem);
+    line-height: 1;
     text-transform: uppercase;
+    transition: color 0.25s ease;
   }
-  .tile-lead {
-    max-width: 36rem;
-    font-size: 1rem;
-    font-weight: 300;
-    line-height: 1.4;
-    color: rgb(255 255 255 / 0.85);
-    /* klappt erst beim Überfahren auf, damit alle Titel auf einer Höhe stehen */
-    max-height: 0;
-    overflow: hidden;
-    opacity: 0;
-    transition:
-      max-height 0.5s var(--ease),
-      opacity 0.4s ease;
+  .tile-in:hover .tile-title,
+  .tile.is-current .tile-title {
+    color: var(--blue);
   }
-  .tile-in:hover .tile-lead {
-    max-height: 6rem;
-    opacity: 1;
-  }
-  /* Pfeil in einer Raute unten rechts */
+  /* Pfeil in einer kleinen Raute */
   .tile-more {
-    position: absolute;
-    right: clamp(1.1rem, 2.4vw, 2.2rem);
-    bottom: clamp(1.1rem, 2.4vw, 2.2rem);
-    z-index: 1;
-    width: 2.8rem;
-    height: 2.8rem;
+    position: relative;
+    flex: none;
+    width: 2.2rem;
+    height: 2.2rem;
     display: grid;
     place-items: center;
-    color: var(--navy);
+    color: var(--blue);
+    transition: color 0.3s ease;
   }
   .tile-more::before {
     content: '';
     position: absolute;
     inset: 0.35rem;
-    background: #fff;
-    transform: rotate(45deg) scale(0.85);
-    transition: transform 0.4s var(--ease);
+    border: 1.5px solid currentColor;
+    transform: rotate(45deg);
+    transition:
+      transform 0.4s var(--ease),
+      background 0.3s ease;
   }
   .tile-more :global(svg) {
     position: relative;
-    width: 1.1rem;
-    height: 1.1rem;
+    width: 0.95rem;
+    height: 0.95rem;
+  }
+  .tile-in:hover .tile-more {
+    color: #fff;
   }
   .tile-in:hover .tile-more::before {
-    transform: rotate(135deg) scale(1);
+    background: var(--blue);
+    border-color: var(--blue);
+    transform: rotate(135deg);
   }
-  /* bei offenem Seitenfenster: eine Spalte, alle gleich */
+  /* bei offenem Seitenfenster: links nur noch eine Spalte */
   :global(body.panel-open) .tiles {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1fr);
   }
   @media (max-width: 1100px) {
     .tiles {
       grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-    :global(body.panel-open) .tiles {
-      grid-template-columns: minmax(0, 1fr);
     }
   }
   .empty {
@@ -412,8 +371,8 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
   }
   /* Galerie rückt nach links, wenn das Fenster offen ist */
   :global(body.panel-open) .grid-wrap {
-    padding-right: calc(var(--panel-w) + 6px);
-    padding-left: 6px;
+    padding-right: calc(var(--panel-w) + var(--gutter));
+    padding-left: var(--gutter);
   }
   .panel-bar {
     display: flex;
@@ -613,7 +572,7 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
       --panel-w: 100vw;
     }
     :global(body.panel-open) .grid-wrap {
-      padding: 0 6px;
+      padding: 0 var(--gutter);
     }
     .grid-wrap {
       padding-inline: var(--gutter);
@@ -633,9 +592,6 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
     }
     .tiles {
       grid-template-columns: minmax(0, 1fr);
-    }
-    .tile-lead {
-      display: none;
     }
     .panel-body :global(.pp-galerie) {
       grid-template-columns: minmax(0, 1fr);
