@@ -11,10 +11,14 @@ const year = new Date().getFullYear();
   <div class="container">
     {claim && (
     <div class="claim">
-      <p class="h2 claim-t">Projekt geplant?</p>
-      <a class="h2 claim-tel" href={firma.telefonHref}>{firma.telefon}</a>
-      <a class="claim-btn" href={url('/kontakt/')}><span>Sprechen wir.</span><Icon name="arrow" /></a>
-      <a class="h2 claim-mail" href={`mailto:${firma.email}`}>{firma.email}</a>
+      <div class="claim-l">
+        <p class="h2 claim-t">Projekt geplant?<br /><span class="lt">Wir sind ganz Ohr.</span></p>
+        <a class="claim-btn" href={url('/kontakt/')}><span>Projekt anfragen</span><Icon name="arrow" /></a>
+      </div>
+      <div class="claim-r">
+        <a class="h2 claim-tel" href={firma.telefonHref}>{firma.telefon}</a>
+        <a class="h2 claim-mail" href={`mailto:${firma.email}`}>{firma.email}</a>
+      </div>
     </div>
     )}
 
@@ -75,22 +79,33 @@ const year = new Date().getFullYear();
     position: relative;
     overflow: hidden;
   }
+  /* links Satz und Knopf, rechts Telefon und E-Mail direkt untereinander, unten bündig */
   .claim {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
-    align-items: center;
-    gap: clamp(1rem, 1.6vw, 1.4rem) 2rem;
+    align-items: end;
+    gap: 2rem;
     padding-bottom: clamp(2rem, 3.2vw, 2.6rem);
     border-bottom: 1px solid var(--line-light);
+  }
+  .claim-l {
+    display: grid;
+    justify-items: start;
+    gap: clamp(1.2rem, 1.8vw, 1.6rem);
+  }
+  .claim-r {
+    display: grid;
+    justify-items: end;
+    gap: 0.55rem;
   }
   .claim-t {
     color: #fff !important;
     margin: 0;
+    line-height: 0.95;
   }
   /* Telefon und E-Mail in der Größe der Überschrift, rechtsbündig */
   .claim-tel,
   .claim-mail {
-    justify-self: end;
     margin: 0;
     font-size: clamp(1.6rem, 2.3vw, 2.2rem) !important;
     color: #fff !important;
@@ -142,22 +157,8 @@ const year = new Date().getFullYear();
     .claim {
       grid-template-columns: minmax(0, 1fr);
     }
-    .claim-tel,
-    .claim-mail {
-      justify-self: start;
-    }
-    .claim-t {
-      order: 1;
-    }
-    .claim-btn {
-      order: 2;
-      margin-bottom: 0.6rem;
-    }
-    .claim-tel {
-      order: 3;
-    }
-    .claim-mail {
-      order: 4;
+    .claim-r {
+      justify-items: start;
     }
   }
   .cols {
