@@ -790,13 +790,19 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
     const r = tile.getBoundingClientRect();
     const barBottom = document.querySelector<HTMLElement>('[data-fbar]')?.getBoundingClientRect().bottom ?? 0;
     const minTop = barBottom + 16;
-    // gleiche Bildschirmposition wie vorher, aber nie unter der Filterleiste oder unten aus dem Bild
-    let wanted = Math.max(before, minTop);
-    if (wanted + Math.min(r.height, window.innerHeight * 0.5) > window.innerHeight) wanted = minTop;
+    // exakt dieselbe Bildschirmposition wie vorher; nur wenn die Kachel dann
+    // unter der Filterleiste oder unten aus dem Bild läge, so wenig wie nötig verschieben
+    let wanted = before;
+    const maxTop = window.innerHeight - 16 - r.height;
+    if (wanted > maxTop) wanted = maxTop;
+    if (wanted < minTop) wanted = minTop;
     const y = window.scrollY + r.top - wanted;
+    const root = document.documentElement;
+    root.setAttribute('data-hold-header', '');
     const l = lenis();
     if (l) l.scrollTo(y, { immediate: true, force: true });
     else window.scrollTo({ top: y, behavior: 'instant' as ScrollBehavior });
+    setTimeout(() => root.removeAttribute('data-hold-header'), 120);
   };
 
   const open = (id: string, updateUrl = true) => {

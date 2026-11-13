@@ -1,0 +1,482 @@
+---
+/**
+ * „Eine Basis, auf die Sie bauen können.“ als Bauzeichnung, die beim Scrollen entsteht:
+ * Baugrube und Fundament, dann richtet sich ein Turmdrehkran auf und hebt Decke um Decke ein.
+ * Jede Etage trägt eine Zahl. Zum Schluss Richtfest mit der Quirling-Raute auf dem Dach.
+ * Desktop: Abschnitt bleibt stehen (sticky), der Bau folgt dem Scrollen.
+ * Mobil: der Bau läuft einmal ab, sobald er ins Bild kommt.
+ */
+import { firma, JAHRE_ERFAHRUNG, GRUENDUNGSJAHR } from '~/data/site';
+
+// Geschosse von unten nach oben
+const etagen = [
+  { v: JAHRE_ERFAHRUNG, plus: false, l: 'Jahre Erfahrung', hoehe: '+3,00' },
+  { v: firma.projekteAnzahl, plus: true, l: 'Projekte', hoehe: '+6,00' },
+  { v: firma.mitarbeiter, plus: false, l: 'Mitarbeiter', hoehe: '+9,00' },
+];
+const stufen = ['Fundament', 'Erdgeschoss', 'Obergeschosse', 'Richtfest'];
+
+// Maße der Zeichnung (viewBox 0 0 640 560)
+const G = 470; // Geländeoberkante
+const X0 = 100; // Gebäude links
+const X1 = 420; // Gebäude rechts
+const FH = 100; // Geschosshöhe
+const SL = 8; // Deckenstärke
+const COLS = [X0, 257, X1 - 6];
+const floorBottom = (k: number) => 430 - k * FH; // Unterkante Geschoss k
+---
+
+<section class="bp" data-bp aria-labelledby="bp-h">
+  <div class="bp-pin">
+    <div class="container bp-in">
+      <div class="bp-text">
+        <h2 class="h-sec" id="bp-h">Eine Basis,<br /><span class="lt">auf die Sie<br />bauen können.</span></h2>
+        <p class="small">
+          Unser Schwerpunkt ist der Rohbau in Beton- und Stahlbetonbauweise. Dazu bauen wir schlüsselfertig und führen Umbauten und Sanierungen aus. Für
+          private Bauherren ebenso wie für Projektentwickler und Unternehmen.
+        </p>
+        <ol class="bp-steps" aria-hidden="true">
+          <span class="bp-track"><span class="bp-fill" data-bp-fill></span></span>
+          {stufen.map((s) => <li data-bp-step>{s}</li>)}
+        </ol>
+        <p class="bp-hint" data-bp-hint aria-hidden="true">Weiter scrollen, wir bauen.</p>
+      </div>
+
+      <figure class="bp-fig">
+        <svg class="bp-svg" viewBox="0 0 640 560" role="img" aria-labelledby="bp-title">
+          <title id="bp-title">
+            {`Bauzeichnung: Fundament ${GRUENDUNGSJAHR}, darauf drei Geschosse mit ${JAHRE_ERFAHRUNG} Jahren Erfahrung, über ${firma.projekteAnzahl} Projekten und ${firma.mitarbeiter} Mitarbeitern.`}
+          </title>
+          <defs>
+            <pattern id="bp-dots" width="20" height="20" patternUnits="userSpaceOnUse">
+              <circle cx="1" cy="1" r="1" fill="#dfe3f0"></circle>
+            </pattern>
+            <pattern id="bp-earth" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+              <line x1="0" y1="0" x2="0" y2="10" stroke="#b9bdd3" stroke-width="1.5"></line>
+            </pattern>
+            <pattern id="bp-concrete" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
+              <line x1="0" y1="0" x2="0" y2="8" stroke="currentColor" stroke-width="1"></line>
+            </pattern>
+            <clipPath id="bp-earth-clip"><rect x="20" y={G} width="600" height="40"></rect></clipPath>
+          </defs>
+
+          <!-- Zeichenraster -->
+          <rect class="bp-grid" x="0" y="0" width="640" height="560" fill="url(#bp-dots)"></rect>
+
+          <!-- Gelände und Erdreich -->
+          <g class="bp-earth" data-bp-earth>
+            <rect x="20" y={G} width="600" height="36" fill="url(#bp-earth)"></rect>
+          </g>
+          <line class="bp-ground" data-draw x1="20" y1={G} x2="620" y2={G} stroke="currentColor" stroke-width="2"></line>
+
+          <!-- Fundament mit Schraffur und zwei Streifenfundamenten -->
+          <g class="bp-found" data-bp-found>
+            <rect x="80" y="430" width="360" height="40" fill="url(#bp-concrete)"></rect>
+            <rect x="100" y={G} width="40" height="24" fill="url(#bp-concrete)"></rect>
+            <rect x="380" y={G} width="40" height="24" fill="url(#bp-concrete)"></rect>
+          </g>
+          <path class="bp-found-line" data-draw d={`M80 430 H440 V470 H420 V494 H380 V470 H140 V494 H100 V470 H80 Z`} fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="miter"></path>
+          <g class="bp-found-txt" data-bp-found-txt>
+            <rect x="112" y="436" width="226" height="28" fill="#f6f7fb"></rect>
+            <text class="bp-num bp-num-s" x="118" y="461">{GRUENDUNGSJAHR}</text>
+            <text class="bp-lab" x="196" y="455">Gegründet in Hamburg</text>
+          </g>
+
+          <!-- Geschosse: Stützen, Decke, Zahl, Höhenkote -->
+          {
+            etagen.map((e, k) => {
+              const fb = floorBottom(k);
+              const top = fb - FH + SL;
+              return (
+                <g class="bp-floor" data-bp-floor={k}>
+                  <g class="bp-cols" data-bp-cols>
+                    {COLS.map((x) => (
+                      <rect x={x} y={top} width="6" height={fb - top} fill="currentColor" />
+                    ))}
+                  </g>
+                  <g class="bp-txt" data-bp-txt>
+                    <text class="bp-num" x="122" y={fb - 36}>
+                      <tspan data-bp-count={e.v}>{e.v}</tspan>
+                      {e.plus ? '+' : ''}
+                    </text>
+                    <text class="bp-lab" x="124" y={fb - 16}>
+                      {e.l}
+                    </text>
+                  </g>
+                  <g class="bp-kote" data-bp-kote>
+                    <path d={`M440 ${top - SL} l6 -9 h-12 z`} fill="currentColor" />
+                    <line x1="430" y1={top - SL} x2="470" y2={top - SL} stroke="currentColor" stroke-width="1" />
+                    <text class="bp-k" x="452" y={top - SL - 4}>
+                      {e.hoehe}
+                    </text>
+                  </g>
+                </g>
+              );
+            })
+          }
+          <!-- Höhenkote Erdgeschoss -->
+          <g class="bp-kote bp-kote0" data-bp-kote0>
+            <path d="M440 430 l6 -9 h-12 z" fill="currentColor"></path>
+            <line x1="430" y1="430" x2="470" y2="430" stroke="currentColor" stroke-width="1"></line>
+            <text class="bp-k" x="452" y="426">±0,00</text>
+          </g>
+
+          <!-- Decken: werden vom Kran eingehoben -->
+          {
+            etagen.map((_, k) => {
+              const y = floorBottom(k) - FH;
+              return (
+                <g class="bp-slab" data-bp-slab={k} data-y={y}>
+                  <line class="bp-sling" x1="260" y1={y - 34} x2={X0 - 4 + 6} y2={y} stroke="currentColor" stroke-width="1" />
+                  <line class="bp-sling" x1="260" y1={y - 34} x2={X1 + 4 - 6} y2={y} stroke="currentColor" stroke-width="1" />
+                  <rect x={X0 - 4} y={y} width={X1 - X0 + 8} height={SL} fill="currentColor" />
+                </g>
+              );
+            })
+          }
+
+          <!-- Maßkette links: Gesamthöhe -->
+          <g class="bp-dim" data-bp-dim>
+            <line x1="62" y1="122" x2="62" y2="430" stroke="currentColor" stroke-width="1"></line>
+            <line x1="56" y1="122" x2="68" y2="122" stroke="currentColor" stroke-width="1"></line>
+            <line x1="56" y1="430" x2="68" y2="430" stroke="currentColor" stroke-width="1"></line>
+            <line x1="57" y1="127" x2="67" y2="117" stroke="currentColor" stroke-width="1"></line>
+            <line x1="57" y1="435" x2="67" y2="425" stroke="currentColor" stroke-width="1"></line>
+            <text class="bp-k" x="0" y="0" transform="translate(54 300) rotate(-90)">9,00 m</text>
+          </g>
+
+          <!-- Turmdrehkran -->
+          <g class="bp-crane" data-bp-crane>
+            <g class="bp-mast" data-bp-mast>
+              <line x1="536" y1={G} x2="536" y2="48" stroke="currentColor" stroke-width="2"></line>
+              <line x1="552" y1={G} x2="552" y2="48" stroke="currentColor" stroke-width="2"></line>
+              <path
+                d={Array.from({ length: 21 }, (_, i) => `M536 ${G - i * 20} L552 ${G - i * 20 - 20}`).join(' ')}
+                stroke="currentColor"
+                stroke-width="1"
+                fill="none"
+              ></path>
+              <rect x="526" y={G - 6} width="36" height="6" fill="currentColor"></rect>
+            </g>
+            <g class="bp-jib" data-bp-jib>
+              <line x1="150" y1="40" x2="628" y2="40" stroke="currentColor" stroke-width="2"></line>
+              <line x1="150" y1="48" x2="628" y2="48" stroke="currentColor" stroke-width="2"></line>
+              <path d={Array.from({ length: 24 }, (_, i) => `M${150 + i * 20} 48 L${160 + i * 20} 40 L${170 + i * 20} 48`).join(' ')} stroke="currentColor" stroke-width="1" fill="none"></path>
+              <line x1="544" y1="40" x2="544" y2="10" stroke="currentColor" stroke-width="2"></line>
+              <line x1="544" y1="10" x2="160" y2="40" stroke="currentColor" stroke-width="1"></line>
+              <line x1="544" y1="10" x2="620" y2="40" stroke="currentColor" stroke-width="1"></line>
+              <rect x="598" y="48" width="26" height="22" fill="currentColor"></rect>
+              <rect x="554" y="48" width="18" height="14" fill="none" stroke="currentColor" stroke-width="1.5"></rect>
+            </g>
+            <g class="bp-hoist" data-bp-hoist>
+              <rect data-bp-trolley x="253" y="48" width="14" height="6" fill="currentColor"></rect>
+              <line data-bp-cable x1="260" y1="54" x2="260" y2="66" stroke="currentColor" stroke-width="1.2"></line>
+              <path data-bp-hook d="M260 66 v6 a4 4 0 1 1 -4 4" fill="none" stroke="currentColor" stroke-width="1.8"></path>
+            </g>
+          </g>
+
+          <!-- Richtfest: Quirling-Raute auf dem Dach -->
+          <g class="bp-flag" data-bp-flag>
+            <line x1="260" y1="122" x2="260" y2="84" stroke="currentColor" stroke-width="2"></line>
+            <path d="M260 66 l14 14 l-14 14 l-14 -14 z" fill="currentColor"></path>
+          </g>
+        </svg>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<style>
+  .bp {
+    position: relative;
+    /* Scrollweg für den Bau */
+    height: 280vh;
+  }
+  .bp-pin {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100svh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+  .bp-in {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: clamp(2rem, 4vw, 4rem);
+    align-items: center;
+    width: 100%;
+  }
+  .bp-text {
+    display: grid;
+    gap: 1.3rem;
+    justify-items: start;
+  }
+  .bp-text .h-sec {
+    font-size: clamp(2.4rem, 4.4vw, 4.6rem);
+  }
+  .bp-text .small {
+    margin: 0;
+    max-width: 44ch;
+  }
+  /* Bauabschnitte: dünne Linie füllt sich, aktueller Abschnitt blau */
+  .bp-steps {
+    position: relative;
+    list-style: none;
+    margin: 0.8rem 0 0;
+    padding: 1rem 0 0;
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    justify-content: space-between;
+    width: min(100%, 30rem);
+    gap: 1rem;
+  }
+  .bp-track {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 2px;
+    background: var(--stone-200);
+  }
+  .bp-fill {
+    position: absolute;
+    inset: 0;
+    background: var(--blue);
+    transform-origin: left;
+    transform: scaleX(var(--p, 0));
+  }
+  .bp-steps li {
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    font-size: clamp(0.95rem, 1.15vw, 1.15rem);
+    text-transform: uppercase;
+    color: #b9bdd3;
+    transition: color 0.3s ease;
+  }
+  .bp-steps li.is-on {
+    color: var(--blue);
+  }
+  .bp-hint {
+    margin: 0.4rem 0 0;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    transition: opacity 0.4s ease;
+  }
+  .bp-fig {
+    margin: 0;
+  }
+  .bp-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: calc(100svh - 7rem);
+    color: var(--blue);
+    overflow: visible;
+  }
+  .bp-num {
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    font-size: 46px;
+    fill: var(--blue);
+  }
+  .bp-num-s {
+    font-size: 30px;
+  }
+  .bp-lab {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    fill: var(--navy);
+  }
+  .bp-k {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    fill: var(--blue);
+  }
+  .bp-mast,
+  .bp-cols rect {
+    transform-box: fill-box;
+    transform-origin: bottom;
+  }
+  .bp-jib {
+    transform-box: fill-box;
+    transform-origin: 82% 50%;
+  }
+  .bp-flag {
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+  }
+
+  @media (max-width: 900px) {
+    .bp {
+      height: auto;
+      padding-block: clamp(4rem, 10vw, 6rem);
+    }
+    .bp-pin {
+      position: static;
+      height: auto;
+      display: block;
+    }
+    .bp-in {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .bp-hint {
+      display: none;
+    }
+    .bp-steps {
+      grid-template-columns: repeat(2, auto);
+      justify-content: start;
+      column-gap: 2rem;
+    }
+    .bp-svg {
+      max-height: none;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  const root = document.querySelector<HTMLElement>('[data-bp]');
+  if (root) {
+    const q = <T extends Element = SVGElement>(s: string) => Array.from(root.querySelectorAll<T & Element>(s)) as unknown as T[];
+    const one = <T extends Element = SVGElement>(s: string) => root.querySelector(s) as T | null;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Linien zum Zeichnen vorbereiten
+    q<SVGGeometryElement>('[data-draw]').forEach((el) => {
+      const len = el.getTotalLength();
+      el.style.strokeDasharray = `${len}`;
+      el.style.strokeDashoffset = `${len}`;
+    });
+
+    const steps = q<HTMLElement>('[data-bp-step]');
+    const fill = one<HTMLElement>('[data-bp-fill]');
+    const hint = one<HTMLElement>('[data-bp-hint]');
+    const trolley = one<SVGRectElement>('[data-bp-trolley]')!;
+    const cable = one<SVGLineElement>('[data-bp-cable]')!;
+    const hook = one<SVGPathElement>('[data-bp-hook]')!;
+    const slabs = q<SVGGElement>('[data-bp-slab]');
+    const floors = q<SVGGElement>('[data-bp-floor]');
+
+    // Kranhaken folgt einem Punkt (x = Katze, y = Oberkante der hängenden Decke)
+    const hoist = { x: 340, y: 100 };
+    let active: SVGGElement | null = null;
+    const placeHoist = () => {
+      const hy = hoist.y - 34;
+      trolley.setAttribute('x', String(hoist.x - 7));
+      cable.setAttribute('x1', String(hoist.x));
+      cable.setAttribute('x2', String(hoist.x));
+      cable.setAttribute('y2', String(hy - 10));
+      hook.setAttribute('d', `M${hoist.x} ${hy - 10} v6 a4 4 0 1 1 -4 4`);
+      if (active) {
+        const target = Number(active.dataset.y);
+        gsap.set(active, { x: hoist.x - 260, y: hoist.y - target });
+      }
+    };
+
+    // Bauabschnitt in der Liste markieren
+    const stage = (i: number) => () => steps.forEach((s, k) => s.classList.toggle('is-on', k <= i));
+
+    const tl = gsap.timeline({ paused: true, defaults: { ease: 'power2.out' } });
+    // Ausgangslage
+    tl.set(['[data-bp-earth]', '[data-bp-found]', '[data-bp-found-txt]', '[data-bp-kote0]', '[data-bp-dim]', '[data-bp-flag]', '[data-bp-hoist]', ...q('[data-bp-txt]'), ...q('[data-bp-kote]')].map((s) => (typeof s === 'string' ? one(s) : s)), { autoAlpha: 0 }, 0)
+      .set(one('[data-bp-mast]'), { scaleY: 0 }, 0)
+      .set(one('[data-bp-jib]'), { scaleX: 0 }, 0)
+      .set(q('[data-bp-cols] rect'), { scaleY: 0 }, 0)
+      .set(slabs, { autoAlpha: 0 }, 0)
+      .set(one('[data-bp-flag]'), { scale: 0 }, 0);
+
+    // 1. Gelände, Baugrube, Fundament
+    tl.to('[data-bp] .bp-ground', { strokeDashoffset: 0, duration: 0.8, ease: 'none' }, 0)
+      .to(one('[data-bp-earth]'), { autoAlpha: 1, duration: 0.4 }, 0.4)
+      .to('[data-bp] .bp-found-line', { strokeDashoffset: 0, duration: 1, ease: 'none' }, 0.6)
+      .to(one('[data-bp-found]'), { autoAlpha: 1, duration: 0.5 }, 1.3)
+      .to(one('[data-bp-found-txt]'), { autoAlpha: 1, duration: 0.4 }, 1.5)
+      .to(one('[data-bp-kote0]'), { autoAlpha: 1, duration: 0.3 }, 1.6)
+      .call(stage(0), [], 0.6);
+
+    // 2. Kran richtet sich auf
+    tl.to(one('[data-bp-mast]'), { scaleY: 1, duration: 1, ease: 'power3.out' }, 1.8)
+      .to(one('[data-bp-jib]'), { scaleX: 1, duration: 0.8, ease: 'power3.out' }, 2.5)
+      .to(one('[data-bp-hoist]'), { autoAlpha: 1, duration: 0.3 }, 3.1);
+
+    // 3. Geschoss für Geschoss: Stützen wachsen, Decke wird eingehoben, Zahl zählt hoch
+    floors.forEach((f, k) => {
+      const t = 3.4 + k * 2.4;
+      const slab = slabs[k]!;
+      const target = Number(slab.dataset.y);
+      tl.to(f.querySelectorAll('[data-bp-cols] rect'), { scaleY: 1, duration: 0.6, stagger: 0.08, ease: 'power3.out' }, t)
+        .call(() => {
+          active = slab;
+          placeHoist();
+        }, [], t + 0.5)
+        .set(hoist, { x: 340, y: 100 }, t + 0.5)
+        .to(slab, { autoAlpha: 1, duration: 0.2 }, t + 0.5)
+        .to(hoist, { x: 260, duration: 0.6, ease: 'power1.inOut', onUpdate: placeHoist }, t + 0.6)
+        .to(hoist, { y: target, duration: 0.8, ease: 'power2.inOut', onUpdate: placeHoist }, t + 1.1)
+        .to(slab.querySelectorAll('.bp-sling'), { autoAlpha: 0, duration: 0.2 }, t + 1.9)
+        .to(f.querySelector('[data-bp-txt]'), { autoAlpha: 1, duration: 0.3 }, t + 1.8)
+        .to(f.querySelector('[data-bp-kote]'), { autoAlpha: 1, duration: 0.3 }, t + 1.9);
+      const n = f.querySelector<SVGTSpanElement>('[data-bp-count]');
+      if (n) {
+        const to = Number(n.dataset.bpCount);
+        const c = { v: 0 };
+        tl.fromTo(c, { v: 0 }, { v: to, duration: 0.6, ease: 'power1.out', onUpdate: () => (n.textContent = String(Math.round(c.v))) }, t + 1.8);
+      }
+      tl.call(stage(k === 0 ? 1 : 2), [], t + 1.9);
+    });
+
+    // 4. Haken fährt hoch, Richtfest
+    const tEnd = 3.4 + 3 * 2.4;
+    tl.call(() => (active = null), [], tEnd)
+      .to(hoist, { x: 420, y: 92, duration: 0.6, onUpdate: placeHoist }, tEnd)
+      .to(one('[data-bp-dim]'), { autoAlpha: 1, duration: 0.4 }, tEnd + 0.2)
+      .to(one('[data-bp-flag]'), { autoAlpha: 1, scale: 1, duration: 0.6, ease: 'back.out(2)' }, tEnd + 0.4)
+      .call(stage(3), [], tEnd + 0.4)
+      .to({}, { duration: 0.6 }, tEnd + 1);
+
+    const setFill = () => {
+      fill?.style.setProperty('--p', String(tl.progress()));
+      if (hint) hint.style.opacity = tl.progress() > 0.04 ? '0' : '1';
+    };
+    tl.eventCallback('onUpdate', setFill);
+
+    if (reduce) {
+      tl.progress(1);
+      setFill();
+    } else {
+      const mm = gsap.matchMedia();
+      mm.add('(min-width: 901px)', () => {
+        const st = ScrollTrigger.create({
+          trigger: root,
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: 0.6,
+          animation: tl,
+        });
+        return () => st.kill();
+      });
+      mm.add('(max-width: 900px)', () => {
+        const st = ScrollTrigger.create({
+          trigger: root.querySelector('.bp-fig')!,
+          start: 'top 75%',
+          once: true,
+          onEnter: () => tl.duration(tl.duration()).timeScale(1.8).play(0),
+        });
+        return () => st.kill();
+      });
+    }
+  }
+</script>

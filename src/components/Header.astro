@@ -481,6 +481,11 @@ const mainItems = nav;
     const onScroll = () => {
       const y = window.scrollY;
       if (header.classList.contains('menu-open')) return;
+      // Seiten können die Kopfzeile kurz festhalten, z. B. beim Nachführen der Ansicht
+      if (document.documentElement.hasAttribute('data-hold-header')) {
+        lastY = y;
+        return;
+      }
       const fixed = header.classList.contains('is-fixed');
       const hh = header.offsetHeight;
       if (fixed && y <= 2) {
