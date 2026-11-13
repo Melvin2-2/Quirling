@@ -6,12 +6,11 @@
 import type { ImageMetadata } from 'astro';
 import { getEntry } from 'astro:content';
 import rohbauWandsbek from '~/assets/site/rohbau-wandsbek.jpg';
-import baustelleLuftbild from '~/assets/site/baustelle-luftbild.jpg';
 import baustelleBewehrung from '~/assets/site/baustelle-bewehrung.jpg';
 
 type Quelle = ImageMetadata | string; // Foto oder Projekt-ID (erstes Bild des Projekts)
 const bilder: Record<string, { start: Quelle; hero: Quelle; text: Quelle }> = {
-  rohbau: { start: rohbauWandsbek, hero: baustelleLuftbild, text: baustelleBewehrung },
+  rohbau: { start: rohbauWandsbek, hero: rohbauWandsbek, text: baustelleBewehrung },
   'schluesselfertiges-bauen': { start: 'steinwegel', hero: 'steinwegel', text: 'tegelweg' },
   'umbau-sanierung': { start: 'bellevue-59', hero: 'kinderwelt', text: 'oberstrasse' },
 };

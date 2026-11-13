@@ -11,7 +11,6 @@ import Icon from '~/components/Icon.astro';
 import { leistungen } from '~/data/site';
 import { leistungBild } from '~/data/leistung-bilder';
 import { url } from '~/lib/url';
-import bewehrung from '~/assets/site/baustelle-bewehrung.jpg';
 import schalung from '~/assets/site/handwerk-schalung.jpg';
 
 const hero = await leistungBild('rohbau', 'hero');
@@ -60,15 +59,14 @@ const usp = [
     titleLight="Stahlbetonbau"
     intro="Der Rohbau ist unser Handwerk. Seit 1992 schalen, bewehren und betonieren wir in der Metropolregion Hamburg. Solide, sauber und termingerecht."
     image={hero}
+    imageAlt="Rohbau eines mehrgeschossigen Gebäudes im Gerüst"
+    imagePosition="50% 35%"
     crumbs={[{ label: 'Leistungen', href: '/#leistungen' }, { label: 'Rohbau & Stahlbetonbau' }]}
     size="medium"
   />
 
-  <!-- 1. Einstieg: Aussage und Text links, Foto randlos rechts über die volle Höhe -->
+  <!-- 1. Einstieg kompakt: Aussage und Einleitung nebeneinander, darunter drei Aussagen in einer Zeile -->
   <section class="rb-intro">
-    <div class="rb-intro-img">
-      <Image src={bewehrung} alt="Bewehrung auf einer Baustelle der Quirling GmbH" widths={[700, 1100, 1600]} sizes="(min-width: 900px) 46vw, 100vw" />
-    </div>
     <div class="container rb-grid">
       <div class="rb-intro-text">
         <h2 class="h-sec">Massiv gebaut.<br /><span class="lt">Von Grund auf.</span></h2>
@@ -214,50 +212,36 @@ const usp = [
   }
 
   /* ---------- 1. Einstieg ---------- */
-  /* Seitenkopf liegt über dem Einstieg, damit das Foto in seinen Knick hineinreicht */
-  :global(.phero) {
-    position: relative;
-    z-index: 2;
-    /* Knick als echter Zuschnitt statt heller Fläche, damit das Foto darunter durchscheint */
-    clip-path: polygon(0 0, 100% 0, 100% 94%, 78% 100%, 0 90%);
-  }
-  :global(.phero-cut) {
-    display: none;
-  }
   .rb-intro {
-    position: relative;
-    z-index: 0;
-    overflow-x: clip;
-    padding-block: clamp(4.5rem, 7vw, 6rem) clamp(4rem, 6vw, 5rem);
+    padding-block: clamp(4.5rem, 7vw, 6rem) clamp(5rem, 8vw, 6.5rem);
   }
-  /* Foto reicht oben unter den Knick des Seitenkopfs und unten unter den Knick der nächsten Fläche */
-  .rb-intro-img {
-    position: absolute;
-    top: -6rem;
-    bottom: calc(clamp(2rem, 4vw, 3.5rem) * -1);
-    right: 0;
-    width: 44%;
-    clip-path: polygon(16% 0, 100% 0, 100% 100%, 0 100%);
-  }
-  .rb-intro-img :global(img),
   .rb-own-img :global(img) {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
   .rb-intro-text {
-    grid-column: 1 / 7;
+    grid-column: 1 / -1;
     display: grid;
-    gap: 1.4rem;
-    justify-items: start;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 1.4rem clamp(2rem, 4vw, 4rem);
+    align-items: end;
+  }
+  .rb-intro-text .h-sec {
+    grid-column: 1 / 7;
+  }
+  .rb-intro-text .rb-lead {
+    grid-column: 7 / 13;
+    max-width: 44ch;
   }
   .rb-usp {
+    grid-column: 1 / -1;
     list-style: none;
-    margin: 0.6rem 0 0;
+    margin: clamp(1.6rem, 3vw, 2.6rem) 0 0;
     padding: 0;
     display: grid;
-    gap: 1.4rem;
-    max-width: 46ch;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.6rem clamp(2rem, 4vw, 4rem);
   }
   .rb-usp p {
     margin: 0;
@@ -570,25 +554,21 @@ const usp = [
     }
   }
   @media (max-width: 900px) {
-    :global(.phero) {
-      clip-path: polygon(0 0, 100% 0, 100% 97%, 78% 100%, 0 95%);
-    }
     .rb-own {
       display: block;
       min-height: 0;
       padding-top: 0;
     }
-    .rb-intro {
-      padding-top: 0;
+    .rb-intro-text .h-sec,
+    .rb-intro-text .rb-lead {
+      grid-column: 1 / -1;
     }
-    /* Foto schließt mobil direkt an den Knick des Seitenkopfs an */
-    .rb-intro-img {
-      margin-top: -1.8rem;
+    .rb-usp {
+      grid-template-columns: minmax(0, 1fr);
     }
     .rb-intro {
       padding-bottom: clamp(4rem, 10vw, 5rem);
     }
-    .rb-intro-img,
     .rb-own-img {
       position: relative;
       top: auto;
@@ -602,7 +582,6 @@ const usp = [
       clip-path: polygon(0 0, 100% 0, 100% calc(100% - 1.6rem), 22% 100%, 0 calc(100% - 0.6rem));
       margin-top: 0;
     }
-    .rb-intro-text,
     .rb-own-text,
     .rb-scope-head .h-sec,
     .rb-scope-head .rb-lead {
