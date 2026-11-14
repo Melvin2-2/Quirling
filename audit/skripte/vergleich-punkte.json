@@ -1,0 +1,437 @@
+[
+ {
+  "id": "START-01",
+  "seite": "Startseite",
+  "titel": "Hero-Unterzeile: Was, Wo, Für wen",
+  "aenderung": "Unterzeile nennt Leistung, Ort, Familienbetrieb und Zielgruppen; etwas größer und kräftiger.",
+  "hinweis": null,
+  "views": [
+   {
+    "url": "/",
+    "vp": "d",
+    "sel": "section.hero",
+    "fold": true,
+    "header": true
+   },
+   {
+    "url": "/",
+    "vp": "m",
+    "sel": "section.hero",
+    "fold": true,
+    "header": true
+   }
+  ]
+ },
+ {
+  "id": "START-02",
+  "seite": "Startseite",
+  "titel": "Sie statt du im Knopf",
+  "aenderung": "„Kennste uns schon?“ wird zu „Lernen Sie uns kennen“.",
+  "hinweis": null,
+  "views": [
+   {
+    "url": "/",
+    "vp": "d",
+    "sel": ".intro-text"
+   }
+  ]
+ },
+ {
+  "id": "START-03",
+  "seite": "Startseite",
+  "titel": "Leistungen nicht dreimal nennen",
+  "aenderung": "Stichwort-Liste unter „Was wir bauen.“ entfällt, der Übergangstext ist kürzer. Die drei Leistungsbänder folgen direkt.",
+  "hinweis": null,
+  "views": [
+   {
+    "url": "/",
+    "vp": "d",
+    "sel": "#leistungen",
+    "maxH": 900
+   }
+  ]
+ },
+ {
+  "id": "START-04",
+  "seite": "Startseite",
+  "titel": "Belege statt austauschbarer Werte",
+  "aenderung": "„Persönlich · Verbindlich · Sorgfältig“ wird zu „Eigene Poliere · Eigene Schalung · Kollegen seit 30+ Jahren“.",
+  "hinweis": null,
+  "views": [
+   {
+    "url": "/",
+    "vp": "d",
+    "sel": ".figs-side"
+   }
+  ]
+ },
+ {
+  "id": "START-05",
+  "seite": "Startseite",
+  "titel": "Film-Abschnitt mobil kürzer",
+  "aenderung": "Scrollweg der Logo-Animation auf dem Handy von 155 % auf 115 % Bildschirmhöhe. Bild zeigt die Länge des Abschnitts (verkleinert).",
+  "hinweis": "Wirkt erst beim Scrollen; bitte auf dem Handy im Entwurf testen.",
+  "views": [
+   {
+    "url": "/",
+    "vp": "m",
+    "sel": "section.film",
+    "maxH": 1400,
+    "pad": 0
+   }
+  ]
+ },
+ {
+  "id": "START-06",
+  "seite": "Startseite",
+  "titel": "Zahlen-Beschriftung mobil lesbarer",
+  "aenderung": "Text unter 1992 / 150+ / 10 auf dem Handy 16 statt 14,4 px.",
+  "hinweis": null,
+  "views": [
+   {
+    "url": "/",
+    "vp": "m",
+    "sel": ".figs-steps"
+   }
+  ]
+ },
+ {
+  "id": "LEIST-01",
+  "seite": "Rohbau",
+  "titel": "Größenordnung nennen",
+  "aenderung": "Neuer Satz unter der Einleitung: typische Projektgröße und Baustellen gleichzeitig.",
+  "hinweis": "Rote Felder = Zahlen fehlen, bitte liefern.",
+  "views": [
+   {
+    "url": "/leistungen/rohbau/",
+    "vp": "d",
+    "sel": "section.rb-intro"
+   }
+  ]
+ },
+ {
+  "id": "LOCAL-02",
+  "seite": "Alle Leistungsseiten",
+  "titel": "Einsatzgebiet mit Orten",
+  "aenderung": "Satz mit Orten aus euren Referenzen (Harburg, Norderstedt, Buchholz i. d. N., Bad Oldesloe) auf allen drei Leistungsseiten.",
+  "hinweis": null,
+  "views": [
+   {
+    "url": "/leistungen/umbau-sanierung/",
+    "vp": "d",
+    "sel": "section.rb-intro"
+   }
+  ]
+ },
+ {
+  "id": "LEIST-03",
+  "seite": "Alle Seitenköpfe",
+  "titel": "Seitenkopf mobil ruhiger",
+  "aenderung": "Dunkle Fläche reicht auf dem Handy bis unter den Text und ist etwas dichter; Einleitung kräftiger.",
+  "hinweis": null,
+  "views": [
+   {
+    "url": "/leistungen/rohbau/",
+    "vp": "m",
+    "sel": "section.phero",
+    "fold": true,
+    "header": true
+   },
+   {
+    "url": "/kontakt/",
+    "vp": "m",
+    "sel": "section.phero",
+    "fold": true,
+    "header": true
+   }
+  ]
+ },
+ {
+  "id": "SF-02",
+  "seite": "Schlüsselfertig",
+  "titel": "H1 ohne Trennstrich",
+  "aenderung": "„Schlüssel-fertiges Bauen“ wird zu „Schlüsselfertig bauen.“",
+  "hinweis": null,
+  "views": [
+   {
+    "url": "/leistungen/schluesselfertiges-bauen/",
+    "vp": "d",
+    "sel": "section.phero",
+    "fold": true,
+    "header": true
+   }
+  ]
+ },
+ {
+  "id": "UMBAU-01",
+  "seite": "Umbau",
+  "titel": "Denkmalschutz nur mit Beleg",
+  "aenderung": "„auch unter Denkmalschutz“ entfällt, bis ein Referenzprojekt das belegt.",
+  "hinweis": null,
+  "views": [
+   {
+    "url": "/leistungen/umbau-sanierung/",
+    "vp": "d",
+    "sel": ".rb-own-text"
+   }
+  ]
+ },
+ {
+  "id": "REF-01",
+  "seite": "Referenzen",
+  "titel": "Eigene Seite je Projekt",
+  "aenderung": "Jedes der 37 Projekte bekommt eine eigene Adresse (z. B. /referenzen/abteistrasse/) mit Titel, Eckdaten, Bildern, Anfrage-Knopf und weiteren Projekten. Das Seitenfenster bleibt und verlinkt dorthin.",
+  "hinweis": "Neue Seiten, deshalb links das bisherige Seitenfenster, rechts die neue Projektseite.",
+  "views": [
+   {
+    "url": "/referenzen/?p=abteistrasse",
+    "vp": "d",
+    "fold": true,
+    "header": true,
+    "url_neu": "/referenzen/abteistrasse/"
+   }
+  ]
+ },
+ {
+  "id": "REF-04",
+  "seite": "Referenzen",
+  "titel": "Filter leichter antippbar",
+  "aenderung": "Filter-Reiter und Filter-Knöpfe mindestens 44 px hoch.",
+  "hinweis": null,
+  "views": [
+   {
+    "url": "/referenzen/",
+    "vp": "m",
+    "sel": ".fbar",
+    "header": false
+   }
+  ]
+ },
+ {
+  "id": "UEBER-01",
+  "seite": "Über uns",
+  "titel": "Zeitleiste besser lesbar",
+  "aenderung": "Grau der Jahreszahlen und noch nicht eingefärbten Wörter von 1,7:1 auf 3,5:1 Kontrast.",
+  "hinweis": "Bild zeigt den Moment während des Scrollens.",
+  "views": [
+   {
+    "url": "/unternehmen/",
+    "vp": "d",
+    "sel": ".wg-sticky",
+    "wait": 900,
+    "noscroll": true
+   }
+  ]
+ },
+ {
+  "id": "UEBER-02",
+  "seite": "Über uns",
+  "titel": "Eigene Überschrift",
+  "aenderung": "„Bauen liegt in der Familie.“ (steht schon auf der Startseite) wird zu „Vom Gerüst zum eigenen Betrieb.“",
+  "hinweis": null,
+  "views": [
+   {
+    "url": "/unternehmen/",
+    "vp": "d",
+    "sel": "#wg-h",
+    "pad": 40,
+    "maxH": 400
+   }
+  ]
+ },
+ {
+  "id": "TEXT-01",
+  "seite": "Team · Über uns",
+  "titel": "Seitenköpfe ohne Formel",
+  "aenderung": "„eingespieltes Team aus jungen und erfahrenen Kollegen“ ersetzt durch konkrete Sätze.",
+  "hinweis": null,
+  "views": [
+   {
+    "url": "/unternehmen/team/",
+    "vp": "d",
+    "sel": "section.phero",
+    "fold": true,
+    "header": true
+   },
+   {
+    "url": "/unternehmen/",
+    "vp": "d",
+    "sel": "section.phero",
+    "fold": true,
+    "header": true
+   }
+  ]
+ },
+ {
+  "id": "TEAM-01",
+  "seite": "Team",
+  "titel": "Direkt erreichbar, Polier mit Namen",
+  "aenderung": "Knöpfe für Durchwahl und E-Mail je Ansprechpartner; in „Unsere Mannschaft“ ein Satz zum Polier.",
+  "hinweis": "Rote Felder = Durchwahlen, E-Mails, Name und Jahr fehlen.",
+  "views": [
+   {
+    "url": "/unternehmen/team/",
+    "vp": "d",
+    "sel": ".people"
+   },
+   {
+    "url": "/unternehmen/team/",
+    "vp": "d",
+    "sel": ".crew-text"
+   }
+  ]
+ },
+ {
+  "id": "ZERT-01",
+  "seite": "Zertifikate",
+  "titel": "Stand-Datum je Nachweis",
+  "aenderung": "Hinter jedem PDF steht „Stand MM/JJJJ“.",
+  "hinweis": "Datum folgt mit den aktuellen PDFs.",
+  "views": [
+   {
+    "url": "/unternehmen/zertifikate/",
+    "vp": "d",
+    "sel": ".groups"
+   }
+  ]
+ },
+ {
+  "id": "KARR-01",
+  "seite": "Karriere",
+  "titel": "Lohn und Arbeitszeit sichtbar",
+  "aenderung": "In der Stelle drei Eckdaten-Schilder: Stundenlohn, Wochenstunden, Urlaub. Kurztext ohne „eingespielt“.",
+  "hinweis": "Rote Felder = Zahlen fehlen.",
+  "views": [
+   {
+    "url": "/karriere/",
+    "vp": "d",
+    "sel": ".jobs"
+   }
+  ]
+ },
+ {
+  "id": "KARR-02",
+  "seite": "Karriere",
+  "titel": "Schneller Bewerbungsweg",
+  "aenderung": "Zusätzlich zu den vollständigen Unterlagen: großer Anruf-Knopf und Rückruf-Formular (Name, Telefon, Beruf).",
+  "hinweis": "Formular sendet im Entwurf noch nicht.",
+  "views": [
+   {
+    "url": "/karriere/",
+    "vp": "d",
+    "sel": ".jobs-head"
+   },
+   {
+    "url": "/karriere/",
+    "vp": "m",
+    "sel": ".jobs-head"
+   }
+  ]
+ },
+ {
+  "id": "KONTAKT-02",
+  "seite": "Kontakt",
+  "titel": "Bürozeiten und Antwortzeit",
+  "aenderung": "Seitenkopf und Telefonblock nennen Uhrzeiten und Antwortzeit.",
+  "hinweis": "Rote Felder = Zeiten bitte bestätigen.",
+  "views": [
+   {
+    "url": "/kontakt/",
+    "vp": "d",
+    "sel": "section.phero",
+    "fold": true,
+    "header": true
+   },
+   {
+    "url": "/kontakt/",
+    "vp": "d",
+    "sel": ".call"
+   }
+  ]
+ },
+ {
+  "id": "KONTAKT-03",
+  "seite": "Kontakt",
+  "titel": "Ablauf nach der Anfrage",
+  "aenderung": "Drei kurze Schritte neben dem Formular: Vorhaben schildern, Rückmeldung, Termin und Angebot.",
+  "hinweis": null,
+  "views": [
+   {
+    "url": "/kontakt/",
+    "vp": "d",
+    "sel": ".ask-head",
+    "x": true
+   }
+  ]
+ },
+ {
+  "id": "KONTAKT-01",
+  "seite": "Kontakt",
+  "titel": "Bestätigung nach dem Absenden",
+  "aenderung": "Nach erfolgreichem Versand ersetzt eine Bestätigung das Formular. Knopf heißt „Anfrage senden“.",
+  "hinweis": "Echter Versand braucht noch einen Formulardienst (deine Entscheidung). Rechts: Zustand nach dem Absenden.",
+  "views": [
+   {
+    "url": "/kontakt/",
+    "vp": "d",
+    "sel": "section.ask",
+    "maxH": 1100,
+    "prep": {
+     "neu": "() => { const f=document.querySelector('[data-form]'); const s=document.querySelector('[data-sent]'); if(f&&s){f.hidden=true;s.hidden=false;} }"
+    }
+   }
+  ]
+ },
+ {
+  "id": "DS-02",
+  "seite": "Datenschutz",
+  "titel": "Überschrift sauber trennen",
+  "aenderung": "„DATENSCHUTZERK / LÄRUNG“ wird zu „DATENSCHUTZ- / ERKLÄRUNG“.",
+  "hinweis": null,
+  "views": [
+   {
+    "url": "/datenschutz/",
+    "vp": "d",
+    "sel": "section.phero",
+    "fold": true,
+    "header": true
+   },
+   {
+    "url": "/datenschutz/",
+    "vp": "m",
+    "sel": "section.phero",
+    "fold": true,
+    "header": true
+   }
+  ]
+ },
+ {
+  "id": "VERTRAUEN-01",
+  "seite": "Footer (alle Seiten)",
+  "titel": "Nachweise im Footer",
+  "aenderung": "Unter „Unternehmen“ ein Hinweis mit Link: Freistellungsbescheinigung, SOKA-BAU, BG Bau.",
+  "hinweis": null,
+  "views": [
+   {
+    "url": "/unternehmen/team/",
+    "vp": "d",
+    "sel": "footer .cols"
+   }
+  ]
+ },
+ {
+  "id": "MOBIL-01",
+  "seite": "Footer (alle Seiten)",
+  "titel": "Footer-Links mobil antippbar",
+  "aenderung": "Links, Telefon und E-Mail im Footer auf dem Handy mindestens 44 px hoch.",
+  "hinweis": null,
+  "views": [
+   {
+    "url": "/unternehmen/team/",
+    "vp": "m",
+    "sel": "footer .cols",
+    "maxH": 1600
+   }
+  ]
+ }
+]

@@ -1,0 +1,392 @@
+<title>Quirling Entwurf-Abnahme</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: eine Spalte Karten, je Punkt Bisher | Entwurf nebeneinander, darunter Entscheidung und Kommentar */
+:root {
+  --bg: #f4f5fa;
+  --card: #ffffff;
+  --ink: #141a3c;
+  --ink-2: #4a5078;
+  --line: #dcdfec;
+  --navy: #121735;
+  --blue: #3948a4;
+  --blue-soft: #e6e9f6;
+  --ok: #1f7a3a;
+  --ok-soft: #e2f3e7;
+  --chg: #9a5b00;
+  --chg-soft: #fff0d6;
+  --no: #b0122a;
+  --no-soft: #fde4e7;
+  --todo: #c4001c;
+  --head-fg: #ffffff;
+  --head-mut: #c9cff2;
+  --font-head: "Archivo", "Arial Narrow", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e1128; --card: #171b3a; --ink: #e8eaf6; --ink-2: #aab0d6; --line: #2c3263;
+    --navy: #0a0d22; --blue: #9aa6ee; --blue-soft: #222a5c;
+    --ok: #7fd69a; --ok-soft: #173826; --chg: #ffc46b; --chg-soft: #3a2a0f; --no: #ff8a9a; --no-soft: #3d1620; --todo: #ff8a9a;
+    --head-fg: #ffffff; --head-mut: #b7bee9; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e1128; --card: #171b3a; --ink: #e8eaf6; --ink-2: #aab0d6; --line: #2c3263;
+  --navy: #0a0d22; --blue: #9aa6ee; --blue-soft: #222a5c;
+  --ok: #7fd69a; --ok-soft: #173826; --chg: #ffc46b; --chg-soft: #3a2a0f; --no: #ff8a9a; --no-soft: #3d1620; --todo: #ff8a9a;
+  --head-fg: #ffffff; --head-mut: #b7bee9; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { background: var(--bg); color: var(--ink); font: 16px/1.55 var(--font-body); }
+.wrap { max-width: 1240px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.disp { font-family: var(--font-head); font-stretch: 70%; font-weight: 800; text-transform: uppercase; letter-spacing: .01em; line-height: .95; text-wrap: balance; }
+.mono { font-family: var(--font-mono); font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; }
+
+/* Kopf */
+.top { background: var(--navy); color: var(--head-fg); clip-path: polygon(0 0, 100% 0, 100% 100%, 68% calc(100% - 28px), 0 100%); }
+.top .wrap { padding-block: 40px 64px; display: grid; gap: 18px; }
+.top .mono { color: var(--head-mut); }
+.top h1 { margin: 0; font-size: clamp(2.6rem, 6vw, 4.6rem); }
+.top p { margin: 0; max-width: 62ch; color: var(--head-mut); font-size: 1.05rem; }
+.top p b { color: var(--head-fg); font-weight: 600; }
+.rule { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 6px; }
+.rule span { display: inline-flex; align-items: center; gap: 8px; color: var(--head-fg); font-size: .95rem; }
+.rule i { width: 9px; height: 9px; transform: rotate(45deg); background: #9aa6ee; display: inline-block; }
+
+/* Leiste */
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--bg); border-bottom: 1px solid var(--line); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); }
+.bar .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; padding-block: 12px; }
+.count { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.prog { width: 140px; height: 8px; background: var(--line); overflow: hidden; }
+.prog span { display: block; height: 100%; background: var(--blue); width: 0; transition: width .3s; }
+.count b { font-variant-numeric: tabular-nums; }
+.filters { display: flex; flex-wrap: wrap; gap: 6px; }
+.fbtn { font: 500 .9rem var(--font-body); border: 1px solid var(--line); background: var(--card); color: var(--ink); padding: 0 12px; min-height: 36px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+.fbtn[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.fbtn small { font-variant-numeric: tabular-nums; opacity: .75; }
+.bar-r { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+.save-state { font-size: .85rem; color: var(--ink-2); }
+.btn-ghost { font: 500 .9rem var(--font-body); border: 1px solid var(--blue); color: var(--blue); background: transparent; min-height: 36px; padding: 0 12px; cursor: pointer; }
+.note { margin: 14px 0 0; padding: 10px 14px; background: var(--chg-soft); color: var(--ink); border-left: 4px solid var(--chg); font-size: .95rem; }
+
+/* Karten */
+main { display: grid; gap: 28px; padding-block: 28px 64px; }
+.group-h { margin: 18px 0 -8px; font-size: clamp(1.6rem, 3vw, 2.2rem); color: var(--blue); }
+.pt { background: var(--card); border: 1px solid var(--line); display: grid; scroll-margin-top: 80px; }
+.pt[data-status="ok"] { border-color: var(--ok); }
+.pt[data-status="aendern"] { border-color: var(--chg); }
+.pt[data-status="nein"] { border-color: var(--no); }
+.pt-h { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 16px; padding: 18px 20px 6px; }
+.pt-meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; color: var(--ink-2); }
+.id { font: 600 .8rem var(--font-mono); color: var(--card); background: var(--blue); padding: 3px 8px; }
+.sev { font-size: .8rem; padding: 2px 8px; border: 1px solid currentColor; }
+.sev.kritisch { color: var(--no); } .sev.wichtig { color: var(--chg); } .sev.Feinschliff { color: var(--ink-2); }
+.pt h2 { margin: 6px 0 0; font-size: clamp(1.5rem, 2.6vw, 2rem); color: var(--ink); grid-column: 1 / -1; }
+.badge { align-self: start; font: 600 .78rem var(--font-mono); text-transform: uppercase; letter-spacing: .05em; padding: 4px 9px; background: var(--blue-soft); color: var(--ink-2); }
+.badge.ok { background: var(--ok-soft); color: var(--ok); } .badge.aendern { background: var(--chg-soft); color: var(--chg); } .badge.nein { background: var(--no-soft); color: var(--no); }
+.pt-txt { padding: 4px 20px 0; display: grid; gap: 8px; max-width: 80ch; }
+.pt-txt p { margin: 0; }
+.hint { font-size: .95rem; color: var(--todo); }
+.hint::before { content: "Hinweis: "; font-weight: 600; }
+.views { display: grid; gap: 18px; padding: 16px 20px 4px; }
+.cmp { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
+.cmp figure { margin: 0; min-width: 0; display: grid; gap: 6px; align-content: start; }
+.cmp figcaption { display: flex; justify-content: space-between; gap: 8px; color: var(--ink-2); }
+.cmp figcaption b { color: var(--ink); }
+.cmp .neu figcaption b { color: var(--blue); }
+.shot { display: block; width: 100%; padding: 0; border: 1px solid var(--line); background: var(--bg); cursor: zoom-in; max-height: 560px; overflow: hidden; position: relative; }
+.shot.tall::after { content: "Klicken für ganze Ansicht"; position: absolute; left: 0; right: 0; bottom: 0; padding: 18px 8px 8px; font: .8rem var(--font-body); color: var(--ink); background: linear-gradient(transparent, var(--card) 70%); }
+.shot img { display: block; width: 100%; height: auto; }
+.shot.m img { max-width: 390px; margin: 0 auto; }
+.shot:focus-visible, .fbtn:focus-visible, .dec button:focus-visible, textarea:focus-visible, .btn-ghost:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+
+/* Entscheidung */
+.dec { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px 18px; padding: 16px 20px 20px; margin-top: 12px; border-top: 1px solid var(--line); align-items: start; }
+.seg { display: inline-flex; flex-wrap: wrap; gap: 6px; }
+.seg button { font: 600 .92rem var(--font-body); min-height: 44px; padding: 0 14px; border: 1px solid var(--line); background: var(--card); color: var(--ink); cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+.seg button::before { content: ""; width: 8px; height: 8px; transform: rotate(45deg); border: 1.5px solid currentColor; }
+.seg button[data-s="ok"][aria-pressed="true"] { background: var(--ok-soft); color: var(--ok); border-color: var(--ok); }
+.seg button[data-s="aendern"][aria-pressed="true"] { background: var(--chg-soft); color: var(--chg); border-color: var(--chg); }
+.seg button[data-s="nein"][aria-pressed="true"] { background: var(--no-soft); color: var(--no); border-color: var(--no); }
+.seg button[aria-pressed="true"]::before { background: currentColor; }
+.cm { display: grid; gap: 4px; min-width: 0; }
+.cm label { font-size: .85rem; color: var(--ink-2); }
+textarea { width: 100%; min-height: 76px; resize: vertical; font: 16px/1.5 var(--font-body); color: var(--ink); background: var(--bg); border: 1px solid var(--line); padding: 10px 12px; }
+.cm small { color: var(--ink-2); min-height: 1.2em; }
+
+/* Ohne Bild */
+.plain { background: var(--card); border: 1px solid var(--line); }
+.row { display: grid; gap: 8px; padding: 16px 20px; border-top: 1px solid var(--line); }
+.row:first-child { border-top: 0; }
+.row[data-status="ok"] { box-shadow: inset 4px 0 0 var(--ok); } .row[data-status="aendern"] { box-shadow: inset 4px 0 0 var(--chg); } .row[data-status="nein"] { box-shadow: inset 4px 0 0 var(--no); }
+.row h3 { margin: 0; font: 600 1.1rem var(--font-body); }
+.row .why { color: var(--ink-2); font-size: .92rem; }
+.row .dec { padding: 4px 0 0; margin: 0; border: 0; }
+
+.end { background: var(--card); border: 1px solid var(--line); padding: 20px; display: grid; gap: 12px; }
+.end h2 { margin: 0; font-size: 1.9rem; color: var(--blue); }
+
+/* Großansicht */
+.lb { position: fixed; inset: 0; z-index: 50; background: rgb(8 10 28 / .92); display: grid; grid-template-rows: auto 1fr; }
+.lb-bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: calc(10px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) 10px max(16px, env(safe-area-inset-left, 0px)); color: #fff; }
+.lb-bar .t { font-weight: 600; margin-right: auto; }
+.lb-bar button { font: 600 .9rem var(--font-body); min-height: 40px; padding: 0 14px; border: 1px solid #ffffff55; background: transparent; color: #fff; cursor: pointer; }
+.lb-bar button[aria-pressed="true"] { background: #fff; color: #121735; }
+.lb-stage { overflow: auto; padding: 0 16px 24px; text-align: center; }
+.lb-stage img { max-width: 100%; height: auto; }
+@media (max-width: 760px) {
+  .cmp { grid-template-columns: minmax(0, 1fr); }
+  .dec { grid-template-columns: minmax(0, 1fr); }
+  .bar-r { margin-left: 0; }
+  .bar { position: static; }
+  .prog { width: 90px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <span class="mono">Quirling GmbH · Website-Audit · Entwurf</span>
+    <h1 class="disp">Entwurf-Abnahme</h1>
+    <p>Alle sichtbaren Vorschläge aus dem Audit, als Entwurf umgesetzt. <b>Nichts davon ist live.</b> Links siehst du die Website heute, rechts den Entwurf. Rote Felder im Entwurf sind Angaben, die noch fehlen.</p>
+    <div class="rule"><span><i></i>Je Punkt entscheiden: übernehmen, ändern oder verwerfen</span><span><i></i>Kommentar dazuschreiben</span><span><i></i>Ich setze erst um, wenn du mir im Chat Bescheid gibst</span></div>
+  </div>
+</header>
+
+<div class="bar">
+  <div class="wrap">
+    <div class="count"><div class="prog" aria-hidden="true"><span id="prog"></span></div><span><b id="done">0</b> von <b id="total">0</b> entschieden</span></div>
+    <div class="filters" role="group" aria-label="Nach Entscheidung filtern">
+      <button class="fbtn" data-f="alle" aria-pressed="true">Alle</button>
+      <button class="fbtn" data-f="offen" aria-pressed="false">Offen <small id="c-offen">0</small></button>
+      <button class="fbtn" data-f="ok" aria-pressed="false">Übernehmen <small id="c-ok">0</small></button>
+      <button class="fbtn" data-f="aendern" aria-pressed="false">Ändern <small id="c-aendern">0</small></button>
+      <button class="fbtn" data-f="nein" aria-pressed="false">Verwerfen <small id="c-nein">0</small></button>
+    </div>
+    <div class="bar-r"><span class="save-state" id="saveState" aria-live="polite">Lädt …</span><button class="btn-ghost" id="copyAll" type="button">Alles als Text kopieren</button></div>
+  </div>
+</div>
+
+<div class="wrap">
+  <p class="note" id="localNote" hidden>Gemeinsames Speichern ist in dieser Ansicht nicht verfügbar. Deine Eingaben bleiben nur in diesem Browser. Öffne die Seite auf claude.ai, oder kopiere am Ende alles als Text und schick es mir im Chat.</p>
+  <main id="list" aria-live="off"></main>
+</div>
+
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="Großansicht">
+  <div class="lb-bar">
+    <span class="t" id="lbT"></span>
+    <button type="button" id="lbAlt" aria-pressed="false">Bisher</button>
+    <button type="button" id="lbNeu" aria-pressed="true">Entwurf</button>
+    <button type="button" id="lbClose">Schließen</button>
+  </div>
+  <div class="lb-stage"><img id="lbImg" alt=""></div>
+</div>
+
+<script>
+const DATA = {"sichtbar": [{"id": "START-01", "seite": "Startseite", "titel": "Hero-Unterzeile: Was, Wo, Für wen", "aenderung": "Unterzeile nennt Leistung, Ort, Familienbetrieb und Zielgruppen; etwas größer und kräftiger.", "hinweis": null, "schwere": "wichtig", "views": [{"n": 1, "geraet": "Desktop"}, {"n": 2, "geraet": "Handy"}]}, {"id": "START-02", "seite": "Startseite", "titel": "Sie statt du im Knopf", "aenderung": "„Kennste uns schon?“ wird zu „Lernen Sie uns kennen“.", "hinweis": null, "schwere": "Feinschliff", "views": [{"n": 1, "geraet": "Desktop"}]}, {"id": "START-03", "seite": "Startseite", "titel": "Leistungen nicht dreimal nennen", "aenderung": "Stichwort-Liste unter „Was wir bauen.“ entfällt, der Übergangstext ist kürzer. Die drei Leistungsbänder folgen direkt.", "hinweis": null, "schwere": "wichtig", "views": [{"n": 1, "geraet": "Desktop"}]}, {"id": "START-04", "seite": "Startseite", "titel": "Belege statt austauschbarer Werte", "aenderung": "„Persönlich · Verbindlich · Sorgfältig“ wird zu „Eigene Poliere · Eigene Schalung · Kollegen seit 30+ Jahren“.", "hinweis": null, "schwere": "wichtig", "views": [{"n": 1, "geraet": "Desktop"}]}, {"id": "START-05", "seite": "Startseite", "titel": "Film-Abschnitt mobil kürzer", "aenderung": "Scrollweg der Logo-Animation auf dem Handy von 155 % auf 115 % Bildschirmhöhe. Bild zeigt die Länge des Abschnitts (verkleinert).", "hinweis": "Wirkt erst beim Scrollen; bitte auf dem Handy im Entwurf testen.", "schwere": "Feinschliff", "views": [{"n": 1, "geraet": "Handy"}]}, {"id": "START-06", "seite": "Startseite", "titel": "Zahlen-Beschriftung mobil lesbarer", "aenderung": "Text unter 1992 / 150+ / 10 auf dem Handy 16 statt 14,4 px.", "hinweis": null, "schwere": "Feinschliff", "views": [{"n": 1, "geraet": "Handy"}]}, {"id": "LEIST-01", "seite": "Rohbau", "titel": "Größenordnung nennen", "aenderung": "Neuer Satz unter der Einleitung: typische Projektgröße und Baustellen gleichzeitig.", "hinweis": "Rote Felder = Zahlen fehlen, bitte liefern.", "schwere": "wichtig", "views": [{"n": 1, "geraet": "Desktop"}]}, {"id": "LOCAL-02", "seite": "Alle Leistungsseiten", "titel": "Einsatzgebiet mit Orten", "aenderung": "Satz mit Orten aus euren Referenzen (Harburg, Norderstedt, Buchholz i. d. N., Bad Oldesloe) auf allen drei Leistungsseiten.", "hinweis": null, "schwere": "wichtig", "views": [{"n": 1, "geraet": "Desktop"}]}, {"id": "LEIST-03", "seite": "Alle Seitenköpfe", "titel": "Seitenkopf mobil ruhiger", "aenderung": "Dunkle Fläche reicht auf dem Handy bis unter den Text und ist etwas dichter; Einleitung kräftiger.", "hinweis": null, "schwere": "wichtig", "views": [{"n": 1, "geraet": "Handy"}, {"n": 2, "geraet": "Handy"}]}, {"id": "SF-02", "seite": "Schlüsselfertig", "titel": "H1 ohne Trennstrich", "aenderung": "„Schlüssel-fertiges Bauen“ wird zu „Schlüsselfertig bauen.“", "hinweis": null, "schwere": "Feinschliff", "views": [{"n": 1, "geraet": "Desktop"}]}, {"id": "UMBAU-01", "seite": "Umbau", "titel": "Denkmalschutz nur mit Beleg", "aenderung": "„auch unter Denkmalschutz“ entfällt, bis ein Referenzprojekt das belegt.", "hinweis": null, "schwere": "Feinschliff", "views": [{"n": 1, "geraet": "Desktop"}]}, {"id": "REF-01", "seite": "Referenzen", "titel": "Eigene Seite je Projekt", "aenderung": "Jedes der 37 Projekte bekommt eine eigene Adresse (z. B. /referenzen/abteistrasse/) mit Titel, Eckdaten, Bildern, Anfrage-Knopf und weiteren Projekten. Das Seitenfenster bleibt und verlinkt dorthin.", "hinweis": "Neue Seiten, deshalb links das bisherige Seitenfenster, rechts die neue Projektseite.", "schwere": "wichtig", "views": [{"n": 1, "geraet": "Desktop"}]}, {"id": "REF-04", "seite": "Referenzen", "titel": "Filter leichter antippbar", "aenderung": "Filter-Reiter und Filter-Knöpfe mindestens 44 px hoch.", "hinweis": null, "schwere": "Feinschliff", "views": [{"n": 1, "geraet": "Handy"}]}, {"id": "UEBER-01", "seite": "Über uns", "titel": "Zeitleiste besser lesbar", "aenderung": "Grau der Jahreszahlen und noch nicht eingefärbten Wörter von 1,7:1 auf 3,5:1 Kontrast.", "hinweis": "Bild zeigt den Moment während des Scrollens.", "schwere": "wichtig", "views": [{"n": 1, "geraet": "Desktop"}]}, {"id": "UEBER-02", "seite": "Über uns", "titel": "Eigene Überschrift", "aenderung": "„Bauen liegt in der Familie.“ (steht schon auf der Startseite) wird zu „Vom Gerüst zum eigenen Betrieb.“", "hinweis": null, "schwere": "Feinschliff", "views": [{"n": 1, "geraet": "Desktop"}]}, {"id": "TEXT-01", "seite": "Team · Über uns", "titel": "Seitenköpfe ohne Formel", "aenderung": "„eingespieltes Team aus jungen und erfahrenen Kollegen“ ersetzt durch konkrete Sätze.", "hinweis": null, "schwere": "Feinschliff", "views": [{"n": 1, "geraet": "Desktop"}, {"n": 2, "geraet": "Desktop"}]}, {"id": "TEAM-01", "seite": "Team", "titel": "Direkt erreichbar, Polier mit Namen", "aenderung": "Knöpfe für Durchwahl und E-Mail je Ansprechpartner; in „Unsere Mannschaft“ ein Satz zum Polier.", "hinweis": "Rote Felder = Durchwahlen, E-Mails, Name und Jahr fehlen.", "schwere": "wichtig", "views": [{"n": 1, "geraet": "Desktop"}, {"n": 2, "geraet": "Desktop"}]}, {"id": "ZERT-01", "seite": "Zertifikate", "titel": "Stand-Datum je Nachweis", "aenderung": "Hinter jedem PDF steht „Stand MM/JJJJ“.", "hinweis": "Datum folgt mit den aktuellen PDFs.", "schwere": "wichtig", "views": [{"n": 1, "geraet": "Desktop"}]}, {"id": "KARR-01", "seite": "Karriere", "titel": "Lohn und Arbeitszeit sichtbar", "aenderung": "In der Stelle drei Eckdaten-Schilder: Stundenlohn, Wochenstunden, Urlaub. Kurztext ohne „eingespielt“.", "hinweis": "Rote Felder = Zahlen fehlen.", "schwere": "wichtig", "views": [{"n": 1, "geraet": "Desktop"}]}, {"id": "KARR-02", "seite": "Karriere", "titel": "Schneller Bewerbungsweg", "aenderung": "Zusätzlich zu den vollständigen Unterlagen: großer Anruf-Knopf und Rückruf-Formular (Name, Telefon, Beruf).", "hinweis": "Formular sendet im Entwurf noch nicht.", "schwere": "wichtig", "views": [{"n": 1, "geraet": "Desktop"}, {"n": 2, "geraet": "Handy"}]}, {"id": "KONTAKT-02", "seite": "Kontakt", "titel": "Bürozeiten und Antwortzeit", "aenderung": "Seitenkopf und Telefonblock nennen Uhrzeiten und Antwortzeit.", "hinweis": "Rote Felder = Zeiten bitte bestätigen.", "schwere": "wichtig", "views": [{"n": 1, "geraet": "Desktop"}, {"n": 2, "geraet": "Desktop"}]}, {"id": "KONTAKT-03", "seite": "Kontakt", "titel": "Ablauf nach der Anfrage", "aenderung": "Drei kurze Schritte neben dem Formular: Vorhaben schildern, Rückmeldung, Termin und Angebot.", "hinweis": null, "schwere": "Feinschliff", "views": [{"n": 1, "geraet": "Desktop"}]}, {"id": "KONTAKT-01", "seite": "Kontakt", "titel": "Bestätigung nach dem Absenden", "aenderung": "Nach erfolgreichem Versand ersetzt eine Bestätigung das Formular. Knopf heißt „Anfrage senden“.", "hinweis": "Echter Versand braucht noch einen Formulardienst (deine Entscheidung). Rechts: Zustand nach dem Absenden.", "schwere": "kritisch", "views": [{"n": 1, "geraet": "Desktop"}]}, {"id": "DS-02", "seite": "Datenschutz", "titel": "Überschrift sauber trennen", "aenderung": "„DATENSCHUTZERK / LÄRUNG“ wird zu „DATENSCHUTZ- / ERKLÄRUNG“.", "hinweis": null, "schwere": "wichtig", "views": [{"n": 1, "geraet": "Desktop"}, {"n": 2, "geraet": "Handy"}]}, {"id": "VERTRAUEN-01", "seite": "Footer (alle Seiten)", "titel": "Nachweise im Footer", "aenderung": "Unter „Unternehmen“ ein Hinweis mit Link: Freistellungsbescheinigung, SOKA-BAU, BG Bau.", "hinweis": null, "schwere": "wichtig", "views": [{"n": 1, "geraet": "Desktop"}]}, {"id": "MOBIL-01", "seite": "Footer (alle Seiten)", "titel": "Footer-Links mobil antippbar", "aenderung": "Links, Telefon und E-Mail im Footer auf dem Handy mindestens 44 px hoch.", "hinweis": null, "schwere": "wichtig", "views": [{"n": 1, "geraet": "Handy"}]}], "ohne": [{"id": "RECHT-01", "titel": "Datenschutzerklärung fertigstellen", "grund": "braucht Formulardienst und rechtliche Prüfung", "vorschlag": "Text fertigstellen (Formulardienst, Stand-Datum), Hinweisbox entfernen und rechtlich prüfen lassen.", "schwere": "kritisch"}, {"id": "RECHT-02", "titel": "USt-IdNr. im Impressum", "grund": "braucht die echte Nummer", "vorschlag": "Echte USt-IdNr. eintragen (src/data/site.ts → platzhalter.ustId). Impressum rechtlich prüfen lassen.", "schwere": "kritisch"}, {"id": "SEO-01", "titel": "sitemap.xml und robots.txt", "grund": "technisch, nicht sichtbar", "vorschlag": "@astrojs/sitemap einbinden und public/robots.txt mit Verweis auf die Sitemap anlegen.", "schwere": "kritisch"}, {"id": "SEO-02", "titel": "Weiterleitungen der 57 alten Adressen", "grund": "technisch; Hosting-Frage offen", "vorschlag": "Weiterleitungstabelle alt → neu anlegen (Liste in audit/daten/alt-urls.txt). Auf GitHub Pages nur per Meta-Refresh möglich (Redirect.astro ist vorhanden); besser ein Hosting mit echten 301-Weiterleitungen (z. B. Netlify oder Cloudflare Pages).", "schwere": "kritisch"}, {"id": "SEO-03", "titel": "Seitentitel mit „Hamburg“", "grund": "nur im Browser-Tab und bei Google sichtbar", "vorschlag": "Titel nach Muster „<Leistung> in Hamburg | Quirling Bauunternehmen“, z. B. „Rohbau & Stahlbetonbau in Hamburg | Quirling Bauunternehmen“, „Referenzen: Rohbau und Umbau in Hamburg | Quirling“.", "schwere": "wichtig"}, {"id": "SEO-04", "titel": "Vorschaubild für geteilte Links", "grund": "nur beim Teilen sichtbar; Bild auswählen", "vorschlag": "Standard-Vorschaubild (1200 × 630 px, Baustelle mit Logo) in Base.astro setzen, je Leistungsseite eigenes Bild. SITE_URL=https://quirling.de und BASE_PATH=/ beim Livegang setzen.", "schwere": "wichtig"}, {"id": "LOCAL-01", "titel": "Strukturierte Daten (Öffnungszeiten, JobPosting …)", "grund": "technisch; braucht Öffnungszeiten", "vorschlag": "LocalBusiness/GeneralContractor ergänzen (openingHours, geo, logo, image, areaServed als Liste: Hamburg, Norderstedt, Buchholz i. d. N., Bad Oldesloe – die Orte aus den Referenzen), BreadcrumbList aus den sichtbaren Brotkrumen, JobPosting auf der Karriereseite.", "schwere": "wichtig"}, {"id": "SF-01", "titel": "Neuere Schlüsselfertig-Referenzen", "grund": "braucht Projekte von dir", "vorschlag": "Neuere schlüsselfertige Projekte ergänzen (Frage an dich) oder das Jahr in der Kachel weglassen.", "schwere": "wichtig"}, {"id": "REF-02", "titel": "Einheitlicher Projekt-Steckbrief", "grund": "braucht Projektdaten von dir", "vorschlag": "Einheitlicher Steckbrief je Projekt: Ort, Jahr, Leistung, Größenordnung (WE, m², Geschosse), Auftraggeber (sofern freigegeben). Projekte ab 2020 ergänzen (Frage an dich).", "schwere": "wichtig"}, {"id": "REF-03", "titel": "Kachelbilder mobil kleiner laden", "grund": "technisch, nicht sichtbar", "vorschlag": "sizes auf „(min-width: 1100px) 30vw, 50vw“ ändern.", "schwere": "wichtig"}, {"id": "PERF-01", "titel": "Startseite mobil schneller laden", "grund": "technisch, Ladezeit", "vorschlag": "Film-Video erst per JavaScript starten, wenn der Abschnitt nah ist (das autoplay-Attribut hebt preload=\"none\" auf); Hero-Poster (297 KB JPG) als WebP/AVIF; kritisches CSS einbetten. Danach live mit PageSpeed Insights nachmessen.", "schwere": "wichtig"}, {"id": "TYPO-01", "titel": "Feste Schriftgrößen-Skala", "grund": "betrifft jede Seite, eigener Durchgang", "vorschlag": "Feste Skala mit 9 Stufen als CSS-Variablen (siehe Typo-Tabelle), Komponenten darauf umstellen.", "schwere": "wichtig"}, {"id": "TYPO-02", "titel": "Kleinste Schrift, ungenutzte Schriften", "grund": "kaum sichtbar", "vorschlag": "Kleinste Größe 12,8 px (0,8 rem). Ungenutzte Pakete entfernen, Variable korrigieren.", "schwere": "Feinschliff"}, {"id": "TECH-01", "titel": "App-Icon für Handy-Startbildschirm", "grund": "nur auf dem Handy-Startbildschirm", "vorschlag": "apple-touch-icon.png (180 px) und favicon-32.png ergänzen.", "schwere": "Feinschliff"}, {"id": "HEAD-01", "titel": "Footer-Überschriften technisch", "grund": "technisch, nicht sichtbar", "vorschlag": "Als p mit Klasse oder als H2 nur einmal „Navigation“ (visuell unsichtbar) auszeichnen.", "schwere": "Feinschliff"}]};
+const LABEL = { ok: "Übernehmen", aendern: "Ändern", nein: "Verwerfen" };
+const ALL = [...DATA.sichtbar.map((p) => p.id), ...DATA.ohne.map((p) => p.id), "_allgemein"];
+const state = {};     // id -> {status, kommentar}
+let db = null, local = false, filter = "alle";
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+
+function decHtml(id) {
+  return `<div class="dec">
+    <div class="seg" role="group" aria-label="Entscheidung ${id}">
+      ${["ok", "aendern", "nein"].map((s) => `<button type="button" data-s="${s}" data-id="${id}" aria-pressed="false">${LABEL[s]}</button>`).join("")}
+    </div>
+    <div class="cm"><label for="k-${id}">Kommentar zu ${id}</label><textarea id="k-${id}" data-id="${id}" placeholder="Was soll anders sein? (optional)"></textarea><small data-saved="${id}"></small></div>
+  </div>`;
+}
+
+function render() {
+  const list = document.getElementById("list");
+  let html = "", lastSeite = null;
+  for (const p of DATA.sichtbar) {
+    const views = p.views.map((v) => {
+      const m = v.geraet === "Handy" ? " m" : "";
+      const img = (s) => `bilder/${p.id}-${v.n}-${s}.jpg`;
+      return `<div class="cmp">
+        <figure class="alt"><figcaption><b>Bisher</b><span class="mono">${v.geraet}</span></figcaption>
+          <button type="button" class="shot${m}" data-id="${p.id}" data-n="${v.n}" data-s="alt" aria-label="${esc(p.titel)}: bisher, ${v.geraet}, groß anzeigen"><img src="${img("alt")}" alt="Bisher: ${esc(p.titel)} (${v.geraet})" loading="lazy"></button></figure>
+        <figure class="neu"><figcaption><b>Entwurf</b><span class="mono">${v.geraet}</span></figcaption>
+          <button type="button" class="shot${m}" data-id="${p.id}" data-n="${v.n}" data-s="neu" aria-label="${esc(p.titel)}: Entwurf, ${v.geraet}, groß anzeigen"><img src="${img("neu")}" alt="Entwurf: ${esc(p.titel)} (${v.geraet})" loading="lazy"></button></figure>
+      </div>`;
+    }).join("");
+    if (p.seite !== lastSeite) { html += `<h2 class="group-h disp" data-group="${esc(p.seite)}">${esc(p.seite)}</h2>`; lastSeite = p.seite; }
+    html += `<article class="pt" id="${p.id}" data-id="${p.id}" data-status="">
+      <div class="pt-h"><div class="pt-meta"><span class="id">${p.id}</span><span class="sev ${p.schwere}">${p.schwere}</span></div><span class="badge" data-badge="${p.id}">Offen</span>
+      <h2 class="disp">${esc(p.titel)}</h2></div>
+      <div class="pt-txt"><p>${esc(p.aenderung)}</p>${p.hinweis ? `<p class="hint">${esc(p.hinweis)}</p>` : ""}</div>
+      <div class="views">${views}</div>
+      ${decHtml(p.id)}
+    </article>`;
+  }
+  html += `<h2 class="group-h disp">Ohne sichtbaren Entwurf</h2>
+    <p style="margin:0;color:var(--ink-2);max-width:70ch">Diese Punkte sind technisch, nur bei Google sichtbar oder brauchen erst Angaben von dir. Du kannst sie trotzdem freigeben oder kommentieren.</p>
+    <section class="plain">${DATA.ohne.map((p) => `<div class="row" id="${p.id}" data-id="${p.id}" data-status="">
+      <div class="pt-meta"><span class="id">${p.id}</span><span class="sev ${p.schwere}">${p.schwere}</span><span class="badge" data-badge="${p.id}">Offen</span></div>
+      <h3>${esc(p.titel)}</h3><p class="why" style="margin:0">${esc(p.vorschlag)} <i>(${esc(p.grund)})</i></p>
+      ${decHtml(p.id)}</div>`).join("")}</section>
+    <section class="end" data-id="_allgemein"><h2 class="disp">Allgemeine Anmerkungen</h2>
+      <div class="cm"><label for="k-_allgemein">Was dir sonst noch auffällt</label><textarea id="k-_allgemein" data-id="_allgemein" placeholder="z. B. Reihenfolge, Prioritäten, fehlende Punkte"></textarea><small data-saved="_allgemein"></small></div>
+      <p style="margin:0;color:var(--ink-2)">Fertig? Schreib mir im Chat „Kommentare sind drin“. Ich lese alles hier aus und setze erst danach um.</p></section>`;
+  list.innerHTML = html;
+  document.getElementById("total").textContent = ALL.length - 1;
+  list.querySelectorAll(".shot img").forEach((im) => im.addEventListener("load", () => { if (im.naturalHeight / im.naturalWidth * im.clientWidth > 560) im.parentElement.classList.add("tall"); }, { once: true }));
+}
+
+function paint(id) {
+  const s = state[id] || {};
+  document.querySelectorAll(`.seg button[data-id="${id}"]`).forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.s === s.status)));
+  const card = document.querySelector(`[data-id="${id}"].pt, [data-id="${id}"].row`);
+  if (card) card.dataset.status = s.status || "";
+  const badge = document.querySelector(`[data-badge="${id}"]`);
+  if (badge) { badge.textContent = s.status ? LABEL[s.status] : "Offen"; badge.className = "badge " + (s.status || ""); }
+  const ta = document.getElementById("k-" + id);
+  if (ta && document.activeElement !== ta && ta.value !== (s.kommentar || "")) ta.value = s.kommentar || "";
+}
+function counts() {
+  const c = { offen: 0, ok: 0, aendern: 0, nein: 0 };
+  ALL.filter((i) => i !== "_allgemein").forEach((i) => c[state[i]?.status || "offen"]++);
+  for (const k in c) document.getElementById("c-" + k).textContent = c[k];
+  const done = c.ok + c.aendern + c.nein, tot = ALL.length - 1;
+  document.getElementById("done").textContent = done;
+  document.getElementById("prog").style.width = (done / tot * 100) + "%";
+  applyFilter();
+}
+function applyFilter() {
+  document.querySelectorAll(".pt, .row").forEach((el) => {
+    const st = state[el.dataset.id]?.status || "offen";
+    el.hidden = !(filter === "alle" || filter === st);
+  });
+  document.querySelectorAll(".group-h[data-group]").forEach((h) => {
+    let n = h.nextElementSibling, any = false;
+    while (n && !n.classList.contains("group-h")) { if (n.classList.contains("pt") && !n.hidden) any = true; n = n.nextElementSibling; }
+    h.hidden = !any;
+  });
+}
+
+/* Speichern: eine Schreibung pro Dokument zur Zeit, Eingaben gebündelt */
+const chains = {}, timers = {};
+const saveState = (t) => (document.getElementById("saveState").textContent = t);
+function persist(id) {
+  const body = { status: state[id]?.status || "", kommentar: state[id]?.kommentar || "", geaendert: new Date().toISOString() };
+  const mark = document.querySelector(`[data-saved="${id}"]`);
+  if (local || !db) {
+    try { localStorage.setItem("quirling-abnahme", JSON.stringify(state)); } catch {}
+    if (mark) mark.textContent = "Lokal gespeichert";
+    saveState("Lokal gespeichert");
+    return;
+  }
+  saveState("Speichert …");
+  chains[id] = (chains[id] || Promise.resolve()).then(() => db.doc("bewertungen/" + id).set(body)).then(() => {
+    if (mark) mark.textContent = "Gespeichert";
+    saveState("Alles gespeichert");
+  }).catch((e) => {
+    if (mark) mark.textContent = "Nicht gespeichert. Bitte Text kopieren und im Chat schicken.";
+    saveState("Speichern fehlgeschlagen");
+  });
+}
+
+document.addEventListener("click", (e) => {
+  const b = e.target.closest(".seg button");
+  if (b) {
+    const id = b.dataset.id;
+    state[id] = state[id] || {};
+    state[id].status = state[id].status === b.dataset.s ? "" : b.dataset.s;
+    paint(id); counts(); persist(id); return;
+  }
+  const f = e.target.closest(".fbtn");
+  if (f) { filter = f.dataset.f; document.querySelectorAll(".fbtn").forEach((x) => x.setAttribute("aria-pressed", String(x === f))); applyFilter(); return; }
+  const s = e.target.closest(".shot");
+  if (s) openLb(s.dataset.id, s.dataset.n, s.dataset.s);
+});
+document.addEventListener("input", (e) => {
+  const ta = e.target.closest("textarea[data-id]");
+  if (!ta) return;
+  const id = ta.dataset.id;
+  state[id] = state[id] || {};
+  state[id].kommentar = ta.value;
+  const mark = document.querySelector(`[data-saved="${id}"]`);
+  if (mark) mark.textContent = "…";
+  clearTimeout(timers[id]);
+  timers[id] = setTimeout(() => persist(id), 900);
+});
+document.addEventListener("focusout", (e) => {
+  const ta = e.target.closest?.("textarea[data-id]");
+  if (ta && timers[ta.dataset.id]) { clearTimeout(timers[ta.dataset.id]); delete timers[ta.dataset.id]; persist(ta.dataset.id); }
+});
+
+/* Großansicht mit Umschalter Bisher/Entwurf */
+let lbCur = null;
+const lb = document.getElementById("lb");
+function openLb(id, n, s) {
+  lbCur = { id, n, s };
+  const p = DATA.sichtbar.find((x) => x.id === id);
+  document.getElementById("lbT").textContent = `${id} · ${p.titel}`;
+  showLb(); lb.hidden = false; document.getElementById(s === "alt" ? "lbAlt" : "lbNeu").focus();
+}
+function showLb() {
+  document.getElementById("lbImg").src = `bilder/${lbCur.id}-${lbCur.n}-${lbCur.s}.jpg`;
+  document.getElementById("lbImg").alt = lbCur.s === "alt" ? "Bisher" : "Entwurf";
+  document.getElementById("lbAlt").setAttribute("aria-pressed", String(lbCur.s === "alt"));
+  document.getElementById("lbNeu").setAttribute("aria-pressed", String(lbCur.s === "neu"));
+}
+document.getElementById("lbAlt").onclick = () => { lbCur.s = "alt"; showLb(); };
+document.getElementById("lbNeu").onclick = () => { lbCur.s = "neu"; showLb(); };
+document.getElementById("lbClose").onclick = () => (lb.hidden = true);
+document.addEventListener("keydown", (e) => {
+  if (lb.hidden) return;
+  if (e.key === "Escape") lb.hidden = true;
+  if (e.key === " " || e.key === "ArrowLeft" || e.key === "ArrowRight") { e.preventDefault(); lbCur.s = lbCur.s === "alt" ? "neu" : "alt"; showLb(); }
+});
+
+/* Alles als Text */
+document.getElementById("copyAll").onclick = async () => {
+  const lines = ["Entwurf-Abnahme Quirling", ""];
+  [...DATA.sichtbar, ...DATA.ohne].forEach((p) => {
+    const s = state[p.id] || {};
+    lines.push(`${p.id} (${p.titel}): ${s.status ? LABEL[s.status] : "offen"}${s.kommentar ? " – " + s.kommentar : ""}`);
+  });
+  if (state._allgemein?.kommentar) lines.push("", "Allgemein: " + state._allgemein.kommentar);
+  const txt = lines.join("\n");
+  const btn = document.getElementById("copyAll");
+  try { await navigator.clipboard.writeText(txt); btn.textContent = "Kopiert"; }
+  catch { const ta = document.createElement("textarea"); ta.value = txt; ta.style.minHeight = "200px"; btn.after(ta); ta.select(); btn.textContent = "Text markiert, bitte kopieren"; }
+  setTimeout(() => (btn.textContent = "Alles als Text kopieren"), 2500);
+};
+
+/* Start */
+render();
+ALL.forEach(paint); counts();
+(async () => {
+  db = window.claude?.use ? await window.claude.use("db").catch(() => null) : null;
+  if (!db) {
+    local = true;
+    document.getElementById("localNote").hidden = false;
+    try { Object.assign(state, JSON.parse(localStorage.getItem("quirling-abnahme") || "{}")); } catch {}
+    ALL.forEach(paint); counts(); saveState("Nur in diesem Browser");
+    return;
+  }
+  const t = setTimeout(() => saveState("Gespeicherte Kommentare noch nicht erreichbar"), 10000);
+  db.collection("bewertungen").onSnapshot((snap) => {
+    if (!snap.metadata.fromCache) { clearTimeout(t); saveState(snap.metadata.hasPendingWrites ? "Speichert …" : "Alles gespeichert"); }
+    snap.docs.forEach((d) => {
+      const v = d.data() || {};
+      const ta = document.getElementById("k-" + d.id);
+      const typing = ta && document.activeElement === ta;
+      state[d.id] = { status: v.status || "", kommentar: typing ? state[d.id]?.kommentar ?? "" : v.kommentar || "" };
+      paint(d.id);
+    });
+    counts();
+  }, () => { clearTimeout(t); saveState("Gespeicherte Kommentare nicht erreichbar"); });
+})();
+</script>

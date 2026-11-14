@@ -1,0 +1,1676 @@
+From 5c6ca9dd0c1b2925edb1c8ab2463a51a8cad83b1 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 14 Nov 2026 19:47:11 +0000
+Subject: [PATCH 01/28] =?UTF-8?q?Entwurf=20START-01:=20Hero-Unterzeile=20m?=
+ =?UTF-8?q?it=20Was,=20Wo,=20F=C3=BCr=20wen=20und=20gr=C3=B6=C3=9Fer?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01W93HGYbfEaymZuLQAoHCgt
+---
+ node_modules                  |  1 +
+ src/components/HomePage.astro | 10 +++++-----
+ 2 files changed, 6 insertions(+), 5 deletions(-)
+ create mode 120000 node_modules
+
+diff --git a/node_modules b/node_modules
+new file mode 120000
+index 0000000..813aec7
+--- /dev/null
++++ b/node_modules
+@@ -0,0 +1 @@
++/home/user/Quirling/node_modules
+\ No newline at end of file
+diff --git a/src/components/HomePage.astro b/src/components/HomePage.astro
+index 13141bb..2bedc49 100644
+--- a/src/components/HomePage.astro
++++ b/src/components/HomePage.astro
+@@ -118,7 +118,7 @@ const werte = [
+     <div class="hero-cut" aria-hidden="true"></div>
+     <div class="container hero-content">
+       <h1 class="hero-title">Was wir<br />zusagen,<br /><span class="lt">steht.</span></h1>
+-      <p class="hero-sub">Rohbau, schlüsselfertiges Bauen und Umbau in Hamburg. Seit {GRUENDUNGSJAHR}.</p>
++      <p class="hero-sub">Rohbau in Beton und Stahlbeton, schlüsselfertige Häuser und Umbauten in Hamburg. Familienbetrieb seit {GRUENDUNGSJAHR}, für Bauträger, Planer und private Bauherren.</p>
+       <div class="hero-cta">
+         <a class="pill fill" href={url('/kontakt/')}><span>Projekt anfragen</span><Icon name="arrow" /></a>
+         <a class="pill light" href={url('/referenzen/')}><span>Referenzen ansehen</span><Icon name="arrow" /></a>
+@@ -415,9 +415,9 @@ const werte = [
+ 
+   .hero-sub {
+     margin: 0 0 2rem;
+-    max-width: 24rem;
+-    font-size: clamp(1.05rem, 1.3vw, 1.25rem);
+-    font-weight: 300;
++    max-width: 30rem;
++    font-size: clamp(1.15rem, 1.5vw, 1.375rem);
++    font-weight: 400;
+     line-height: 1.5;
+     color: rgb(255 255 255 / 0.9);
+   }
+@@ -1519,7 +1519,7 @@ const werte = [
+       gap: 1.6rem;
+     }
+     .hero-sub {
+-      max-width: 19rem;
++      max-width: 22rem;
+     }
+     .fg strong {
+       font-size: clamp(1.7rem, 7.4vw, 2.4rem);
+-- 
+2.43.0
+
+
+From 589bd2ff614ddcc229ef4725e3b975cc56475393 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 14 Nov 2026 19:47:11 +0000
+Subject: [PATCH 02/28] Entwurf START-02: Sie-Ansprache im Knopf
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01W93HGYbfEaymZuLQAoHCgt
+---
+ src/components/HomePage.astro | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/components/HomePage.astro b/src/components/HomePage.astro
+index 2bedc49..694ba7e 100644
+--- a/src/components/HomePage.astro
++++ b/src/components/HomePage.astro
+@@ -136,7 +136,7 @@ const werte = [
+           Mannschaft, vom Fundament bis zur letzten Decke.
+         </p>
+         <a class="block-btn" href={url('/unternehmen/')}>
+-          <span>Kennste uns schon?</span>
++          <span>Lernen Sie uns kennen</span>
+           <Icon name="arrow" />
+         </a>
+       </div>
+-- 
+2.43.0
+
+
+From ec5885182d93ee3a64a64c1f9537b2a39e802386 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 14 Nov 2026 19:47:19 +0000
+Subject: [PATCH 03/28] =?UTF-8?q?Entwurf=20START-03:=20dritte=20Nennung=20?=
+ =?UTF-8?q?der=20Leistungen=20entfernt,=20=C3=9Cbergangstext=20gek=C3=BCrz?=
+ =?UTF-8?q?t?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01W93HGYbfEaymZuLQAoHCgt
+---
+ src/components/HomePage.astro | 14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
+
+diff --git a/src/components/HomePage.astro b/src/components/HomePage.astro
+index 694ba7e..c78c501 100644
+--- a/src/components/HomePage.astro
++++ b/src/components/HomePage.astro
+@@ -154,20 +154,10 @@ const werte = [
+       <div class="ov-top">
+         <h2 id="svc-h" class="svc-head" data-follow data-svc-head>Was wir <span class="lt">bauen.</span></h2>
+         <p class="ov-p">
+-          Vom ersten Spatenstich bis zur Schlüsselübergabe: Wir übernehmen den Rohbau in Beton und Stahlbeton, bauen auf Wunsch schlüsselfertig und
+-          bringen Bestandsgebäude wieder in Form. Immer mit eigener Mannschaft und einem festen Ansprechpartner.
++          Drei Leistungen, ein Ansprechpartner: Rohbau in Beton und Stahlbeton, schlüsselfertige Häuser und Umbauten im Bestand. Ausgeführt von
++          unserer eigenen Mannschaft.
+         </p>
+       </div>
+-      <!-- nur Stichworte, davor jeweils eine kleine Raute -->
+-      <div class="ov">
+-        {
+-          leistungen.map((l) => (
+-            <a class="ov-col" href={url(`/leistungen/${l.slug}/`)} data-follow>
+-              <h3 class="ov-t" set:html={l.title} />
+-            </a>
+-          ))
+-        }
+-      </div>
+     </div>
+   </section>
+ 
+-- 
+2.43.0
+
+
+From 3a3c070ff3862037db2bc1264ebfbce868cdacf1 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 14 Nov 2026 19:47:26 +0000
+Subject: [PATCH 04/28] Entwurf START-04: Belege statt austauschbarer Werte
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01W93HGYbfEaymZuLQAoHCgt
+---
+ src/components/HomePage.astro | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/components/HomePage.astro b/src/components/HomePage.astro
+index c78c501..70a3786 100644
+--- a/src/components/HomePage.astro
++++ b/src/components/HomePage.astro
+@@ -89,17 +89,17 @@ const zahlen = [
+ const werte = [
+   {
+     icon: 'familie',
+-    t: 'Persönlich',
++    t: 'Eigene Poliere',
+     d: 'Sie sprechen direkt mit denen, die entscheiden.',
+   },
+   {
+     icon: 'dialog',
+-    t: 'Verbindlich',
++    t: 'Eigene Schalung',
+     d: 'Klare Absprachen, feste Termine.',
+   },
+   {
+     icon: 'hammer',
+-    t: 'Sorgfältig',
++    t: 'Kollegen seit 30+ Jahren',
+     d: 'Sauber bis zum Schluss.',
+   },
+ ] as const;
+-- 
+2.43.0
+
+
+From d9bed158adb5f4a54712bd7a82b3e108914a68ce Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 14 Nov 2026 19:47:26 +0000
+Subject: [PATCH 05/28] =?UTF-8?q?Entwurf=20START-05:=20Film-Abschnitt=20mo?=
+ =?UTF-8?q?bil=20k=C3=BCrzer?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01W93HGYbfEaymZuLQAoHCgt
+---
+ src/components/HomePage.astro | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/components/HomePage.astro b/src/components/HomePage.astro
+index 70a3786..b8ac459 100644
+--- a/src/components/HomePage.astro
++++ b/src/components/HomePage.astro
+@@ -1631,7 +1631,7 @@ const werte = [
+     }
+ 
+     .film {
+-      height: 155svh;
++      height: 115svh;
+     }
+     .film-sticky {
+       height: 100svh;
+-- 
+2.43.0
+
+
+From db9a7366d47cdd0dced7024024e22230dfe07659 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 14 Nov 2026 19:47:26 +0000
+Subject: [PATCH 06/28] Entwurf START-06: Zahlen-Beschriftung mobil 16 px
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01W93HGYbfEaymZuLQAoHCgt
+---
+ src/components/HomePage.astro | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/components/HomePage.astro b/src/components/HomePage.astro
+index b8ac459..b8eff1b 100644
+--- a/src/components/HomePage.astro
++++ b/src/components/HomePage.astro
+@@ -1515,7 +1515,7 @@ const werte = [
+       font-size: clamp(1.7rem, 7.4vw, 2.4rem);
+     }
+     .fg p {
+-      font-size: 0.9rem;
++      font-size: 1rem;
+     }
+     .job-in {
+       display: grid;
+-- 
+2.43.0
+
+
+From 9b211fc8b619e114a9dd12bf3236e02ee11859bf Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 14 Nov 2026 19:47:55 +0000
+Subject: [PATCH 07/28] =?UTF-8?q?Entwurf=20LEIST-01:=20Gr=C3=B6=C3=9Fenord?=
+ =?UTF-8?q?nung=20auf=20der=20Rohbau-Seite=20(Zahlen=20als=20Platzhalter)?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01W93HGYbfEaymZuLQAoHCgt
+---
+ src/components/LeistungSeite.astro | 29 ++++++++++++++++++++++++++++-
+ src/data/leistungen-seiten.ts      |  1 +
+ 2 files changed, 29 insertions(+), 1 deletion(-)
+
+diff --git a/src/components/LeistungSeite.astro b/src/components/LeistungSeite.astro
+index c0cdcf0..afd0275 100644
+--- a/src/components/LeistungSeite.astro
++++ b/src/components/LeistungSeite.astro
+@@ -10,6 +10,7 @@ import { getCollection } from 'astro:content';
+ import Base from '~/layouts/Base.astro';
+ import PageHero from '~/components/PageHero.astro';
+ import Icon from '~/components/Icon.astro';
++import Todo from '~/components/Todo.astro';
+ import { leistungen } from '~/data/site';
+ import { leistungBild } from '~/data/leistung-bilder';
+ import { url } from '~/lib/url';
+@@ -22,6 +23,8 @@ export interface LeistungDaten {
+   hero: { title: string; light?: string; intro: string; alt: string; pos?: string };
+   introTitel: [string, string];
+   lead: string;
++  groesse?: string;
++  gebiet?: string;
+   usp: Punkt[];
+   umfangTitel: [string, string];
+   umfang: Punkt[];
+@@ -37,6 +40,8 @@ interface Props {
+   d: LeistungDaten;
+ }
+ const { d } = Astro.props;
++/** Text mit [Platzhaltern]: eckige Klammern werden als rote Todo-Marke gezeigt */
++const teile = (s: string) => s.split(/(\[[^\]]+\])/).filter(Boolean);
+ 
+ const hero = await leistungBild(d.slug, 'hero');
+ const bild = await leistungBild(d.slug, 'text');
+@@ -66,6 +71,12 @@ const andere = await Promise.all(
+       <div class="rb-intro-text">
+         <h2 class="h-sec">{d.introTitel[0]}<br /><span class="lt">{d.introTitel[1]}</span></h2>
+         <p class="rb-lead">{d.lead}</p>
++        {(d.groesse || d.gebiet) && (
++          <div class="rb-note">
++            {d.groesse && <p>{teile(d.groesse).map((t) => (t.startsWith('[') ? <Todo>{t}</Todo> : t))}</p>}
++            {d.gebiet && <p>{d.gebiet}</p>}
++          </div>
++        )}
+         <ul class="rb-usp">
+           {
+             d.usp.map((u) => (
+@@ -232,9 +243,24 @@ const andere = await Promise.all(
+     max-width: 36ch;
+     padding-top: 1.4rem;
+   }
++  .rb-note {
++    grid-column: 1 / 7;
++    grid-row: 3;
++    max-width: 44ch;
++    padding-top: 1.2rem;
++    display: grid;
++    gap: 0.6rem;
++  }
++  .rb-note p {
++    margin: 0;
++    font-size: 1.05rem;
++    font-weight: 400;
++    line-height: 1.55;
++    color: var(--ink);
++  }
+   .rb-usp {
+     grid-column: 8 / 13;
+-    grid-row: 1 / 3;
++    grid-row: 1 / 4;
+     align-self: center;
+     list-style: none;
+     margin: 0;
+@@ -561,6 +587,7 @@ const andere = await Promise.all(
+     }
+     .rb-intro-text .h-sec,
+     .rb-intro-text .rb-lead,
++    .rb-note,
+     .rb-usp {
+       grid-column: 1 / -1;
+       grid-row: auto;
+diff --git a/src/data/leistungen-seiten.ts b/src/data/leistungen-seiten.ts
+index 096f552..0540a66 100644
+--- a/src/data/leistungen-seiten.ts
++++ b/src/data/leistungen-seiten.ts
+@@ -41,6 +41,7 @@ export const rohbau: LeistungDaten = {
+     { t: 'Eigener Bauhof', d: 'Lager, Werkstatt und Fuhrpark: Material und Gerät sind da, wenn die Baustelle sie braucht.' },
+   ],
+   eigenAlt: 'Systemschalung mit Quirling-Logo auf einer Baustelle',
++  groesse: 'Typisch für uns: Mehrfamilienhäuser bis [X] Wohneinheiten mit Tiefgarage, [Y] Baustellen gleichzeitig.',
+   refsLabel: 'Alle Rohbau-Referenzen',
+   cta: ['Sie planen einen Rohbau', 'in der Metropolregion Hamburg?'],
+   ctaBtn: 'Rohbau anfragen',
+-- 
+2.43.0
+
+
+From 3463aa5feaeedfa78e4b25f668eafe6ce016c3c3 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 14 Nov 2026 19:47:55 +0000
+Subject: [PATCH 08/28] Entwurf LOCAL-02: Einsatzgebiet mit Orten aus den
+ Referenzen auf allen Leistungsseiten
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01W93HGYbfEaymZuLQAoHCgt
+---
+ src/data/leistungen-seiten.ts | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/src/data/leistungen-seiten.ts b/src/data/leistungen-seiten.ts
+index 0540a66..754f196 100644
+--- a/src/data/leistungen-seiten.ts
++++ b/src/data/leistungen-seiten.ts
+@@ -42,6 +42,7 @@ export const rohbau: LeistungDaten = {
+   ],
+   eigenAlt: 'Systemschalung mit Quirling-Logo auf einer Baustelle',
+   groesse: 'Typisch für uns: Mehrfamilienhäuser bis [X] Wohneinheiten mit Tiefgarage, [Y] Baustellen gleichzeitig.',
++  gebiet: 'Wir bauen in ganz Hamburg und im Umland, zum Beispiel in Harburg, Norderstedt, Buchholz i. d. N. und Bad Oldesloe.',
+   refsLabel: 'Alle Rohbau-Referenzen',
+   cta: ['Sie planen einen Rohbau', 'in der Metropolregion Hamburg?'],
+   ctaBtn: 'Rohbau anfragen',
+@@ -83,6 +84,7 @@ export const schluesselfertig: LeistungDaten = {
+     { t: 'Festpreis und Übergabetermin', d: 'Was im Vertrag steht, gilt: der Preis und der Tag, an dem Sie einziehen.' },
+   ],
+   eigenAlt: 'Schlüsselfertig gebautes Doppelhaus am Tegelweg',
++  gebiet: 'Wir bauen in ganz Hamburg und im Umland, zum Beispiel in Harburg, Norderstedt, Buchholz i. d. N. und Bad Oldesloe.',
+   refsLabel: 'Alle schlüsselfertigen Referenzen',
+   cta: ['Sie planen ein Haus', 'in der Metropolregion Hamburg?'],
+   ctaBtn: 'Neubau anfragen',
+@@ -124,6 +126,7 @@ export const umbau: LeistungDaten = {
+     { t: 'Rücksicht auf Nachbarn', d: 'Eine aufgeräumte Baustelle und klare Absprachen halten Lärm und Ärger gering.' },
+   ],
+   eigenAlt: 'Umgebaute Stadtvilla in der Oberstraße',
++  gebiet: 'Wir bauen in ganz Hamburg und im Umland, zum Beispiel in Harburg, Norderstedt, Buchholz i. d. N. und Bad Oldesloe.',
+   refsLabel: 'Alle Umbau-Referenzen',
+   cta: ['Sie planen einen Umbau', 'in der Metropolregion Hamburg?'],
+   ctaBtn: 'Umbau anfragen',
+-- 
+2.43.0
+
+
+From f4ec6135930be92dbe6df94e4c45d398a19ec46c Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 14 Nov 2026 19:48:12 +0000
+Subject: [PATCH 09/28] =?UTF-8?q?Entwurf=20LEIST-03:=20Seitenkopf=20mobil?=
+ =?UTF-8?q?=20ruhiger,=20Text=20vollst=C3=A4ndig=20auf=20dunkler=20Fl?=
+ =?UTF-8?q?=C3=A4che?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01W93HGYbfEaymZuLQAoHCgt
+---
+ src/components/PageHero.astro | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/src/components/PageHero.astro b/src/components/PageHero.astro
+index be40def..f32fb94 100644
+--- a/src/components/PageHero.astro
++++ b/src/components/PageHero.astro
+@@ -169,7 +169,12 @@ const { eyebrow, title, titleLight, intro, image, imageAlt = '', crumbs = [], si
+     }
+     .phero-slab {
+       width: 100%;
+-      clip-path: polygon(0 0, 100% 0, 100% 62%, 0 88%);
++      background: rgb(18 23 53 / 0.88);
++      clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
++    }
++    .phero-intro {
++      font-weight: 400;
++      color: rgb(255 255 255 / 0.95);
+     }
+     .phero-title,
+     .phero-intro {
+-- 
+2.43.0
+
+
+From 531f9bd72ccbe2c8501c5409de301c57ece1d63b Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 14 Nov 2026 19:48:12 +0000
+Subject: [PATCH 10/28] Entwurf SF-02: H1 ohne Trennstrich
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01W93HGYbfEaymZuLQAoHCgt
+---
+ src/data/leistungen-seiten.ts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/data/leistungen-seiten.ts b/src/data/leistungen-seiten.ts
+index 754f196..ed0fdf9 100644
+--- a/src/data/leistungen-seiten.ts
++++ b/src/data/leistungen-seiten.ts
+@@ -54,8 +54,8 @@ export const schluesselfertig: LeistungDaten = {
+   description:
+     'Schlüsselfertig bauen in der Metropolregion Hamburg: Ein- und Doppelhäuser sowie Mehrfamilienhäuser, mit Partner-Architekten, festen Partnerfirmen, Festpreis und festem Übergabetermin.',
+   hero: {
+-    title: 'Schlüssel­fertiges',
+-    light: 'Bauen',
++    title: 'Schlüsselfertig',
++    light: 'bauen.',
+     intro: 'Auf Wunsch übernehmen wir Ihr Bauvorhaben komplett. Vom Entwurf bis zur Schlüsselübergabe, mit einem festen Ansprechpartner an Ihrer Seite.',
+     alt: 'Schlüsselfertig gebaute Doppelhäuser am Steinwegel',
+   },
+-- 
+2.43.0
+
+
+From df2ba4ce2a4233216b151bc0e125329ece2ab021 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 14 Nov 2026 19:48:12 +0000
+Subject: [PATCH 11/28] Entwurf UMBAU-01: Denkmalschutz nur mit Beleg nennen
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01W93HGYbfEaymZuLQAoHCgt
+---
+ src/data/leistungen-seiten.ts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/data/leistungen-seiten.ts b/src/data/leistungen-seiten.ts
+index ed0fdf9..bdd3f85 100644
+--- a/src/data/leistungen-seiten.ts
++++ b/src/data/leistungen-seiten.ts
+@@ -121,7 +121,7 @@ export const umbau: LeistungDaten = {
+   ],
+   eigenTitel: ['Altbau kennen.', 'Sauber arbeiten.'],
+   eigen: [
+-    { t: 'Erfahrung mit Altbau', d: 'Stadtvillen und historische Gebäude, auch unter Denkmalschutz: Wir wissen, worauf es bei alter Bausubstanz ankommt.' },
++    { t: 'Erfahrung mit Altbau', d: 'Stadtvillen und historische Gebäude: Wir wissen, worauf es bei alter Bausubstanz ankommt.' },
+     { t: 'Schutz des Bestands', d: 'Was erhalten bleibt, schützen wir sorgfältig, vom Treppenhaus bis zur Fassade.' },
+     { t: 'Rücksicht auf Nachbarn', d: 'Eine aufgeräumte Baustelle und klare Absprachen halten Lärm und Ärger gering.' },
+   ],
+-- 
+2.43.0
+
+
+From 4a276f0999a9ac9e65f2eaf0178dce80e83ce7bd Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 14 Nov 2026 19:48:58 +0000
+Subject: [PATCH 12/28] Entwurf REF-01: eigene Seite je Projekt
+ (/referenzen/<projekt>/), Link aus dem Seitenfenster
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01W93HGYbfEaymZuLQAoHCgt
+---
+ src/pages/referenzen/[id].astro  | 222 +++++++++++++++++++++++++++++++
+ src/pages/referenzen/index.astro |  11 ++
+ 2 files changed, 233 insertions(+)
+ create mode 100644 src/pages/referenzen/[id].astro
+
+diff --git a/src/pages/referenzen/[id].astro b/src/pages/referenzen/[id].astro
+new file mode 100644
+index 0000000..5691e52
+--- /dev/null
++++ b/src/pages/referenzen/[id].astro
+@@ -0,0 +1,222 @@
++---
++/** Eigene Seite je Referenzprojekt (Audit REF-01): auffindbar per Suche, teilbar per Link. */
++import { Image } from 'astro:assets';
++import { getCollection, type CollectionEntry } from 'astro:content';
++import Base from '~/layouts/Base.astro';
++import PageHero from '~/components/PageHero.astro';
++import Icon from '~/components/Icon.astro';
++import { leistungen } from '~/data/site';
++import { url } from '~/lib/url';
++
++export async function getStaticPaths() {
++  const projekte = await getCollection('projekte');
++  return projekte.map((p) => ({ params: { id: p.id }, props: { p } }));
++}
++interface Props {
++  p: CollectionEntry<'projekte'>;
++}
++const { p } = Astro.props;
++const d = p.data;
++const bereich = leistungen.find((l) => l.slug === d.bereich);
++const bereichName = bereich?.title.replace('­', '') ?? '';
++const ort = d.fakten.find((f) => f.label === 'Adresse')?.value.split('\n').pop()?.replace(/^\d{5}\s*/, '') ?? 'Hamburg';
++const beschreibung = `${d.title}: ${d.leistung}. ${bereichName} in ${ort}${d.jahr ? `, fertiggestellt ${d.jahr}` : ''}. Referenz der Quirling GmbH.`;
++const weitere = (await getCollection('projekte', (x) => x.data.bereich === d.bereich && x.id !== p.id)).slice(0, 3);
++---
++
++<Base title={`${d.title}: ${bereichName} in ${ort}`} description={beschreibung}>
++  <PageHero
++    title={d.title}
++    intro={d.leistung}
++    image={d.bilder[0]}
++    imageAlt={`${d.title}, ${d.leistung}`}
++    crumbs={[{ label: 'Referenzen', href: '/referenzen/' }, { label: d.title }]}
++    size="medium"
++  />
++
++  <section class="pj">
++    <div class="container pj-grid">
++      <dl class="pj-facts">
++        <div>
++          <dt>Leistungsbereich</dt>
++          <dd><a href={url(`/leistungen/${d.bereich}/`)}>{bereichName}</a></dd>
++        </div>
++        <div>
++          <dt>Gebäudeart</dt>
++          <dd>{d.kategorien.join(', ')}</dd>
++        </div>
++        {
++          d.fakten.map((f) => (
++            <div>
++              <dt>{f.label}</dt>
++              <dd set:html={f.value.replace(/\n/g, '<br />')} />
++            </div>
++          ))
++        }
++      </dl>
++      <div class="pj-gal">
++        {
++          d.bilder.map((b, i) => (
++            <Image src={b} alt={`${d.title}, Ansicht ${i + 1}`} widths={[600, 1000, 1600]} sizes={i === 0 ? '(min-width: 900px) 62vw, 100vw' : '(min-width: 900px) 31vw, 100vw'} loading={i < 2 ? 'eager' : 'lazy'} />
++          ))
++        }
++      </div>
++    </div>
++  </section>
++
++  <section class="pj-more">
++    <div class="container">
++      <div class="pj-cta">
++        <p>Ähnliches Vorhaben geplant?</p>
++        <a class="pill solid" href={url('/kontakt/')}><span>Projekt anfragen</span><Icon name="arrow" /></a>
++      </div>
++      {
++        weitere.length > 0 && (
++          <>
++            <h2 class="pj-h">Weitere Projekte: {bereichName}</h2>
++            <ul class="pj-tiles">
++              {weitere.map((w) => (
++                <li>
++                  <a href={url(`/referenzen/${w.id}/`)}>
++                    <Image src={w.data.bilder[0]!} alt="" widths={[500, 800]} sizes="(min-width: 900px) 30vw, 100vw" />
++                    <span>{w.data.title}</span>
++                  </a>
++                </li>
++              ))}
++            </ul>
++          </>
++        )
++      }
++      <a class="pj-back" href={url('/referenzen/')}><Icon name="arrow" class="flip" /><span>Alle Referenzen</span></a>
++    </div>
++  </section>
++</Base>
++
++<style>
++  .pj {
++    padding-block: clamp(3rem, 7vw, 6rem);
++  }
++  .pj-grid {
++    display: grid;
++    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
++    gap: clamp(2rem, 4vw, 4rem);
++    align-items: start;
++  }
++  .pj-facts {
++    margin: 0;
++    display: grid;
++    gap: 1.2rem;
++    position: sticky;
++    top: calc(var(--header-h) + 1.5rem);
++  }
++  .pj-facts dt {
++    font-family: var(--font-mono);
++    font-size: 0.8rem;
++    letter-spacing: 0.06em;
++    text-transform: uppercase;
++    color: var(--ink-3);
++  }
++  .pj-facts dd {
++    margin: 0.25rem 0 0;
++    font-size: 1.125rem;
++    line-height: 1.5;
++    color: var(--ink);
++  }
++  .pj-facts a {
++    color: var(--blue);
++  }
++  .pj-gal {
++    display: grid;
++    grid-template-columns: 1fr 1fr;
++    gap: 0.6rem;
++  }
++  .pj-gal :global(img) {
++    width: 100%;
++    height: 100%;
++    aspect-ratio: 4 / 3;
++    object-fit: cover;
++    display: block;
++  }
++  .pj-gal :global(img:first-child) {
++    grid-column: 1 / -1;
++    aspect-ratio: 16 / 9;
++  }
++  .pj-more {
++    padding-block: 0 var(--section);
++  }
++  .pj-cta {
++    display: flex;
++    flex-wrap: wrap;
++    align-items: center;
++    justify-content: space-between;
++    gap: 1rem 2rem;
++    background: var(--navy);
++    color: #fff;
++    padding: clamp(1.6rem, 3vw, 2.4rem) clamp(1.4rem, 3vw, 2.8rem);
++  }
++  .pj-cta p {
++    margin: 0;
++    font-family: var(--font-head);
++    font-stretch: 68%;
++    font-weight: 800;
++    font-size: clamp(1.8rem, 3vw, 2.6rem);
++    text-transform: uppercase;
++    line-height: 1;
++  }
++  .pj-h {
++    margin: clamp(3rem, 6vw, 5rem) 0 1.4rem;
++    font-family: var(--font-head);
++    font-stretch: 68%;
++    font-weight: 800;
++    font-size: clamp(1.6rem, 2.6vw, 2.2rem);
++    text-transform: uppercase;
++    color: var(--navy);
++  }
++  .pj-tiles {
++    list-style: none;
++    margin: 0;
++    padding: 0;
++    display: grid;
++    grid-template-columns: repeat(3, minmax(0, 1fr));
++    gap: 1rem;
++  }
++  .pj-tiles a {
++    display: grid;
++    gap: 0.6rem;
++    text-decoration: none;
++    color: var(--ink);
++    font-weight: 500;
++  }
++  .pj-tiles :global(img) {
++    width: 100%;
++    aspect-ratio: 4 / 3;
++    object-fit: cover;
++    display: block;
++  }
++  .pj-back {
++    display: inline-flex;
++    align-items: center;
++    gap: 0.6rem;
++    min-height: 44px;
++    margin-top: 2rem;
++    font-family: var(--font-mono);
++    font-size: 0.85rem;
++    text-transform: uppercase;
++    letter-spacing: 0.06em;
++    color: var(--blue);
++    text-decoration: none;
++  }
++  .pj-back :global(.flip) {
++    transform: scaleX(-1);
++  }
++  @media (max-width: 900px) {
++    .pj-grid,
++    .pj-tiles {
++      grid-template-columns: minmax(0, 1fr);
++    }
++    .pj-facts {
++      position: static;
++      grid-template-columns: 1fr 1fr;
++    }
++  }
++</style>
+diff --git a/src/pages/referenzen/index.astro b/src/pages/referenzen/index.astro
+index 113e0ed..07f90c6 100644
+--- a/src/pages/referenzen/index.astro
++++ b/src/pages/referenzen/index.astro
+@@ -129,6 +129,7 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
+           <span class="label">{p.data.kategorien.join(' · ')}</span>
+           <h2 class="pp-title">{p.data.title}</h2>
+           <p class="pp-lead">{p.data.leistung}</p>
++          <a class="pp-link" href={url(`/referenzen/${p.id}/`)}>Projektseite öffnen →</a>
+           <dl class="pp-facts">
+             <div>
+               <dt>Leistungsbereich</dt>
+@@ -169,6 +170,16 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
+   :global(:root) {
+     --panel-w: 66.667vw;
+   }
++  .pp-link {
++    display: inline-flex;
++    align-items: center;
++    min-height: 44px;
++    font-family: var(--font-mono);
++    font-size: 0.85rem;
++    letter-spacing: 0.04em;
++    text-transform: uppercase;
++    color: var(--blue);
++  }
+   .fbar {
+     position: sticky;
+     top: var(--fbar-top, 0px);
+-- 
+2.43.0
+
+
+From aab7afd3d942d51b76b81eb7d6f4fc757e62d6e9 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 14 Nov 2026 19:48:58 +0000
+Subject: [PATCH 13/28] =?UTF-8?q?Entwurf=20REF-04:=20Filter-Reiter=20und?=
+ =?UTF-8?q?=20-Kn=C3=B6pfe=20mindestens=2044=20px=20hoch?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01W93HGYbfEaymZuLQAoHCgt
+---
+ src/pages/referenzen/index.astro | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/src/pages/referenzen/index.astro b/src/pages/referenzen/index.astro
+index 07f90c6..7e4d045 100644
+--- a/src/pages/referenzen/index.astro
++++ b/src/pages/referenzen/index.astro
+@@ -207,6 +207,7 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
+     border: 0;
+     background: none;
+     padding: 0.5rem 0.85rem 0.42rem;
++    min-height: 44px;
+     cursor: pointer;
+     font-family: var(--font-mono);
+     font-size: 0.74rem;
+@@ -269,6 +270,7 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
+     background: none;
+     border: 0;
+     padding: 0.7rem 0 0.6rem;
++    min-height: 44px;
+     cursor: pointer;
+     font-family: var(--font-head);
+     font-stretch: 68%;
+-- 
+2.43.0
+
+
+From 60511c4dfba8987fe24974747a0e4b133adf3fbc Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 14 Nov 2026 19:49:13 +0000
+Subject: [PATCH 14/28] Entwurf UEBER-01: Grau der Zeitleiste auf 3,5:1
+ Kontrast
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01W93HGYbfEaymZuLQAoHCgt
+---
+ src/components/Werdegang.astro | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/components/Werdegang.astro b/src/components/Werdegang.astro
+index ef018bc..9f2a764 100644
+--- a/src/components/Werdegang.astro
++++ b/src/components/Werdegang.astro
+@@ -137,7 +137,7 @@ const words = (t: string) => {
+     width: 9px;
+     height: 9px;
+     background: var(--stone-50);
+-    border: 1.5px solid #b9bdd3;
++    border: 1.5px solid #7d83a6;
+     transform: rotate(45deg);
+     transition:
+       background 0.3s ease,
+@@ -151,7 +151,7 @@ const words = (t: string) => {
+     line-height: 0.9;
+     text-transform: uppercase;
+     white-space: nowrap;
+-    color: #b9bdd3;
++    color: #7d83a6;
+     transition:
+       font-size 0.55s var(--ease),
+       color 0.35s ease;
+@@ -228,7 +228,7 @@ const words = (t: string) => {
+   }
+   /* Wort für Wort einfärben (nur mit Bewegung) */
+   .wg.is-live .wg-w {
+-    color: #c3c8de;
++    color: #7d83a6;
+     transition: color 0.25s ease;
+   }
+   .wg.is-live .wg-w.is-on {
+-- 
+2.43.0
+
+
+From a051d3af60bcd31ae04c61bf5c182aedb0b43d39 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 14 Nov 2026 19:49:13 +0000
+Subject: [PATCH 15/28] =?UTF-8?q?Entwurf=20UEBER-02:=20eigene=20=C3=9Cbers?=
+ =?UTF-8?q?chrift=20statt=20Dopplung=20zur=20Startseite?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01W93HGYbfEaymZuLQAoHCgt
+---
+ src/components/Werdegang.astro | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/components/Werdegang.astro b/src/components/Werdegang.astro
+index 9f2a764..888343e 100644
+--- a/src/components/Werdegang.astro
++++ b/src/components/Werdegang.astro
+@@ -37,7 +37,7 @@ const words = (t: string) => {
+   <div class="container wg-in">
+     <div class="wg-side">
+       <div class="wg-sticky">
+-        <h2 class="h-sec" id="wg-h">Bauen liegt<br /><span class="lt">in der Familie.</span></h2>
++        <h2 class="h-sec" id="wg-h">Vom Gerüst<br /><span class="lt">zum eigenen Betrieb.</span></h2>
+         <!-- Leiste mit allen Stationen: aktuelle groß und blau, darunter ihr Wert -->
+         <ol class="wg-rail" aria-hidden="true">
+           <span class="wg-rail-line"><span class="wg-rail-fill" data-wg-fill></span></span>
+-- 
+2.43.0
+
+
+From e8298132419a2e4a23c8dfc279e3ec1d56a479c6 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 14 Nov 2026 19:49:13 +0000
+Subject: [PATCH 16/28] =?UTF-8?q?Entwurf=20TEXT-01:=20Seitenk=C3=B6pfe=20T?=
+ =?UTF-8?q?eam=20und=20=C3=9Cber=20uns=20ohne=20wiederholte=20Formel?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01W93HGYbfEaymZuLQAoHCgt
+---
+ src/pages/unternehmen/index.astro      | 2 +-
+ src/pages/unternehmen/team/index.astro | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/pages/unternehmen/index.astro b/src/pages/unternehmen/index.astro
+index 39af76b..d7ba7f8 100644
+--- a/src/pages/unternehmen/index.astro
++++ b/src/pages/unternehmen/index.astro
+@@ -18,7 +18,7 @@ import Werdegang from '~/components/Werdegang.astro';
+   <PageHero
+     title="Bauen in Hamburg."
+     titleLight={`Seit ${GRUENDUNGSJAHR}.`}
+-    intro="Das Handwerk liegt bei uns in der Familie. Heute bauen wir in Hamburg und Umgebung, mit einem eingespielten Team aus jungen und erfahrenen Kollegen."
++    intro="Schon der Vater des Gründers stand auf dem Gerüst. Seit 1992 bauen wir als eigener Betrieb in Hamburg und Umgebung."
+     image={historisch}
+     imageAlt="Historisches Foto einer Baumannschaft auf einem Gerüst, darunter der Vater unseres Gründers"
+     imagePosition="50% 35%"
+diff --git a/src/pages/unternehmen/team/index.astro b/src/pages/unternehmen/team/index.astro
+index 092e401..37b8c3d 100644
+--- a/src/pages/unternehmen/team/index.astro
++++ b/src/pages/unternehmen/team/index.astro
+@@ -22,7 +22,7 @@ const personen = [
+   <PageHero
+     title="Wir stellen"
+     titleLight="uns vor."
+-    intro="Ein eingespieltes Team aus jungen und erfahrenen Kollegen. Im Büro und auf der Baustelle."
++    intro="Rund zehn Leute, viele seit Jahrzehnten dabei. Hier sehen Sie, wer Ihr Projekt im Büro und auf der Baustelle betreut."
+     image={kopfbild}
+     imageAlt="Zwei Mitarbeiter der Quirling GmbH mit blauen Helmen vor einer Schalung"
+     imagePosition="50% 30%"
+-- 
+2.43.0
+
+
+From 84f69d67957ff79dcea4d23907594f04cc82124d Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 14 Nov 2026 19:49:30 +0000
+Subject: [PATCH 17/28] Entwurf TEAM-01: Durchwahl und E-Mail je
+ Ansprechpartner, Polier namentlich (Platzhalter)
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01W93HGYbfEaymZuLQAoHCgt
+---
+ src/pages/unternehmen/team/index.astro | 29 ++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
+
+diff --git a/src/pages/unternehmen/team/index.astro b/src/pages/unternehmen/team/index.astro
+index 37b8c3d..9ee95f1 100644
+--- a/src/pages/unternehmen/team/index.astro
++++ b/src/pages/unternehmen/team/index.astro
+@@ -4,6 +4,7 @@ import Base from '~/layouts/Base.astro';
+ import PageHero from '~/components/PageHero.astro';
+ import Icon from '~/components/Icon.astro';
+ import QHammer from '~/components/QHammer.astro';
++import Todo from '~/components/Todo.astro';
+ import { url } from '~/lib/url';
+ import mannschaft from '~/assets/team/baustellenteam.jpg';
+ import kopfbild from '~/assets/site/baustelle-team.jpg';
+@@ -45,6 +46,10 @@ const personen = [
+               </div>
+               <h3 class="p-name">{p.name}</h3>
+               <p class="p-role">{p.rolle}</p>
++              <div class="p-contact">
++                <span class="p-btn"><Icon name="phone" /><Todo>Durchwahl</Todo></span>
++                <span class="p-btn"><Icon name="mail" /><Todo>E-Mail</Todo></span>
++              </div>
+             </article>
+           ))
+         }
+@@ -60,6 +65,7 @@ const personen = [
+         Das Herz des Unternehmens sind die Facharbeiter auf der Baustelle. Junge und erfahrene Kollegen, die seit vielen Jahren zusammenarbeiten und
+         sich aufeinander verlassen können. Sie sind der Grund, warum unsere Bauten stehen.
+       </p>
++      <p class="crew-lead"><strong>Ihre Baustelle leitet:</strong> <Todo>Name</Todo>, Polier, seit <Todo>Jahr</Todo> bei Quirling.</p>
+       <div class="crew-cta">
+         <span class="crew-h"><QHammer class="crew-hammer" color="#3948A4" highlight="#9aa6ee" />Bock auf Beton?</span>
+         <a class="crew-btn" href={url('/karriere/')}><span>Mit anpacken</span><Icon name="arrow" /></a>
+@@ -158,6 +164,29 @@ const personen = [
+     font-weight: 300;
+     color: var(--ink-2);
+   }
++  .p-contact {
++    display: flex;
++    flex-wrap: wrap;
++    gap: 0.5rem;
++    margin-top: 0.5rem;
++  }
++  .p-btn {
++    display: inline-flex;
++    align-items: center;
++    gap: 0.5rem;
++    min-height: 44px;
++    padding: 0 0.9rem;
++    border: 1px solid var(--line);
++    font-size: 0.95rem;
++    color: var(--blue);
++  }
++  .p-btn :global(svg) {
++    width: 1rem;
++    height: 1rem;
++  }
++  .crew-lead {
++    font-size: 1.05rem;
++  }
+ 
+   /* Mannschaft: hellblaue Fläche mit Rautenknick oben, Foto rechts randlos */
+   .crew {
+-- 
+2.43.0
+
+
+From 0fe4a83a3c3aa5c21b3918a41e397756b3cf09a1 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 14 Nov 2026 19:49:38 +0000
+Subject: [PATCH 18/28] Entwurf ZERT-01: Stand-Datum je Nachweis (Platzhalter
+ bis zu aktuellen PDFs)
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01W93HGYbfEaymZuLQAoHCgt
+---
+ src/pages/unternehmen/zertifikate/index.astro | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/src/pages/unternehmen/zertifikate/index.astro b/src/pages/unternehmen/zertifikate/index.astro
+index 0afe1f3..7daac09 100644
+--- a/src/pages/unternehmen/zertifikate/index.astro
++++ b/src/pages/unternehmen/zertifikate/index.astro
+@@ -2,6 +2,7 @@
+ import Base from '~/layouts/Base.astro';
+ import PageHero from '~/components/PageHero.astro';
+ import Icon from '~/components/Icon.astro';
++import Todo from '~/components/Todo.astro';
+ import { downloadGruppen, firma } from '~/data/site';
+ import hero from '~/assets/site/handwerk-schalung.jpg';
+ import { url } from '~/lib/url';
+@@ -39,7 +40,7 @@ import { url } from '~/lib/url';
+                   <li>
+                     <a href={url(`/downloads/${d.file}`)} download class="dl">
+                       <span class="dl-title">{d.title}</span>
+-                      <span class="dl-size">PDF · {d.size}</span>
++                      <span class="dl-size">PDF · {d.size} · Stand <Todo>MM/JJJJ</Todo></span>
+                       <span class="dl-icon">
+                         <Icon name="download" />
+                       </span>
+-- 
+2.43.0
+
+
+From 9c9e2e5bb65729b8b67ea4e616c2843ca1a4d9a3 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 14 Nov 2026 19:50:10 +0000
+Subject: [PATCH 19/28] Entwurf KARR-01: Lohn, Wochenstunden und Urlaub
+ sichtbar in der Stelle (Platzhalter)
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01W93HGYbfEaymZuLQAoHCgt
+---
+ src/pages/karriere/index.astro | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/src/pages/karriere/index.astro b/src/pages/karriere/index.astro
+index 06895e8..437b467 100644
+--- a/src/pages/karriere/index.astro
++++ b/src/pages/karriere/index.astro
+@@ -2,6 +2,7 @@
+ import Base from '~/layouts/Base.astro';
+ import PageHero from '~/components/PageHero.astro';
+ import Icon from '~/components/Icon.astro';
++import Todo from '~/components/Todo.astro';
+ import { firma } from '~/data/site';
+ import hero from '~/assets/site/baustelle-team.jpg';
+ 
+@@ -21,12 +22,13 @@ const vorteile = [
+ // Ein Teil ist entweder Fließtext (d) oder eine Liste mit Stichpunkten (punkte).
+ type Teil = { t: string; d?: string | string[]; punkte?: string[] };
+ const adresse = `${firma.strasse}, ${firma.plz} ${firma.ort}`;
+-const stellen: { titel: string; ort: string; art: string[]; kurz: string; teile: Teil[] }[] = [
++const stellen: { titel: string; ort: string; art: string[]; kurz: string; fakten?: string[]; teile: Teil[] }[] = [
+   {
+     titel: 'Beton- und Stahlbetonbauer (m/w/d)',
+     ort: 'Hamburg und Umgebung',
+     art: ['Vollzeit', 'Unbefristet'],
+-    kurz: 'Schalen, bewehren, betonieren: Rohbau mit einem festen, eingespielten Team.',
++    kurz: 'Schalen, bewehren, betonieren: Rohbau mit festem Team und eigenem Polier.',
++    fakten: ['ab [XX] € pro Stunde', '[XX] Std. pro Woche', '[XX] Tage Urlaub'],
+     teile: [
+       {
+         t: 'Wer wir sind',
+@@ -94,6 +96,7 @@ const stellen: { titel: string; ort: string; art: string[]; kurz: string; teile:
+     ],
+   },
+ ];
++const teile = (s: string) => s.split(/(\[[^\]]+\])/).filter(Boolean);
+ const mailFor = (titel: string) => `mailto:${firma.email}?subject=${encodeURIComponent(`Bewerbung: ${titel.replace('\u00ad', '')}`)}`;
+ 
+ ---
+@@ -164,6 +167,9 @@ const mailFor = (titel: string) => `mailto:${firma.email}?subject=${encodeURICom
+                       {a}
+                     </span>
+                   ))}
++                  {j.fakten?.map((f) => (
++                    <span class="job-tag">{teile(f).map((t) => (t.startsWith('[') ? <Todo>{t}</Todo> : t))}</span>
++                  ))}
+                 </span>
+                 <span class="job-i" aria-hidden="true">
+                   <span class="job-i-l job-i-more">Details ansehen</span>
+-- 
+2.43.0
+
+
+From a47723e17d0c01c5030bad74abf5e8b66d4d18a8 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 14 Nov 2026 19:50:10 +0000
+Subject: [PATCH 20/28] =?UTF-8?q?Entwurf=20KARR-02:=20schneller=20Bewerbun?=
+ =?UTF-8?q?gsweg=20per=20Anruf=20oder=20R=C3=BCckruf=20(zus=C3=A4tzlich=20?=
+ =?UTF-8?q?zu=20den=20Unterlagen)?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01W93HGYbfEaymZuLQAoHCgt
+---
+ src/pages/karriere/index.astro | 106 +++++++++++++++++++++++++++++++++
+ 1 file changed, 106 insertions(+)
+
+diff --git a/src/pages/karriere/index.astro b/src/pages/karriere/index.astro
+index 437b467..ce13997 100644
+--- a/src/pages/karriere/index.astro
++++ b/src/pages/karriere/index.astro
+@@ -148,6 +148,27 @@ const mailFor = (titel: string) => `mailto:${firma.email}?subject=${encodeURICom
+           <li>Wir melden uns zeitnah bei dir.</li>
+           <li>Wir lernen uns in einem persönlichen Gespräch kennen.</li>
+         </ul>
++        <div class="quick">
++          <p class="quick-h">Schneller geht's so:</p>
++          <a class="quick-tel" href={firma.telefonHref}><Icon name="phone" /><span>Ruf einfach an: {firma.telefon}</span></a>
++          <form class="quick-form" data-quick>
++            <p class="quick-sub">Oder Rückruf anfordern, Unterlagen kannst du später nachreichen.</p>
++            <label for="kb-name">Name</label>
++            <input id="kb-name" name="name" required autocomplete="name" />
++            <label for="kb-tel">Telefon</label>
++            <input id="kb-tel" name="telefon" type="tel" required autocomplete="tel" />
++            <label for="kb-beruf">Beruf</label>
++            <select id="kb-beruf" name="beruf">
++              <option>Beton- und Stahlbetonbauer</option>
++              <option>Maurer</option>
++              <option>Büro</option>
++              <option>Ausbildung</option>
++              <option>Anderes</option>
++            </select>
++            <button type="submit">Rückruf anfordern</button>
++            <p class="quick-msg" data-quick-msg hidden>Entwurf: Der Versand wird zusammen mit dem Kontaktformular angebunden (KONTAKT-01).</p>
++          </form>
++        </div>
+       </div>
+       <div class="jobs">
+         {
+@@ -203,6 +224,15 @@ const mailFor = (titel: string) => `mailto:${firma.email}?subject=${encodeURICom
+   </section>
+ </Base>
+ 
++<script>
++  // Entwurf: Formular sendet noch nicht, zeigt nur den Hinweis
++  document.querySelector<HTMLFormElement>('[data-quick]')?.addEventListener('submit', (e) => {
++    e.preventDefault();
++    const m = document.querySelector<HTMLElement>('[data-quick-msg]');
++    if (m) m.hidden = false;
++  });
++</script>
++
+ <style>
+   :global(.phero) .hero-btn {
+     margin-top: 1.6rem;
+@@ -232,6 +262,82 @@ const mailFor = (titel: string) => `mailto:${firma.email}?subject=${encodeURICom
+   .jobs-head a {
+     color: var(--blue);
+   }
++  /* Schneller Weg: Anruf oder Rückruf */
++  .quick {
++    display: grid;
++    gap: 0.8rem;
++    margin-top: 1rem;
++    padding: 1.4rem;
++    background: #fff;
++    border: 1px solid var(--line);
++  }
++  .quick-h {
++    margin: 0;
++    font-family: var(--font-head);
++    font-stretch: 68%;
++    font-weight: 800;
++    font-size: 1.5rem;
++    text-transform: uppercase;
++    color: var(--navy);
++  }
++  .quick-tel {
++    display: flex;
++    align-items: center;
++    justify-content: center;
++    gap: 0.6rem;
++    min-height: 52px;
++    background: var(--blue);
++    color: #fff !important;
++    font-weight: 600;
++    text-decoration: none;
++  }
++  .quick-tel :global(svg) {
++    width: 1.1rem;
++    height: 1.1rem;
++  }
++  .quick-form {
++    display: grid;
++    gap: 0.35rem;
++  }
++  .quick-sub {
++    margin: 0.4rem 0 0.4rem;
++    font-size: 1rem;
++    color: var(--ink-2);
++  }
++  .quick-form label {
++    font-family: var(--font-mono);
++    font-size: 0.78rem;
++    text-transform: uppercase;
++    letter-spacing: 0.05em;
++    color: var(--ink-3);
++    margin-top: 0.4rem;
++  }
++  .quick-form input,
++  .quick-form select {
++    min-height: 48px;
++    padding: 0 0.8rem;
++    font: inherit;
++    font-size: 1rem;
++    border: 1px solid #b9bdd3;
++    background: #fff;
++  }
++  .quick-form button {
++    margin-top: 0.8rem;
++    min-height: 52px;
++    border: 0;
++    background: var(--navy);
++    color: #fff;
++    font-family: var(--font-mono);
++    font-size: 0.9rem;
++    letter-spacing: 0.06em;
++    text-transform: uppercase;
++    cursor: pointer;
++  }
++  .quick-msg {
++    margin: 0.4rem 0 0;
++    font-size: 0.95rem;
++    color: var(--blue);
++  }
+   /* Ablauf der Bewerbung: drei kurze Schritte mit Raute */
+   .steps {
+     list-style: none;
+-- 
+2.43.0
+
+
+From a5211f8ef6f6a4fb767ab5b36ef661772c63e77d Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 14 Nov 2026 19:50:38 +0000
+Subject: [PATCH 21/28] =?UTF-8?q?Entwurf=20KONTAKT-02:=20B=C3=BCrozeiten?=
+ =?UTF-8?q?=20und=20Antwortzeit=20(Zeiten=20als=20Platzhalter)?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01W93HGYbfEaymZuLQAoHCgt
+---
+ src/components/PageHero.astro | 3 ++-
+ src/pages/kontakt/index.astro | 5 +++--
+ 2 files changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/src/components/PageHero.astro b/src/components/PageHero.astro
+index f32fb94..5e8404d 100644
+--- a/src/components/PageHero.astro
++++ b/src/components/PageHero.astro
+@@ -6,6 +6,7 @@
+ import { Image } from 'astro:assets';
+ import type { ImageMetadata } from 'astro';
+ import { url } from '~/lib/url';
++import Todo from '~/components/Todo.astro';
+ 
+ interface Crumb {
+   label: string;
+@@ -54,7 +55,7 @@ const { eyebrow, title, titleLight, intro, image, imageAlt = '', crumbs = [], si
+       {title}
+       {titleLight && <span class="lt">{titleLight}</span>}
+     </h1>
+-    {intro && <p class="phero-intro">{intro}</p>}
++    {intro && <p class="phero-intro">{intro.split(/(\[[^\]]+\])/).filter(Boolean).map((t) => (t.startsWith('[') ? <Todo>{t}</Todo> : t))}</p>}
+     <slot />
+   </div>
+ </section>
+diff --git a/src/pages/kontakt/index.astro b/src/pages/kontakt/index.astro
+index 9aedfd7..9bb3c2e 100644
+--- a/src/pages/kontakt/index.astro
++++ b/src/pages/kontakt/index.astro
+@@ -2,6 +2,7 @@
+ import Base from '~/layouts/Base.astro';
+ import PageHero from '~/components/PageHero.astro';
+ import Icon from '~/components/Icon.astro';
++import Todo from '~/components/Todo.astro';
+ import RouteLink from '~/components/RouteLink.astro';
+ import { firma } from '~/data/site';
+ import { url } from '~/lib/url';
+@@ -15,7 +16,7 @@ const anliegen = ['Neubau', 'Rohbau', 'Schlüsselfertig', 'Umbau & Sanierung', '
+   <PageHero
+     title="Sprechen"
+     titleLight="wir."
+-    intro="Wir sind montags bis freitags für Sie erreichbar. Ob erste Idee oder fertige Planung, wir freuen uns auf Ihr Vorhaben."
++    intro="Montag bis Freitag, [7–16] Uhr. Ob erste Idee oder fertige Planung: Schicken Sie uns Ihr Vorhaben, wir antworten innerhalb von [2] Werktagen."
+     image={team}
+     imageAlt="Ivonne Quirling und Michaela Venghaus aus dem Büro der Quirling GmbH"
+     imagePosition="55% 0%"
+@@ -31,7 +32,7 @@ const anliegen = ['Neubau', 'Rohbau', 'Schlüsselfertig', 'Umbau & Sanierung', '
+         <div class="w">
+           <span class="pre">Rufen Sie an</span>
+           <a class="big" href={firma.telefonHref}>{firma.telefon}</a>
+-          <span class="note">Montags bis freitags erreichbar</span>
++          <span class="note">Mo–Fr, <Todo>7–16</Todo> Uhr</span>
+         </div>
+         <div class="w">
+           <span class="pre">Oder schreiben Sie uns</span>
+-- 
+2.43.0
+
+
+From 8ffab5f647e6e4b70f704dd1257a81272364bd6a Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 14 Nov 2026 19:50:38 +0000
+Subject: [PATCH 22/28] =?UTF-8?q?Entwurf=20KONTAKT-03:=20drei=20Schritte?=
+ =?UTF-8?q?=20nach=20der=20Anfrage=20f=C3=BCr=20private=20Bauherren?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01W93HGYbfEaymZuLQAoHCgt
+---
+ src/pages/kontakt/index.astro | 20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
+
+diff --git a/src/pages/kontakt/index.astro b/src/pages/kontakt/index.astro
+index 9bb3c2e..55e6fb6 100644
+--- a/src/pages/kontakt/index.astro
++++ b/src/pages/kontakt/index.astro
+@@ -59,7 +59,12 @@ const anliegen = ['Neubau', 'Rohbau', 'Schlüsselfertig', 'Umbau & Sanierung', '
+     <div class="container ask-in">
+       <div class="ask-head">
+         <h2 class="ask-h">Ihre<br /><span class="lt">Anfrage.</span></h2>
+-        <p>Erzählen Sie uns kurz von Ihrem Vorhaben. Wir melden uns zeitnah bei Ihnen zurück.</p>
++        <p>Erzählen Sie uns kurz von Ihrem Vorhaben. So geht es weiter:</p>
++        <ol class="ablauf">
++          <li>Sie schildern Ihr Vorhaben, gern mit Plänen.</li>
++          <li>Wir melden uns innerhalb von <Todo>2</Todo> Werktagen.</li>
++          <li>Termin vor Ort und Angebot.</li>
++        </ol>
+       </div>
+ 
+       <form class="form" data-form data-endpoint={endpoint} data-mail={firma.email} novalidate>
+@@ -238,6 +243,19 @@ const anliegen = ['Neubau', 'Rohbau', 'Schlüsselfertig', 'Umbau & Sanierung', '
+   .ask-h .lt {
+     color: #c9d0f5;
+   }
++  .ablauf {
++    margin: 0;
++    padding-left: 1.4rem;
++    display: grid;
++    gap: 0.5rem;
++    font-size: 1.05rem;
++    line-height: 1.5;
++    color: rgb(255 255 255 / 0.92);
++  }
++  .ablauf li::marker {
++    font-family: var(--font-mono);
++    color: #aab4ea;
++  }
+   .ask-head p {
+     margin: 0;
+     font-size: 1.125rem;
+-- 
+2.43.0
+
+
+From 33d5d82e20569b53a8dc800c5914b89004f50902 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 14 Nov 2026 19:50:38 +0000
+Subject: [PATCH 23/28] =?UTF-8?q?Entwurf=20KONTAKT-01:=20Best=C3=A4tigung?=
+ =?UTF-8?q?=20nach=20dem=20Absenden=20statt=20nur=20Statuszeile;=20Knopf?=
+ =?UTF-8?q?=20=E2=80=9EAnfrage=20senden=E2=80=9C=20(Formulardienst=20noch?=
+ =?UTF-8?q?=20anzubinden)?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01W93HGYbfEaymZuLQAoHCgt
+---
+ src/pages/kontakt/index.astro | 41 +++++++++++++++++++++++++++++++++--
+ 1 file changed, 39 insertions(+), 2 deletions(-)
+
+diff --git a/src/pages/kontakt/index.astro b/src/pages/kontakt/index.astro
+index 55e6fb6..a8b68f6 100644
+--- a/src/pages/kontakt/index.astro
++++ b/src/pages/kontakt/index.astro
+@@ -119,10 +119,14 @@ const anliegen = ['Neubau', 'Rohbau', 'Schlüsselfertig', 'Umbau & Sanierung', '
+         </div>
+         <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+         <div class="submit">
+-          <button class="send" type="submit"><span>Nachricht senden</span><Icon name="arrow" /></button>
++          <button class="send" type="submit"><span>Anfrage senden</span><Icon name="arrow" /></button>
+           <p class="status" data-status role="status" aria-live="polite"></p>
+         </div>
+       </form>
++      <div class="sent" data-sent hidden tabindex="-1">
++        <p class="sent-h">Danke, Ihre Anfrage ist da.</p>
++        <p>Wir melden uns innerhalb von <Todo>2</Todo> Werktagen bei Ihnen. Eilt es? Rufen Sie uns an: <a href={firma.telefonHref}>{firma.telefon}</a></p>
++      </div>
+     </div>
+   </section>
+ 
+@@ -243,6 +247,32 @@ const anliegen = ['Neubau', 'Rohbau', 'Schlüsselfertig', 'Umbau & Sanierung', '
+   .ask-h .lt {
+     color: #c9d0f5;
+   }
++  .sent {
++    align-self: start;
++    display: grid;
++    gap: 0.8rem;
++    padding: clamp(1.6rem, 3vw, 2.6rem);
++    background: #fff;
++    color: var(--ink);
++    font-size: 1.125rem;
++    line-height: 1.6;
++  }
++  .sent p {
++    margin: 0;
++  }
++  .sent-h {
++    font-family: var(--font-head);
++    font-stretch: 68%;
++    font-weight: 800;
++    font-size: clamp(1.8rem, 3vw, 2.6rem);
++    line-height: 1;
++    text-transform: uppercase;
++    color: var(--navy);
++  }
++  .sent a {
++    color: var(--blue);
++    font-weight: 600;
++  }
+   .ablauf {
+     margin: 0;
+     padding-left: 1.4rem;
+@@ -525,7 +555,14 @@ const anliegen = ['Neubau', 'Rohbau', 'Schlüsselfertig', 'Umbau & Sanierung', '
+         form.reset();
+         form.classList.remove('was-validated');
+         newTask();
+-        say('Vielen Dank! Ihre Nachricht wurde gesendet. Wir melden uns zeitnah bei Ihnen.', 'ok');
++        say('');
++        // Bestätigung ersetzt das Formular
++        const sent = document.querySelector<HTMLElement>('[data-sent]');
++        if (sent) {
++          form.hidden = true;
++          sent.hidden = false;
++          sent.focus();
++        }
+       } catch {
+         say('Leider ist ein Fehler aufgetreten. Bitte schreiben Sie uns direkt per E-Mail.', 'err');
+       }
+-- 
+2.43.0
+
+
+From 10356c0f58138ad2c54ea8f8c878bc640daafc34 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 14 Nov 2026 19:51:00 +0000
+Subject: [PATCH 24/28] =?UTF-8?q?Entwurf=20DS-02:=20=C3=9Cberschrift=20tre?=
+ =?UTF-8?q?nnt=20als=20=E2=80=9EDatenschutz-erkl=C3=A4rung=E2=80=9C?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01W93HGYbfEaymZuLQAoHCgt
+---
+ src/layouts/Legal.astro           | 6 ++++--
+ src/pages/datenschutz/index.astro | 2 +-
+ 2 files changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/src/layouts/Legal.astro b/src/layouts/Legal.astro
+index 4e6827f..08bc6c8 100644
+--- a/src/layouts/Legal.astro
++++ b/src/layouts/Legal.astro
+@@ -4,13 +4,15 @@ import PageHero from '~/components/PageHero.astro';
+ 
+ interface Props {
+   title: string;
++  /** Überschrift mit weicher Trennung, falls das Wort zu lang ist */
++  heading?: string;
+   description?: string;
+ }
+-const { title, description } = Astro.props;
++const { title, heading, description } = Astro.props;
+ ---
+ 
+ <Base title={title} description={description}>
+-  <PageHero title={title} crumbs={[{ label: title }]} size="small" />
++  <PageHero title={heading ?? title} crumbs={[{ label: title }]} size="small" />
+   <section class="legal">
+     <div class="container">
+       <div class="prose">
+diff --git a/src/pages/datenschutz/index.astro b/src/pages/datenschutz/index.astro
+index 0d25945..6c0c232 100644
+--- a/src/pages/datenschutz/index.astro
++++ b/src/pages/datenschutz/index.astro
+@@ -4,7 +4,7 @@ import Todo from '~/components/Todo.astro';
+ import { firma } from '~/data/site';
+ ---
+ 
+-<Legal title="Datenschutzerklärung" description="Datenschutzerklärung der Quirling GmbH Bauunternehmen, Hamburg.">
++<Legal title="Datenschutzerklärung" heading="Datenschutz­erklärung" description="Datenschutzerklärung der Quirling GmbH Bauunternehmen, Hamburg.">
+   <p class="box">
+     Hinweis (wird vor Veröffentlichung entfernt): Diese Datenschutzerklärung ist eine Standardvorlage für die neue Website. Bitte vor dem Livegang
+     rechtlich prüfen lassen bzw. mit einem Generator (z. B. eRecht24) abgleichen.
+-- 
+2.43.0
+
+
+From 4d88b05dcef4d946b1e27d23e68230971fba8752 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 14 Nov 2026 19:51:00 +0000
+Subject: [PATCH 25/28] Entwurf VERTRAUEN-01: Hinweis auf aktuelle Nachweise im
+ Footer
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01W93HGYbfEaymZuLQAoHCgt
+---
+ src/components/Footer.astro | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/src/components/Footer.astro b/src/components/Footer.astro
+index ae67df2..bd78a8c 100644
+--- a/src/components/Footer.astro
++++ b/src/components/Footer.astro
+@@ -59,6 +59,7 @@ const year = new Date().getFullYear();
+           <li><a href={url('/unternehmen/zertifikate/')}>Zertifikate & Downloads</a></li>
+           <li><a href={url('/karriere/')}>Karriere</a></li>
+         </ul>
++        <p class="proof">Freistellungsbescheinigung, SOKA-BAU, BG Bau: <a href={url('/unternehmen/zertifikate/')}>alle Nachweise zum Download</a></p>
+       </div>
+     </div>
+ 
+@@ -208,6 +209,13 @@ const year = new Date().getFullYear();
+     color: #fff;
+     text-decoration: underline;
+   }
++  .proof {
++    margin: 1rem 0 0;
++    max-width: 30ch;
++    font-size: 0.9rem;
++    line-height: 1.5;
++    color: rgb(255 255 255 / 0.7);
++  }
+   .bottom {
+     display: flex;
+     flex-wrap: wrap;
+-- 
+2.43.0
+
+
+From de4fc7a5ccc4ef026ec981c2bcf5e5cc5c858351 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 14 Nov 2026 19:51:01 +0000
+Subject: [PATCH 26/28] =?UTF-8?q?Entwurf=20MOBIL-01:=20Footer-Links=20mobi?=
+ =?UTF-8?q?l=20mit=2044=20px=20Tap-H=C3=B6he?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01W93HGYbfEaymZuLQAoHCgt
+---
+ src/components/Footer.astro | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+
+diff --git a/src/components/Footer.astro b/src/components/Footer.astro
+index bd78a8c..b0c21c5 100644
+--- a/src/components/Footer.astro
++++ b/src/components/Footer.astro
+@@ -249,4 +249,23 @@ const year = new Date().getFullYear();
+       grid-template-columns: 1fr;
+     }
+   }
++  /* Handy: jede Zeile mindestens 44 px hoch antippbar */
++  @media (max-width: 900px) {
++    ul {
++      gap: 0;
++    }
++    .col li a,
++    .fl a,
++    .bottom a {
++      display: inline-flex;
++      align-items: center;
++      min-height: 44px;
++    }
++    .claim-tel,
++    .claim-mail {
++      display: inline-flex !important;
++      align-items: center;
++      min-height: 48px;
++    }
++  }
+ </style>
+-- 
+2.43.0
+
+
+From 2e5298ec13d4e673469777d3df5efed77253069b Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 14 Nov 2026 19:58:49 +0000
+Subject: [PATCH 27/28] Entwurf KONTAKT-01: Formular nach dem Absenden wirklich
+ ausblenden
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01W93HGYbfEaymZuLQAoHCgt
+---
+ src/pages/kontakt/index.astro | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/src/pages/kontakt/index.astro b/src/pages/kontakt/index.astro
+index a8b68f6..cd7f2fe 100644
+--- a/src/pages/kontakt/index.astro
++++ b/src/pages/kontakt/index.astro
+@@ -247,6 +247,9 @@ const anliegen = ['Neubau', 'Rohbau', 'Schlüsselfertig', 'Umbau & Sanierung', '
+   .ask-h .lt {
+     color: #c9d0f5;
+   }
++  .form[hidden] {
++    display: none;
++  }
+   .sent {
+     align-self: start;
+     display: grid;
+-- 
+2.43.0
+
+
+From 6debee300e8390b586f2d422899952965dbdb6d6 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 14 Nov 2026 20:00:00 +0000
+Subject: [PATCH 28/28] Entwurf KONTAKT-01/03: Lesbarkeit Platzhalter und
+ Telefonnummer
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01W93HGYbfEaymZuLQAoHCgt
+---
+ src/pages/kontakt/index.astro | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/pages/kontakt/index.astro b/src/pages/kontakt/index.astro
+index cd7f2fe..ad17037 100644
+--- a/src/pages/kontakt/index.astro
++++ b/src/pages/kontakt/index.astro
+@@ -275,6 +275,10 @@ const anliegen = ['Neubau', 'Rohbau', 'Schlüsselfertig', 'Umbau & Sanierung', '
+   .sent a {
+     color: var(--blue);
+     font-weight: 600;
++    white-space: nowrap;
++  }
++  .ablauf :global(.todo) {
++    background: #fff;
+   }
+   .ablauf {
+     margin: 0;
+-- 
+2.43.0
+
