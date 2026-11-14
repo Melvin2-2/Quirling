@@ -1,0 +1,15 @@
+[
+  { "id": "start", "url": "/", "name": "Startseite" },
+  { "id": "rohbau", "url": "/leistungen/rohbau/", "name": "Rohbau & Stahlbetonbau" },
+  { "id": "schluesselfertig", "url": "/leistungen/schluesselfertiges-bauen/", "name": "Schlüsselfertiges Bauen" },
+  { "id": "umbau", "url": "/leistungen/umbau-sanierung/", "name": "Umbau & Sanierung" },
+  { "id": "referenzen", "url": "/referenzen/", "name": "Referenzen" },
+  { "id": "ueberuns", "url": "/unternehmen/", "name": "Über uns" },
+  { "id": "team", "url": "/unternehmen/team/", "name": "Team" },
+  { "id": "zertifikate", "url": "/unternehmen/zertifikate/", "name": "Zertifikate & Downloads" },
+  { "id": "karriere", "url": "/karriere/", "name": "Karriere" },
+  { "id": "kontakt", "url": "/kontakt/", "name": "Kontakt" },
+  { "id": "impressum", "url": "/impressum/", "name": "Impressum" },
+  { "id": "datenschutz", "url": "/datenschutz/", "name": "Datenschutz" },
+  { "id": "404", "url": "/404.html", "name": "Fehlerseite 404" }
+]
