@@ -3,7 +3,7 @@
  * „Eine Basis, auf die Sie bauen können.“ als Bauzeichnung, die beim Scrollen entsteht:
  * Baugrube und Fundament, dann richtet sich ein Turmdrehkran auf und hebt Decke um Decke ein.
  * Jede Etage trägt eine Zahl. Zum Schluss Richtfest mit der Quirling-Raute auf dem Dach.
- * Der Bau startet, wenn die Zeichnung ins Bild kommt, und ist nach fünf Sekunden fertig.
+ * Der Bau startet, wenn die Zeichnung ins Bild kommt, und ist nach gut vier Sekunden fertig.
  */
 import { firma, JAHRE_ERFAHRUNG, GRUENDUNGSJAHR } from '~/data/site';
 
@@ -263,7 +263,7 @@ const floorBottom = (k: number) => 430 - k * FH; // Unterkante Geschoss k
     )
       .set(q('[data-bp-cols] rect'), { scaleY: 0 }, 0)
       .set(slabs, { autoAlpha: 0 }, 0)
-      .set(one('[data-bp-flag]'), { autoAlpha: 0, scale: 0 }, 0);
+      .set(one('[data-bp-flag]'), { autoAlpha: 0 }, 0);
 
     // 1. Gelände und Fundament, der Kran steht schon
     tl.to('[data-bp] .bp-ground', { strokeDashoffset: 0, duration: 0.6, ease: 'none' }, 0)
@@ -287,7 +287,8 @@ const floorBottom = (k: number) => 430 - k * FH; // Unterkante Geschoss k
         .to(hoist, { y: target, duration: 0.7, ease: 'power2.inOut', onUpdate: placeHoist }, t + 0.35)
         .call(() => (active = null), [], t + 1.05)
         .to(slab.querySelectorAll('.bp-sling'), { autoAlpha: 0, duration: 0.15 }, t + 1.05)
-        .to(hoist, { y: REST, duration: 0.4, ease: 'power2.inOut', onUpdate: placeHoist }, t + 1.08)
+        // zurück in die Ruheposition; nach der letzten Decke langsam und weich, ohne Nachfedern
+        .to(hoist, { y: REST, duration: k === floors.length - 1 ? 0.9 : 0.4, ease: k === floors.length - 1 ? 'sine.inOut' : 'power2.inOut', onUpdate: placeHoist }, t + 1.08)
         .to(f.querySelector('[data-bp-txt]'), { autoAlpha: 1, duration: 0.3 }, t + 1);
       const n = f.querySelector<SVGTSpanElement>('[data-bp-count]');
       if (n) {
@@ -297,9 +298,11 @@ const floorBottom = (k: number) => 430 - k * FH; // Unterkante Geschoss k
       }
     });
 
-    // 3. Richtfest: Raute auf dem Dach, der Haken bleibt in Ruheposition
-    const tEnd = 1.3 + 3 * 1.5;
-    tl.to(one('[data-bp-flag]'), { autoAlpha: 1, scale: 1, duration: 0.5, ease: 'back.out(2)' }, tEnd - 0.1).to({}, { duration: 0.3 }, tEnd + 0.4);
+    // 3. Richtfest: Raute blendet ruhig ein, sobald der Haken steht
+    const tEnd = 1.3 + 2 * 1.5 + 1.08 + 0.9;
+    tl.set(one('[data-bp-flag]'), { scale: 1 }, 0)
+      .to(one('[data-bp-flag]'), { autoAlpha: 1, duration: 0.5, ease: 'power1.out' }, tEnd - 0.2)
+      .to({}, { duration: 0.2 }, tEnd + 0.3);
 
     // Anfangszustand sofort zeigen (leere Zeichnung), damit beim Start nichts springt
     tl.progress(0.001, true).progress(0, true);
@@ -309,8 +312,8 @@ const floorBottom = (k: number) => 430 - k * FH; // Unterkante Geschoss k
       tl.progress(1);
     } else {
       const fig = root.querySelector<HTMLElement>('.bp-fig')!;
-      // der Bau startet, wenn die Zeichnung ins Bild kommt; Gesamtdauer fünf Sekunden
-      tl.duration(5);
+      // der Bau startet, wenn die Zeichnung ins Bild kommt; Gesamtdauer gut vier Sekunden
+      tl.duration(4.2);
       ScrollTrigger.create({
         trigger: fig,
         start: 'top 70%',

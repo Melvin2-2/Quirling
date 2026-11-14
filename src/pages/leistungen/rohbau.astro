@@ -71,8 +71,8 @@ const usp = [
       <div class="rb-intro-text">
         <h2 class="h-sec">Massiv gebaut.<br /><span class="lt">Von Grund auf.</span></h2>
         <p class="rb-lead">
-          Rohbau ist für uns kein Nebengeschäft, sondern seit 1992 unser Kern. Wir bauen Wohnanlagen, Mehrfamilienhäuser mit Tiefgarage sowie Büro- und
-          Lagergebäude in Beton und Stahlbeton, für Bauträger, Projektentwickler und private Bauherren.
+          Rohbau ist seit 1992 unser Kern: Wohnanlagen, Mehrfamilienhäuser mit Tiefgarage, Büro- und Lagergebäude in Beton und Stahlbeton. Für
+          Bauträger, Projektentwickler und private Bauherren.
         </p>
         <ul class="rb-usp">
           {
@@ -220,28 +220,32 @@ const usp = [
     height: 100%;
     object-fit: cover;
   }
+  /* links die große Aussage, rechts Einleitung und die drei Aussagen untereinander */
   .rb-intro-text {
     grid-column: 1 / -1;
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: 1.4rem clamp(2rem, 4vw, 4rem);
-    align-items: end;
+    column-gap: clamp(2rem, 4vw, 4rem);
+    align-items: start;
   }
   .rb-intro-text .h-sec {
     grid-column: 1 / 7;
+    grid-row: 1 / 3;
+    white-space: nowrap;
   }
   .rb-intro-text .rb-lead {
     grid-column: 7 / 13;
-    max-width: 44ch;
+    max-width: 40ch;
+    padding-top: 0.4rem;
   }
   .rb-usp {
-    grid-column: 1 / -1;
+    grid-column: 7 / 13;
     list-style: none;
-    margin: clamp(1.6rem, 3vw, 2.6rem) 0 0;
+    margin: clamp(2.4rem, 4vw, 3.2rem) 0 0;
     padding: 0;
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1.6rem clamp(2rem, 4vw, 4rem);
+    gap: clamp(1.6rem, 2.6vw, 2.2rem);
+    max-width: 46ch;
   }
   .rb-usp p {
     margin: 0;
@@ -322,7 +326,7 @@ const usp = [
   .rb-own-text {
     grid-column: 7 / 13;
     display: grid;
-    gap: clamp(2rem, 3.6vw, 2.8rem);
+    gap: clamp(2.6rem, 4.4vw, 3.6rem);
   }
   .rb-own-text .h-sec {
     color: #fff;
@@ -332,16 +336,16 @@ const usp = [
     margin: 0;
     padding: 0;
     display: grid;
-    gap: clamp(1.8rem, 3vw, 2.4rem);
+    gap: clamp(2.2rem, 3.6vw, 3rem);
   }
   .rb-own .rb-h {
-    margin-bottom: 0.55rem;
-    font-size: clamp(1.8rem, 2.6vw, 2.5rem);
-    line-height: 0.95;
+    margin-bottom: 0.6rem;
+    font-size: clamp(1.45rem, 1.9vw, 1.8rem);
+    line-height: 1;
     color: #9aa6ee;
   }
   .rb-own-list p {
-    max-width: 44ch;
+    max-width: 40ch;
     color: rgb(255 255 255 / 0.85);
   }
 
@@ -560,11 +564,16 @@ const usp = [
       padding-top: 0;
     }
     .rb-intro-text .h-sec,
-    .rb-intro-text .rb-lead {
-      grid-column: 1 / -1;
-    }
+    .rb-intro-text .rb-lead,
     .rb-usp {
-      grid-template-columns: minmax(0, 1fr);
+      grid-column: 1 / -1;
+      grid-row: auto;
+    }
+    .rb-intro-text .h-sec {
+      white-space: normal;
+    }
+    .rb-intro-text .rb-lead {
+      padding-top: 1.4rem;
     }
     .rb-intro {
       padding-bottom: clamp(4rem, 10vw, 5rem);
