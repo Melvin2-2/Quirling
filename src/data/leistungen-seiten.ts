@@ -52,8 +52,8 @@ export const schluesselfertig: LeistungDaten = {
   description:
     'Schlüsselfertig bauen in der Metropolregion Hamburg: Ein- und Doppelhäuser sowie Mehrfamilienhäuser, mit Partner-Architekten, festen Partnerfirmen, Festpreis und festem Übergabetermin.',
   hero: {
-    title: 'Schlüssel­fertiges',
-    light: 'Bauen',
+    title: 'Schlüsselfertig',
+    light: 'bauen.',
     intro: 'Auf Wunsch übernehmen wir Ihr Bauvorhaben komplett. Vom Entwurf bis zur Schlüsselübergabe, mit einem festen Ansprechpartner an Ihrer Seite.',
     alt: 'Schlüsselfertig gebaute Doppelhäuser am Steinwegel',
   },
