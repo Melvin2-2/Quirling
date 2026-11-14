@@ -77,7 +77,7 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
             <li class="tile" data-cats={p.data.kategorien.join('|')} data-bereich={p.data.bereich} data-id={p.id}>
               <a class="tile-in" href={url(`/referenzen/?p=${p.id}`)} data-open={p.id} aria-controls="projekt-panel">
                 <span class="tile-img">
-                  <Image src={p.data.bilder[0]!} alt="" widths={[500, 800, 1200]} sizes="(min-width: 1100px) 30vw, (min-width: 700px) 46vw, 100vw" />
+                  <Image src={p.data.bilder[0]!} alt="" widths={[500, 800, 1200]} sizes="(min-width: 1100px) 30vw, 50vw" />
                 </span>
                 <span class="tile-info">
                   <span class="tile-title">{p.data.title}</span>
