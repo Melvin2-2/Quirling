@@ -34,11 +34,20 @@ window.addEventListener('quirling:unlock', () => lenis?.start());
    data-defer: zusätzlich erst nach dem vollständigen Laden der Seite starten (Hero), Poster steht bis dahin. */
 $$<HTMLVideoElement>('video[data-autoplay]').forEach((v) => {
   if (reduce) {
+    if (v.dataset.poster) v.poster = v.dataset.poster;
     v.pause();
     return;
   }
   const start = () => {
-    const io = new IntersectionObserver(([e]) => (e.isIntersecting ? v.play().catch(() => {}) : v.pause()), { rootMargin: '200px 0px' });
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (!e.isIntersecting) return v.pause();
+        // Posterbild weiter unten auf der Seite erst laden, wenn es gebraucht wird
+        if (v.dataset.poster && !v.poster) v.poster = v.dataset.poster;
+        v.play().catch(() => {});
+      },
+      { rootMargin: '400px 0px' },
+    );
     io.observe(v);
   };
   if (v.hasAttribute('data-defer') && document.readyState !== 'complete') window.addEventListener('load', start, { once: true });

@@ -25,7 +25,7 @@ interface Props {
 }
 const { typo = 'c', noindex = false, title = 'Start' } = Astro.props;
 
-const heroPosterImg = await getImage({ src: heroPoster, width: 1920, format: 'webp', quality: 70 });
+const heroPosterImg = await getImage({ src: heroPoster, width: 1440, format: 'webp', quality: 70 });
 const filmPosterImg = await getImage({ src: filmPoster, width: 1600, format: 'webp', quality: 70 });
 
 /* Leistungen: Bilder folgen der Diagonale der Linie */
@@ -284,7 +284,7 @@ const werte = [
   <section class="film" data-film>
     <div class="film-sticky">
       <div class="film-frame" data-film-frame>
-        <video muted loop playsinline preload="none" poster={filmPosterImg.src} data-autoplay aria-hidden="true">
+        <video muted loop playsinline preload="none" data-poster={filmPosterImg.src} data-autoplay aria-hidden="true">
           <source src={url('/video/film-loop.mp4')} type="video/mp4" />
         </video>
       </div>
