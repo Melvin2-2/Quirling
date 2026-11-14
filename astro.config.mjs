@@ -1,6 +1,7 @@
 // @ts-check
 import process from 'node:process';
 import { defineConfig } from 'astro/config';
+import sitemap from '@astrojs/sitemap';
 
 // GitHub Pages: Projektseite unter https://<user>.github.io/<repo>/
 // Für eine eigene Domain (z. B. quirling.de) SITE_URL=https://www.quirling.de und BASE_PATH=/ setzen.
@@ -16,4 +17,6 @@ export default defineConfig({
     responsiveStyles: false,
   },
   devToolbar: { enabled: false },
+  // Sitemap ohne Weiterleitungs- und Fehlerseiten
+  integrations: [sitemap({ filter: (page) => !/\/leistungen\/$|\/404\/?$/.test(page) })],
 });
