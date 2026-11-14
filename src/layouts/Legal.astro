@@ -4,13 +4,15 @@ import PageHero from '~/components/PageHero.astro';
 
 interface Props {
   title: string;
+  /** Überschrift mit weicher Trennung, falls das Wort zu lang ist */
+  heading?: string;
   description?: string;
 }
-const { title, description } = Astro.props;
+const { title, heading, description } = Astro.props;
 ---
 
 <Base title={title} description={description}>
-  <PageHero title={title} crumbs={[{ label: title }]} size="small" />
+  <PageHero title={heading ?? title} crumbs={[{ label: title }]} size="small" />
   <section class="legal">
     <div class="container">
       <div class="prose">
