@@ -1,0 +1,745 @@
+From a433e9da056abd2c1cfbcf6f8df3fa17bc125e51 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 14 Nov 2026 19:47:26 +0000
+Subject: [PATCH 01/11] START-06: Zahlen-Beschriftung mobil 16 px
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01W93HGYbfEaymZuLQAoHCgt
+---
+ src/components/HomePage.astro | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/components/HomePage.astro b/src/components/HomePage.astro
+index 13141bb..6519d3e 100644
+--- a/src/components/HomePage.astro
++++ b/src/components/HomePage.astro
+@@ -1525,7 +1525,7 @@ const werte = [
+       font-size: clamp(1.7rem, 7.4vw, 2.4rem);
+     }
+     .fg p {
+-      font-size: 0.9rem;
++      font-size: 1rem;
+     }
+     .job-in {
+       display: grid;
+-- 
+2.43.0
+
+
+From 096455f7a9cf06ec85cb864aafc26bd2d87cd0a6 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 14 Nov 2026 19:48:12 +0000
+Subject: [PATCH 02/11] SF-02: H1 ohne Trennstrich
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01W93HGYbfEaymZuLQAoHCgt
+---
+ src/data/leistungen-seiten.ts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/data/leistungen-seiten.ts b/src/data/leistungen-seiten.ts
+index 096f552..ac26032 100644
+--- a/src/data/leistungen-seiten.ts
++++ b/src/data/leistungen-seiten.ts
+@@ -52,8 +52,8 @@ export const schluesselfertig: LeistungDaten = {
+   description:
+     'Schlüsselfertig bauen in der Metropolregion Hamburg: Ein- und Doppelhäuser sowie Mehrfamilienhäuser, mit Partner-Architekten, festen Partnerfirmen, Festpreis und festem Übergabetermin.',
+   hero: {
+-    title: 'Schlüssel­fertiges',
+-    light: 'Bauen',
++    title: 'Schlüsselfertig',
++    light: 'bauen.',
+     intro: 'Auf Wunsch übernehmen wir Ihr Bauvorhaben komplett. Vom Entwurf bis zur Schlüsselübergabe, mit einem festen Ansprechpartner an Ihrer Seite.',
+     alt: 'Schlüsselfertig gebaute Doppelhäuser am Steinwegel',
+   },
+-- 
+2.43.0
+
+
+From cd3577578f2febb33dbd42bbf7addc5c4fe3e802 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 14 Nov 2026 19:48:58 +0000
+Subject: [PATCH 03/11] =?UTF-8?q?REF-04:=20Filter-Reiter=20und=20-Kn=C3=B6?=
+ =?UTF-8?q?pfe=20mindestens=2044=20px=20hoch?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01W93HGYbfEaymZuLQAoHCgt
+---
+ src/pages/referenzen/index.astro | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/src/pages/referenzen/index.astro b/src/pages/referenzen/index.astro
+index 113e0ed..e7b303a 100644
+--- a/src/pages/referenzen/index.astro
++++ b/src/pages/referenzen/index.astro
+@@ -196,6 +196,7 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
+     border: 0;
+     background: none;
+     padding: 0.5rem 0.85rem 0.42rem;
++    min-height: 44px;
+     cursor: pointer;
+     font-family: var(--font-mono);
+     font-size: 0.74rem;
+@@ -258,6 +259,7 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
+     background: none;
+     border: 0;
+     padding: 0.7rem 0 0.6rem;
++    min-height: 44px;
+     cursor: pointer;
+     font-family: var(--font-head);
+     font-stretch: 68%;
+-- 
+2.43.0
+
+
+From d86dc5ab7e3e798b4e62fb6423738db9bccda39c Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 14 Nov 2026 19:49:13 +0000
+Subject: [PATCH 04/11] =?UTF-8?q?UEBER-02:=20eigene=20=C3=9Cberschrift=20s?=
+ =?UTF-8?q?tatt=20Dopplung=20zur=20Startseite?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01W93HGYbfEaymZuLQAoHCgt
+---
+ src/components/Werdegang.astro | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/components/Werdegang.astro b/src/components/Werdegang.astro
+index ef018bc..7a72032 100644
+--- a/src/components/Werdegang.astro
++++ b/src/components/Werdegang.astro
+@@ -37,7 +37,7 @@ const words = (t: string) => {
+   <div class="container wg-in">
+     <div class="wg-side">
+       <div class="wg-sticky">
+-        <h2 class="h-sec" id="wg-h">Bauen liegt<br /><span class="lt">in der Familie.</span></h2>
++        <h2 class="h-sec" id="wg-h">Vom Gerüst<br /><span class="lt">zum eigenen Betrieb.</span></h2>
+         <!-- Leiste mit allen Stationen: aktuelle groß und blau, darunter ihr Wert -->
+         <ol class="wg-rail" aria-hidden="true">
+           <span class="wg-rail-line"><span class="wg-rail-fill" data-wg-fill></span></span>
+-- 
+2.43.0
+
+
+From 21ef26de15209feb802d8bea694ff1606e498441 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 14 Nov 2026 19:49:13 +0000
+Subject: [PATCH 05/11] =?UTF-8?q?TEXT-01:=20Seitenk=C3=B6pfe=20Team=20und?=
+ =?UTF-8?q?=20=C3=9Cber=20uns=20ohne=20wiederholte=20Formel?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01W93HGYbfEaymZuLQAoHCgt
+---
+ src/pages/unternehmen/index.astro      | 2 +-
+ src/pages/unternehmen/team/index.astro | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/pages/unternehmen/index.astro b/src/pages/unternehmen/index.astro
+index 39af76b..d7ba7f8 100644
+--- a/src/pages/unternehmen/index.astro
++++ b/src/pages/unternehmen/index.astro
+@@ -18,7 +18,7 @@ import Werdegang from '~/components/Werdegang.astro';
+   <PageHero
+     title="Bauen in Hamburg."
+     titleLight={`Seit ${GRUENDUNGSJAHR}.`}
+-    intro="Das Handwerk liegt bei uns in der Familie. Heute bauen wir in Hamburg und Umgebung, mit einem eingespielten Team aus jungen und erfahrenen Kollegen."
++    intro="Schon der Vater des Gründers stand auf dem Gerüst. Seit 1992 bauen wir als eigener Betrieb in Hamburg und Umgebung."
+     image={historisch}
+     imageAlt="Historisches Foto einer Baumannschaft auf einem Gerüst, darunter der Vater unseres Gründers"
+     imagePosition="50% 35%"
+diff --git a/src/pages/unternehmen/team/index.astro b/src/pages/unternehmen/team/index.astro
+index 092e401..37b8c3d 100644
+--- a/src/pages/unternehmen/team/index.astro
++++ b/src/pages/unternehmen/team/index.astro
+@@ -22,7 +22,7 @@ const personen = [
+   <PageHero
+     title="Wir stellen"
+     titleLight="uns vor."
+-    intro="Ein eingespieltes Team aus jungen und erfahrenen Kollegen. Im Büro und auf der Baustelle."
++    intro="Rund zehn Leute, viele seit Jahrzehnten dabei. Hier sehen Sie, wer Ihr Projekt im Büro und auf der Baustelle betreut."
+     image={kopfbild}
+     imageAlt="Zwei Mitarbeiter der Quirling GmbH mit blauen Helmen vor einer Schalung"
+     imagePosition="50% 30%"
+-- 
+2.43.0
+
+
+From be9cbe8e8e34ab72bca1dd456046cfc31c6974ea Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 14 Nov 2026 19:51:00 +0000
+Subject: [PATCH 06/11] =?UTF-8?q?DS-02:=20=C3=9Cberschrift=20trennt=20als?=
+ =?UTF-8?q?=20=E2=80=9EDatenschutz-erkl=C3=A4rung=E2=80=9C?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01W93HGYbfEaymZuLQAoHCgt
+---
+ src/layouts/Legal.astro           | 6 ++++--
+ src/pages/datenschutz/index.astro | 2 +-
+ 2 files changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/src/layouts/Legal.astro b/src/layouts/Legal.astro
+index 4e6827f..08bc6c8 100644
+--- a/src/layouts/Legal.astro
++++ b/src/layouts/Legal.astro
+@@ -4,13 +4,15 @@ import PageHero from '~/components/PageHero.astro';
+ 
+ interface Props {
+   title: string;
++  /** Überschrift mit weicher Trennung, falls das Wort zu lang ist */
++  heading?: string;
+   description?: string;
+ }
+-const { title, description } = Astro.props;
++const { title, heading, description } = Astro.props;
+ ---
+ 
+ <Base title={title} description={description}>
+-  <PageHero title={title} crumbs={[{ label: title }]} size="small" />
++  <PageHero title={heading ?? title} crumbs={[{ label: title }]} size="small" />
+   <section class="legal">
+     <div class="container">
+       <div class="prose">
+diff --git a/src/pages/datenschutz/index.astro b/src/pages/datenschutz/index.astro
+index 0d25945..6c0c232 100644
+--- a/src/pages/datenschutz/index.astro
++++ b/src/pages/datenschutz/index.astro
+@@ -4,7 +4,7 @@ import Todo from '~/components/Todo.astro';
+ import { firma } from '~/data/site';
+ ---
+ 
+-<Legal title="Datenschutzerklärung" description="Datenschutzerklärung der Quirling GmbH Bauunternehmen, Hamburg.">
++<Legal title="Datenschutzerklärung" heading="Datenschutz­erklärung" description="Datenschutzerklärung der Quirling GmbH Bauunternehmen, Hamburg.">
+   <p class="box">
+     Hinweis (wird vor Veröffentlichung entfernt): Diese Datenschutzerklärung ist eine Standardvorlage für die neue Website. Bitte vor dem Livegang
+     rechtlich prüfen lassen bzw. mit einem Generator (z. B. eRecht24) abgleichen.
+-- 
+2.43.0
+
+
+From 13756c97ecd02791f9b7d0f599a69bb4f50b04d8 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 14 Nov 2026 20:33:21 +0000
+Subject: [PATCH 07/11] SEO-01: sitemap.xml und robots.txt
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01W93HGYbfEaymZuLQAoHCgt
+---
+ astro.config.mjs        |  3 +++
+ package-lock.json       | 40 ++++++++++++++++++++++++++++++++++++++--
+ package.json            |  1 +
+ src/pages/robots.txt.ts |  8 ++++++++
+ 4 files changed, 50 insertions(+), 2 deletions(-)
+ create mode 100644 src/pages/robots.txt.ts
+
+diff --git a/astro.config.mjs b/astro.config.mjs
+index 70e4017..d8d068a 100644
+--- a/astro.config.mjs
++++ b/astro.config.mjs
+@@ -1,6 +1,7 @@
+ // @ts-check
+ import process from 'node:process';
+ import { defineConfig } from 'astro/config';
++import sitemap from '@astrojs/sitemap';
+ 
+ // GitHub Pages: Projektseite unter https://<user>.github.io/<repo>/
+ // Für eine eigene Domain (z. B. quirling.de) SITE_URL=https://www.quirling.de und BASE_PATH=/ setzen.
+@@ -16,4 +17,6 @@ export default defineConfig({
+     responsiveStyles: false,
+   },
+   devToolbar: { enabled: false },
++  // Sitemap ohne Weiterleitungs- und Fehlerseiten
++  integrations: [sitemap({ filter: (page) => !/\/leistungen\/$|\/404\/?$/.test(page) })],
+ });
+diff --git a/package-lock.json b/package-lock.json
+index b231e39..60681aa 100644
+--- a/package-lock.json
++++ b/package-lock.json
+@@ -8,6 +8,7 @@
+       "name": "quirling-website",
+       "version": "1.0.0",
+       "dependencies": {
++        "@astrojs/sitemap": "^3.7.5",
+         "@fontsource-variable/archivo": "^5.3.0",
+         "@fontsource-variable/geist-mono": "^5.3.0",
+         "@fontsource-variable/ibm-plex-sans": "^5.3.0",
+@@ -354,6 +355,16 @@
+         "node": ">=22.23.4"
+       }
+     },
++    "node_modules/@astrojs/sitemap": {
++      "version": "3.7.5",
++      "resolved": "https://registry.npmjs.org/@astrojs/sitemap/-/sitemap-3.7.5.tgz",
++      "integrity": "sha512-rxSbFcxdcOoVRR02q0aFxyZ6chwXZpUOHMg8e+3iWPo7xYV4hlYBU4ztFd1Xl/pWtr6pe+TVCFKJfyPe0sp8iA==",
++      "license": "MIT",
++      "dependencies": {
++        "sitemap": "^10.0.0",
++        "zod": "^4.6.7"
++      }
++    },
+     "node_modules/@astrojs/telemetry": {
+       "version": "3.4.2",
+       "resolved": "https://registry.npmjs.org/@astrojs/telemetry/-/telemetry-3.4.2.tgz",
+@@ -1770,12 +1781,20 @@
+       "version": "26.6.6",
+       "resolved": "https://registry.npmjs.org/@types/node/-/node-26.6.6.tgz",
+       "integrity": "sha512-MzQj+8Kx3XI40OmUAE6Qoh58ZMNstNNMwn2nfd3qWsfe7nDNSqJNzes4njhz6AHwrSHOffSLwXU6yb474Q4aog==",
+-      "devOptional": true,
+       "license": "MIT",
+       "dependencies": {
+         "undici-types": "~8.9.0"
+       }
+     },
++    "node_modules/@types/sax": {
++      "version": "1.2.7",
++      "resolved": "https://registry.npmjs.org/@types/sax/-/sax-1.2.7.tgz",
++      "integrity": "sha512-rO73L89PJxeYM3s3pPPjiPgVVcymqU490g0YO5n5By0k2Erzj6tay/4lr1CHAAU4JyOWd1rpQ8bCf6cZfHU96A==",
++      "license": "MIT",
++      "dependencies": {
++        "@types/node": "*"
++      }
++    },
+     "node_modules/@types/unist": {
+       "version": "3.0.3",
+       "resolved": "https://registry.npmjs.org/@types/unist/-/unist-3.0.3.tgz",
+@@ -3803,6 +3822,24 @@
+       "integrity": "sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==",
+       "license": "MIT"
+     },
++    "node_modules/sitemap": {
++      "version": "10.0.0",
++      "resolved": "https://registry.npmjs.org/sitemap/-/sitemap-10.0.0.tgz",
++      "integrity": "sha512-KSjl4H4KBEnGX5KXgzInPAycdOFhwLar0EmksDcYn6NqW2O+zLiMGeV2THE6tpuv3LCVdv+6xsSo2SWLGaBDKw==",
++      "license": "MIT",
++      "dependencies": {
++        "@types/node": "^22.0.0 || ^24.0.0 || ^26.0.0",
++        "@types/sax": "^1.2.1",
++        "sax": "^1.4.1"
++      },
++      "bin": {
++        "sitemap": "dist/cli.js"
++      },
++      "engines": {
++        "node": ">=22.22.1",
++        "npm": ">=10.8.2"
++      }
++    },
+     "node_modules/smol-toml": {
+       "version": "1.9.1",
+       "resolved": "https://registry.npmjs.org/smol-toml/-/smol-toml-1.9.1.tgz",
+@@ -4047,7 +4084,6 @@
+       "version": "8.9.0",
+       "resolved": "https://registry.npmjs.org/undici-types/-/undici-types-8.9.0.tgz",
+       "integrity": "sha512-KTDyRTYX8sWmKXAikPHHSyc63CRPETMctyjKFupcC6OBLXT3xsN0e9aF7m+mIXutFWpUXuedtowG7iLOzp0kQg==",
+-      "devOptional": true,
+       "license": "MIT"
+     },
+     "node_modules/unified": {
+diff --git a/package.json b/package.json
+index e060023..c74c2ab 100644
+--- a/package.json
++++ b/package.json
+@@ -10,6 +10,7 @@
+     "check": "astro check"
+   },
+   "dependencies": {
++    "@astrojs/sitemap": "^3.7.5",
+     "@fontsource-variable/archivo": "^5.3.0",
+     "@fontsource-variable/geist-mono": "^5.3.0",
+     "@fontsource-variable/ibm-plex-sans": "^5.3.0",
+diff --git a/src/pages/robots.txt.ts b/src/pages/robots.txt.ts
+new file mode 100644
+index 0000000..5ff095c
+--- /dev/null
++++ b/src/pages/robots.txt.ts
+@@ -0,0 +1,8 @@
++import type { APIRoute } from 'astro';
++
++/** robots.txt mit Verweis auf die Sitemap – Adresse passt sich SITE_URL und BASE_PATH an. */
++export const GET: APIRoute = ({ site }) => {
++  const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
++  const sitemap = new URL(`${base}sitemap-index.xml`, site).href;
++  return new Response(`User-agent: *\nAllow: /\n\nSitemap: ${sitemap}\n`, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
++};
+-- 
+2.43.0
+
+
+From 465103491e04dbe8521ca1f2ee7639941069d494 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 14 Nov 2026 20:33:22 +0000
+Subject: [PATCH 08/11] REF-03: Kachelbilder passend zur zweispaltigen Ansicht
+ laden
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01W93HGYbfEaymZuLQAoHCgt
+---
+ src/pages/referenzen/index.astro | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/pages/referenzen/index.astro b/src/pages/referenzen/index.astro
+index e7b303a..e29fa6e 100644
+--- a/src/pages/referenzen/index.astro
++++ b/src/pages/referenzen/index.astro
+@@ -77,7 +77,7 @@ const bereichName = (slug: string) => leistungen.find((l) => l.slug === slug)?.t
+             <li class="tile" data-cats={p.data.kategorien.join('|')} data-bereich={p.data.bereich} data-id={p.id}>
+               <a class="tile-in" href={url(`/referenzen/?p=${p.id}`)} data-open={p.id} aria-controls="projekt-panel">
+                 <span class="tile-img">
+-                  <Image src={p.data.bilder[0]!} alt="" widths={[500, 800, 1200]} sizes="(min-width: 1100px) 30vw, (min-width: 700px) 46vw, 100vw" />
++                  <Image src={p.data.bilder[0]!} alt="" widths={[500, 800, 1200]} sizes="(min-width: 1100px) 30vw, 50vw" />
+                 </span>
+                 <span class="tile-info">
+                   <span class="tile-title">{p.data.title}</span>
+-- 
+2.43.0
+
+
+From 42cd30c93428be5528b5ae66b8e2ac7a04997f32 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 14 Nov 2026 20:33:41 +0000
+Subject: [PATCH 09/11] PERF-01: Videos erst bei Bedarf laden, Schriften
+ vorladen, Posterbilder als WebP
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01W93HGYbfEaymZuLQAoHCgt
+---
+ src/components/HomePage.astro |  8 ++++----
+ src/layouts/Base.astro        |  4 ++++
+ src/scripts/motion.ts         | 13 +++++++++----
+ 3 files changed, 17 insertions(+), 8 deletions(-)
+
+diff --git a/src/components/HomePage.astro b/src/components/HomePage.astro
+index 6519d3e..dca7a46 100644
+--- a/src/components/HomePage.astro
++++ b/src/components/HomePage.astro
+@@ -25,8 +25,8 @@ interface Props {
+ }
+ const { typo = 'c', noindex = false, title = 'Start' } = Astro.props;
+ 
+-const heroPosterImg = await getImage({ src: heroPoster, width: 1920, format: 'jpg', quality: 70 });
+-const filmPosterImg = await getImage({ src: filmPoster, width: 1600, format: 'jpg', quality: 70 });
++const heroPosterImg = await getImage({ src: heroPoster, width: 1920, format: 'webp', quality: 70 });
++const filmPosterImg = await getImage({ src: filmPoster, width: 1600, format: 'webp', quality: 70 });
+ 
+ /* Leistungen: Bilder folgen der Diagonale der Linie */
+ const svcInfo: Record<string, { text: string; more: string; facts: [PictoName, string][] }> = {
+@@ -109,7 +109,7 @@ const werte = [
+   <!-- ======================= HERO ======================= -->
+   <section class="hero" data-hero>
+     <div class="hero-media">
+-      <video class="hero-video" autoplay muted loop playsinline preload="auto" poster={heroPosterImg.src} data-autoplay aria-hidden="true">
++      <video class="hero-video" muted loop playsinline preload="none" poster={heroPosterImg.src} data-autoplay data-defer aria-hidden="true">
+         <source src={url('/video/hero-540.mp4')} type="video/mp4" media="(max-width: 767px)" />
+         <source src={url('/video/hero-1080.mp4')} type="video/mp4" />
+       </video>
+@@ -284,7 +284,7 @@ const werte = [
+   <section class="film" data-film>
+     <div class="film-sticky">
+       <div class="film-frame" data-film-frame>
+-        <video autoplay muted loop playsinline preload="none" poster={filmPosterImg.src} data-autoplay aria-hidden="true">
++        <video muted loop playsinline preload="none" poster={filmPosterImg.src} data-autoplay aria-hidden="true">
+           <source src={url('/video/film-loop.mp4')} type="video/mp4" />
+         </video>
+       </div>
+diff --git a/src/layouts/Base.astro b/src/layouts/Base.astro
+index ad4e59f..e344cd3 100644
+--- a/src/layouts/Base.astro
++++ b/src/layouts/Base.astro
+@@ -4,6 +4,8 @@ import Header from '~/components/Header.astro';
+ import Footer from '~/components/Footer.astro';
+ import { firma } from '~/data/site';
+ import { url } from '~/lib/url';
++import archivoFont from '@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url';
++import plexFont from '@fontsource-variable/ibm-plex-sans/files/ibm-plex-sans-latin-wght-normal.woff2?url';
+ 
+ interface Props {
+   title: string;
+@@ -56,6 +58,8 @@ const jsonLd = {
+     <meta charset="utf-8" />
+     <meta name="viewport" content="width=device-width, initial-scale=1" />
+     <title>{fullTitle}</title>
++    <link rel="preload" href={archivoFont} as="font" type="font/woff2" crossorigin />
++    <link rel="preload" href={plexFont} as="font" type="font/woff2" crossorigin />
+     <meta name="description" content={description} />
+     <link rel="canonical" href={canonical} />
+     {noindex && <meta name="robots" content="noindex, nofollow" />}
+diff --git a/src/scripts/motion.ts b/src/scripts/motion.ts
+index 87caae7..9b72013 100644
+--- a/src/scripts/motion.ts
++++ b/src/scripts/motion.ts
+@@ -29,15 +29,20 @@ if (!reduce) {
+ window.addEventListener('quirling:lock', () => lenis?.stop());
+ window.addEventListener('quirling:unlock', () => lenis?.start());
+ 
+-/* ---------- Video: nur abspielen, wenn sichtbar ---------- */
++/* ---------- Video: erst laden und abspielen, wenn sichtbar ----------
++   Kein autoplay-Attribut im Markup, damit der Browser die Videos nicht sofort lädt.
++   data-defer: zusätzlich erst nach dem vollständigen Laden der Seite starten (Hero), Poster steht bis dahin. */
+ $$<HTMLVideoElement>('video[data-autoplay]').forEach((v) => {
+   if (reduce) {
+-    v.removeAttribute('autoplay');
+     v.pause();
+     return;
+   }
+-  const io = new IntersectionObserver(([e]) => (e.isIntersecting ? v.play().catch(() => {}) : v.pause()));
+-  io.observe(v);
++  const start = () => {
++    const io = new IntersectionObserver(([e]) => (e.isIntersecting ? v.play().catch(() => {}) : v.pause()), { rootMargin: '200px 0px' });
++    io.observe(v);
++  };
++  if (v.hasAttribute('data-defer') && document.readyState !== 'complete') window.addEventListener('load', start, { once: true });
++  else start();
+ });
+ 
+ const mm = gsap.matchMedia();
+-- 
+2.43.0
+
+
+From 92ef399c4e252f9d777ef9a80ec4b77aea7347f0 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 14 Nov 2026 20:33:59 +0000
+Subject: [PATCH 10/11] =?UTF-8?q?TECH-01:=20App-Icon=20f=C3=BCr=20den=20Ha?=
+ =?UTF-8?q?ndy-Startbildschirm=20und=20PNG-Favicon?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01W93HGYbfEaymZuLQAoHCgt
+---
+ public/apple-touch-icon.png | Bin 0 -> 5155 bytes
+ public/favicon-32.png       | Bin 0 -> 1155 bytes
+ src/layouts/Base.astro      |   2 ++
+ 3 files changed, 2 insertions(+)
+ create mode 100644 public/apple-touch-icon.png
+ create mode 100644 public/favicon-32.png
+
+diff --git a/public/apple-touch-icon.png b/public/apple-touch-icon.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..85be702a8c4c858b4231b2e09e12dfd8c3b87331
+GIT binary patch
+literal 5155
+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
+
+literal 0
+HcmV?d00001
+
+diff --git a/public/favicon-32.png b/public/favicon-32.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..ceb033194ceca9e14ecac4babee43e0204c1f73e
+GIT binary patch
+literal 1155
+zcmV-}1bq96P)<h;3K|Lk000e1NJLTq001BW001Be1^@s6b9#F8000CyNkl<Zc%1B3
+zOH5o<82-+E&4U?+N6V}2$U7}sYsFPl8=EG`LK9syCML#3Q|(65nwU%xrjr5z(`f3Z
+ziIt6-E(90dxYC{Yh+>Q-O+gd_j6y3g%!8S^ckVsc{|-)Z#sOhk!-g+8ng7mz?)ks-
+zpYQ+g5wOD$u*29TuuDKffw&R~RA{33KAC#TFwO=7fg}n5LjmaR?R{P_%|S3$k^aLp
+zZ`1QjKEMAqwux;Kpk2BYQM^il&*X6@IB>qJtLr+pfh`m0>+3tkOw(Gte$$Djc~dit
+zSBPv34}$<LWLG5V9Wvk8Y`&Iah$R%1xKv7z`I~hl7ybSp@gM~HFJC^&8N0z4JCx5K
+zjZ28CHJDqlVL7bBZWHiGRRqP(C?vtq-A>Kd<?nir-Z!^JU}$JaoSc~O(TkVpQO@<p
+zRS9#8wfJRP$H96TqNrjyVyE;QP!s`%As{%fqP$c_ZFP9ur7RsA7`PbP5`mtco<jm-
+zgXB1dyt{T{bfN~b#PE1S5c4aw;H18Ws%a?FdL_mvJ2Oj-n3_rA$rf|9x@@MM1Uizt
+zo|rLA(_}VTK2L#%Y3Fr$gC~pe^{onc+#;T6oPx`)L6Y65@k|mSJ!`HabCkOl@n>W&
+zX6H@iz~1Pq?QJLV`nhu>!^6X7RtBi9_mS}tjZ@eFnqk8?V_qax15Y0bqKJZT1q<OO
+z{4kcniKjGp?0<kFkI;CTvN31*)2*1w>+EL1EiA?w5sjsAxQTBVd?m3Tap44XWBp`p
+zijn>`xRlxPaSHlVe@{=_eFATHcL(SUUL-TGP^<-izLQAXC5~X;;1Sh}_V$w~cSj(J
+z>!OdVYZ?~K^`+^!muV#K6R^<P-F=g^bi_(g?&50730>!;c7`H{{;%NiqzqR{BR>CP
+z5=qU-@=eWhlu<Rf9TDp>MS=U>9?#)UzyGT&0v4=uX=-kMhD@vcjP(qx?TB+TE4>+L
+zx`RY$pj`P5D`Aei(PpG{hP&ZvtVB|1@h*S~Y*gU9m9pL0(b1u1-rcYfkuZ;w^D`Qi
+zR?sg;>yS!u9BpCPUpAdJH>Q?DRvfUgV7er~z0(9cW&Yl>j@E;rM1?1Gf!gzj)Kz(I
+zoJ~6+_5Vu7`Nz~-+d}a@_<pRIS}sT30UN4H@4;n@Q1>&^yA=hVUM{p+ir``;W`9qj
+z)?1{OO4E;ByY}X<8^!p~Z-Lbx`uqAWkU79<UkS4jx5f=DF0F~u=@7B6x(MNjhEQ0=
+zo-zgAs^qG|;+LitD*ZN_6uj}lbB`8GAOrd?w9<FsQ)*HTCP_k+%b;;LmPp)|LS!KV
+zk8{P81U@Lp@>@QiFMRs+kW%XP)L(!1+3^P^VBzokz$bJhFXZ|tQ<KzB&SccRRTO$7
+zdX38GDwz%%mZE!I#l=_tsqX)kz{AAuwS1SrjuZF`009608`C6b00006Nkl<Z0|5OD
+Vs7<BESG)iK002ovPDHLkV1kn*HA(;g
+
+literal 0
+HcmV?d00001
+
+diff --git a/src/layouts/Base.astro b/src/layouts/Base.astro
+index e344cd3..4ef4a4d 100644
+--- a/src/layouts/Base.astro
++++ b/src/layouts/Base.astro
+@@ -64,6 +64,8 @@ const jsonLd = {
+     <link rel="canonical" href={canonical} />
+     {noindex && <meta name="robots" content="noindex, nofollow" />}
+     <link rel="icon" type="image/svg+xml" href={url('/favicon.svg')} />
++    <link rel="icon" type="image/png" sizes="32x32" href={url('/favicon-32.png')} />
++    <link rel="apple-touch-icon" href={url('/apple-touch-icon.png')} />
+     <meta name="theme-color" content="#3948A4" />
+     <meta property="og:type" content="website" />
+     <meta property="og:locale" content="de_DE" />
+-- 
+2.43.0
+
+
+From d003acc9129538f862c945e9626c681596417a1b Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 14 Nov 2026 20:42:22 +0000
+Subject: [PATCH 11/11] PERF-01: Posterbild des Films erst bei Bedarf,
+ Hero-Poster kleiner
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01W93HGYbfEaymZuLQAoHCgt
+---
+ src/components/HomePage.astro |  4 ++--
+ src/scripts/motion.ts         | 11 ++++++++++-
+ 2 files changed, 12 insertions(+), 3 deletions(-)
+
+diff --git a/src/components/HomePage.astro b/src/components/HomePage.astro
+index dca7a46..2ab6776 100644
+--- a/src/components/HomePage.astro
++++ b/src/components/HomePage.astro
+@@ -25,7 +25,7 @@ interface Props {
+ }
+ const { typo = 'c', noindex = false, title = 'Start' } = Astro.props;
+ 
+-const heroPosterImg = await getImage({ src: heroPoster, width: 1920, format: 'webp', quality: 70 });
++const heroPosterImg = await getImage({ src: heroPoster, width: 1440, format: 'webp', quality: 70 });
+ const filmPosterImg = await getImage({ src: filmPoster, width: 1600, format: 'webp', quality: 70 });
+ 
+ /* Leistungen: Bilder folgen der Diagonale der Linie */
+@@ -284,7 +284,7 @@ const werte = [
+   <section class="film" data-film>
+     <div class="film-sticky">
+       <div class="film-frame" data-film-frame>
+-        <video muted loop playsinline preload="none" poster={filmPosterImg.src} data-autoplay aria-hidden="true">
++        <video muted loop playsinline preload="none" data-poster={filmPosterImg.src} data-autoplay aria-hidden="true">
+           <source src={url('/video/film-loop.mp4')} type="video/mp4" />
+         </video>
+       </div>
+diff --git a/src/scripts/motion.ts b/src/scripts/motion.ts
+index 9b72013..f0cd00d 100644
+--- a/src/scripts/motion.ts
++++ b/src/scripts/motion.ts
+@@ -34,11 +34,20 @@ window.addEventListener('quirling:unlock', () => lenis?.start());
+    data-defer: zusätzlich erst nach dem vollständigen Laden der Seite starten (Hero), Poster steht bis dahin. */
+ $$<HTMLVideoElement>('video[data-autoplay]').forEach((v) => {
+   if (reduce) {
++    if (v.dataset.poster) v.poster = v.dataset.poster;
+     v.pause();
+     return;
+   }
+   const start = () => {
+-    const io = new IntersectionObserver(([e]) => (e.isIntersecting ? v.play().catch(() => {}) : v.pause()), { rootMargin: '200px 0px' });
++    const io = new IntersectionObserver(
++      ([e]) => {
++        if (!e.isIntersecting) return v.pause();
++        // Posterbild weiter unten auf der Seite erst laden, wenn es gebraucht wird
++        if (v.dataset.poster && !v.poster) v.poster = v.dataset.poster;
++        v.play().catch(() => {});
++      },
++      { rootMargin: '400px 0px' },
++    );
+     io.observe(v);
+   };
+   if (v.hasAttribute('data-defer') && document.readyState !== 'complete') window.addEventListener('load', start, { once: true });
+-- 
+2.43.0
+

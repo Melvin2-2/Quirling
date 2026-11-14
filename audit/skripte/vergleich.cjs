@@ -2,9 +2,9 @@
 const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
-const OUT = path.join(__dirname, '..', 'entwurf', 'bilder');
-const PUNKTE = require('./vergleich-punkte.json');
-const ALT = 'http://localhost:4321/Quirling', NEU = 'http://localhost:4322/Quirling';
+const OUT = process.env.OUT || path.join(__dirname, '..', 'entwurf', 'bilder');
+const PUNKTE = require(process.env.PUNKTE || './vergleich-punkte.json');
+const ALT = 'http://localhost:4321/Quirling', NEU = process.env.NEU || 'http://localhost:4322/Quirling';
 const nur = process.argv[2];
 
 async function shot(b, base, v, file, seite) {
@@ -22,7 +22,7 @@ async function shot(b, base, v, file, seite) {
     await p.evaluate(() => window.scrollTo(0, 0)); await p.waitForTimeout(800);
     await p.screenshot({ path: file, type: 'jpeg', quality: 72 });
   } else {
-    const el = p.locator(v.sel).first();
+    const el = p.locator(seite === 'alt' && v.sel_alt ? v.sel_alt : v.sel).first();
     await el.evaluate((e) => e.scrollIntoView({ block: 'start' }));
     await p.waitForTimeout(v.wait ?? 1800);
     if (!v.header) await p.addStyleTag({ content: '.site-header{visibility:hidden!important}' });

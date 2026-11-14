@@ -1,0 +1,79 @@
+[
+ {
+  "id": "LOCAL-02",
+  "views": [
+   {
+    "url": "/leistungen/rohbau/",
+    "vp": "d",
+    "sel": "section.eg",
+    "sel_alt": "section.rb-own",
+    "maxH": 900
+   },
+   {
+    "url": "/leistungen/rohbau/",
+    "vp": "m",
+    "sel": "section.eg",
+    "maxH": 1600
+   }
+  ]
+ },
+ {
+  "id": "LEIST-03",
+  "views": [
+   {
+    "url": "/leistungen/rohbau/",
+    "vp": "m",
+    "sel": "section.phero",
+    "fold": true,
+    "header": true
+   },
+   {
+    "url": "/leistungen/rohbau/",
+    "vp": "m",
+    "sel": "section.phero",
+    "fold": true,
+    "header": true,
+    "prep": {
+     "neu": "() => { const s=document.querySelector('.phero-slab'); s.style.clipPath='polygon(0 0, 100% 0, 100% 86%, 64% 100%, 0 90%)'; }"
+    }
+   },
+   {
+    "url": "/leistungen/rohbau/",
+    "vp": "m",
+    "sel": "section.phero",
+    "fold": true,
+    "header": true,
+    "prep": {
+     "neu": "() => { const s=document.querySelector('.phero-slab'); s.style.clipPath='polygon(0 0, 100% 0, 100% 100%, 0 80%)'; }"
+    }
+   },
+   {
+    "url": "/kontakt/",
+    "vp": "m",
+    "sel": "section.phero",
+    "fold": true,
+    "header": true
+   },
+   {
+    "url": "/kontakt/",
+    "vp": "m",
+    "sel": "section.phero",
+    "fold": true,
+    "header": true,
+    "prep": {
+     "neu": "() => { const s=document.querySelector('.phero-slab'); s.style.clipPath='polygon(0 0, 100% 0, 100% 86%, 64% 100%, 0 90%)'; }"
+    }
+   },
+   {
+    "url": "/kontakt/",
+    "vp": "m",
+    "sel": "section.phero",
+    "fold": true,
+    "header": true,
+    "prep": {
+     "neu": "() => { const s=document.querySelector('.phero-slab'); s.style.clipPath='polygon(0 0, 100% 0, 100% 100%, 0 80%)'; }"
+    }
+   }
+  ]
+ }
+]

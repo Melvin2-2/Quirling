@@ -1,0 +1,386 @@
+{
+ "start|desktop|vorher": [
+  {
+   "id": "aria-prohibited-attr",
+   "impact": "serious",
+   "n": 3
+  },
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 4
+  }
+ ],
+ "rohbau|desktop|vorher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 6
+  }
+ ],
+ "schluesselfertig|desktop|vorher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 6
+  }
+ ],
+ "umbau|desktop|vorher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 6
+  }
+ ],
+ "referenzen|desktop|vorher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 5
+  }
+ ],
+ "ueberuns|desktop|vorher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 99
+  }
+ ],
+ "team|desktop|vorher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 6
+  }
+ ],
+ "zertifikate|desktop|vorher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 6
+  }
+ ],
+ "karriere|desktop|vorher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 6
+  }
+ ],
+ "kontakt|desktop|vorher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 5
+  }
+ ],
+ "impressum|desktop|vorher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 3
+  }
+ ],
+ "datenschutz|desktop|vorher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 3
+  }
+ ],
+ "404|desktop|vorher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 6
+  }
+ ],
+ "start|mobil|vorher": [
+  {
+   "id": "aria-prohibited-attr",
+   "impact": "serious",
+   "n": 3
+  },
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 4
+  }
+ ],
+ "rohbau|mobil|vorher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 6
+  }
+ ],
+ "schluesselfertig|mobil|vorher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 6
+  }
+ ],
+ "umbau|mobil|vorher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 6
+  }
+ ],
+ "referenzen|mobil|vorher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 5
+  }
+ ],
+ "ueberuns|mobil|vorher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 5
+  }
+ ],
+ "team|mobil|vorher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 6
+  }
+ ],
+ "zertifikate|mobil|vorher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 6
+  }
+ ],
+ "karriere|mobil|vorher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 6
+  }
+ ],
+ "kontakt|mobil|vorher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 5
+  }
+ ],
+ "impressum|mobil|vorher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 3
+  }
+ ],
+ "datenschutz|mobil|vorher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 3
+  }
+ ],
+ "404|mobil|vorher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 6
+  }
+ ],
+ "start|desktop|nachher": [
+  {
+   "id": "aria-prohibited-attr",
+   "impact": "serious",
+   "n": 3
+  },
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 4
+  }
+ ],
+ "rohbau|desktop|nachher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 6
+  }
+ ],
+ "schluesselfertig|desktop|nachher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 6
+  }
+ ],
+ "umbau|desktop|nachher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 6
+  }
+ ],
+ "referenzen|desktop|nachher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 5
+  }
+ ],
+ "ueberuns|desktop|nachher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 99
+  }
+ ],
+ "team|desktop|nachher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 6
+  }
+ ],
+ "zertifikate|desktop|nachher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 6
+  }
+ ],
+ "karriere|desktop|nachher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 6
+  }
+ ],
+ "kontakt|desktop|nachher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 5
+  }
+ ],
+ "impressum|desktop|nachher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 3
+  }
+ ],
+ "datenschutz|desktop|nachher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 3
+  }
+ ],
+ "404|desktop|nachher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 6
+  }
+ ],
+ "start|mobil|nachher": [
+  {
+   "id": "aria-prohibited-attr",
+   "impact": "serious",
+   "n": 3
+  },
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 4
+  }
+ ],
+ "rohbau|mobil|nachher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 6
+  }
+ ],
+ "schluesselfertig|mobil|nachher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 6
+  }
+ ],
+ "umbau|mobil|nachher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 6
+  }
+ ],
+ "referenzen|mobil|nachher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 5
+  }
+ ],
+ "ueberuns|mobil|nachher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 5
+  }
+ ],
+ "team|mobil|nachher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 6
+  }
+ ],
+ "zertifikate|mobil|nachher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 6
+  }
+ ],
+ "karriere|mobil|nachher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 6
+  }
+ ],
+ "kontakt|mobil|nachher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 5
+  }
+ ],
+ "impressum|mobil|nachher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 3
+  }
+ ],
+ "datenschutz|mobil|nachher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 3
+  }
+ ],
+ "404|mobil|nachher": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "n": 6
+  }
+ ]
+}
