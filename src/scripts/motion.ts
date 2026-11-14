@@ -29,15 +29,20 @@ if (!reduce) {
 window.addEventListener('quirling:lock', () => lenis?.stop());
 window.addEventListener('quirling:unlock', () => lenis?.start());
 
-/* ---------- Video: nur abspielen, wenn sichtbar ---------- */
+/* ---------- Video: erst laden und abspielen, wenn sichtbar ----------
+   Kein autoplay-Attribut im Markup, damit der Browser die Videos nicht sofort lädt.
+   data-defer: zusätzlich erst nach dem vollständigen Laden der Seite starten (Hero), Poster steht bis dahin. */
 $$<HTMLVideoElement>('video[data-autoplay]').forEach((v) => {
   if (reduce) {
-    v.removeAttribute('autoplay');
     v.pause();
     return;
   }
-  const io = new IntersectionObserver(([e]) => (e.isIntersecting ? v.play().catch(() => {}) : v.pause()));
-  io.observe(v);
+  const start = () => {
+    const io = new IntersectionObserver(([e]) => (e.isIntersecting ? v.play().catch(() => {}) : v.pause()), { rootMargin: '200px 0px' });
+    io.observe(v);
+  };
+  if (v.hasAttribute('data-defer') && document.readyState !== 'complete') window.addEventListener('load', start, { once: true });
+  else start();
 });
 
 const mm = gsap.matchMedia();
