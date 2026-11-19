@@ -1,0 +1,40 @@
+[
+ {
+  "id": "LEIST-03",
+  "views": [
+   {
+    "url": "/leistungen/rohbau/",
+    "vp": "m",
+    "sel": "section.phero",
+    "fold": true,
+    "header": true
+   },
+   {
+    "url": "/kontakt/",
+    "vp": "m",
+    "sel": "section.phero",
+    "fold": true,
+    "header": true
+   }
+  ]
+ },
+ {
+  "id": "LOCAL-02",
+  "views": [
+   {
+    "url": "/leistungen/rohbau/",
+    "vp": "d",
+    "sel": "section.eg",
+    "sel_alt": "section.rb-own",
+    "maxH": 900
+   },
+   {
+    "url": "/leistungen/rohbau/",
+    "vp": "m",
+    "sel": "section.eg",
+    "sel_alt": "section.rb-own",
+    "maxH": 1400
+   }
+  ]
+ }
+]

@@ -138,13 +138,14 @@ details.arch .tw { padding: 0 20px 16px; }
 
 <header class="top">
   <div class="wrap">
-    <span class="mono">Quirling GmbH · Website-Audit · Runde 2</span>
+    <span class="mono">Quirling GmbH · Website-Audit · Stand Runde 3</span>
     <h1 class="disp">Entwurf-Abnahme</h1>
-    <p>Danke für deine Entscheidungen. <b>Die freigegebenen Punkte sind umgesetzt, aber noch nicht live.</b> Unten siehst du das Ergebnis mit Messwerten. Oben stehen die Punkte, die du ändern wolltest oder nicht verstanden hast: neue Entwürfe und Erklärungen.</p>
+    <p>Deine Entscheidungen aus Runde 2 sind umgesetzt. <b>Alles ist fertig, aber noch nicht live.</b> Oben steht, was ich noch von dir brauche: die Adresse für den Formulardienst und deine Freigabe zum Veröffentlichen.</p>
     <nav class="tabs" aria-label="Abschnitte">
-      <a href="#offen">Zur Abnahme <small id="cnt-open"></small></a>
-      <a href="#umgesetzt">Umgesetzt, nicht live</a>
-      <a href="#archiv">Deine Entscheidungen aus Runde 1</a>
+      <a href="#offen">Noch zu tun <small id="cnt-open"></small></a>
+      <a href="#runde2">Umgesetzt in Runde 2</a>
+      <a href="#umgesetzt">Umgesetzt in Runde 1</a>
+      <a href="#archiv">Deine Entscheidungen</a>
     </nav>
   </div>
 </header>
@@ -152,140 +153,46 @@ details.arch .tw { padding: 0 20px 16px; }
 <div class="wrap">
   <p class="note" id="localNote" hidden>Gemeinsames Speichern ist in dieser Ansicht nicht verfügbar. Deine Eingaben bleiben nur in diesem Browser. Öffne die Seite auf claude.ai oder schick mir deine Antworten im Chat.</p>
   <main>
-    <h2 class="sec-h disp" id="offen">Zur Abnahme</h2>
-    <p class="sec-p">Fünf Punkte. Bitte je Punkt eine Auswahl treffen und bei Bedarf kommentieren.</p>
+    <h2 class="sec-h disp" id="offen">Noch zu tun für dich</h2>
+    <p class="sec-p">Alle Entscheidungen aus Runde 2 sind umgesetzt (siehe unten). Zwei Dinge brauche ich noch von dir.</p>
 
-    <!-- LOCAL-02 -->
-    <article class="pt" data-id="r2-LOCAL-02">
-      <div class="pt-h"><div class="pt-meta"><span class="id">LOCAL-02</span><span class="kind">Neuer Entwurf</span></div><span class="badge" data-badge>Offen</span>
-        <h2 class="disp">Einsatzgebiet mit Karte</h2></div>
+    <article class="pt" data-id="r3-FORM">
+      <div class="pt-h"><div class="pt-meta"><span class="id">KONTAKT-01</span><span class="kind">Deine Aufgabe · ca. 10 Minuten</span></div><span class="badge" data-badge>Offen</span>
+        <h2 class="disp">Formulardienst anlegen</h2></div>
       <div class="body">
-        <p class="prev"><b>Dein Kommentar:</b> Gerne ergänzen. Die Textart gefällt mir so noch nicht. Die Beispiele sind komisch, vielleicht eher „auf Anfrage“. Vielleicht eine Art Karte, die den Bereich grob absteckt?</p>
-        <p>Neu ist ein eigener Abschnitt „Hamburg und Umgebung“ auf allen drei Leistungsseiten, zwischen „Eigene Leute. Eigenes Gerät.“ und den Referenzen. Er enthält keine Beispielorte mehr, dafür „Fragen Sie uns gern an“ und eine schematische Karte: Hamburg mit Firmensitz, das Umland grob als Fläche. Die Karte ist eine eigene Grafik, also keine Google-Karte, kein Cookie und kein Nachladen.</p>
-        <div class="cmp one">
-          <figure class="neu"><figcaption><b>Entwurf</b><span class="mono">Desktop</span></figcaption><button type="button" class="shot" data-src="r2/LOCAL-02-1-neu.jpg" data-t="LOCAL-02 Desktop"><img src="r2/LOCAL-02-1-neu.jpg" alt="Entwurf: Abschnitt Hamburg und Umgebung mit Karte, Desktop" loading="lazy"></button></figure>
-        </div>
-        <div class="cmp one">
-          <figure class="neu"><figcaption><b>Entwurf</b><span class="mono">Handy</span></figcaption><button type="button" class="shot m" data-src="r2/LOCAL-02-2-neu.jpg" data-t="LOCAL-02 Handy"><img src="r2/LOCAL-02-2-neu.jpg" alt="Entwurf: Abschnitt Hamburg und Umgebung mit Karte, Handy" loading="lazy"></button></figure>
-        </div>
-        <p style="color:var(--ink-2);font-size:.92rem">Kartengrundlage: freie Umrisse der Bundesländer (MapSVG, Lizenz CC BY 4.0). Die Quellenangabe steht klein unter der Karte. Das ist für diese Lizenz Pflicht.</p>
-      </div>
-      <div class="dec" data-dec="std"></div>
-    </article>
-
-    <!-- LEIST-03 -->
-    <article class="pt" data-id="r2-LEIST-03">
-      <div class="pt-h"><div class="pt-meta"><span class="id">LEIST-03</span><span class="kind">Varianten</span></div><span class="badge" data-badge>Offen</span>
-        <h2 class="disp">Seitenkopf auf dem Handy: Form</h2></div>
-      <div class="body">
-        <p class="prev"><b>Dein Kommentar:</b> Geometrische Form anpassen. Text bei „Sprechen wir“ nicht ändern.</p>
-        <p>Der Text bleibt jetzt überall unverändert, auch Schriftstärke und Farbe. Es ändert sich nur die dunkle Fläche hinter dem Text, damit er nicht mehr auf hellen Bildstellen steht. Drei Formen zur Wahl, jeweils auf Rohbau und Kontakt:</p>
-        <div class="cmp">
-          <figure class="alt"><figcaption><b>Bisher</b><span class="mono">Rohbau</span></figcaption><button type="button" class="shot m" data-src="r2/LEIST-03-1-alt.jpg" data-t="Bisher, Rohbau"><img src="r2/LEIST-03-1-alt.jpg" alt="Bisher: Seitenkopf Rohbau auf dem Handy" loading="lazy"></button></figure>
-          <figure class="alt"><figcaption><b>Bisher</b><span class="mono">Kontakt</span></figcaption><button type="button" class="shot m" data-src="r2/LEIST-03-4-alt.jpg" data-t="Bisher, Kontakt"><img src="r2/LEIST-03-4-alt.jpg" alt="Bisher: Seitenkopf Kontakt auf dem Handy" loading="lazy"></button></figure>
-        </div>
-        <div class="cmp three">
-          <figure class="neu"><figcaption><b>A · Schräge</b><span class="mono">Rohbau</span></figcaption><button type="button" class="shot m" data-src="r2/LEIST-03-1-neu.jpg" data-t="Variante A, Rohbau"><img src="r2/LEIST-03-1-neu.jpg" alt="Variante A: gleichmäßige Schräge, Rohbau" loading="lazy"></button></figure>
-          <figure class="neu"><figcaption><b>B · Knick</b><span class="mono">Rohbau</span></figcaption><button type="button" class="shot m" data-src="r2/LEIST-03-2-neu.jpg" data-t="Variante B, Rohbau"><img src="r2/LEIST-03-2-neu.jpg" alt="Variante B: Knick wie die Rautenkante, Rohbau" loading="lazy"></button></figure>
-          <figure class="neu"><figcaption><b>C · Gegenschräge</b><span class="mono">Rohbau</span></figcaption><button type="button" class="shot m" data-src="r2/LEIST-03-3-neu.jpg" data-t="Variante C, Rohbau"><img src="r2/LEIST-03-3-neu.jpg" alt="Variante C: Schräge steigt nach links, Rohbau" loading="lazy"></button></figure>
-          <figure class="neu"><figcaption><b>A · Schräge</b><span class="mono">Kontakt</span></figcaption><button type="button" class="shot m" data-src="r2/LEIST-03-4-neu.jpg" data-t="Variante A, Kontakt"><img src="r2/LEIST-03-4-neu.jpg" alt="Variante A, Kontakt" loading="lazy"></button></figure>
-          <figure class="neu"><figcaption><b>B · Knick</b><span class="mono">Kontakt</span></figcaption><button type="button" class="shot m" data-src="r2/LEIST-03-5-neu.jpg" data-t="Variante B, Kontakt"><img src="r2/LEIST-03-5-neu.jpg" alt="Variante B, Kontakt" loading="lazy"></button></figure>
-          <figure class="neu"><figcaption><b>C · Gegenschräge</b><span class="mono">Kontakt</span></figcaption><button type="button" class="shot m" data-src="r2/LEIST-03-6-neu.jpg" data-t="Variante C, Kontakt"><img src="r2/LEIST-03-6-neu.jpg" alt="Variante C, Kontakt" loading="lazy"></button></figure>
-        </div>
-      </div>
-      <div class="dec" data-dec="var"></div>
-    </article>
-
-    <!-- SEO-03 -->
-    <article class="pt" data-id="r2-SEO-03">
-      <div class="pt-h"><div class="pt-meta"><span class="id">SEO-03</span><span class="kind">Erklärung</span></div><span class="badge" data-badge>Offen</span>
-        <h2 class="disp">Seitentitel mit „Hamburg“</h2></div>
-      <div class="body">
-        <p class="prev"><b>Dein Kommentar:</b> Verstehe ich nicht.</p>
-        <p>Jede Seite hat einen <b>Seitentitel</b>. Auf der Website selbst sieht man ihn nicht. Er steht im Browser-Tab und ist die große blaue Zeile in den Google-Ergebnissen. Google wertet ihn stark aus. Sucht jemand „Rohbau Hamburg“, fehlt bei uns heute genau das Wort „Hamburg“. Der Vorschlag ändert nur diese unsichtbare Zeile, auf den Seiten selbst ändert sich nichts.</p>
-        <div class="mocks">
-          <div class="mock"><span class="lab">Heute · so etwa in der Suche</span><span class="u">melvin2-2.github.io › Quirling › leistungen › rohbau</span><span class="t">Rohbau &amp; Stahlbetonbau | Quirling GmbH Bauunternehmen</span><span class="d">Rohbau in Beton und Stahlbeton in der Metropolregion Hamburg: Gründungen, Tiefgaragen, Wände, Stützen und Decken in Ortbeton. Mit eigenen …</span></div>
-          <div class="mock"><span class="lab">Vorschlag</span><span class="u">melvin2-2.github.io › Quirling › leistungen › rohbau</span><span class="t">Rohbau &amp; Stahlbetonbau in <mark>Hamburg</mark> | Quirling Bauunternehmen</span><span class="d">Rohbau in Beton und Stahlbeton in der Metropolregion Hamburg: Gründungen, Tiefgaragen, Wände, Stützen und Decken in Ortbeton. Mit eigenen …</span></div>
-        </div>
-        <div class="tw"><table>
-          <thead><tr><th>Seite</th><th>Heute</th><th>Vorschlag</th></tr></thead>
-          <tbody>
-            <tr><td>Startseite</td><td class="old">Quirling GmbH Bauunternehmen Hamburg | Rohbau, Stahlbetonbau, Umbau</td><td>bleibt</td></tr>
-            <tr><td>Rohbau</td><td class="old">Rohbau &amp; Stahlbetonbau | Quirling GmbH Bauunternehmen</td><td class="new">Rohbau &amp; Stahlbetonbau in Hamburg | Quirling Bauunternehmen</td></tr>
-            <tr><td>Schlüsselfertig</td><td class="old">Schlüsselfertiges Bauen | Quirling GmbH Bauunternehmen</td><td class="new">Schlüsselfertig bauen in Hamburg | Quirling Bauunternehmen</td></tr>
-            <tr><td>Umbau</td><td class="old">Umbau &amp; Sanierung | Quirling GmbH Bauunternehmen</td><td class="new">Umbau &amp; Sanierung in Hamburg | Quirling Bauunternehmen</td></tr>
-            <tr><td>Referenzen</td><td class="old">Referenzen | Quirling GmbH Bauunternehmen</td><td class="new">Referenzen: Bauprojekte in Hamburg | Quirling Bauunternehmen</td></tr>
-            <tr><td>Über uns</td><td class="old">Über uns | Quirling GmbH Bauunternehmen</td><td class="new">Über uns: Familienbetrieb seit 1992 | Quirling Bauunternehmen Hamburg</td></tr>
-            <tr><td>Team</td><td class="old">Team | Quirling GmbH Bauunternehmen</td><td class="new">Team und Ansprechpartner | Quirling Bauunternehmen Hamburg</td></tr>
-            <tr><td>Zertifikate</td><td class="old">Zertifikate &amp; Downloads | Quirling GmbH Bauunternehmen</td><td class="new">Zertifikate &amp; Nachweise | Quirling Bauunternehmen Hamburg</td></tr>
-            <tr><td>Karriere</td><td class="old">Karriere | Quirling GmbH Bauunternehmen</td><td class="new">Jobs auf dem Bau in Hamburg | Quirling Bauunternehmen</td></tr>
-            <tr><td>Kontakt</td><td class="old">Kontakt | Quirling GmbH Bauunternehmen</td><td class="new">Kontakt | Quirling Bauunternehmen Hamburg-Wandsbek</td></tr>
-          </tbody>
-        </table></div>
-        <p style="color:var(--ink-2);font-size:.92rem">Die Nachbildung ist vereinfacht. Wie Google ein Ergebnis genau anzeigt, entscheidet Google selbst.</p>
-      </div>
-      <div class="dec" data-dec="std"></div>
-    </article>
-
-    <!-- SEO-04 -->
-    <article class="pt" data-id="r2-SEO-04">
-      <div class="pt-h"><div class="pt-meta"><span class="id">SEO-04</span><span class="kind">Erklärung</span></div><span class="badge" data-badge>Offen</span>
-        <h2 class="disp">Vorschaubild für geteilte Links</h2></div>
-      <div class="body">
-        <p class="prev"><b>Dein Kommentar:</b> Verstehe ich nicht.</p>
-        <p>Wenn jemand einen Link zur Website verschickt, etwa per WhatsApp, Mail-Programm oder LinkedIn, zeigt die App eine kleine Vorschau. Dafür liest sie ein Bild aus, das die Website angibt. <b>Heute gibt die Website kein Bild an.</b> Der Link erscheint deshalb nur als Text. Vorschlag: ein festes Vorschaubild mit Foto, Logo und Claim. Auf der Website selbst sieht man es nicht.</p>
-        <div class="mocks">
-          <div class="mock" style="font-family:var(--font-body)"><span class="lab">Heute · geteilter Link</span>
-            <div class="chat"><div class="card"><div class="tx"><b>Quirling GmbH Bauunternehmen Hamburg | Rohbau, Stahlbetonbau, Umbau</b><span>Quirling GmbH, Bauunternehmen in Hamburg seit 1992. Rohbau, Beton- und Stahlbetonbau …</span></div></div><span class="lnk">https://quirling.de/</span></div></div>
-          <div class="mock" style="font-family:var(--font-body)"><span class="lab">Vorschlag · geteilter Link</span>
-            <div class="chat"><div class="card"><img src="r2/SEO-04-vorschaubild.jpg" alt="Vorschaubild: Luftbild einer Baustelle, Logo Quirling, Claim Was wir zusagen, steht."><div class="tx"><b>Quirling GmbH Bauunternehmen Hamburg | Rohbau, Stahlbetonbau, Umbau</b><span>Quirling GmbH, Bauunternehmen in Hamburg seit 1992 …</span></div></div><span class="lnk">https://quirling.de/</span></div></div>
-        </div>
-        <div class="cmp one"><figure class="neu"><figcaption><b>Entwurf Vorschaubild</b><span class="mono">1200 × 630 px</span></figcaption><button type="button" class="shot" data-src="r2/SEO-04-vorschaubild.jpg" data-t="Vorschaubild"><img src="r2/SEO-04-vorschaubild.jpg" alt="Entwurf Vorschaubild" loading="lazy"></button></figure></div>
-        <p style="color:var(--ink-2);font-size:.92rem">Die Nachbildung ist vereinfacht. Jede App zeigt die Vorschau etwas anders an. Ein anderes Foto ist jederzeit möglich, schreib einfach dazu, welches.</p>
-      </div>
-      <div class="dec" data-dec="std"></div>
-    </article>
-
-    <!-- KONTAKT-01 -->
-    <article class="pt" data-id="r2-KONTAKT-01">
-      <div class="pt-h"><div class="pt-meta"><span class="id">KONTAKT-01</span><span class="kind">Erklärung · Entscheidung</span></div><span class="badge" data-badge>Offen</span>
-        <h2 class="disp">Kontaktformular einrichten</h2></div>
-      <div class="body">
-        <p class="prev"><b>Dein Kommentar:</b> Wie funktioniert das Kontaktformular derzeit? Ich habe dies noch nicht eingerichtet. Hilf mir dabei, dies technisch sauber umzusetzen.</p>
-        <p><b>So funktioniert es heute:</b></p>
+        <p>Du hast dich für einen Formulardienst entschieden. Die Website ist fertig vorbereitet: Ein lokaler Test mit einem Test-Empfänger hat funktioniert, die Bestätigung erscheint wie unten gezeigt. Es fehlt nur noch die Adresse deines Formulars. Ich empfehle <b>Formspree</b>, weil es ohne zusätzlichen Schlüssel im Formular auskommt.</p>
         <ol class="steps">
-          <li>Das Formular prüft die Pflichtfelder und die Rechenaufgabe gegen Spam. Ein unsichtbares Feld fängt zusätzlich Spam-Programme ab.</li>
-          <li>Die Website selbst kann keine E-Mails verschicken. Sie besteht nur aus fertigen Seiten, ohne Server-Programm dahinter.</li>
-          <li>Deshalb öffnet „Nachricht senden“ heute das E-Mail-Programm des Besuchers mit fertigem Text. Wer am Rechner kein E-Mail-Programm eingerichtet hat (viele nutzen nur Webmail), bei dem passiert nichts, und die Anfrage geht verloren.</li>
+          <li>Auf formspree.io ein Konto mit <b>info@quirling.de</b> anlegen und die E-Mail-Adresse bestätigen.</li>
+          <li>Ein neues Formular anlegen, zum Beispiel „Kontakt Website“, Empfänger info@quirling.de.</li>
+          <li>Die Formular-Adresse kopieren. Sie sieht so aus: <span class="code" style="display:inline;padding:1px 6px">https://formspree.io/f/abcd1234</span></li>
+          <li>Die Adresse hier ins Kommentarfeld eintragen. Sie ist nicht geheim, sie steht später ohnehin im Quelltext der Seite. Ich trage sie ein und teste.</li>
+          <li>Den Tarif prüfst du bitte beim Anbieter. Einstiegstarife sind meist kostenlos, mit begrenzter Anzahl Anfragen pro Monat.</li>
         </ol>
-        <p><b>Was fehlt:</b> eine Stelle, die die Anfrage entgegennimmt und als E-Mail an info@quirling.de schickt. Die Website ist dafür schon vorbereitet: Sobald die Adresse dieser Stelle eingetragen ist, sendet das Formular direkt, und danach erscheint eine Bestätigung wie im Entwurf aus Runde 1. Drei saubere Wege:</p>
-        <div class="opts">
-          <div class="opt"><span class="tag">Schnell</span><h3>1 · Formulardienst</h3><ul>
-            <li>Ein Anbieter wie Formspree oder Web3Forms nimmt die Anfrage an und schickt sie an info@quirling.de.</li>
-            <li>Einrichtung: Konto anlegen, E-Mail-Adresse bestätigen, mir den Schlüssel geben. Ich trage ihn ein und teste.</li>
-            <li>Kosten: Einstiegstarife sind meist kostenlos. Bitte beim Anbieter prüfen.</li>
-            <li>Datenschutz: Die Anfragen laufen über den Anbieter, oft mit Sitz in den USA. Dafür braucht es einen Vertrag zur Auftragsverarbeitung und einen Absatz in der Datenschutzerklärung. Rechtlich prüfen lassen.</li></ul></div>
-          <div class="opt"><span class="tag">Daten bleiben bei euch</span><h3>2 · Eigenes Skript beim Webhoster</h3><ul>
-            <li>Die alte Website läuft mit WordPress, das Hosting kann also PHP. Ein kleines Skript dort kann die Anfrage per E-Mail weiterleiten.</li>
-            <li>Voraussetzung: Die neue Website wird später auch dort veröffentlicht, oder das Skript liegt dort und die Website schickt die Anfrage dorthin.</li>
-            <li>Ich schreibe das Skript mit Spamschutz. Dafür brauche ich Zugang zum Hosting, oder dein Hoster richtet es ein.</li>
-            <li>Keine Drittfirma beteiligt.</li></ul></div>
-          <div class="opt"><span class="tag">Ohne Technik</span><h3>3 · Kein Formular</h3><ul>
-            <li>Das Formular entfällt, die Kontaktseite zeigt nur Telefon und E-Mail.</li>
-            <li>Kein Einrichtungsaufwand und kein Datenschutz-Absatz zum Formular nötig.</li>
-            <li>Nachteil: Wer abends schnell anfragen will, muss selbst eine E-Mail schreiben.</li></ul></div>
-        </div>
-        <p><b>Meine Empfehlung:</b> Weg 2, wenn die neue Website bei eurem bisherigen Hoster liegen soll. Sonst Weg 1. Dafür brauche ich von dir: <b>Wo soll die Website später liegen, und wer ist euer Hoster für quirling.de?</b> Das gerne ins Kommentarfeld.</p>
-        <div class="cmp one"><figure class="neu"><figcaption><b>Bestätigung nach dem Absenden</b><span class="mono">Entwurf aus Runde 1</span></figcaption><button type="button" class="shot" data-src="bilder/KONTAKT-01-1-neu.jpg" data-t="Bestätigung nach dem Absenden"><img src="bilder/KONTAKT-01-1-neu.jpg" alt="Entwurf: Bestätigung nach dem Absenden" loading="lazy"></button></figure></div>
+        <p><b>Datenschutz:</b> Formspree verarbeitet die Anfragen in deinem Auftrag. Bitte dort den Vertrag zur Auftragsverarbeitung (DPA) abschließen und Formspree in der Datenschutzerklärung nennen, also in den Texten aus RECHT-01. Rechtlich prüfen lassen.</p>
+        <div class="cmp one"><figure class="neu"><figcaption><b>So sieht es nach dem Absenden aus</b><span class="mono">umgesetzt, lokal getestet</span></figcaption><button type="button" class="shot" data-src="r1/KONTAKT-01-gesendet.jpg" data-t="Bestätigung nach dem Absenden"><img src="r1/KONTAKT-01-gesendet.jpg" alt="Bestätigung: Danke, Ihre Anfrage ist da. Wir melden uns schnellstmöglich bei Ihnen." loading="lazy"></button></figure></div>
       </div>
-      <div class="dec" data-dec="form"></div>
+      <div class="dec" data-dec="form3"></div>
     </article>
+
+    <article class="pt" data-id="r3-DEPLOY">
+      <div class="pt-h"><div class="pt-meta"><span class="id">Veröffentlichen</span><span class="kind">Deine Freigabe</span></div><span class="badge" data-badge>Offen</span>
+        <h2 class="disp">Alles live stellen?</h2></div>
+      <div class="body">
+        <p>Fertig und geprüft sind 15 Punkte aus beiden Runden (Liste unten). Live ist davon noch nichts. Du kannst schon jetzt veröffentlichen lassen. Das Formular sendet dann bis zum Eintragen der Formspree-Adresse weiter über das E-Mail-Programm wie heute. Oder du wartest, bis Formular und Rechtstexte da sind.</p>
+        <p style="color:var(--ink-2);font-size:.92rem">Wichtig: Ich veröffentliche erst, wenn du es mir zusätzlich im Chat bestätigst.</p>
+      </div>
+      <div class="dec" data-dec="deploy"></div>
+    </article>
+
+    <h2 class="sec-h disp" id="runde2">Umgesetzt in Runde 2</h2>
+    <p class="sec-p">Nach deinen Entscheidungen und Kommentaren umgesetzt. Noch nicht live.</p>
+    <div id="r2list" style="display:grid;gap:28px"></div>
 
     <!-- UMGESETZT -->
-    <h2 class="sec-h disp" id="umgesetzt">Umgesetzt, noch nicht live</h2>
-    <p class="sec-p">Zehn Punkte aus Runde 1 sind auf einem eigenen Arbeitsstand umgesetzt, je Punkt ein eigener Schritt. Veröffentlicht wird erst, wenn du es mir ausdrücklich sagst. RECHT-01 und RECHT-02 warten auf deine Texte („kommt“).</p>
+    <h2 class="sec-h disp" id="umgesetzt">Umgesetzt in Runde 1</h2>
+    <p class="sec-p">Zehn Punkte, je Punkt ein eigener Schritt. Noch nicht live. RECHT-01 und RECHT-02 warten auf deine Texte („kommt“).</p>
 
-    <article class="pt" data-id="r2-RUNDE1">
+    <article class="pt">
       <div class="pt-h"><div class="pt-meta"><span class="id">Messung</span><span class="kind">Lighthouse, vorher gegen nachher</span></div><span class="badge" data-badge>Offen</span>
         <h2 class="disp">Ladezeit und Werte</h2></div>
       <div class="body">
@@ -293,13 +200,12 @@ details.arch .tw { padding: 0 20px 16px; }
         <div class="tw"><table id="mtab"><thead><tr><th>Seite</th><th>Gerät</th><th>Leistung</th><th>Bis sichtbar</th><th>Daten</th><th>Barrierefreiheit</th></tr></thead><tbody></tbody></table></div>
         <p style="color:var(--ink-2);font-size:.92rem">Was die Ladezeit verbessert hat (PERF-01): Die Videos laden erst, wenn sie gebraucht werden, die Schriften werden früher geladen, die Standbilder sind kleiner. Auf der Startseite ist auf dem Handy mit 4,3 s noch Luft. Die verbleibende Zeit geht vor allem auf das große Kopfbild und die Schriften. Barrierefreiheit (axe-core) auf allen 13 Seiten: unverändert, keine neuen Fehler.</p>
       </div>
-      <div class="dec" data-dec="deploy"></div>
     </article>
 
     <div id="r1list" style="display:grid;gap:28px"></div>
 
-    <h2 class="sec-h disp" id="archiv">Deine Entscheidungen aus Runde 1</h2>
-    <details class="arch"><summary>Alle 41 Entscheidungen anzeigen</summary><div class="tw"><table><thead><tr><th>Punkt</th><th>Entscheidung</th><th>Kommentar</th></tr></thead><tbody id="archBody"></tbody></table></div></details>
+    <h2 class="sec-h disp" id="archiv">Deine Entscheidungen</h2>
+    <details class="arch"><summary>Alle Entscheidungen aus Runde 1 und 2 anzeigen</summary><div class="tw"><table><thead><tr><th>Punkt</th><th>Entscheidung</th><th>Kommentar</th></tr></thead><tbody id="archBody"></tbody></table></div></details>
   </main>
 </div>
 <span class="save-state" id="saveState" aria-live="polite">Lädt …</span>
@@ -319,6 +225,13 @@ const R1 = [
   { id: "TEXT-01", t: "Seitenköpfe Team und Über uns", views: [["d", 1], ["d", 2]] },
   { id: "DS-02", t: "Datenschutz-Überschrift sauber trennen", views: [["d", 1], ["m", 2]] },
 ];
+const R2 = [
+  { id: "LEIST-03", t: "Seitenkopf auf dem Handy: Knick (Variante B)", d: "Die dunkle Fläche reicht mit einem Knick bis unter den Einleitungstext. Text, Schriftstärke und Farbe sind unverändert, auch bei „Sprechen wir“.", views: [["m", 1, "Rohbau"], ["m", 2, "Kontakt"]] },
+  { id: "LOCAL-02", t: "Einsatzgebiet mit Karte", d: "Etwas schmaler, die Karte liegt ohne Rahmen direkt auf der Seite: Hamburg kräftig blau, das Umland hellblau und nach außen verblassend, ohne Kreis. Auf allen drei Leistungsseiten.", only: [["d", 1], ["m", 2]] },
+  { id: "SEO-04", t: "Vorschaubild für geteilte Links", d: "Mit dem echten Logo. Die blaue Fläche reicht jetzt so weit nach rechts, dass der ganze Claim mit Abstand auf Blau steht. Gilt für alle Seiten.", img: "r1/SEO-04-vorschaubild.jpg" },
+  { id: "SEO-03", t: "Seitentitel mit „Hamburg“", d: "Die Titel wie in Runde 2 vorgeschlagen, zum Beispiel „Rohbau & Stahlbetonbau in Hamburg | Quirling Bauunternehmen“. Auf den Seiten selbst ändert sich nichts." },
+  { id: "KONTAKT-01", t: "Formular mit Bestätigung", d: "Nach dem Absenden ersetzt die Bestätigung das Formular: „Danke, Ihre Anfrage ist da. Wir melden uns schnellstmöglich bei Ihnen.“ Ohne Tagesangabe, wie gewünscht. Der Knopf heißt „Anfrage senden“. Aktiv, sobald die Formspree-Adresse eingetragen ist." },
+];
 const R1_TECH = [
   ["SEO-01", "sitemap.xml und robots.txt", "Die Website erzeugt jetzt automatisch eine Liste aller 12 Seiten für Google (sitemap.xml) und eine robots.txt mit Verweis darauf. Die Adressen passen sich beim Umzug auf quirling.de von selbst an. Hinweis: Die robots.txt wirkt erst auf der eigenen Domain, nicht unter github.io/Quirling."],
   ["REF-03", "Kachelbilder mobil kleiner laden", "Auf dem Handy lädt die Referenzseite die Kachelbilder jetzt in der Größe, in der sie angezeigt werden. Ergebnis: 1,5 MB statt 3,3 MB beim ersten Aufruf und schnellerer Aufbau. Sichtbar ändert sich nichts."],
@@ -329,7 +242,8 @@ const OPTS = {
   std: [["ok", "Übernehmen"], ["aendern", "Ändern"], ["nein", "Verwerfen"]],
   var: [["A", "Variante A"], ["B", "Variante B"], ["C", "Variante C"], ["aendern", "Andere Form"], ["nein", "Verwerfen"]],
   form: [["dienst", "1 · Formulardienst"], ["server", "2 · Eigenes Skript"], ["ohne", "3 · Kein Formular"], ["aendern", "Erst Fragen klären"]],
-  deploy: [["ja", "Runde 1 veröffentlichen"], ["aendern", "Erst ändern"], ["nein", "Noch nicht"]],
+  deploy: [["ja", "Jetzt veröffentlichen"], ["aendern", "Erst ändern"], ["nein", "Noch warten"]],
+  form3: [["ja", "Adresse eingetragen"], ["aendern", "Frage dazu"], ["nein", "Mache ich später"]],
 };
 const LBL = Object.fromEntries(Object.values(OPTS).flat());
 const NEG = { aendern: "aendern", nein: "nein" };
@@ -351,6 +265,13 @@ function render() {
     rows.push(`<tr><td>${NAMEN[pg]}</td><td>${dev === "mobile" ? "Handy" : "Desktop"}</td><td class="num">${v[0]} → <span class="up">${n[0]}</span></td><td class="num">${f(v[2])} s → <span class="up">${f(n[2])} s</span></td><td class="num">${(v[3] / 1024).toFixed(1).replace(".", ",")} → ${(n[3] / 1024).toFixed(1).replace(".", ",")} MB</td><td class="num">${v[1]} → ${n[1]}</td></tr>`);
   }
   document.querySelector("#mtab tbody").innerHTML = rows.join("");
+  // Runde-2-Karten
+  const fig = (src, cap, dv, lab) => `<figure class="${lab === "Bisher" ? "alt" : "neu"}"><figcaption><b>${lab}</b><span class="mono">${cap}</span></figcaption><button type="button" class="shot${dv === "m" ? " m" : ""}" data-src="${src}" data-t="${esc(cap)}"><img src="${src}" alt="${lab}: ${esc(cap)}" loading="lazy"></button></figure>`;
+  document.getElementById("r2list").innerHTML = R2.map((p) => `<article class="pt"><div class="pt-h"><div class="pt-meta"><span class="id">${p.id}</span><span class="kind">umgesetzt</span></div><span class="badge set">Fertig</span><h2 class="disp">${esc(p.t)}</h2></div>
+    <div class="body" style="padding-bottom:20px"><p>${esc(p.d)}</p>
+    ${(p.views || []).map(([dv, n, c]) => `<div class="cmp">${fig(`r1/${p.id}-${n}-alt.jpg`, c, dv, "Bisher")}${fig(`r1/${p.id}-${n}-neu.jpg`, c, dv, "Umgesetzt")}</div>`).join("")}
+    ${p.only ? `<div class="cmp">${p.only.map(([dv, n]) => fig(`r1/${p.id}-${n}-neu.jpg`, dv === "m" ? "Handy" : "Desktop", dv, "Umgesetzt")).join("")}</div>` : ""}
+    ${p.img ? `<div class="cmp one">${fig(p.img, "1200 × 630 px", "d", "Umgesetzt")}</div>` : ""}</div></article>`).join("");
   // Runde-1-Bilder
   const list = document.getElementById("r1list");
   list.innerHTML = R1.map((p) => `<article class="pt"><div class="pt-h"><div class="pt-meta"><span class="id">${p.id}</span><span class="kind">umgesetzt</span></div><span class="badge set">Fertig</span><h2 class="disp">${esc(p.t)}</h2></div>
@@ -372,7 +293,7 @@ function paint(id) {
   }
   const ta = document.getElementById("k-" + id);
   if (ta && document.activeElement !== ta && ta.value !== (s.kommentar || "")) ta.value = s.kommentar || "";
-  const open = [...document.querySelectorAll("#offen ~ .pt[data-id^='r2-']")].filter((c) => c.dataset.id !== "r2-RUNDE1" && !state[c.dataset.id]?.status).length;
+  const open = [...document.querySelectorAll(".pt[data-id^='r3-']")].filter((c) => !state[c.dataset.id]?.status).length;
   document.getElementById("cnt-open").textContent = open ? `${open} offen` : "alles entschieden";
 }
 const chains = {}, timers = {};
@@ -417,13 +338,13 @@ document.querySelectorAll(".pt[data-id]").forEach((c) => paint(c.dataset.id));
     const arch = [];
     snap.docs.forEach((d) => {
       const v = d.data() || {};
-      if (d.id.startsWith("r2-")) {
+      if (d.id.startsWith("r3-")) {
         const ta = document.getElementById("k-" + d.id); const typing = ta && document.activeElement === ta;
         state[d.id] = { status: v.status || "", kommentar: typing ? state[d.id]?.kommentar ?? "" : v.kommentar || "" };
         paint(d.id);
-      } else if (d.id !== "_allgemein") arch.push([d.id, v]);
+      } else if (d.id !== "_allgemein") arch.push([d.id.replace(/^r2-/, "Runde 2: "), v]);
     });
-    const L1 = { ok: "Übernehmen", aendern: "Ändern", nein: "Verwerfen" };
+    const L1 = { ok: "Übernehmen", aendern: "Ändern", nein: "Verwerfen", A: "Variante A", B: "Variante B", C: "Variante C", dienst: "Formulardienst", server: "Eigenes Skript", ohne: "Kein Formular", ja: "Ja" };
     document.getElementById("archBody").innerHTML = arch.map(([id, v]) => `<tr><td><span class="id">${esc(id)}</span></td><td class="st-${esc(v.status)}">${L1[v.status] || "offen"}</td><td>${esc(v.kommentar)}</td></tr>`).join("");
   }, () => { clearTimeout(t); saveState("Gespeicherte Antworten nicht erreichbar"); });
 })();
