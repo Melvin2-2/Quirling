@@ -2103,9 +2103,9 @@ const werte = [
     const p1 = [ex - hl * Math.cos(ang - 0.45), ey - hl * Math.sin(ang - 0.45)];
     const p2 = [ex - hl * Math.cos(ang + 0.45), ey - hl * Math.sin(ang + 0.45)];
     head.setAttribute('d', `M ${ex.toFixed(1)} ${ey.toFixed(1)} L ${p1[0].toFixed(1)} ${p1[1].toFixed(1)} L ${p2[0].toFixed(1)} ${p2[1].toFixed(1)} Z`);
-    // Beschriftung: rechte obere Ecke am Pfeilanfang
-    note.style.left = 'auto';
-    note.style.right = `${Math.max(8, bw - sx - 24).toFixed(1)}px`;
+    // Beschriftung unter dem Pfeilanfang, rechtsbündig daran, aber nie über den linken Bildrand hinaus
+    const nw = note.offsetWidth;
+    note.style.left = `${Math.max(16, sx + 24 - nw).toFixed(1)}px`;
     note.style.top = `${(sy + 6).toFixed(1)}px`;
   };
   const markOv = document.querySelector<HTMLElement>('[data-figs-ov]');
