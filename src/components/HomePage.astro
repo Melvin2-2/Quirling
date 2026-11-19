@@ -247,13 +247,38 @@ const werte = [
     <figure class="figs-photo">
       <span class="figs-img" data-figs-img>
         <Image src={historisch} alt="Historisches Foto einer Baumannschaft auf einem Gerüst" widths={[800, 1200, 1600]} sizes="(min-width: 900px) 46vw, 100vw" />
-        <!-- Markierung: Kreis um den Vater des Gründers, Pfeil und Beschriftung; Lage wird per Skript aus dem Bildausschnitt berechnet -->
+        <!-- Markierung: Buntstift-Kreis um den Vater des Gründers und ein beschrifteter Zettel; Lage per Skript aus dem Bildausschnitt -->
         <span class="figs-ov" data-figs-ov aria-hidden="true">
           <svg class="figs-mark">
-            <path class="fm-arrow" data-fm-arrow pathLength="1" />
-            <path class="fm-head" data-fm-head pathLength="1" />
+            <defs>
+              <!-- Buntstift: Kante leicht ausgefranst, Strich mit Körnung und kleinen Lücken -->
+              <filter id="fm-pencil" x="-20%" y="-20%" width="140%" height="140%">
+                <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="4" result="n" />
+                <feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G" result="rough" />
+                <feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="1" seed="11" result="g" />
+                <feColorMatrix in="g" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.6 2" result="m" />
+                <feComposite in="rough" in2="m" operator="in" />
+              </filter>
+              <!-- dieselbe Optik für die Schrift, aber feiner, damit sie gut lesbar bleibt -->
+              <filter id="fm-pencil-t" x="-5%" y="-20%" width="110%" height="140%">
+                <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="2" seed="6" result="n" />
+                <feDisplacementMap in="SourceGraphic" in2="n" scale="1.1" xChannelSelector="R" yChannelSelector="G" result="rough" />
+                <feTurbulence type="fractalNoise" baseFrequency="2" numOctaves="1" seed="9" result="g" />
+                <feColorMatrix in="g" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -1.6 1.75" result="m" />
+                <feComposite in="rough" in2="m" operator="in" />
+              </filter>
+            </defs>
+            <g filter="url(#fm-pencil)">
+              <path class="fm-circle" data-fm-circle pathLength="1" />
+              <path class="fm-circle fm-circle-2" data-fm-circle2 pathLength="1" />
+            </g>
+            <g class="fm-note" data-fm-note>
+              <g data-fm-tilt>
+                <rect class="fm-paper" data-fm-paper />
+                <text class="fm-text" data-fm-text filter="url(#fm-pencil-t)"><tspan data-fm-l1>Der Vater unseres Gründers</tspan><tspan data-fm-l2>in seiner Lehrzeit</tspan></text>
+              </g>
+            </g>
           </svg>
-          <span class="figs-note" data-fm-note>Der Vater unseres Gründers<br />in seiner Lehrzeit</span>
         </span>
       </span>
       <figcaption class="visually-hidden">Der Vater unseres Gründers in seiner Lehrzeit, oben rechts im Bild.</figcaption>
@@ -588,58 +613,28 @@ const werte = [
     height: 100%;
     overflow: visible;
   }
-  /* gekritzelter Pfeil und Handschrift in Blau, mit hellem Rand für die Lesbarkeit auf dem Foto */
-  .fm-arrow,
-  .fm-head {
+  /* Buntstift-Kreis und Zettel in Blau; erscheinen mit dem Scrollen (ohne Bewegung: sofort sichtbar) */
+  .fm-circle {
     fill: none;
     stroke: var(--blue);
-    stroke-width: 3;
+    stroke-width: 4.2;
     stroke-linecap: round;
     stroke-linejoin: round;
     stroke-dasharray: 1;
-    stroke-dashoffset: 1;
-    filter: drop-shadow(0 0 2px rgb(255 255 255 / 0.9)) drop-shadow(0 0 5px rgb(255 255 255 / 0.6));
+    stroke-dashoffset: 0;
+    opacity: 0.92;
   }
-  .figs-note {
-    position: absolute;
+  .fm-circle-2 {
+    stroke-width: 2.2;
+    opacity: 0.6;
+  }
+  .fm-paper {
+    fill: #ffffff;
+  }
+  .fm-text {
     font-family: 'Caveat Variable', 'Caveat', 'Bradley Hand', 'Segoe Print', cursive;
     font-weight: 700;
-    font-size: clamp(1.3rem, 1.9vw, 1.8rem);
-    line-height: 1;
-    color: var(--blue);
-    white-space: nowrap;
-    text-shadow:
-      0 0 2px #fff,
-      0 0 4px #fff,
-      0 0 10px rgb(255 255 255 / 0.85);
-    opacity: 0;
-    transform: rotate(-5deg) translateY(6px);
-    transform-origin: right top;
-  }
-  .figs-ov.is-on .fm-arrow {
-    stroke-dashoffset: 0;
-    transition: stroke-dashoffset 0.8s var(--ease) 0.5s;
-  }
-  .figs-ov.is-on .fm-head {
-    stroke-dashoffset: 0;
-    transition: stroke-dashoffset 0.3s ease 1.25s;
-  }
-  .figs-ov.is-on .figs-note {
-    opacity: 1;
-    transform: rotate(-5deg);
-    transition:
-      opacity 0.5s ease,
-      transform 0.6s var(--ease);
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .fm-arrow,
-    .fm-head {
-      stroke-dashoffset: 0;
-    }
-    .figs-note {
-      opacity: 1;
-      transform: rotate(-5deg);
-    }
+    fill: var(--blue);
   }
   .figs-cap {
     position: absolute;
@@ -2066,6 +2061,26 @@ const werte = [
   /* ---------- Familie: Vater des Gründers markieren ----------
      Lage des Gesichts im Originalfoto (1440 × 774 px): Mitte 1064 / 77, Größe ca. 101 × 93 px.
      Umrechnung auf den sichtbaren Ausschnitt wie object-fit: cover mit object-position 80 % 0 %. */
+  // Kreis von Hand: etwas mehr als eine Umdrehung, Radius schwankt leicht, die Enden überlappen statt sich zu treffen
+  const handCircle = (cx: number, cy: number, rx: number, ry: number, seed: number, turns = 1.13) => {
+    const pts: [number, number][] = [];
+    const n = 56;
+    const t0 = -2.3 + seed * 0.2;
+    for (let i = 0; i <= n; i++) {
+      const t = i / n;
+      const th = t0 + t * turns * Math.PI * 2;
+      const w = 1 + 0.05 * Math.sin(3 * th + seed) + 0.025 * Math.sin(7 * th + seed * 2) + 0.08 * t;
+      pts.push([cx + rx * w * Math.cos(th), cy + ry * w * Math.sin(th)]);
+    }
+    const f = (v: number) => v.toFixed(1);
+    let d = `M ${f(pts[0][0])} ${f(pts[0][1])}`;
+    for (let i = 1; i < pts.length - 1; i++) {
+      const mx = (pts[i][0] + pts[i + 1][0]) / 2;
+      const my = (pts[i][1] + pts[i + 1][1]) / 2;
+      d += ` Q ${f(pts[i][0])} ${f(pts[i][1])} ${f(mx)} ${f(my)}`;
+    }
+    return d;
+  };
   const placeMark = () => {
     const ov = document.querySelector<HTMLElement>('[data-figs-ov]');
     const img = document.querySelector<HTMLImageElement>('[data-figs-img] img');
@@ -2077,48 +2092,58 @@ const werte = [
     const cx = ox + 1064 * s;
     const cy = 77 * s;
     const r = Math.max(56 * s, 26);
-    const arrow = ov.querySelector('[data-fm-arrow]');
-    const head = ov.querySelector('[data-fm-head]');
-    const note = ov.querySelector<HTMLElement>('[data-fm-note]');
-    if (!arrow || !head || !note) return;
-    const f = (n: number) => n.toFixed(1);
-    // gekritzelter Pfeil: von der Handschrift links unten bis knapp unter das Kinn, leicht zittrig
-    const sx = cx - r * 2.1;
-    const sy = cy + r * 2.75;
-    const ex = cx - r * 0.18;
-    const ey = cy + r * 0.92;
-    arrow.setAttribute(
-      'd',
-      `M ${f(sx)} ${f(sy)} C ${f(sx + r * 0.05)} ${f(sy - r * 0.55)}, ${f(sx + r * 0.35)} ${f(sy - r * 1.15)}, ${f(sx + r * 0.85)} ${f(sy - r * 1.35)} ` +
-        `S ${f(ex - r * 0.55)} ${f(ey + r * 0.2)}, ${f(ex)} ${f(ey)}`,
-    );
-    // Pfeilspitze aus zwei schnellen Strichen, nicht ganz symmetrisch
-    const ang = Math.atan2(ey - (ey + r * 0.2), ex - (ex - r * 0.55));
-    const h1 = r * 0.42;
-    const h2 = r * 0.36;
-    const a1 = [ex - h1 * Math.cos(ang - 0.55), ey - h1 * Math.sin(ang - 0.55)];
-    const a2 = [ex - h2 * Math.cos(ang + 0.5), ey - h2 * Math.sin(ang + 0.5)];
-    head.setAttribute('d', `M ${f(a1[0])} ${f(a1[1])} L ${f(ex)} ${f(ey)} L ${f(a2[0])} ${f(a2[1])}`);
-    // Handschrift unter dem Pfeilanfang, nie über den linken Bildrand hinaus
-    const nw = note.offsetWidth;
-    note.style.left = `${f(Math.max(14, sx + r * 0.4 - nw))}px`;
-    note.style.top = `${f(sy + 4)}px`;
+    const c1 = ov.querySelector('[data-fm-circle]');
+    const c2 = ov.querySelector('[data-fm-circle2]');
+    const tilt = ov.querySelector<SVGGElement>('[data-fm-tilt]');
+    const paper = ov.querySelector('[data-fm-paper]');
+    const text = ov.querySelector<SVGTextElement>('[data-fm-text]');
+    const l1 = ov.querySelector('[data-fm-l1]');
+    const l2 = ov.querySelector('[data-fm-l2]');
+    if (!c1 || !c2 || !tilt || !paper || !text || !l1 || !l2) return;
+    c1.setAttribute('d', handCircle(cx, cy + r * 0.12, r * 0.86, r * 0.96, 1.3));
+    c2.setAttribute('d', handCircle(cx + 1.5, cy + r * 0.14, r * 0.89, r * 0.93, 2.1, 1.08));
+    // Zettel links unterhalb des Kreises, nie über den linken Bildrand hinaus
+    const fs = Math.round(Math.min(26, Math.max(19, r * 0.42)));
+    text.setAttribute('font-size', String(fs));
+    l1.setAttribute('x', '0');
+    l1.setAttribute('dy', '0');
+    l2.setAttribute('x', '0');
+    l2.setAttribute('dy', String(Math.round(fs * 1.05)));
+    const bb = text.getBBox();
+    const padX = fs * 0.55;
+    const padY = fs * 0.35;
+    const w = bb.width + padX * 2;
+    const h = bb.height + padY * 2;
+    const gx = Math.max(14, cx - r * 0.7 - w);
+    const gy = cy + r * 1.25;
+    text.setAttribute('x', String(gx + padX));
+    text.setAttribute('y', String(gy + padY - bb.y));
+    l1.setAttribute('x', String(gx + padX));
+    l2.setAttribute('x', String(gx + padX));
+    paper.setAttribute('x', String(gx));
+    paper.setAttribute('y', String(gy));
+    paper.setAttribute('width', String(w));
+    paper.setAttribute('height', String(h));
+    tilt.setAttribute('transform', `rotate(-4 ${gx + w} ${gy})`);
   };
-  const markOv = document.querySelector<HTMLElement>('[data-figs-ov]');
-  if (markOv) {
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((e) => e.isIntersecting)) {
-          placeMark();
-          markOv.classList.add('is-on');
-          io.disconnect();
-        }
-      },
-      { threshold: 0.45 },
+  placeMark();
+  document.querySelector<HTMLImageElement>('[data-figs-img] img')?.addEventListener('load', placeMark);
+  document.fonts?.ready.then(placeMark);
+
+  /* Kreis zeichnet sich mit dem Scrollen, danach erscheint der Zettel */
+  mm.add('(prefers-reduced-motion: no-preference)', () => {
+    const photo = document.querySelector('.figs-photo');
+    const circles = document.querySelectorAll('[data-fm-circle], [data-fm-circle2]');
+    const note = document.querySelector('[data-fm-note]');
+    if (!photo || !circles.length || !note) return;
+    const tl = gsap.timeline({ scrollTrigger: { trigger: photo, start: 'top 75%', end: 'top 20%', scrub: 0.6 } });
+    tl.fromTo(circles, { strokeDashoffset: 1 }, { strokeDashoffset: 0, ease: 'none', duration: 1 }, 0).fromTo(
+      note,
+      { opacity: 0 },
+      { opacity: 1, ease: 'none', duration: 0.35 },
+      0.8,
     );
-    io.observe(document.querySelector('.figs-photo') ?? markOv);
-    document.querySelector<HTMLImageElement>('[data-figs-img] img')?.addEventListener('load', placeMark);
-  }
+  });
 
   window.addEventListener('scroll', follow, { passive: true });
   window.addEventListener('resize', () => {
