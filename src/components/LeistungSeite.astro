@@ -351,6 +351,10 @@ const andere = await Promise.all(
   }
 
   /* ---------- 4. Referenzen ---------- */
+  /* direkt nach der Karte weniger Luft: die Karte blendet nach unten ohnehin weich aus */
+  :global(.eg) + .rb-refs {
+    padding-top: clamp(1rem, 2vw, 2rem);
+  }
   .rb-refs-head {
     display: flex;
     align-items: flex-end;

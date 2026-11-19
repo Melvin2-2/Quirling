@@ -9,7 +9,7 @@ import { laender } from '~/data/karte-nord';
 import { url } from '~/lib/url';
 
 // Ausschnitt Norddeutschland (Einheiten der Quellkarte, ca. 1 Einheit ≈ 1 km), Hamburg etwas unter der Mitte
-const vb = '156 50 220 212';
+const vb = '156 50 220 232';
 // Umrechnung Längen-/Breitengrad in Kartenkoordinaten, kalibriert an den Umrissen von Hamburg und Bremen
 const xy = (lon: number, lat: number) => ({ x: 246.6 + (lon - 9.73) * 63.3, y: 144.4 + (53.74 - lat) * 106.4 });
 type Stadt = { n: string; x: number; y: number; dx: number; dy: number; end?: boolean; fern?: boolean };
@@ -33,7 +33,7 @@ const sitz = { x: 268.9, y: 160.7 };
         Zuhause sind wir in Hamburg-Wandsbek. Von hier aus bauen wir in ganz Hamburg und in der Metropolregion, in Schleswig-Holstein und Niedersachsen.
       </p>
       <p class="eg-p">Ihr Bauvorhaben liegt weiter draußen? Fragen Sie uns gern an.</p>
-      <a class="eg-link" href={url('/kontakt/')}><span>Projekt anfragen</span><Icon name="arrow" /></a>
+      <a class="eg-btn" href={url('/kontakt/')}><span>Projekt anfragen</span><Icon name="arrow" /></a>
     </div>
     <figure class="eg-map">
       <svg viewBox={vb} role="img" aria-labelledby="eg-cap">
@@ -47,8 +47,8 @@ const sitz = { x: 268.9, y: 160.7 };
             <stop offset="0.72" stop-color="#fff" stop-opacity="0.25" />
             <stop offset="1" stop-color="#fff" stop-opacity="0" />
           </radialGradient>
-          <mask id="eg-mask" maskUnits="userSpaceOnUse" x="156" y="50" width="220" height="212">
-            <rect x="156" y="50" width="220" height="212" fill="url(#eg-fade)" />
+          <mask id="eg-mask" maskUnits="userSpaceOnUse" x="156" y="50" width="220" height="232">
+            <rect x="156" y="50" width="220" height="232" fill="url(#eg-fade)" />
           </mask>
         </defs>
         <g mask="url(#eg-mask)">
@@ -85,7 +85,7 @@ const sitz = { x: 268.9, y: 160.7 };
 
 <style>
   .eg {
-    padding-block: clamp(3.5rem, 7vw, 6rem);
+    padding-block: clamp(3.5rem, 7vw, 6rem) clamp(0.5rem, 1.5vw, 1.5rem);
     background: var(--stone-50);
   }
   .eg-grid {
@@ -112,21 +112,35 @@ const sitz = { x: 268.9, y: 160.7 };
     line-height: 1.6;
     color: var(--ink);
   }
-  .eg-link {
+  /* Standard-Knopf der Website (wie „Wer steckt dahinter?“) */
+  .eg-btn {
     display: inline-flex;
     align-items: center;
-    gap: 0.6rem;
-    min-height: 44px;
-    margin-top: 0.2rem;
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-    letter-spacing: 0.06em;
+    gap: 1.1rem;
+    margin-top: 0.4rem;
+    padding: 1.15rem 1.5rem 1.05rem;
+    line-height: 1;
+    background: var(--navy);
+    color: #fff;
+    font-family: var(--font-head);
+    font-stretch: 68%;
+    font-weight: 800;
+    font-size: clamp(1.25rem, 1.6vw, 1.55rem);
+    letter-spacing: 0.02em;
     text-transform: uppercase;
-    color: var(--blue-text);
     text-decoration: none;
+    transition: background 0.25s ease;
   }
-  .eg-link:hover span {
-    text-decoration: underline;
+  .eg-btn :global(svg) {
+    width: 1.2rem;
+    height: 1.2rem;
+    transition: transform 0.35s var(--ease);
+  }
+  .eg-btn:hover {
+    background: var(--blue);
+  }
+  .eg-btn:hover :global(svg) {
+    transform: translateX(4px);
   }
   .eg-map {
     margin: 0;
@@ -139,6 +153,8 @@ const sitz = { x: 268.9, y: 160.7 };
     width: 100%;
     max-width: 620px;
     height: auto;
+    /* der untere, ausgeblendete Rand der Karte braucht keinen Platz */
+    margin-bottom: -8%;
   }
   .eg-land-f {
     fill: #c9d0f5;
@@ -146,13 +162,13 @@ const sitz = { x: 268.9, y: 160.7 };
     stroke-width: 0.8;
   }
   .eg-hh {
-    fill: #3948a4;
-    stroke: #3948a4;
+    fill: #313e97;
+    stroke: #313e97;
     stroke-width: 0.4;
   }
   .eg-sitz {
     fill: #ffffff;
-    stroke: #121735;
+    stroke: #22294d;
     stroke-width: 0.8;
   }
   .eg-lbl text {
@@ -168,12 +184,12 @@ const sitz = { x: 268.9, y: 160.7 };
     font-weight: 800;
     font-size: 8.5px;
     text-transform: uppercase;
-    fill: #121735;
+    fill: #22294d;
   }
   .eg-small {
     font-size: 4.2px;
     font-weight: 600;
-    fill: #121735;
+    fill: #22294d;
   }
   .eg-land {
     font-size: 4px;
@@ -182,7 +198,7 @@ const sitz = { x: 268.9, y: 160.7 };
     fill: #5b6188;
   }
   .eg-dot {
-    fill: #121735;
+    fill: #22294d;
   }
   /* weiter entfernte Städte zurückhaltend, damit der Übergang weich bleibt */
   .eg-fern .eg-dot {
