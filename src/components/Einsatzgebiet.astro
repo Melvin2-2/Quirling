@@ -1,0 +1,167 @@
+---
+/**
+ * Einsatzgebiet (Audit LOCAL-02): kurzer Text und schematische Karte.
+ * Die Karte liegt transparent auf der Seite: Hamburg kräftig, das Umland hellblau und nach außen verblassend.
+ * Eigene Grafik, keine eingebettete Fremdkarte, keine Cookies.
+ */
+import Icon from '~/components/Icon.astro';
+import { laender } from '~/data/karte-nord';
+import { url } from '~/lib/url';
+
+// Ausschnitt Norddeutschland (Einheiten der Quellkarte, ca. 1 Einheit ≈ 1 km), Mitte etwa Hamburg
+const vb = '175 103 180 120';
+// Firmensitz Tilsiter Straße, Hamburg-Wandsbek (aus der Lage im Stadtgebiet abgeleitet, schematisch)
+const sitz = { x: 268.9, y: 160.7 };
+---
+
+<section class="eg" aria-labelledby="eg-h">
+  <div class="container eg-grid">
+    <div class="eg-text">
+      <h2 class="h-sec" id="eg-h">Hamburg<br /><span class="lt">und Umgebung.</span></h2>
+      <p class="eg-p">
+        Zuhause sind wir in Hamburg-Wandsbek. Von hier aus bauen wir in ganz Hamburg und in der Metropolregion, in Schleswig-Holstein und Niedersachsen.
+      </p>
+      <p class="eg-p">Ihr Bauvorhaben liegt weiter draußen? Fragen Sie uns gern an.</p>
+      <a class="eg-link" href={url('/kontakt/')}><span>Projekt anfragen</span><Icon name="arrow" /></a>
+    </div>
+    <figure class="eg-map">
+      <svg viewBox={vb} role="img" aria-labelledby="eg-cap">
+        <defs>
+          <!-- weicher Rand: die Karte verblasst nach außen -->
+          <radialGradient id="eg-fade" cx="265" cy="163" r="78" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#fff" stop-opacity="1" />
+            <stop offset="0.45" stop-color="#fff" stop-opacity="0.95" />
+            <stop offset="1" stop-color="#fff" stop-opacity="0" />
+          </radialGradient>
+          <mask id="eg-mask" maskUnits="userSpaceOnUse" x="175" y="103" width="180" height="120">
+            <rect x="175" y="103" width="180" height="120" fill="url(#eg-fade)" />
+          </mask>
+        </defs>
+        <g mask="url(#eg-mask)">
+          {['sh', 'ni', 'mv', 'hb', 'bb'].map((id) => <path d={laender[id]} class="eg-land-f" />)}
+        </g>
+        <path d={laender.hh} class="eg-hh" />
+        <!-- Firmensitz als Raute -->
+        <rect x={sitz.x - 2.4} y={sitz.y - 2.4} width="4.8" height="4.8" transform={`rotate(45 ${sitz.x} ${sitz.y})`} class="eg-sitz" />
+        <g class="eg-lbl">
+          <text x="249" y="190" class="eg-city">Hamburg</text>
+          <text x="275" y="156" class="eg-small">Firmensitz</text>
+          <text x="275" y="161.5" class="eg-small">Wandsbek</text>
+          <text x="214" y="132" class="eg-land">Schleswig-Holstein</text>
+          <text x="214" y="208" class="eg-land">Niedersachsen</text>
+          <text x="305" y="138" class="eg-land">Mecklenburg-</text>
+          <text x="305" y="144" class="eg-land">Vorpommern</text>
+        </g>
+      </svg>
+      <figcaption id="eg-cap">
+        <span class="visually-hidden">Schematische Karte: Hamburg mit Firmensitz in Wandsbek, das Umland in Schleswig-Holstein und Niedersachsen.</span>
+        <span class="eg-src">Kartengrundlage: MapSVG, CC BY 4.0</span>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .eg {
+    padding-block: clamp(3.5rem, 7vw, 6rem);
+    background: var(--stone-50);
+  }
+  .eg-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: center;
+  }
+  .eg-text {
+    display: grid;
+    gap: 1.1rem;
+    justify-items: start;
+  }
+  .eg-p {
+    margin: 0;
+    max-width: 40ch;
+    font-size: clamp(1.1rem, 1.4vw, 1.25rem);
+    font-weight: 300;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+  .eg-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 44px;
+    margin-top: 0.2rem;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--blue);
+    text-decoration: none;
+  }
+  .eg-link:hover span {
+    text-decoration: underline;
+  }
+  .eg-map {
+    margin: 0;
+    display: grid;
+    gap: 0.2rem;
+    justify-items: end;
+  }
+  .eg-map svg {
+    display: block;
+    width: 100%;
+    max-width: 620px;
+    height: auto;
+    overflow: visible;
+  }
+  .eg-land-f {
+    fill: #c9d0f5;
+    stroke: var(--stone-50);
+    stroke-width: 0.8;
+  }
+  .eg-hh {
+    fill: #3948a4;
+    stroke: #3948a4;
+    stroke-width: 0.4;
+  }
+  .eg-sitz {
+    fill: #ffffff;
+    stroke: #121735;
+    stroke-width: 0.8;
+  }
+  .eg-lbl text {
+    font-family: var(--font-body);
+  }
+  .eg-city {
+    font-family: var(--font-head) !important;
+    font-stretch: 68%;
+    font-weight: 800;
+    font-size: 8.5px;
+    text-transform: uppercase;
+    fill: #121735;
+  }
+  .eg-small {
+    font-size: 4.2px;
+    font-weight: 600;
+    fill: #121735;
+  }
+  .eg-land {
+    font-size: 4px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    fill: #5b6188;
+  }
+  .eg-src {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--ink-3);
+  }
+  @media (max-width: 900px) {
+    .eg-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .eg-map {
+      justify-items: center;
+    }
+  }
+</style>
