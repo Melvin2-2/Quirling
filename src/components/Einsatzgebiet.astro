@@ -39,7 +39,8 @@ const sitz = { x: 268.9, y: 160.7 };
       <svg viewBox={vb} role="img" aria-labelledby="eg-cap">
         <defs>
           <!-- weicher Rand: die Karte verblasst nach außen -->
-          <radialGradient id="eg-fade" cx="266" cy="156" r="106" gradientUnits="userSpaceOnUse">
+          <!-- Mitte etwas unter Hamburg: oben Richtung Kiel blendet die Fläche früher aus -->
+          <radialGradient id="eg-fade" cx="266" cy="172" r="104" gradientUnits="userSpaceOnUse">
             <stop offset="0" stop-color="#fff" stop-opacity="1" />
             <stop offset="0.2" stop-color="#fff" stop-opacity="0.92" />
             <stop offset="0.45" stop-color="#fff" stop-opacity="0.6" />
