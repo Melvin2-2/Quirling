@@ -246,8 +246,17 @@ const werte = [
     <figure class="figs-photo">
       <span class="figs-img" data-figs-img>
         <Image src={historisch} alt="Historisches Foto einer Baumannschaft auf einem Gerüst" widths={[800, 1200, 1600]} sizes="(min-width: 900px) 46vw, 100vw" />
+        <!-- Markierung: Kreis um den Vater des Gründers, Pfeil und Beschriftung; Lage wird per Skript aus dem Bildausschnitt berechnet -->
+        <span class="figs-ov" data-figs-ov aria-hidden="true">
+          <svg class="figs-mark">
+            <ellipse class="fm-ring" data-fm-ring pathLength="1" />
+            <path class="fm-arrow" data-fm-arrow pathLength="1" />
+            <path class="fm-head" data-fm-head />
+          </svg>
+          <span class="figs-note" data-fm-note>Der Vater unseres Gründers<br />in seiner Lehrzeit</span>
+        </span>
       </span>
-      <figcaption class="figs-cap">Der Vater unseres Gründers in seiner Lehrzeit.</figcaption>
+      <figcaption class="visually-hidden">Der Vater unseres Gründers in seiner Lehrzeit, oben rechts im Bild.</figcaption>
     </figure>
     <div class="container figs-in">
       <div class="figs-side">
@@ -562,6 +571,81 @@ const werte = [
     height: 112%;
     object-fit: cover;
     object-position: 80% 0%;
+  }
+  /* Markierung des Vaters: liegt deckungsgleich über dem Foto und bewegt sich mit ihm */
+  .figs-ov {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 112%;
+    pointer-events: none;
+  }
+  .figs-mark {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+  .fm-ring,
+  .fm-arrow {
+    fill: none;
+    stroke: #ffffff;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.45));
+  }
+  .fm-head {
+    fill: #ffffff;
+    opacity: 0;
+    filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.45));
+  }
+  .figs-note {
+    position: absolute;
+    padding: 0.5rem 0.8rem 0.45rem;
+    background: var(--navy);
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    line-height: 1.45;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  .figs-ov.is-on .fm-ring {
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 0.9s var(--ease);
+  }
+  .figs-ov.is-on .fm-arrow {
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 0.6s var(--ease) 0.7s;
+  }
+  .figs-ov.is-on .fm-head {
+    opacity: 1;
+    transition: opacity 0.2s ease 1.2s;
+  }
+  .figs-ov.is-on .figs-note {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 0.5s ease 1s,
+      transform 0.6s var(--ease) 1s;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .fm-ring,
+    .fm-arrow {
+      stroke-dashoffset: 0;
+    }
+    .fm-head,
+    .figs-note {
+      opacity: 1;
+      transform: none;
+    }
   }
   .figs-cap {
     position: absolute;
@@ -1976,24 +2060,82 @@ const werte = [
     img.style.clipPath = `polygon(0 0, ${x0.toFixed(1)}px 0, ${x1.toFixed(1)}px ${h.toFixed(1)}px, 0 ${h.toFixed(1)}px)`;
   };
 
-  /* ---------- Familie: das Foto bewegt sich beim Scrollen leicht mit ---------- */
+  /* ---------- Familie: das Foto bewegt sich beim Scrollen leicht mit (Markierung mit) ---------- */
   mm.add('(prefers-reduced-motion: no-preference) and (min-width: 901px)', () => {
     const sec = document.querySelector('[data-figs-sec]');
     const img = sec?.querySelector('[data-figs-img] img');
+    const ov = sec?.querySelector('[data-figs-ov]');
     if (!sec || !img) return;
-    gsap.fromTo(img, { yPercent: -8 }, { yPercent: 0, ease: 'none', scrollTrigger: { trigger: sec, start: 'top bottom', end: 'bottom top', scrub: true } });
+    gsap.fromTo(ov ? [img, ov] : img, { yPercent: -8 }, { yPercent: 0, ease: 'none', scrollTrigger: { trigger: sec, start: 'top bottom', end: 'bottom top', scrub: true } });
   });
+
+  /* ---------- Familie: Vater des Gründers markieren ----------
+     Lage des Gesichts im Originalfoto (1440 × 774 px): Mitte 1064 / 77, Größe ca. 101 × 93 px.
+     Umrechnung auf den sichtbaren Ausschnitt wie object-fit: cover mit object-position 80 % 0 %. */
+  const placeMark = () => {
+    const ov = document.querySelector<HTMLElement>('[data-figs-ov]');
+    const img = document.querySelector<HTMLImageElement>('[data-figs-img] img');
+    if (!ov || !img || !img.naturalWidth) return;
+    const bw = img.clientWidth;
+    const bh = img.clientHeight;
+    const s = Math.max(bw / 1440, bh / 774);
+    const ox = (bw - 1440 * s) * 0.8;
+    const cx = ox + 1064 * s;
+    const cy = 77 * s;
+    const r = Math.max(56 * s, 26);
+    const ring = ov.querySelector('[data-fm-ring]');
+    const arrow = ov.querySelector('[data-fm-arrow]');
+    const head = ov.querySelector('[data-fm-head]');
+    const note = ov.querySelector<HTMLElement>('[data-fm-note]');
+    if (!ring || !arrow || !head || !note) return;
+    ring.setAttribute('cx', cx.toFixed(1));
+    ring.setAttribute('cy', cy.toFixed(1));
+    ring.setAttribute('rx', (r * 0.92).toFixed(1));
+    ring.setAttribute('ry', (r * 1.08).toFixed(1));
+    // Pfeil von der Beschriftung links unten zum Kreis
+    const ex = cx - r * 0.75;
+    const ey = cy + r * 0.85;
+    const sx = cx - r * 2.6;
+    const sy = cy + r * 2.9;
+    arrow.setAttribute('d', `M ${sx.toFixed(1)} ${sy.toFixed(1)} Q ${(sx + r * 0.2).toFixed(1)} ${(ey + r * 0.5).toFixed(1)} ${ex.toFixed(1)} ${ey.toFixed(1)}`);
+    const ang = Math.atan2(ey - (ey + r * 0.5), ex - (sx + r * 0.2));
+    const hl = 9;
+    const p1 = [ex - hl * Math.cos(ang - 0.45), ey - hl * Math.sin(ang - 0.45)];
+    const p2 = [ex - hl * Math.cos(ang + 0.45), ey - hl * Math.sin(ang + 0.45)];
+    head.setAttribute('d', `M ${ex.toFixed(1)} ${ey.toFixed(1)} L ${p1[0].toFixed(1)} ${p1[1].toFixed(1)} L ${p2[0].toFixed(1)} ${p2[1].toFixed(1)} Z`);
+    // Beschriftung: rechte obere Ecke am Pfeilanfang
+    note.style.left = 'auto';
+    note.style.right = `${Math.max(8, bw - sx - 24).toFixed(1)}px`;
+    note.style.top = `${(sy + 6).toFixed(1)}px`;
+  };
+  const markOv = document.querySelector<HTMLElement>('[data-figs-ov]');
+  if (markOv) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          placeMark();
+          markOv.classList.add('is-on');
+          io.disconnect();
+        }
+      },
+      { threshold: 0.45 },
+    );
+    io.observe(document.querySelector('.figs-photo') ?? markOv);
+    document.querySelector<HTMLImageElement>('[data-figs-img] img')?.addEventListener('load', placeMark);
+  }
 
   window.addEventListener('scroll', follow, { passive: true });
   window.addEventListener('resize', () => {
     fitIntro();
     fitFigs();
+    placeMark();
     follow();
   });
   window.addEventListener('load', () => {
     ScrollTrigger.refresh();
     fitIntro();
     fitFigs();
+    placeMark();
     follow();
   });
   ScrollTrigger.addEventListener('refresh', () => {
