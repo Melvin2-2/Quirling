@@ -331,6 +331,9 @@ const andere = await Promise.all(
   }
   .rb-own-text .h-sec {
     color: #fff;
+    /* zwei Zeilen, jede bleibt zusammen */
+    white-space: nowrap;
+    font-size: clamp(2.1rem, 4.2vw, 4.6rem);
   }
   .rb-own-list {
     list-style: none;
@@ -354,6 +357,9 @@ const andere = await Promise.all(
   /* direkt nach der Karte weniger Luft: die Karte blendet nach unten ohnehin weich aus */
   :global(.eg) + .rb-refs {
     padding-top: clamp(1rem, 2vw, 2rem);
+  }
+  .rb-refs {
+    padding-bottom: clamp(2.5rem, 5vw, 4.5rem);
   }
   .rb-refs-head {
     display: flex;
@@ -415,7 +421,7 @@ const andere = await Promise.all(
   /* ---------- 5. Weitere Leistungen und Anfrage ---------- */
   .rb-more {
     background: #e6e9f6;
-    padding-block: clamp(6rem, 10vw, 8rem) calc(clamp(4rem, 7vw, 6rem) + clamp(1.6rem, 3.2vw, 3rem));
+    padding-block: clamp(3.5rem, 6vw, 5rem) calc(clamp(4rem, 7vw, 6rem) + clamp(1.6rem, 3.2vw, 3rem));
     clip-path: polygon(0 clamp(0.8rem, 1.6vw, 1.4rem), 22% clamp(2rem, 4vw, 3.5rem), 100% 0, 100% 100%, 0 100%);
   }
   .rb-cta {
