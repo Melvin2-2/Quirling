@@ -17,6 +17,8 @@
   --blue-600: #2f3c8c;
   --blue-800: #1f2861;
   --navy: #22294d;
+  /* Seitenköpfe und Menü: das bisherige, kräftigere Dunkelblau */
+  --navy-hero: #121735;
   --grey: #868484;
   --grey-300: #c9c7c3;
   /* Neutrale Töne mit leichtem Blaustich – abgeleitet vom Navy des Footers */
