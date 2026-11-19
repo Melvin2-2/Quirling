@@ -173,9 +173,17 @@ const personen = [
     justify-items: start;
     align-content: center;
     padding-block: clamp(5rem, 8vw, 7rem) clamp(3.5rem, 5vw, 4.5rem);
+    /* Sicherheitsabstand zum Foto */
+    padding-right: clamp(1.5rem, 3vw, 3rem);
+    min-width: 0;
+  }
+  /* Überschrift wächst nicht über die Textspalte hinaus */
+  .crew-text .h-sec {
+    font-size: min(clamp(2.6rem, 5.5vw, 6rem), 4.6rem);
   }
   .crew-text p {
     margin: 0;
+    max-width: 36ch;
     font-size: 1.125rem;
     font-weight: 300;
     line-height: 1.7;
