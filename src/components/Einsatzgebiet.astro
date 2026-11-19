@@ -9,7 +9,7 @@ import { laender } from '~/data/karte-nord';
 import { url } from '~/lib/url';
 
 // Ausschnitt Norddeutschland (Einheiten der Quellkarte, ca. 1 Einheit ≈ 1 km), Mitte etwa Hamburg
-const vb = '175 103 180 120';
+const vb = '175 98 180 130';
 // Firmensitz Tilsiter Straße, Hamburg-Wandsbek (aus der Lage im Stadtgebiet abgeleitet, schematisch)
 const sitz = { x: 268.9, y: 160.7 };
 ---
@@ -28,13 +28,13 @@ const sitz = { x: 268.9, y: 160.7 };
       <svg viewBox={vb} role="img" aria-labelledby="eg-cap">
         <defs>
           <!-- weicher Rand: die Karte verblasst nach außen -->
-          <radialGradient id="eg-fade" cx="265" cy="163" r="78" gradientUnits="userSpaceOnUse">
+          <radialGradient id="eg-fade" cx="265" cy="163" r="64" gradientUnits="userSpaceOnUse">
             <stop offset="0" stop-color="#fff" stop-opacity="1" />
-            <stop offset="0.45" stop-color="#fff" stop-opacity="0.95" />
+            <stop offset="0.4" stop-color="#fff" stop-opacity="0.9" />
             <stop offset="1" stop-color="#fff" stop-opacity="0" />
           </radialGradient>
-          <mask id="eg-mask" maskUnits="userSpaceOnUse" x="175" y="103" width="180" height="120">
-            <rect x="175" y="103" width="180" height="120" fill="url(#eg-fade)" />
+          <mask id="eg-mask" maskUnits="userSpaceOnUse" x="175" y="98" width="180" height="130">
+            <rect x="175" y="98" width="180" height="130" fill="url(#eg-fade)" />
           </mask>
         </defs>
         <g mask="url(#eg-mask)">
@@ -45,10 +45,10 @@ const sitz = { x: 268.9, y: 160.7 };
         <rect x={sitz.x - 2.4} y={sitz.y - 2.4} width="4.8" height="4.8" transform={`rotate(45 ${sitz.x} ${sitz.y})`} class="eg-sitz" />
         <g class="eg-lbl">
           <text x="249" y="190" class="eg-city">Hamburg</text>
-          <text x="275" y="156" class="eg-small">Firmensitz</text>
-          <text x="275" y="161.5" class="eg-small">Wandsbek</text>
-          <text x="214" y="132" class="eg-land">Schleswig-Holstein</text>
-          <text x="214" y="208" class="eg-land">Niedersachsen</text>
+          <text x="280" y="156" class="eg-small">Firmensitz</text>
+          <text x="280" y="161.5" class="eg-small">Wandsbek</text>
+          <text x="220" y="128" class="eg-land">Schleswig-Holstein</text>
+          <text x="222" y="207" class="eg-land">Niedersachsen</text>
           <text x="305" y="138" class="eg-land">Mecklenburg-</text>
           <text x="305" y="144" class="eg-land">Vorpommern</text>
         </g>
@@ -131,6 +131,10 @@ const sitz = { x: 268.9, y: 160.7 };
   }
   .eg-lbl text {
     font-family: var(--font-body);
+    paint-order: stroke;
+    stroke: var(--stone-50);
+    stroke-width: 1.2px;
+    stroke-linejoin: round;
   }
   .eg-city {
     font-family: var(--font-head) !important;
