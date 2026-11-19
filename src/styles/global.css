@@ -19,6 +19,8 @@
   --navy: #22294d;
   /* Dunkle Flächen (Seitenköpfe, Menü, dunkle Sections, Footer): das kräftigere Dunkelblau */
   --navy-hero: #121735;
+  /* Große blaue Flächen: das bisherige, hellere Logo-Blau */
+  --blue-flaeche: #3948a4;
   --grey: #868484;
   --grey-300: #c9c7c3;
   /* Neutrale Töne mit leichtem Blaustich – abgeleitet vom Navy des Footers */
@@ -229,7 +231,7 @@ p:last-child {
   color: rgb(255 255 255 / 0.78);
 }
 .on-blue {
-  background: var(--blue);
+  background: var(--blue-flaeche);
   color: var(--white);
 }
 
