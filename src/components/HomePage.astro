@@ -274,8 +274,7 @@ const werte = [
             </g>
             <g class="fm-note" data-fm-note>
               <g data-fm-tilt>
-                <rect class="fm-paper" data-fm-paper />
-                <text class="fm-text" data-fm-text filter="url(#fm-pencil-t)"><tspan data-fm-l1>Der Vater unseres Gründers</tspan><tspan data-fm-l2>in seiner Lehrzeit</tspan></text>
+                <text class="fm-text" data-fm-text text-anchor="end" filter="url(#fm-pencil-t)"><tspan data-fm-l1>Der Vater</tspan><tspan data-fm-l2> unseres Gründers</tspan><tspan data-fm-l3>in seiner Lehrzeit</tspan></text>
               </g>
             </g>
           </svg>
@@ -326,7 +325,7 @@ const werte = [
       <svg class="film-logo" data-film-logo viewBox="120 62 354.5 247" aria-hidden="true">
         {mark.map((m, i) => (i === 0 ? <path class="fl-raute" fill="#868484" d={m.d} /> : null))}
         <g class="fl-q" data-film-q>
-          {mark.slice(1).map((m) => <path fill={m.role === 'white' ? '#ffffff' : m.role === 'grey' ? '#868484' : '#3948A4'} d={m.d} />)}
+          {mark.slice(1).map((m) => <path fill={m.role === 'white' ? '#ffffff' : m.role === 'grey' ? '#868484' : '#313e97'} d={m.d} />)}
         </g>
       </svg>
       <div class="film-ui" data-film-ui>
@@ -339,7 +338,7 @@ const werte = [
   <!-- ======================= KARRIERE: helles Band zwischen Video und Footer ======================= -->
   <aside class="job" aria-label="Karriere">
     <div class="container job-in">
-      <p class="job-h" data-follow><QHammer class="job-hammer" color="#121735" highlight="#3948A4" />Bock auf Beton? Komm ins Team.</p>
+      <p class="job-h" data-follow><QHammer class="job-hammer" color="#22294d" highlight="#313e97" />Bock auf Beton? Komm ins Team.</p>
       <a class="job-btn" href={url('/karriere/')} data-follow><span>Mit anpacken</span><Icon name="arrow" /></a>
     </div>
   </aside>
@@ -420,7 +419,7 @@ const werte = [
     position: absolute;
     inset: 0 auto 0 0;
     width: calc(var(--content-left) + min(58vw, 1000px));
-    background: rgb(18 23 53 / 0.82);
+    background: rgb(34 41 77 / 0.82);
     clip-path: polygon(0 0, 100% 0, 66% 100%, 0 100%);
   }
   .hero-content {
@@ -627,9 +626,6 @@ const werte = [
   .fm-circle-2 {
     stroke-width: 2.2;
     opacity: 0.6;
-  }
-  .fm-paper {
-    fill: #ffffff;
   }
   .fm-text {
     font-family: 'Caveat Variable', 'Caveat', 'Bradley Hand', 'Segoe Print', cursive;
@@ -1412,7 +1408,7 @@ const werte = [
     content: '';
     position: absolute;
     inset: 0;
-    background: rgb(18 23 53 / 0.2);
+    background: rgb(34 41 77 / 0.2);
   }
   .film-ui {
     position: relative;
@@ -1691,7 +1687,7 @@ const werte = [
       right: 0;
       bottom: 0;
       padding: 2.5rem 1rem 1rem;
-      background: linear-gradient(transparent, rgb(18 23 53 / 0.85));
+      background: linear-gradient(transparent, rgb(34 41 77 / 0.85));
       font-size: 0.85rem;
       text-transform: uppercase;
       letter-spacing: 0.04em;
@@ -1744,14 +1740,14 @@ const werte = [
       // Breite so weit, dass auch die schräge Unterkante (66 %) den rechten Rand überdeckt
       gsap.fromTo(
         slab,
-        { width: () => getComputedStyle(slab).width, backgroundColor: 'rgba(18, 23, 53, 0.82)' },
-        { width: () => `${window.innerWidth * 1.6}px`, backgroundColor: 'rgba(18, 23, 53, 1)', ease: 'none', scrollTrigger: trigger },
+        { width: () => getComputedStyle(slab).width, backgroundColor: 'rgba(34, 41, 77, 0.82)' },
+        { width: () => `${window.innerWidth * 1.6}px`, backgroundColor: 'rgba(34, 41, 77, 1)', ease: 'none', scrollTrigger: trigger },
       );
     } else {
       gsap.fromTo(
         slab,
-        { clipPath: 'polygon(0 0, 100% 0, 100% 62%, 0 88%)', backgroundColor: 'rgba(18, 23, 53, 0.82)' },
-        { clipPath: 'polygon(0 0, 100% 0, 100% 110%, 0 110%)', backgroundColor: 'rgba(18, 23, 53, 1)', ease: 'none', scrollTrigger: trigger },
+        { clipPath: 'polygon(0 0, 100% 0, 100% 62%, 0 88%)', backgroundColor: 'rgba(34, 41, 77, 0.82)' },
+        { clipPath: 'polygon(0 0, 100% 0, 100% 110%, 0 110%)', backgroundColor: 'rgba(34, 41, 77, 1)', ease: 'none', scrollTrigger: trigger },
       );
     }
   });
@@ -2049,14 +2045,7 @@ const werte = [
     img.style.clipPath = `polygon(0 0, ${x0.toFixed(1)}px 0, ${x1.toFixed(1)}px ${h.toFixed(1)}px, 0 ${h.toFixed(1)}px)`;
   };
 
-  /* ---------- Familie: das Foto bewegt sich beim Scrollen leicht mit (Markierung mit) ---------- */
-  mm.add('(prefers-reduced-motion: no-preference) and (min-width: 901px)', () => {
-    const sec = document.querySelector('[data-figs-sec]');
-    const img = sec?.querySelector('[data-figs-img] img');
-    const ov = sec?.querySelector('[data-figs-ov]');
-    if (!sec || !img) return;
-    gsap.fromTo(ov ? [img, ov] : img, { yPercent: -8 }, { yPercent: 0, ease: 'none', scrollTrigger: { trigger: sec, start: 'top bottom', end: 'bottom top', scrub: true } });
-  });
+  /* Familie: das Foto steht still (keine Parallaxe), damit Kreis und Handschrift im hellen Himmel sicher sichtbar bleiben */
 
   /* ---------- Familie: Vater des Gründers markieren ----------
      Lage des Gesichts im Originalfoto (1440 × 774 px): Mitte 1064 / 77, Größe ca. 101 × 93 px.
@@ -2095,36 +2084,49 @@ const werte = [
     const c1 = ov.querySelector('[data-fm-circle]');
     const c2 = ov.querySelector('[data-fm-circle2]');
     const tilt = ov.querySelector<SVGGElement>('[data-fm-tilt]');
-    const paper = ov.querySelector('[data-fm-paper]');
     const text = ov.querySelector<SVGTextElement>('[data-fm-text]');
-    const l1 = ov.querySelector('[data-fm-l1]');
-    const l2 = ov.querySelector('[data-fm-l2]');
-    if (!c1 || !c2 || !tilt || !paper || !text || !l1 || !l2) return;
+    const l1 = ov.querySelector<SVGTSpanElement>('[data-fm-l1]');
+    const l2 = ov.querySelector<SVGTSpanElement>('[data-fm-l2]');
+    const l3 = ov.querySelector<SVGTSpanElement>('[data-fm-l3]');
+    if (!c1 || !c2 || !tilt || !text || !l1 || !l2 || !l3) return;
     c1.setAttribute('d', handCircle(cx, cy + r * 0.12, r * 0.86, r * 0.96, 1.3));
     c2.setAttribute('d', handCircle(cx + 1.5, cy + r * 0.14, r * 0.89, r * 0.93, 2.1, 1.08));
-    // Zettel links unterhalb des Kreises, nie über den linken Bildrand hinaus
-    const fs = Math.round(Math.min(26, Math.max(19, r * 0.42)));
-    text.setAttribute('font-size', String(fs));
-    l1.setAttribute('x', '0');
-    l1.setAttribute('dy', '0');
-    l2.setAttribute('x', '0');
-    l2.setAttribute('dy', String(Math.round(fs * 1.05)));
-    const bb = text.getBBox();
-    const padX = fs * 0.55;
-    const padY = fs * 0.35;
-    const w = bb.width + padX * 2;
-    const h = bb.height + padY * 2;
-    const gx = Math.max(14, cx - r * 0.7 - w);
-    const gy = cy + r * 1.25;
-    text.setAttribute('x', String(gx + padX));
-    text.setAttribute('y', String(gy + padY - bb.y));
-    l1.setAttribute('x', String(gx + padX));
-    l2.setAttribute('x', String(gx + padX));
-    paper.setAttribute('x', String(gx));
-    paper.setAttribute('y', String(gy));
-    paper.setAttribute('width', String(w));
-    paper.setAttribute('height', String(h));
-    tilt.setAttribute('transform', `rotate(-4 ${gx + w} ${gy})`);
+    // Schrift in den hellen Himmel links neben den Köpfen (Originalfoto: x 575–955, y 12–100), rechtsbündig.
+    // Zwei Zeilen, bei wenig Platz drei; die Größe folgt der sichtbaren Breite.
+    const X = (v: number) => ox + v * s;
+    const Y = (v: number) => v * s;
+    const right = X(955);
+    const left = Math.max(14, X(575));
+    const top = Y(12);
+    const avail = right - left;
+    const availH = Y(100) - top;
+    text.setAttribute('font-size', '100');
+    [l1, l2, l3].forEach((t) => {
+      t.removeAttribute('x');
+      t.setAttribute('dy', '0');
+    });
+    const w1 = l1.getComputedTextLength();
+    const w2 = l2.getComputedTextLength();
+    const w3 = l3.getComputedTextLength();
+    const fsZwei = Math.min(26, (avail / Math.max(w1 + w2, w3)) * 100, availH / 2.15);
+    const fsDrei = Math.min(24, (avail / Math.max(w1, w2, w3)) * 100, availH / 3.2);
+    const drei = fsZwei < 18 && fsDrei > fsZwei;
+    const fs = Math.max(13, drei ? fsDrei : fsZwei);
+    const lh = fs * 1.05;
+    text.setAttribute('font-size', fs.toFixed(1));
+    text.setAttribute('x', right.toFixed(1));
+    text.setAttribute('y', (top + fs * 0.85).toFixed(1));
+    l1.setAttribute('x', right.toFixed(1));
+    if (drei) {
+      l2.setAttribute('x', right.toFixed(1));
+      l2.setAttribute('dy', lh.toFixed(1));
+      l2.textContent = 'unseres Gründers';
+    } else {
+      l2.textContent = ' unseres Gründers';
+    }
+    l3.setAttribute('x', right.toFixed(1));
+    l3.setAttribute('dy', lh.toFixed(1));
+    tilt.setAttribute('transform', `rotate(-3 ${right.toFixed(1)} ${top.toFixed(1)})`);
   };
   placeMark();
   document.querySelector<HTMLImageElement>('[data-figs-img] img')?.addEventListener('load', placeMark);
