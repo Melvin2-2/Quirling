@@ -169,7 +169,9 @@ const { eyebrow, title, titleLight, intro, image, imageAlt = '', crumbs = [], si
     }
     .phero-slab {
       width: 100%;
-      clip-path: polygon(0 0, 100% 0, 100% 62%, 0 88%);
+      background: rgb(18 23 53 / 0.86);
+      /* Knick wie die Rautenkante: Fläche reicht bis unter den Einleitungstext */
+      clip-path: polygon(0 0, 100% 0, 100% 86%, 64% 100%, 0 90%);
     }
     .phero-title,
     .phero-intro {
