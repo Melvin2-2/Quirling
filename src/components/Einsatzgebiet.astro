@@ -9,7 +9,7 @@ import { laender } from '~/data/karte-nord';
 import { url } from '~/lib/url';
 
 // Ausschnitt Norddeutschland (Einheiten der Quellkarte, ca. 1 Einheit ≈ 1 km), Hamburg etwas unter der Mitte
-const vb = '158 64 216 172';
+const vb = '156 50 220 212';
 // Umrechnung Längen-/Breitengrad in Kartenkoordinaten, kalibriert an den Umrissen von Hamburg und Bremen
 const xy = (lon: number, lat: number) => ({ x: 246.6 + (lon - 9.73) * 63.3, y: 144.4 + (53.74 - lat) * 106.4 });
 const staedte = [
@@ -38,13 +38,13 @@ const sitz = { x: 268.9, y: 160.7 };
       <svg viewBox={vb} role="img" aria-labelledby="eg-cap">
         <defs>
           <!-- weicher Rand: die Karte verblasst nach außen -->
-          <radialGradient id="eg-fade" cx="266" cy="154" r="104" gradientUnits="userSpaceOnUse">
+          <radialGradient id="eg-fade" cx="266" cy="156" r="106" gradientUnits="userSpaceOnUse">
             <stop offset="0" stop-color="#fff" stop-opacity="1" />
             <stop offset="0.5" stop-color="#fff" stop-opacity="0.85" />
             <stop offset="1" stop-color="#fff" stop-opacity="0" />
           </radialGradient>
-          <mask id="eg-mask" maskUnits="userSpaceOnUse" x="158" y="64" width="216" height="172">
-            <rect x="158" y="64" width="216" height="172" fill="url(#eg-fade)" />
+          <mask id="eg-mask" maskUnits="userSpaceOnUse" x="156" y="50" width="220" height="212">
+            <rect x="156" y="50" width="220" height="212" fill="url(#eg-fade)" />
           </mask>
         </defs>
         <g mask="url(#eg-mask)">
@@ -68,7 +68,8 @@ const sitz = { x: 268.9, y: 160.7 };
           <text x="280" y="161.5" class="eg-small">Wandsbek</text>
           <text x="196" y="112" class="eg-land">Schleswig-Holstein</text>
           <text x="214" y="226" class="eg-land">Niedersachsen</text>
-          <text x="318" y="120" class="eg-land">Mecklenburg-Vorpommern</text>
+          <text x="322" y="112" class="eg-land">Mecklenburg-</text>
+          <text x="322" y="118" class="eg-land">Vorpommern</text>
         </g>
       </svg>
       <figcaption id="eg-cap">
@@ -93,6 +94,11 @@ const sitz = { x: 268.9, y: 160.7 };
     display: grid;
     gap: 1.1rem;
     justify-items: start;
+  }
+  /* zwei Zeilen, jede bleibt zusammen */
+  .eg-text .h-sec {
+    white-space: nowrap;
+    font-size: clamp(2.1rem, 4.4vw, 4.2rem);
   }
   .eg-p {
     margin: 0;
