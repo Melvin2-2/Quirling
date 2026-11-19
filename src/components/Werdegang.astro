@@ -169,14 +169,14 @@ const words = (t: string) => {
     font-size: clamp(1.25rem, 1.7vw, 1.7rem);
     line-height: 1.2;
     text-transform: uppercase;
-    color: var(--navy);
+    color: var(--navy-text);
     transition:
       max-height 0.55s var(--ease),
       opacity 0.35s ease,
       margin 0.55s var(--ease);
   }
   .wg-rail li.is-past .wg-ry {
-    color: var(--navy);
+    color: var(--navy-text);
   }
   .wg-rail li.is-past::before,
   .wg-rail li.is-on::before {
@@ -188,7 +188,7 @@ const words = (t: string) => {
   }
   .wg-rail li.is-on .wg-ry {
     font-size: clamp(3.6rem, 6.6vw, 7rem);
-    color: var(--blue);
+    color: var(--blue-text);
   }
   .wg-rail li.is-on .wg-rw {
     max-height: 3rem;
@@ -216,7 +216,7 @@ const words = (t: string) => {
     font-weight: 800;
     font-size: 1.6rem;
     line-height: 1;
-    color: var(--blue);
+    color: var(--blue-text);
   }
   .wg-satz {
     margin: 0;
@@ -224,7 +224,7 @@ const words = (t: string) => {
     font-weight: 300;
     line-height: 1.35;
     letter-spacing: -0.005em;
-    color: var(--navy);
+    color: var(--navy-text);
   }
   /* Wort für Wort einfärben (nur mit Bewegung) */
   .wg.is-live .wg-w {
@@ -232,12 +232,12 @@ const words = (t: string) => {
     transition: color 0.25s ease;
   }
   .wg.is-live .wg-w.is-on {
-    color: var(--navy);
+    color: var(--navy-text);
   }
   /* Kernaussage */
   .wg-w.is-hl,
   .wg.is-live .wg-w.is-hl.is-on {
-    color: var(--blue);
+    color: var(--blue-text);
     font-weight: 400;
   }
   .wg-link {
@@ -245,7 +245,7 @@ const words = (t: string) => {
     font-size: 0.75rem;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--blue);
+    color: var(--blue-text);
     text-decoration: none;
     border-bottom: 1px solid #9aa6ee;
     padding-bottom: 2px;
@@ -270,7 +270,7 @@ const words = (t: string) => {
     font-size: 0.7rem;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--blue);
+    color: var(--blue-text);
   }
 
   @media (max-width: 900px) {

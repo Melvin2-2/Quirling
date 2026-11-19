@@ -24,7 +24,11 @@
   --stone-100: #eef0f7;
   --stone-200: #dfe3f0;
   --tint: #e8ebf7;
-  --ink: #141a3c;
+  /* Textfarben (Nuancen der Logofarben): Blau minimal dunkler, Dunkelblau etwas heller.
+     Flächen, Knöpfe und das Logo behalten #3948A4 und #121735. */
+  --blue-text: #324099;
+  --navy-text: #1b2140;
+  --ink: #1d2447;
   --ink-2: #2c335f;
   --ink-3: #5b6188;
   --white: #ffffff;
@@ -134,8 +138,30 @@ h4 {
   /* Überschriften einheitlich kräftig: der zweite Teil übernimmt die Stärke */
   font-weight: inherit;
 }
+/* Prüfansicht: mit ?farbtest an der Adresse zeigt ein Knopf die bisherigen Textfarben */
+html.farben-alt {
+  --blue-text: #3948a4;
+  --navy-text: #121735;
+  --ink: #141a3c;
+}
+.farbtest {
+  position: fixed;
+  left: 12px;
+  bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  z-index: 9999;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 0;
+  background: #121735;
+  color: #fff;
+  font: 600 13px/1 var(--font-mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 0.25);
+}
 .c-blue {
-  color: var(--blue);
+  color: var(--blue-text);
 }
 .c-grey {
   color: var(--grey);
@@ -179,7 +205,7 @@ p:last-child {
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--blue);
+  color: var(--blue-text);
   margin-bottom: 1.4rem;
 }
 .eyebrow::before {
@@ -310,7 +336,7 @@ p:last-child {
 }
 .btn.ghost:hover span,
 .btn.ghost:hover svg {
-  color: var(--navy);
+  color: var(--navy-text);
 }
 .btn.white {
   --bg: #fff;
@@ -328,7 +354,7 @@ p:last-child {
   padding: 0.75rem 1.4rem;
   border: 1.5px solid currentColor;
   border-radius: 0;
-  color: var(--blue);
+  color: var(--blue-text);
   font-family: var(--font-head);
   font-stretch: 120%;
   font-weight: 700;
@@ -371,7 +397,7 @@ p:last-child {
 .pill.light:hover {
   background: #fff;
   border-color: #fff;
-  color: var(--blue);
+  color: var(--blue-text);
 }
 
 /* Riesige Kontur-Schrift als Gestaltungselement */
@@ -398,7 +424,7 @@ p:last-child {
   font-weight: 600;
   font-size: 0.95rem;
   text-decoration: none;
-  color: var(--blue);
+  color: var(--blue-text);
 }
 .on-dark .link-arrow {
   color: #fff;
@@ -534,7 +560,7 @@ html.typo-c .lt {
   font-size: 0.74rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--blue);
+  color: var(--blue-text);
 }
 .on-dark .label,
 .on-blue .label {
@@ -550,7 +576,7 @@ html.typo-c .lt {
   /* genug Luft für Umlautpunkte (Ä, Ö, Ü) unter der Zeile darüber */
   line-height: 0.97;
   letter-spacing: -0.005em;
-  color: var(--blue);
+  color: var(--blue-text);
   margin: 0;
 }
 .h-sec .lt {
@@ -567,7 +593,7 @@ html.typo-c .lt {
   text-transform: uppercase;
   font-size: clamp(1.8rem, 2.8vw, 2.8rem);
   line-height: 0.92;
-  color: var(--blue);
+  color: var(--blue-text);
   margin: 0;
 }
 .small {
@@ -590,7 +616,7 @@ html.typo-c .lt {
   font-size: 0.8rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--blue);
+  color: var(--blue-text);
   text-decoration: none;
 }
 .text-link svg {

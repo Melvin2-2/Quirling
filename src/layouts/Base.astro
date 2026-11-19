@@ -91,5 +91,28 @@ const jsonLd = {
     <script>
       import '~/scripts/motion';
     </script>
+    <script is:inline>
+      // Nur zum Prüfen: ?farbtest zeigt einen Knopf, der zwischen neuen und bisherigen Textfarben umschaltet
+      (function () {
+        try {
+          if (new URLSearchParams(location.search).has('farbtest')) sessionStorage.setItem('farbtest', '1');
+          if (sessionStorage.getItem('farbtest') !== '1') return;
+        } catch (e) {
+          if (!/farbtest/.test(location.search)) return;
+        }
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'farbtest';
+        var set = function () {
+          b.textContent = document.documentElement.classList.contains('farben-alt') ? 'Farben: vorher' : 'Farben: nachher';
+        };
+        b.addEventListener('click', function () {
+          document.documentElement.classList.toggle('farben-alt');
+          set();
+        });
+        set();
+        document.body.appendChild(b);
+      })();
+    </script>
   </body>
 </html>
