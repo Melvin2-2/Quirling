@@ -1,0 +1,85 @@
+[
+ {
+  "id": "R4-1",
+  "views": [
+   {
+    "url": "/",
+    "vp": "d",
+    "sel": ".services",
+    "maxH": 700
+   }
+  ]
+ },
+ {
+  "id": "R4-2",
+  "views": [
+   {
+    "url": "/",
+    "vp": "d",
+    "sel": ".show-h",
+    "pad": 60,
+    "maxH": 400
+   }
+  ]
+ },
+ {
+  "id": "R4-3",
+  "views": [
+   {
+    "url": "/",
+    "vp": "d",
+    "sel": "aside.job"
+   },
+   {
+    "url": "/",
+    "vp": "m",
+    "sel": "aside.job"
+   }
+  ]
+ },
+ {
+  "id": "R4-5",
+  "views": [
+   {
+    "url": "/",
+    "vp": "d",
+    "sel": ".figs-photo",
+    "maxH": 900,
+    "wait": 2600
+   },
+   {
+    "url": "/",
+    "vp": "m",
+    "sel": ".figs-photo",
+    "wait": 2600
+   }
+  ]
+ },
+ {
+  "id": "R4-6",
+  "views": [
+   {
+    "url": "/leistungen/rohbau/",
+    "vp": "d",
+    "sel": "section.eg",
+    "maxH": 900
+   },
+   {
+    "url": "/leistungen/rohbau/",
+    "vp": "m",
+    "sel": "section.eg",
+    "maxH": 1500
+   }
+  ]
+ },
+ {
+  "id": "R4-7",
+  "views": [
+   {
+    "url": "/leistungen/rohbau/",
+    "vp": "d",
+    "sel": ".rb-cta"
+   }
+  ]
+ }
+]

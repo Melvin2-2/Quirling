@@ -129,7 +129,22 @@ details.arch .tw { padding: 0 20px 16px; }
 .lb-bar button { font: 600 .9rem var(--font-body); min-height: 40px; padding: 0 14px; border: 1px solid #ffffff55; background: transparent; color: #fff; cursor: pointer; }
 .lb-stage { overflow: auto; padding: 0 16px 24px; text-align: center; }
 .lb-stage img { max-width: 100%; height: auto; }
+.sw-row { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; }
+.sw { display: grid; grid-template-columns: 44px auto; grid-template-rows: auto auto; column-gap: 10px; align-items: center; }
+.sw span { grid-row: 1 / 3; width: 44px; height: 44px; border: 1px solid var(--line); }
+.sw b { font: 600 .9rem var(--font-mono); }
+.sw small { color: var(--ink-2); font-size: .8rem; }
+.sw-arrow { color: var(--ink-2); font-size: 1.2rem; }
+.toggle-bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; background: var(--card); padding: 10px 0; }
+.tg { font: 600 .95rem var(--font-body); min-height: 44px; padding: 0 18px; border: 1px solid var(--line); background: var(--card); color: var(--ink); cursor: pointer; }
+.tg[aria-pressed="true"] { background: var(--blue); color: #fff; border-color: var(--blue); }
+.tg-state { color: var(--ink-2); font-size: .9rem; margin-left: 6px; }
+.fgrid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; }
+.fz { margin: 0; display: grid; gap: 6px; align-content: start; }
+.fz img { width: 100%; display: block; border: 1px solid var(--line); }
+.fz:last-child img { max-width: 390px; }
 @media (max-width: 860px) {
+  .fgrid { grid-template-columns: minmax(0, 1fr); }
   .cmp, .cmp.three, .mocks, .opts { grid-template-columns: minmax(0, 1fr); }
   .dec { grid-template-columns: minmax(0, 1fr); }
 }
@@ -138,11 +153,12 @@ details.arch .tw { padding: 0 20px 16px; }
 
 <header class="top">
   <div class="wrap">
-    <span class="mono">Quirling GmbH · Website-Audit · veröffentlicht am 19.11.2026</span>
+    <span class="mono">Quirling GmbH · Website · Stand Runde 4</span>
     <h1 class="disp">Entwurf-Abnahme</h1>
-    <p><b>14 Punkte aus Runde 1 und 2 sind live.</b> Das Kontaktformular (KONTAKT-01) ist auf deinen Wunsch zurückgestellt und funktioniert vorerst wie bisher. Die vorbereitete Änderung liegt gesichert bereit.</p>
+    <p><b>Runde 4 ist umgesetzt, aber noch nicht live.</b> Deine sieben Punkte findest du gleich unten, die Farben mit Vorher/Nachher-Schalter. Runde 1 und 2 sind seit dem 19.11. live, das Formular ist zurückgestellt.</p>
     <nav class="tabs" aria-label="Abschnitte">
-      <a href="#offen">Noch zu tun <small id="cnt-open"></small></a>
+      <a href="#runde4">Runde 4 <small id="cnt-open"></small></a>
+      <a href="#offen">Formular</a>
       <a href="#runde2">Umgesetzt in Runde 2</a>
       <a href="#umgesetzt">Umgesetzt in Runde 1</a>
       <a href="#archiv">Deine Entscheidungen</a>
@@ -153,8 +169,62 @@ details.arch .tw { padding: 0 20px 16px; }
 <div class="wrap">
   <p class="note" id="localNote" hidden>Gemeinsames Speichern ist in dieser Ansicht nicht verfügbar. Deine Eingaben bleiben nur in diesem Browser. Öffne die Seite auf claude.ai oder schick mir deine Antworten im Chat.</p>
   <main>
-    <h2 class="sec-h disp" id="offen">Noch zu tun für dich</h2>
-    <p class="sec-p">Alle Entscheidungen aus Runde 2 sind umgesetzt (siehe unten). Zwei Dinge brauche ich noch von dir.</p>
+    <h2 class="sec-h disp" id="runde4">Runde 4 · deine sieben Punkte</h2>
+    <p class="sec-p">Alles umgesetzt und geprüft, aber noch nicht live. Bitte je Punkt „Passt“ oder „Ändern“ wählen, dann unten freigeben.</p>
+
+    <article class="pt" data-id="r4-farben">
+      <div class="pt-h"><div class="pt-meta"><span class="id">Punkt 4</span><span class="kind">Farben · Vorher/Nachher</span></div><span class="badge" data-badge>Offen</span><h2 class="disp">Dunkel- und Hellblau</h2></div>
+      <div class="body">
+        <p>Das Dunkelblau ist 3,5 % heller und minimal satter, das Hellblau 2 % dunkler mit etwas mehr Blau. Beide liegen jetzt exakt im Farbton des Logo-Blaus #3948A4 (272° im OKLCH-Farbraum). Deshalb passen sie weiter zum Logo. Das Logo selbst ist unverändert. Kontraste: Weiß auf Dunkelblau 16:1, Logo-Blau auf Hellblau 6,2:1, beide deutlich über der Norm. Geändert sind alle 33 Stellen auf der ganzen Website.</p>
+        <div class="sw-row">
+          <div class="sw"><span style="background:#121735"></span><b>#121735</b><small>Dunkelblau bisher</small></div><span class="sw-arrow">→</span><div class="sw"><span style="background:#181f41"></span><b>#181F41</b><small>Dunkelblau neu</small></div>
+          <div class="sw"><span style="background:#e6e9f6"></span><b>#E6E9F6</b><small>Hellblau bisher</small></div><span class="sw-arrow">→</span><div class="sw"><span style="background:#dee3f3"></span><b>#DEE3F3</b><small>Hellblau neu</small></div>
+          <div class="sw"><span style="background:#3948a4"></span><b>#3948A4</b><small>Logo-Blau, bleibt</small></div>
+        </div>
+        <div class="toggle-bar" role="group" aria-label="Farbstand umschalten">
+          <button type="button" class="tg" data-tg="vorher" aria-pressed="false">Vorher</button>
+          <button type="button" class="tg" data-tg="nachher" aria-pressed="true">Nachher</button>
+          <button type="button" class="tg auto" data-tg="auto" aria-pressed="false">Automatisch wechseln</button>
+          <span class="tg-state" id="tgState" aria-live="polite">Zeigt: Nachher</span>
+        </div>
+        <div class="fgrid"><figure class="fz"><figcaption class="mono">Startseite: Was wir bauen</figcaption><img data-farbe="start-uebersicht" src="r4f/start-uebersicht-nachher.jpg" alt="Startseite: Was wir bauen" loading="lazy"></figure><figure class="fz"><figcaption class="mono">Startseite: Leistungen</figcaption><img data-farbe="start-leistungen" src="r4f/start-leistungen-nachher.jpg" alt="Startseite: Leistungen" loading="lazy"></figure><figure class="fz"><figcaption class="mono">Startseite: Projekte</figcaption><img data-farbe="start-projekte" src="r4f/start-projekte-nachher.jpg" alt="Startseite: Projekte" loading="lazy"></figure><figure class="fz"><figcaption class="mono">Startseite: Karriere-Band und Footer</figcaption><img data-farbe="start-ende" src="r4f/start-ende-nachher.jpg" alt="Startseite: Karriere-Band und Footer" loading="lazy"></figure><figure class="fz"><figcaption class="mono">Rohbau: Leistungsumfang</figcaption><img data-farbe="rohbau-umfang" src="r4f/rohbau-umfang-nachher.jpg" alt="Rohbau: Leistungsumfang" loading="lazy"></figure><figure class="fz"><figcaption class="mono">Rohbau: Eigene Leute</figcaption><img data-farbe="rohbau-eigene" src="r4f/rohbau-eigene-nachher.jpg" alt="Rohbau: Eigene Leute" loading="lazy"></figure><figure class="fz"><figcaption class="mono">Kontakt: Seitenkopf</figcaption><img data-farbe="kontakt-kopf" src="r4f/kontakt-kopf-nachher.jpg" alt="Kontakt: Seitenkopf" loading="lazy"></figure><figure class="fz"><figcaption class="mono">Handy: Was wir bauen</figcaption><img data-farbe="start-handy" src="r4f/start-handy-nachher.jpg" alt="Handy: Was wir bauen" loading="lazy"></figure></div>
+      </div>
+      <div class="dec" data-dec="r4"></div>
+    </article>
+
+    <article class="pt" data-id="r4-R4-1"><div class="pt-h"><div class="pt-meta"><span class="id">Punkt 1</span><span class="kind">umgesetzt, noch nicht live</span></div><span class="badge" data-badge>Offen</span><h2 class="disp">Leistungen: Icon-Texte kräftiger</h2></div>
+      <div class="body"><p>Die Texte neben den Icons sind jetzt kräftig (halbfett) und dunkel statt dünn und grau. Sie bleiben auf allen Bildschirmbreiten in einer Zeile.</p><div class="cmp"><figure class="alt"><figcaption><b>Bisher (live)</b><span class="mono">Desktop</span></figcaption><button type="button" class="shot" data-src="r4/R4-1-1-alt.jpg" data-t="Leistungen: Icon-Texte kräftiger, bisher"><img src="r4/R4-1-1-alt.jpg" alt="Bisher: Leistungen: Icon-Texte kräftiger" loading="lazy"></button></figure>
+        <figure class="neu"><figcaption><b>Neu</b><span class="mono">Desktop</span></figcaption><button type="button" class="shot" data-src="r4/R4-1-1-neu.jpg" data-t="Leistungen: Icon-Texte kräftiger, neu"><img src="r4/R4-1-1-neu.jpg" alt="Neu: Leistungen: Icon-Texte kräftiger" loading="lazy"></button></figure></div></div><div class="dec" data-dec="r4"></div></article>
+    <article class="pt" data-id="r4-R4-2"><div class="pt-h"><div class="pt-meta"><span class="id">Punkt 2</span><span class="kind">umgesetzt, noch nicht live</span></div><span class="badge" data-badge>Offen</span><h2 class="disp">Projekte, die stehen: Weiß</h2></div>
+      <div class="body"><p>Die Überschrift „Projekte, die stehen.“ ist jetzt weiß statt hellblau.</p><div class="cmp"><figure class="alt"><figcaption><b>Bisher (live)</b><span class="mono">Desktop</span></figcaption><button type="button" class="shot" data-src="r4/R4-2-1-alt.jpg" data-t="Projekte, die stehen: Weiß, bisher"><img src="r4/R4-2-1-alt.jpg" alt="Bisher: Projekte, die stehen: Weiß" loading="lazy"></button></figure>
+        <figure class="neu"><figcaption><b>Neu</b><span class="mono">Desktop</span></figcaption><button type="button" class="shot" data-src="r4/R4-2-1-neu.jpg" data-t="Projekte, die stehen: Weiß, neu"><img src="r4/R4-2-1-neu.jpg" alt="Neu: Projekte, die stehen: Weiß" loading="lazy"></button></figure></div></div><div class="dec" data-dec="r4"></div></article>
+    <article class="pt" data-id="r4-R4-3"><div class="pt-h"><div class="pt-meta"><span class="id">Punkt 3</span><span class="kind">umgesetzt, noch nicht live</span></div><span class="badge" data-badge>Offen</span><h2 class="disp">Karriere-Band kleiner</h2></div>
+      <div class="body"><p>Das Band „Bock auf Beton? Komm ins Team.“ ist etwa ein Drittel kleiner, der Knopf passt sich an.</p><div class="cmp"><figure class="alt"><figcaption><b>Bisher (live)</b><span class="mono">Desktop</span></figcaption><button type="button" class="shot" data-src="r4/R4-3-1-alt.jpg" data-t="Karriere-Band kleiner, bisher"><img src="r4/R4-3-1-alt.jpg" alt="Bisher: Karriere-Band kleiner" loading="lazy"></button></figure>
+        <figure class="neu"><figcaption><b>Neu</b><span class="mono">Desktop</span></figcaption><button type="button" class="shot" data-src="r4/R4-3-1-neu.jpg" data-t="Karriere-Band kleiner, neu"><img src="r4/R4-3-1-neu.jpg" alt="Neu: Karriere-Band kleiner" loading="lazy"></button></figure></div><div class="cmp"><figure class="alt"><figcaption><b>Bisher (live)</b><span class="mono">Handy</span></figcaption><button type="button" class="shot m" data-src="r4/R4-3-2-alt.jpg" data-t="Karriere-Band kleiner, bisher"><img src="r4/R4-3-2-alt.jpg" alt="Bisher: Karriere-Band kleiner" loading="lazy"></button></figure>
+        <figure class="neu"><figcaption><b>Neu</b><span class="mono">Handy</span></figcaption><button type="button" class="shot m" data-src="r4/R4-3-2-neu.jpg" data-t="Karriere-Band kleiner, neu"><img src="r4/R4-3-2-neu.jpg" alt="Neu: Karriere-Band kleiner" loading="lazy"></button></figure></div></div><div class="dec" data-dec="r4"></div></article>
+    <article class="pt" data-id="r4-R4-5"><div class="pt-h"><div class="pt-meta"><span class="id">Punkt 5</span><span class="kind">umgesetzt, noch nicht live</span></div><span class="badge" data-badge>Offen</span><h2 class="disp">Vater des Gründers markiert</h2></div>
+      <div class="body"><p>Beim Hinscrollen zeichnet sich ein Kreis um den Vater des Gründers, dann ein Pfeil, dann erscheint die Beschriftung am Pfeil. Die Bildunterschrift unten entfällt dafür. Die Markierung bewegt sich mit dem Foto mit. Die Position stammt aus deinem Bildausschnitt (Übereinstimmung 99 %).</p><div class="cmp"><figure class="alt"><figcaption><b>Bisher (live)</b><span class="mono">Desktop</span></figcaption><button type="button" class="shot" data-src="r4/R4-5-1-alt.jpg" data-t="Vater des Gründers markiert, bisher"><img src="r4/R4-5-1-alt.jpg" alt="Bisher: Vater des Gründers markiert" loading="lazy"></button></figure>
+        <figure class="neu"><figcaption><b>Neu</b><span class="mono">Desktop</span></figcaption><button type="button" class="shot" data-src="r4/R4-5-1-neu.jpg" data-t="Vater des Gründers markiert, neu"><img src="r4/R4-5-1-neu.jpg" alt="Neu: Vater des Gründers markiert" loading="lazy"></button></figure></div><div class="cmp"><figure class="alt"><figcaption><b>Bisher (live)</b><span class="mono">Handy</span></figcaption><button type="button" class="shot m" data-src="r4/R4-5-2-alt.jpg" data-t="Vater des Gründers markiert, bisher"><img src="r4/R4-5-2-alt.jpg" alt="Bisher: Vater des Gründers markiert" loading="lazy"></button></figure>
+        <figure class="neu"><figcaption><b>Neu</b><span class="mono">Handy</span></figcaption><button type="button" class="shot m" data-src="r4/R4-5-2-neu.jpg" data-t="Vater des Gründers markiert, neu"><img src="r4/R4-5-2-neu.jpg" alt="Neu: Vater des Gründers markiert" loading="lazy"></button></figure></div></div><div class="dec" data-dec="r4"></div></article>
+    <article class="pt" data-id="r4-R4-6"><div class="pt-h"><div class="pt-meta"><span class="id">Punkt 6</span><span class="kind">umgesetzt, noch nicht live</span></div><span class="badge" data-badge>Offen</span><h2 class="disp">Unser Revier mit Städten</h2></div>
+      <div class="body"><p>Überschrift „Unser Revier. Rund um die Elbe.“, immer zweizeilig. Die Karte ist weiter gefasst und zeigt Kiel, Lübeck, Schwerin, Lüneburg, Stade und Bremen, nach außen verblassend. Die Quellenangabe steht jetzt im Impressum unter Bildnachweis statt unter der Karte. Die Lizenz CC BY 4.0 verlangt eine Nennung in angemessener Form, dort ist sie zu finden.</p><div class="cmp"><figure class="alt"><figcaption><b>Bisher (live)</b><span class="mono">Desktop</span></figcaption><button type="button" class="shot" data-src="r4/R4-6-1-alt.jpg" data-t="Unser Revier mit Städten, bisher"><img src="r4/R4-6-1-alt.jpg" alt="Bisher: Unser Revier mit Städten" loading="lazy"></button></figure>
+        <figure class="neu"><figcaption><b>Neu</b><span class="mono">Desktop</span></figcaption><button type="button" class="shot" data-src="r4/R4-6-1-neu.jpg" data-t="Unser Revier mit Städten, neu"><img src="r4/R4-6-1-neu.jpg" alt="Neu: Unser Revier mit Städten" loading="lazy"></button></figure></div><div class="cmp"><figure class="alt"><figcaption><b>Bisher (live)</b><span class="mono">Handy</span></figcaption><button type="button" class="shot m" data-src="r4/R4-6-2-alt.jpg" data-t="Unser Revier mit Städten, bisher"><img src="r4/R4-6-2-alt.jpg" alt="Bisher: Unser Revier mit Städten" loading="lazy"></button></figure>
+        <figure class="neu"><figcaption><b>Neu</b><span class="mono">Handy</span></figcaption><button type="button" class="shot m" data-src="r4/R4-6-2-neu.jpg" data-t="Unser Revier mit Städten, neu"><img src="r4/R4-6-2-neu.jpg" alt="Neu: Unser Revier mit Städten" loading="lazy"></button></figure></div></div><div class="dec" data-dec="r4"></div></article>
+    <article class="pt" data-id="r4-R4-7"><div class="pt-h"><div class="pt-meta"><span class="id">Punkt 7</span><span class="kind">umgesetzt, noch nicht live</span></div><span class="badge" data-badge>Offen</span><h2 class="disp">Abschluss der Leistungsseiten kürzer</h2></div>
+      <div class="body"><p>Am Seitenende steht nur noch „Sie planen einen Rohbau?“, entsprechend „Sie planen ein Haus?“ und „Sie planen einen Umbau?“.</p><div class="cmp"><figure class="alt"><figcaption><b>Bisher (live)</b><span class="mono">Desktop</span></figcaption><button type="button" class="shot" data-src="r4/R4-7-1-alt.jpg" data-t="Abschluss der Leistungsseiten kürzer, bisher"><img src="r4/R4-7-1-alt.jpg" alt="Bisher: Abschluss der Leistungsseiten kürzer" loading="lazy"></button></figure>
+        <figure class="neu"><figcaption><b>Neu</b><span class="mono">Desktop</span></figcaption><button type="button" class="shot" data-src="r4/R4-7-1-neu.jpg" data-t="Abschluss der Leistungsseiten kürzer, neu"><img src="r4/R4-7-1-neu.jpg" alt="Neu: Abschluss der Leistungsseiten kürzer" loading="lazy"></button></figure></div></div><div class="dec" data-dec="r4"></div></article>
+
+    <article class="pt" data-id="r4-extra"><div class="pt-h"><div class="pt-meta"><span class="id">Zusätzlich</span><span class="kind">beim Prüfen gefunden</span></div><span class="badge set">Fertig</span><h2 class="disp">Schmale Handys</h2></div>
+      <div class="body" style="padding-bottom:20px"><p>Auf sehr schmalen Handys (360 px) ließen sich die Leistungsseiten um 8 px seitlich verschieben. Das war schon live so und ist jetzt behoben. Das Vorschaubild für geteilte Links nutzt das neue Dunkelblau.</p></div></article>
+
+    <article class="pt" data-id="r4-DEPLOY">
+      <div class="pt-h"><div class="pt-meta"><span class="id">Veröffentlichen</span><span class="kind">Deine Freigabe</span></div><span class="badge" data-badge>Offen</span><h2 class="disp">Runde 4 live stellen?</h2></div>
+      <div class="body"><p>Wenn alles passt: hier freigeben und mir im Chat kurz Bescheid geben. Erst dann veröffentliche ich.</p></div>
+      <div class="dec" data-dec="deploy"></div>
+    </article>
+
+    <h2 class="sec-h disp" id="offen">Formular (zurückgestellt)</h2>
+    <p class="sec-p">Auf deinen Wunsch zurückgestellt. Die Anleitung bleibt hier, bis du so weit bist.</p>
 
     <article class="pt" data-id="r3-FORM">
       <div class="pt-h"><div class="pt-meta"><span class="id">KONTAKT-01</span><span class="kind">Deine Aufgabe · ca. 10 Minuten</span></div><span class="badge" data-badge>Offen</span>
@@ -180,7 +250,6 @@ details.arch .tw { padding: 0 20px 16px; }
       <div class="body">
         <p><b>Erledigt:</b> Am 19.11.2026 auf deine Freigabe im Chat veröffentlicht, 14 Punkte. Das Formular (KONTAKT-01) ist zurückgestellt und bleibt vorerst wie bisher.</p>
       </div>
-      <div class="dec" data-dec="deploy"></div>
     </article>
 
     <h2 class="sec-h disp" id="runde2">Umgesetzt in Runde 2</h2>
@@ -243,8 +312,10 @@ const OPTS = {
   form: [["dienst", "1 · Formulardienst"], ["server", "2 · Eigenes Skript"], ["ohne", "3 · Kein Formular"], ["aendern", "Erst Fragen klären"]],
   deploy: [["ja", "Jetzt veröffentlichen"], ["aendern", "Erst ändern"], ["nein", "Noch warten"]],
   form3: [["ja", "Adresse eingetragen"], ["aendern", "Frage dazu"], ["nein", "Mache ich später"]],
+  r4: [["ok", "Passt"], ["aendern", "Ändern"]],
 };
 const LBL = Object.fromEntries(Object.values(OPTS).flat());
+LBL.ok = "Passt";
 const NEG = { aendern: "aendern", nein: "nein" };
 const state = {}; let db = null, local = false;
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
@@ -292,7 +363,7 @@ function paint(id) {
   }
   const ta = document.getElementById("k-" + id);
   if (ta && document.activeElement !== ta && ta.value !== (s.kommentar || "")) ta.value = s.kommentar || "";
-  const open = [...document.querySelectorAll(".pt[data-id^='r3-']")].filter((c) => !state[c.dataset.id]?.status).length;
+  const open = [...document.querySelectorAll(".pt[data-id^='r4-'] .dec")].map((d) => d.closest(".pt")).filter((c) => !state[c.dataset.id]?.status).length;
   document.getElementById("cnt-open").textContent = open ? `${open} offen` : "alles entschieden";
 }
 const chains = {}, timers = {};
@@ -318,6 +389,25 @@ document.addEventListener("input", (e) => {
   clearTimeout(timers[id]); timers[id] = setTimeout(() => { delete timers[id]; persist(id); }, 900);
 });
 document.addEventListener("focusout", (e) => { const ta = e.target.closest?.("textarea[data-id]"); if (ta && timers[ta.dataset.id]) { clearTimeout(timers[ta.dataset.id]); delete timers[ta.dataset.id]; persist(ta.dataset.id); } });
+/* Farb-Umschalter: alle Ausschnitte gleichzeitig vorher/nachher */
+let tgTimer = null;
+const setFarbe = (st) => {
+  document.querySelectorAll("img[data-farbe]").forEach((im) => (im.src = `r4f/${im.dataset.farbe}-${st}.jpg`));
+  document.querySelectorAll(".tg[data-tg='vorher'], .tg[data-tg='nachher']").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.tg === st)));
+  document.getElementById("tgState").textContent = "Zeigt: " + (st === "vorher" ? "Vorher" : "Nachher");
+};
+document.querySelectorAll(".tg").forEach((b) => b.addEventListener("click", () => {
+  if (b.dataset.tg === "auto") {
+    const on = b.getAttribute("aria-pressed") !== "true";
+    b.setAttribute("aria-pressed", String(on));
+    clearInterval(tgTimer);
+    if (on) { let st = "vorher"; setFarbe(st); tgTimer = setInterval(() => { st = st === "vorher" ? "nachher" : "vorher"; setFarbe(st); }, 1400); }
+    return;
+  }
+  clearInterval(tgTimer); document.querySelector(".tg.auto").setAttribute("aria-pressed", "false"); setFarbe(b.dataset.tg);
+}));
+// Bilder beider Stände vorladen, damit der Wechsel sofort sitzt
+document.querySelectorAll("img[data-farbe]").forEach((im) => { const i = new Image(); i.src = `r4f/${im.dataset.farbe}-vorher.jpg`; });
 const lb = document.getElementById("lb");
 document.getElementById("lbClose").onclick = () => (lb.hidden = true);
 document.addEventListener("keydown", (e) => { if (!lb.hidden && e.key === "Escape") lb.hidden = true; });
@@ -337,7 +427,7 @@ document.querySelectorAll(".pt[data-id]").forEach((c) => paint(c.dataset.id));
     const arch = [];
     snap.docs.forEach((d) => {
       const v = d.data() || {};
-      if (d.id.startsWith("r3-")) {
+      if (d.id.startsWith("r3-") || d.id.startsWith("r4-")) {
         const ta = document.getElementById("k-" + d.id); const typing = ta && document.activeElement === ta;
         state[d.id] = { status: v.status || "", kommentar: typing ? state[d.id]?.kommentar ?? "" : v.kommentar || "" };
         paint(d.id);
