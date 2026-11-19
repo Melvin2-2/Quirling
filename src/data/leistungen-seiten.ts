@@ -7,6 +7,7 @@ import type { LeistungDaten } from '~/components/LeistungSeite.astro';
 export const rohbau: LeistungDaten = {
   slug: 'rohbau',
   title: 'Rohbau & Stahlbetonbau',
+  seoTitle: 'Rohbau & Stahlbetonbau in Hamburg | Quirling Bauunternehmen',
   description:
     'Rohbau in Beton und Stahlbeton in der Metropolregion Hamburg: Gründungen, Tiefgaragen, Wände, Stützen und Decken in Ortbeton. Mit eigenen Polieren, eigener Schalung und eigenem Bauhof.',
   hero: {
@@ -49,6 +50,7 @@ export const rohbau: LeistungDaten = {
 export const schluesselfertig: LeistungDaten = {
   slug: 'schluesselfertiges-bauen',
   title: 'Schlüsselfertiges Bauen',
+  seoTitle: 'Schlüsselfertig bauen in Hamburg | Quirling Bauunternehmen',
   description:
     'Schlüsselfertig bauen in der Metropolregion Hamburg: Ein- und Doppelhäuser sowie Mehrfamilienhäuser, mit Partner-Architekten, festen Partnerfirmen, Festpreis und festem Übergabetermin.',
   hero: {
@@ -90,6 +92,7 @@ export const schluesselfertig: LeistungDaten = {
 export const umbau: LeistungDaten = {
   slug: 'umbau-sanierung',
   title: 'Umbau & Sanierung',
+  seoTitle: 'Umbau & Sanierung in Hamburg | Quirling Bauunternehmen',
   description:
     'Umbau, Erweiterung und Sanierung im Bestand in der Metropolregion Hamburg: Stadtvillen, Stadthäuser und historische Gebäude. Abfangungen, Unterfangungen, Anbauten, Aufstockungen, Beton- und Mauerwerkssanierung.',
   hero: {
