@@ -27,7 +27,7 @@ const {
   seoTitle,
   description = 'Quirling GmbH, Bauunternehmen in Hamburg seit 1992. Rohbau, Beton- und Stahlbetonbau, schlüsselfertiges Bauen sowie Umbau und Sanierung in Hamburg und Umgebung.',
   overlay = true,
-  ogImage,
+  ogImage = url('/og/quirling.jpg'),
   noindex = false,
   typo = 'c',
   footerClaim = true,
@@ -76,6 +76,9 @@ const jsonLd = {
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     {ogImage && <meta property="og:image" content={new URL(ogImage, Astro.site)} />}
+    {ogImage && <meta property="og:image:width" content="1200" />}
+    {ogImage && <meta property="og:image:height" content="630" />}
+    <meta name="twitter:card" content="summary_large_image" />
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body>
