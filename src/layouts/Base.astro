@@ -69,7 +69,7 @@ const jsonLd = {
     <link rel="icon" type="image/svg+xml" href={url('/favicon.svg')} />
     <link rel="icon" type="image/png" sizes="32x32" href={url('/favicon-32.png')} />
     <link rel="apple-touch-icon" href={url('/apple-touch-icon.png')} />
-    <meta name="theme-color" content="#3948A4" />
+    <meta name="theme-color" content="#313e97" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="de_DE" />
     <meta property="og:site_name" content={firma.langname} />
@@ -90,68 +90,6 @@ const jsonLd = {
     <Footer claim={footerClaim} />
     <script>
       import '~/scripts/motion';
-    </script>
-    <script is:inline>
-      // Nur zum Prüfen: ?farbtest an der Adresse öffnet eine Leiste mit Vorher/Nachher und Reglern für die Textfarben.
-      // Die Werte gelten nur in diesem Browser-Tab und werden nicht gespeichert.
-      (function () {
-        try {
-          if (new URLSearchParams(location.search).has('farbtest')) sessionStorage.setItem('farbtest', '1');
-          if (sessionStorage.getItem('farbtest') !== '1') return;
-        } catch (e) {
-          if (!/farbtest/.test(location.search)) return;
-        }
-        // OKLCH -> Hex
-        var hex = function (L, C, H) {
-          var a = C * Math.cos((H * Math.PI) / 180), b = C * Math.sin((H * Math.PI) / 180);
-          var l = Math.pow(L + 0.3963377774 * a + 0.2158037573 * b, 3), m = Math.pow(L - 0.1055613458 * a - 0.0638541728 * b, 3), s = Math.pow(L - 0.0894841775 * a - 1.291485548 * b, 3);
-          var rgb = [4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s, -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s, -0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s];
-          return '#' + rgb.map(function (c) {
-            c = Math.max(0, Math.min(1, c));
-            c = c <= 0.0031308 ? 12.92 * c : 1.055 * Math.pow(c, 1 / 2.4) - 0.055;
-            return ('0' + Math.round(c * 255).toString(16)).slice(-2);
-          }).join('');
-        };
-        // Ausgangsfarben (bisher) in OKLCH; 100 % entspricht der aktuellen Einstellung der Website
-        var BLAU = [0.4436, 0.1485, 271.95], INK = [0.2335, 0.0653, 272.81], NAVY = [0.2186, 0.0586, 273.47];
-        var st = { blau: 100, dunkel: 100, alt: false };
-        try { Object.assign(st, JSON.parse(sessionStorage.getItem('farbtest-st') || '{}')); } catch (e) {}
-        var root = document.documentElement;
-        var farben = function () {
-          var kb = st.alt ? 0 : st.blau / 100, kd = st.alt ? 0 : st.dunkel / 100;
-          return {
-            blau: hex(BLAU[0] - 0.03 * kb, BLAU[1] * (1 - 0.02 * kb), BLAU[2]),
-            ink: hex(INK[0] + 0.04 * kd, INK[1], INK[2]),
-            navy: hex(NAVY[0] + 0.04 * kd, NAVY[1], NAVY[2]),
-          };
-        };
-        var box = document.createElement('div');
-        box.className = 'farbtest';
-        box.innerHTML =
-          '<div class="ft-row"><b>Textfarben</b><button type="button" data-ft="alt"></button></div>' +
-          '<label>Blau dunkler <output data-ft="ob"></output><input type="range" min="0" max="300" step="10" data-ft="blau"></label>' +
-          '<label>Dunkelblau heller <output data-ft="od"></output><input type="range" min="0" max="300" step="10" data-ft="dunkel"></label>' +
-          '<div class="ft-row"><code data-ft="hex"></code><button type="button" data-ft="reset">Zurücksetzen</button></div>';
-        var q = function (k) { return box.querySelector('[data-ft="' + k + '"]'); };
-        var apply = function () {
-          var f = farben();
-          root.style.setProperty('--blue-text', f.blau);
-          root.style.setProperty('--ink', f.ink);
-          root.style.setProperty('--navy-text', f.navy);
-          q('alt').textContent = st.alt ? 'Vorher' : 'Nachher';
-          q('alt').setAttribute('aria-pressed', String(st.alt));
-          q('blau').value = st.blau; q('dunkel').value = st.dunkel;
-          q('ob').textContent = st.blau + ' %'; q('od').textContent = st.dunkel + ' %';
-          q('hex').textContent = 'Blau ' + f.blau + ' · Text ' + f.ink;
-          try { sessionStorage.setItem('farbtest-st', JSON.stringify(st)); } catch (e) {}
-        };
-        q('alt').addEventListener('click', function () { st.alt = !st.alt; apply(); });
-        q('blau').addEventListener('input', function (e) { st.blau = +e.target.value; st.alt = false; apply(); });
-        q('dunkel').addEventListener('input', function (e) { st.dunkel = +e.target.value; st.alt = false; apply(); });
-        q('reset').addEventListener('click', function () { st = { blau: 100, dunkel: 100, alt: false }; apply(); });
-        document.body.appendChild(box);
-        apply();
-      })();
     </script>
   </body>
 </html>
