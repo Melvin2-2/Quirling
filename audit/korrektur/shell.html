@@ -1,0 +1,1074 @@
+<title>Quirling Textkorrektur</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: links die echte Website als Vorschau, rechts eine ruhige Korrekturspalte. Hell, eine Akzentfarbe (Quirling-Blau), Status in Form und Farbe. */
+@font-face { font-family: 'QPlex'; src: url('site/_astro/{{PLEX}}') format('woff2'); font-weight: 100 700; font-display: swap; }
+@font-face { font-family: 'QPlex'; src: url('site/_astro/{{PLEXEXT}}') format('woff2'); font-weight: 100 700; font-display: swap; unicode-range: U+0100-024F, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF; }
+:root {
+  --bg: #f4f5f9;
+  --panel: #ffffff;
+  --ink: #22294d;
+  --muted: #6b7194;
+  --faint: #9aa0bd;
+  --line: #e4e6ef;
+  --soft: #eef0f8;
+  --accent: #313e97;
+  --accent-soft: #e8eaf7;
+  --ok: #1e8358;
+  --ok-soft: #e3f3eb;
+  --edit: #313e97;
+  --edit-soft: #e8eaf7;
+  --unsure: #b06b00;
+  --unsure-soft: #fbf0dc;
+  --open: #c4c8da;
+  --danger: #b4352b;
+  --font: 'QPlex', 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --r: 8px;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.45 var(--font); -webkit-font-smoothing: antialiased; }
+button, select, textarea, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.app { height: 100%; display: grid; grid-template-rows: auto 1fr; padding-left: env(safe-area-inset-left, 0px); padding-right: env(safe-area-inset-right, 0px); }
+
+/* Kopfleiste */
+.top { display: flex; align-items: center; gap: 14px; padding-block: 10px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); background: var(--panel); border-bottom: 1px solid var(--line); min-width: 0; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 600; white-space: nowrap; }
+.brand i { width: 14px; height: 14px; background: var(--accent); transform: rotate(45deg); display: block; border-radius: 2px; }
+.brand span { color: var(--muted); font-weight: 400; }
+.pagesel { position: relative; min-width: 0; }
+.pagesel select { appearance: none; border: 1px solid var(--line); background: var(--panel); border-radius: var(--r); padding: 7px 32px 7px 12px; font-weight: 500; max-width: 100%; }
+.pagesel::after { content: ''; position: absolute; right: 12px; top: 50%; width: 7px; height: 7px; border-right: 1.5px solid var(--muted); border-bottom: 1.5px solid var(--muted); transform: translateY(-70%) rotate(45deg); pointer-events: none; }
+.pager { display: flex; gap: 2px; }
+.icon-btn { border: 1px solid var(--line); background: var(--panel); border-radius: var(--r); width: 32px; height: 32px; display: grid; place-items: center; color: var(--muted); }
+.icon-btn:hover { color: var(--ink); border-color: var(--faint); }
+.icon-btn svg { width: 16px; height: 16px; }
+.grow { flex: 1; }
+.save { display: flex; align-items: center; gap: 7px; color: var(--muted); font-size: 13px; white-space: nowrap; }
+.save i { width: 7px; height: 7px; border-radius: 50%; background: var(--faint); }
+.save.live i { background: var(--ok); }
+.save.local i { background: var(--unsure); }
+.who { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); white-space: nowrap; }
+.who img { width: 24px; height: 24px; border-radius: 50%; }
+.who b { color: var(--ink); font-weight: 500; }
+.mtabs { display: none; }
+
+/* Hauptbereich */
+.main { display: grid; grid-template-columns: minmax(0, 1fr) 440px; min-height: 0; }
+.pv { display: grid; grid-template-rows: auto 1fr; min-width: 0; min-height: 0; }
+.pv-bar { display: flex; align-items: center; gap: 10px; padding: 8px 16px; flex-wrap: wrap; }
+.pv-title { font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.pv-title small { color: var(--faint); font-weight: 400; margin-left: 6px; }
+.seg { display: inline-flex; background: var(--soft); border-radius: var(--r); padding: 2px; }
+.seg button { border: 0; background: none; padding: 5px 10px; border-radius: 6px; color: var(--muted); font-size: 13px; white-space: nowrap; }
+.seg button[aria-pressed="true"] { background: var(--panel); color: var(--ink); box-shadow: 0 1px 2px rgb(34 41 77 / 0.12); }
+.pv-stage { position: relative; min-height: 0; overflow: hidden; display: flex; justify-content: center; padding: 0 16px 16px; }
+.pv-frame { position: relative; background: #fff; box-shadow: 0 1px 3px rgb(34 41 77 / 0.08), 0 8px 30px rgb(34 41 77 / 0.08); border-radius: 6px; overflow: hidden; }
+.pv-frame iframe { position: absolute; left: 0; top: 0; border: 0; transform-origin: 0 0; background: #fff; }
+.pv-load { position: absolute; inset: 0; display: grid; place-items: center; color: var(--muted); background: var(--bg); font-size: 13px; }
+.pv-hint { position: absolute; left: 50%; bottom: 28px; transform: translateX(-50%); background: var(--ink); color: #fff; padding: 8px 14px; border-radius: var(--r); font-size: 13px; box-shadow: 0 6px 20px rgb(34 41 77 / 0.2); max-width: calc(100% - 32px); }
+
+/* Spalte */
+.side { background: var(--panel); border-left: 1px solid var(--line); display: grid; grid-template-rows: auto auto 1fr auto; min-height: 0; min-width: 0; }
+.tabs { display: flex; gap: 4px; padding: 10px 16px 0; border-bottom: 1px solid var(--line); }
+.tabs button { border: 0; background: none; padding: 8px 10px 10px; color: var(--muted); font-weight: 500; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+.tabs .count { color: var(--faint); font-weight: 400; margin-left: 4px; }
+.sub { padding: 12px 16px; border-bottom: 1px solid var(--line); display: grid; gap: 10px; }
+.bar { display: flex; height: 6px; border-radius: 3px; overflow: hidden; background: var(--soft); }
+.bar span { display: block; height: 100%; }
+.bar .b-ok { background: var(--ok); }
+.bar .b-edit { background: var(--edit); }
+.bar .b-unsure { background: var(--unsure); }
+.filters { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip { border: 1px solid var(--line); background: var(--panel); border-radius: 999px; padding: 3px 10px; font-size: 13px; color: var(--muted); display: inline-flex; align-items: center; gap: 6px; }
+.chip[aria-pressed="true"] { border-color: var(--ink); color: var(--ink); }
+.chip i, .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex: none; }
+.d-ok { background: var(--ok); } .d-edit { background: var(--edit); } .d-unsure { background: var(--unsure); } .d-offen { background: var(--open); }
+.sub-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 13px; color: var(--muted); }
+.link { border: 0; background: none; padding: 0; color: var(--accent); font-size: 13px; text-decoration: underline; text-underline-offset: 2px; }
+.link:disabled { color: var(--faint); text-decoration: none; cursor: default; }
+.scroll { overflow-y: auto; min-height: 0; overscroll-behavior: contain; }
+.list { padding: 6px 0 24px; }
+.grp { padding: 16px 16px 6px; font-size: 12px; color: var(--faint); letter-spacing: 0.02em; position: sticky; top: 0; background: var(--panel); z-index: 1; }
+
+.card { margin: 0 10px; padding: 10px 10px 10px 14px; border-radius: var(--r); position: relative; display: grid; gap: 8px; scroll-margin: 40px; }
+.card::before { content: ''; position: absolute; left: 4px; top: 12px; bottom: 12px; width: 3px; border-radius: 2px; background: var(--open); }
+.card.st-ok::before { background: var(--ok); }
+.card.st-edit::before { background: var(--edit); }
+.card.st-unsure::before { background: var(--unsure); }
+.card:hover, .card.hov { background: var(--soft); }
+.card.sel { background: var(--soft); box-shadow: inset 0 0 0 1px var(--line); }
+.c-text { white-space: pre-line; overflow-wrap: anywhere; cursor: pointer; }
+.c-text.big { font-weight: 600; }
+.c-text .tag { font-size: 11px; color: var(--faint); margin-right: 6px; letter-spacing: 0.03em; }
+.c-img { display: flex; gap: 10px; align-items: center; cursor: pointer; }
+.c-img img { width: 64px; height: 44px; object-fit: cover; border-radius: 4px; background: var(--soft); flex: none; }
+.c-img span { color: var(--muted); font-size: 13px; overflow-wrap: anywhere; }
+.c-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.c-meta { font-size: 12px; color: var(--faint); }
+.acts { display: inline-flex; border: 1px solid var(--line); border-radius: var(--r); background: var(--panel); overflow: hidden; }
+.acts button { border: 0; background: none; padding: 4px 9px; font-size: 12.5px; color: var(--muted); display: inline-flex; align-items: center; gap: 5px; }
+.acts button + button { border-left: 1px solid var(--line); }
+.acts button:hover { color: var(--ink); background: var(--soft); }
+.acts svg { width: 13px; height: 13px; }
+.acts button[aria-pressed="true"][data-a="ok"] { background: var(--ok-soft); color: var(--ok); }
+.acts button[aria-pressed="true"][data-a="edit"] { background: var(--edit-soft); color: var(--edit); }
+.acts button[aria-pressed="true"][data-a="unsure"] { background: var(--unsure-soft); color: var(--unsure); }
+.c-orig { font-size: 13px; color: var(--muted); white-space: pre-line; overflow-wrap: anywhere; }
+.c-orig del { text-decoration-color: rgb(180 53 43 / 0.6); }
+.c-note { font-size: 13px; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 6px 9px; white-space: pre-line; overflow-wrap: anywhere; }
+.c-note b { font-weight: 500; color: var(--muted); }
+.c-hist { font-size: 12px; color: var(--muted); display: grid; gap: 3px; }
+.c-warn { font-size: 12.5px; color: var(--unsure); }
+.ed { display: grid; gap: 8px; }
+.ed textarea, .field { width: 100%; border: 1px solid var(--faint); border-radius: 6px; padding: 8px 10px; background: var(--panel); resize: vertical; line-height: 1.45; }
+.ed textarea:focus, .field:focus { outline: 2px solid var(--accent); outline-offset: -1px; border-color: var(--accent); }
+.ed .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.btn { border: 1px solid var(--line); background: var(--panel); border-radius: var(--r); padding: 6px 12px; font-weight: 500; font-size: 13px; }
+.btn:hover { border-color: var(--faint); }
+.btn.pri { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn.pri:hover { background: #283380; }
+.btn.ok { background: var(--ok); border-color: var(--ok); color: #fff; }
+.btn:disabled { opacity: 0.5; cursor: default; }
+.empty { padding: 32px 20px; color: var(--muted); text-align: center; font-size: 13px; }
+
+/* Fußbereich der Spalte: Freigabe zur Umsetzung */
+.foot { border-top: 1px solid var(--line); padding: 12px 16px; display: grid; gap: 8px; padding-bottom: max(12px, env(safe-area-inset-bottom, 0px)); }
+.rel { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 13px; }
+.rel .state { color: var(--muted); }
+.rel .state.done { color: var(--ok); font-weight: 500; }
+.rel .state.warn { color: var(--unsure); }
+
+/* Anregungen */
+.notes { padding: 14px 16px 24px; display: grid; gap: 14px; }
+.n-form { display: grid; gap: 8px; }
+.n-item { border-top: 1px solid var(--line); padding-top: 12px; display: grid; gap: 4px; }
+.n-item.done .n-text { color: var(--faint); text-decoration: line-through; }
+.n-text { white-space: pre-line; overflow-wrap: anywhere; }
+.n-meta { font-size: 12px; color: var(--faint); display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+
+/* Übersicht */
+.ov { padding: 8px 0 24px; }
+.ov-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 12px; padding: 12px 16px; border-bottom: 1px solid var(--line); cursor: pointer; align-items: center; }
+.ov-row:hover { background: var(--soft); }
+.ov-row.cur { background: var(--soft); }
+.ov-name { font-weight: 500; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ov-num { font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ov-row .bar { grid-column: 1 / -1; }
+.ov-st { grid-column: 1 / -1; display: flex; gap: 12px; flex-wrap: wrap; font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.ov-st .rel-ok { color: var(--ok); font-weight: 500; }
+.ov-tot { padding: 16px; display: grid; gap: 10px; }
+.ov-tot h3 { margin: 0; font-size: 15px; font-weight: 600; }
+.ov-tools { padding: 16px; display: grid; gap: 10px; border-top: 1px solid var(--line); margin-top: 8px; font-size: 13px; color: var(--muted); }
+.ov-tools .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+/* Hinweisleiste (lokaler Modus) */
+.banner { background: var(--unsure-soft); color: #6d4300; padding: 10px 16px; font-size: 13px; display: grid; gap: 8px; border-bottom: 1px solid #f0dfbd; }
+.banner .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.banner input { border: 1px solid #e2c793; border-radius: 6px; padding: 5px 8px; background: #fff; min-width: 0; flex: 1 1 140px; }
+
+/* Dialog */
+.modal { position: fixed; inset: 0; background: rgb(34 41 77 / 0.35); display: grid; place-items: center; padding: 16px; z-index: 20; }
+.modal > div { background: var(--panel); border-radius: 12px; padding: 20px; width: min(560px, 100%); display: grid; gap: 12px; box-shadow: 0 20px 60px rgb(34 41 77 / 0.25); max-height: calc(100% - 32px); overflow: auto; }
+.modal h3 { margin: 0; font-size: 16px; }
+.modal p { margin: 0; color: var(--muted); }
+.modal textarea { width: 100%; min-height: 160px; font-family: ui-monospace, monospace; font-size: 12px; border: 1px solid var(--line); border-radius: 6px; padding: 8px; }
+.modal .row { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; }
+.toast { position: fixed; left: 50%; bottom: max(20px, env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: #fff; padding: 8px 14px; border-radius: var(--r); font-size: 13px; z-index: 30; box-shadow: 0 6px 20px rgb(34 41 77 / 0.25); }
+
+@media (max-width: 1100px) { .main { grid-template-columns: minmax(0, 1fr) 380px; } .who b { display: none; } }
+@media (max-width: 860px) {
+  .main { grid-template-columns: minmax(0, 1fr); }
+  .app[data-mview="korr"] .pv, .app[data-mview="vorschau"] .side { display: none; }
+  .side { border-left: 0; }
+  .mtabs { display: inline-flex; }
+  .brand span, .save span, .who, .top .grow { display: none; }
+  .top { flex-wrap: wrap; row-gap: 8px; }
+  .mtabs { margin-left: auto; }
+  .pagesel { order: 3; flex: 1 1 200px; }
+  .pagesel select { width: 100%; }
+  .pager { order: 4; }
+  .pv-bar { padding-inline: max(16px, env(safe-area-inset-left, 0px)) max(16px, env(safe-area-inset-right, 0px)); }
+  .pv-stage { padding-inline: max(16px, env(safe-area-inset-left, 0px)) max(16px, env(safe-area-inset-right, 0px)); }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+
+<div class="app" id="app" data-mview="vorschau">
+  <header class="top">
+    <div class="brand"><i></i>Quirling <span>Textkorrektur</span></div>
+    <div class="pagesel"><select id="pageSel" aria-label="Seite"></select></div>
+    <div class="pager">
+      <button class="icon-btn" id="prevPg" aria-label="Vorherige Seite" title="Vorherige Seite"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 3 5 8l5 5"/></svg></button>
+      <button class="icon-btn" id="nextPg" aria-label="Nächste Seite" title="Nächste Seite"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="m6 3 5 5-5 5"/></svg></button>
+    </div>
+    <div class="seg mtabs" id="mtabs" role="group" aria-label="Ansicht">
+      <button data-v="vorschau" aria-pressed="true">Vorschau</button>
+      <button data-v="korr" aria-pressed="false">Korrektur</button>
+    </div>
+    <div class="grow"></div>
+    <div class="save" id="saveState"><i></i><span>Verbinde …</span></div>
+    <div class="who" id="who"></div>
+  </header>
+
+  <div class="main">
+    <section class="pv" aria-label="Vorschau der Website">
+      <div class="pv-bar">
+        <div class="pv-title grow" id="pvTitle"></div>
+        <div class="seg" role="group" aria-label="Textstand">
+          <button data-ver="orig" aria-pressed="false">Original</button>
+          <button data-ver="korr" aria-pressed="true">Korrigiert</button>
+        </div>
+        <div class="seg" role="group" aria-label="Gerät">
+          <button data-dev="desktop" aria-pressed="true">Desktop</button>
+          <button data-dev="mobil" aria-pressed="false">Handy</button>
+        </div>
+        <div class="seg" role="group" aria-label="Klicken in der Vorschau">
+          <button data-pick="1" aria-pressed="true" title="Klick auf einen Text wählt ihn zur Korrektur aus">Auswählen</button>
+          <button data-pick="0" aria-pressed="false" title="Website normal bedienen: Menü, Filter, Projektfenster">Bedienen</button>
+        </div>
+      </div>
+      <div class="pv-stage" id="stage">
+        <div class="pv-frame" id="frameBox">
+          <iframe id="frame" title="Vorschau der Website"></iframe>
+          <div class="pv-load" id="pvLoad">Seite wird geladen …</div>
+        </div>
+        <div class="pv-hint" id="pvHint" hidden></div>
+      </div>
+    </section>
+
+    <aside class="side" aria-label="Korrektur">
+      <div>
+        <div id="banner"></div>
+        <div class="tabs" role="tablist">
+          <button role="tab" data-tab="texte" aria-selected="true">Texte<span class="count" id="cntTexte"></span></button>
+          <button role="tab" data-tab="anregungen" aria-selected="false">Anregungen<span class="count" id="cntNotes"></span></button>
+          <button role="tab" data-tab="uebersicht" aria-selected="false">Übersicht</button>
+        </div>
+      </div>
+      <div class="sub" id="sub"></div>
+      <div class="scroll" id="scroll"></div>
+      <div class="foot" id="foot"></div>
+    </aside>
+  </div>
+</div>
+<div id="layer"></div>
+
+<script>
+/*QCORE*/
+</script>
+<script>
+(function () {
+  'use strict';
+  var Q = QCORE;
+  var SITE = new URL('site/', document.baseURI).href;
+  var GLOBAL = 'global';
+  var LBL = { ok: 'Freigegeben', edit: 'Geändert', unsure: 'Unsicher', offen: 'Offen' };
+  var ICON = {
+    ok: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m3 8.5 3.2 3L13 4.5"/></svg>',
+    edit: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10.5 2.8 13.2 5.5 6 12.7l-3.3.6.6-3.3z"/></svg>',
+    unsure: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5.8 6a2.3 2.3 0 1 1 3.3 2.1c-.7.4-1.1.9-1.1 1.7v.4"/><circle cx="8" cy="12.6" r=".5" fill="currentColor"/></svg>'
+  };
+
+  // ---------- Zustand ----------
+  var S = {
+    data: null, lists: [], items: {}, listOf: {},
+    recs: {}, notes: [], rel: {}, hist: {},
+    me: { id: null, name: '', avatarUrl: '' }, owner: false, names: {},
+    mode: 'laden', store: null,
+    list: 'start', page: 'start', tab: 'texte', filter: 'alle',
+    dev: 'desktop', ver: 'korr', pick: true, sel: null, editing: null, draft: null, hover: null
+  };
+  var pref = load('qk-pref') || {};
+  if (pref.dev) S.dev = pref.dev;
+  else if (window.innerWidth <= 860) S.dev = 'mobil';
+  if (pref.filter) S.filter = pref.filter;
+
+  function load(k) { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch (e) { return null; } }
+  function keep(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  function savePref() { keep('qk-pref', { dev: S.dev, filter: S.filter }); }
+  function $(id) { return document.getElementById(id); }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function when(ms) {
+    if (!ms) return '';
+    var d = new Date(ms), now = new Date();
+    var t = d.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+    if (d.toDateString() === now.toDateString()) return 'heute ' + t;
+    return d.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' }) + ' ' + t;
+  }
+  function nameOf(r) {
+    if (!r) return '';
+    if (r.vonName) return r.vonName;
+    if (r.von && r.von === S.me.id) return 'Sie';
+    return (r.von && S.names[r.von]) || 'Jemand';
+  }
+  function toast(msg) {
+    var t = document.createElement('div');
+    t.className = 'toast'; t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(function () { t.remove(); }, 2600);
+  }
+
+  // ---------- Daten ----------
+  function statusOf(k) { var r = S.recs[k]; return r ? r.status : 'offen'; }
+  function curText(k) { var r = S.recs[k], it = S.items[k]; return r && r.status === 'edit' && r.text != null && it.typ !== 'bild' && it.typ !== 'video' ? r.text : it.text; }
+  function listItems(id) { var l = S.lists.find(function (x) { return x.id === id; }); return l ? l.items : []; }
+  function counts(id) {
+    var c = { ok: 0, edit: 0, unsure: 0, offen: 0, n: 0 };
+    listItems(id).forEach(function (it) { c[statusOf(it.k)]++; c.n++; });
+    return c;
+  }
+  function barHtml(c) {
+    if (!c.n) return '<div class="bar"></div>';
+    function w(x) { return (100 * x / c.n).toFixed(2) + '%'; }
+    return '<div class="bar" aria-hidden="true"><span class="b-ok" style="width:' + w(c.ok) + '"></span><span class="b-edit" style="width:' + w(c.edit) + '"></span><span class="b-unsure" style="width:' + w(c.unsure) + '"></span></div>';
+  }
+
+  // Speicher: gemeinsame Datenbank, sonst lokal in diesem Browser
+  function dbStore(db) {
+    var chain = {};
+    function one(k, fn) { var p = (chain[k] || Promise.resolve()).then(fn, fn); chain[k] = p.catch(function () {}); return p; }
+    return {
+      kind: 'db',
+      setRec: function (k, rec) { return one(k, function () { return db.doc('texte/' + k).set(rec); }); },
+      delRec: function (k) { return one(k, function () { return db.doc('texte/' + k).delete(); }); },
+      log: function (e) { return db.collection('verlauf').add(e).catch(function () {}); },
+      history: function (k) { return db.collection('verlauf').where('k', '==', k).get().then(function (s) { return s.docs.map(function (d) { return d.data(); }); }); },
+      addNote: function (n) { return db.collection('anregungen').add(n); },
+      updNote: function (id, p) { return db.doc('anregungen/' + id).update(p); },
+      delNote: function (id) { return db.doc('anregungen/' + id).delete(); },
+      setRel: function (id, r) { return db.doc('freigabe/' + id).set(r); },
+      delRel: function (id) { return db.doc('freigabe/' + id).delete(); },
+      watch: function () {
+        var got = 0, timer = setTimeout(function () { if (got < 3) setSave('warte', 'Daten noch nicht erreichbar'); }, 10000);
+        function fin() { if (++got === 3) { clearTimeout(timer); setSave('live'); } }
+        function fail(e) { clearTimeout(timer); if (e && e.code === 'revoked') setSave('aus', 'Zugriff beendet'); else setSave('warte', 'Verbindung unterbrochen'); }
+        var first = { t: true, n: true, r: true };
+        db.collection('texte').onSnapshot(function (s) {
+          var m = {}; s.docs.forEach(function (d) { m[d.id] = d.data(); });
+          var changed = diffKeys(S.recs, m); S.recs = m;
+          if (!s.metadata.fromCache && first.t) { first.t = false; fin(); }
+          onData(changed);
+        }, fail);
+        db.collection('anregungen').onSnapshot(function (s) {
+          S.notes = s.docs.map(function (d) { var x = Object.assign({}, d.data()); x.id = d.id; return x; });
+          if (!s.metadata.fromCache && first.n) { first.n = false; fin(); }
+          onData(null, 'notes');
+        }, fail);
+        db.collection('freigabe').onSnapshot(function (s) {
+          var m = {}; s.docs.forEach(function (d) { m[d.id] = d.data(); }); S.rel = m;
+          if (!s.metadata.fromCache && first.r) { first.r = false; fin(); }
+          onData(null, 'rel');
+        }, fail);
+      }
+    };
+  }
+  function localStore() {
+    var L = load('qk-local') || { texte: {}, anregungen: [], verlauf: [] };
+    function put() { keep('qk-local', L); }
+    return {
+      kind: 'local',
+      raw: function () { return L; },
+      setRec: function (k, rec) { L.texte[k] = rec; put(); var ch = {}; ch[k] = 1; S.recs = Object.assign({}, L.texte); onData(ch); return Promise.resolve(); },
+      delRec: function (k) { delete L.texte[k]; put(); var ch = {}; ch[k] = 1; S.recs = Object.assign({}, L.texte); onData(ch); return Promise.resolve(); },
+      log: function (e) { L.verlauf.push(e); if (L.verlauf.length > 2000) L.verlauf.shift(); put(); return Promise.resolve(); },
+      history: function (k) { return Promise.resolve(L.verlauf.filter(function (e) { return e.k === k; })); },
+      addNote: function (n) { n.id = 'n' + Date.now().toString(36); L.anregungen.push(n); put(); S.notes = L.anregungen.slice(); onData(null, 'notes'); return Promise.resolve(); },
+      updNote: function (id, p) { L.anregungen.forEach(function (n) { if (n.id === id) Object.assign(n, p); }); put(); S.notes = L.anregungen.slice(); onData(null, 'notes'); return Promise.resolve(); },
+      delNote: function (id) { L.anregungen = L.anregungen.filter(function (n) { return n.id !== id; }); put(); S.notes = L.anregungen.slice(); onData(null, 'notes'); return Promise.resolve(); },
+      setRel: function () { return Promise.resolve(); },
+      delRel: function () { return Promise.resolve(); },
+      watch: function () { S.recs = Object.assign({}, L.texte); S.notes = L.anregungen.slice(); setSave('local'); onData(null, 'all'); }
+    };
+  }
+  function diffKeys(a, b) {
+    var ch = {};
+    Object.keys(a).forEach(function (k) { if (a[k] !== b[k]) ch[k] = 1; });
+    Object.keys(b).forEach(function (k) { if (a[k] !== b[k]) ch[k] = 1; });
+    return ch;
+  }
+  function setSave(state, text) {
+    S.mode = state;
+    var el = $('saveState');
+    el.className = 'save' + (state === 'live' ? ' live' : state === 'local' ? ' local' : '');
+    el.querySelector('span').textContent = text || (state === 'live' ? 'Live gespeichert' : state === 'local' ? 'Nur in diesem Browser' : 'Verbinde …');
+    renderBanner();
+  }
+  function myName() { return S.store && S.store.kind === 'local' ? (load('qk-name') || '') : ''; }
+  function stamp(extra) {
+    var o = { am: Date.now() };
+    if (S.store.kind === 'local') o.vonName = myName() || 'Ohne Namen';
+    else o.von = S.me.id;
+    return Object.assign(o, extra);
+  }
+
+  // ---------- Schreiben ----------
+  function setStatus(k, status, patch) {
+    if (S.store.kind === 'local' && !myName()) { askName(); return Promise.resolve(); }
+    var it = S.items[k];
+    var old = S.recs[k] || {};
+    var rec = stamp({ seite: S.listOf[k], status: status, orig: it.text });
+    if (status === 'edit') { rec.text = patch && patch.text != null ? patch.text : (old.text != null ? old.text : it.text); }
+    var note = patch && patch.notiz != null ? patch.notiz : (old.status === status ? old.notiz : '');
+    if (note) rec.notiz = note;
+    var p = S.store.setRec(k, rec).catch(writeFail);
+    S.store.log(stamp({ k: k, seite: rec.seite, status: status, text: rec.text || null, notiz: rec.notiz || null }));
+    return p;
+  }
+  function resetRec(k) {
+    var p = S.store.delRec(k).catch(writeFail);
+    S.store.log(stamp({ k: k, seite: S.listOf[k], status: 'offen' }));
+    return p;
+  }
+  function writeFail(e) {
+    if (e && e.code === 'invalid_argument' && S.store.kind === 'db') {
+      toast('Speichern nicht erlaubt. Ihre Korrekturen werden jetzt in diesem Browser gesammelt.');
+      goLocal();
+    } else if (e && e.code === 'pending') toast('Noch nicht verbunden. Bitte einen Moment warten.');
+    else if (e && e.code === 'quota_exceeded') toast('Speicher voll. Bitte Melvin Bescheid geben.');
+    else toast('Nicht gespeichert. Bitte erneut versuchen.');
+  }
+  function goLocal() { S.store = localStore(); S.store.watch(); }
+  function pendingStore() {
+    var no = function () { return Promise.reject({ code: 'pending' }); };
+    return { kind: 'laden', setRec: no, delRec: no, log: function () { return Promise.resolve(); }, history: function () { return Promise.resolve([]); }, addNote: no, updNote: no, delNote: no, setRel: no, delRel: no, watch: function () {} };
+  }
+  S.store = pendingStore();
+
+  // ---------- Vorschau ----------
+  var frame = $('frame'), htmlCache = {}, fdoc = null, fwin = null, origHtml = new WeakMap(), applied = {}, bypass = false;
+  function pageInfo(id) { return S.data.seiten.find(function (p) { return p.id === id; }); }
+  function loadPage(id) {
+    var p = pageInfo(id);
+    $('pvLoad').hidden = false;
+    $('pvTitle').innerHTML = esc(p.titel) + '<small>/' + esc(p.pfad) + '</small>';
+    var get = htmlCache[id] ? Promise.resolve(htmlCache[id]) : fetch(SITE + p.pfad + 'index.html').then(function (r) { return r.text(); }).then(function (t) { htmlCache[id] = t; return t; });
+    return get.then(function (t) {
+      var html = t.split('{{QB}}').join(SITE);
+      var inject = '<script>(function(){["replaceState","pushState"].forEach(function(m){var f=history[m];history[m]=function(){try{return f.apply(history,arguments)}catch(e){}}})})();<\/script>' +
+        '<style>[data-qk].qk-hov{outline:2px solid rgba(49,62,151,.55)!important;outline-offset:3px}[data-qk].qk-sel{outline:2px solid #313e97!important;outline-offset:3px;box-shadow:0 0 0 9999px rgba(255,255,255,0)}' +
+        'html.qk-pick [data-qk]{cursor:pointer}html.qk-pick a,html.qk-pick button{cursor:pointer}</style>';
+      html = html.replace(/<head([^>]*)>/i, '<head$1>' + inject);
+      applied = {};
+      frame.onload = onFrame;
+      frame.srcdoc = html;
+    });
+  }
+  function onFrame() {
+    try { fdoc = frame.contentDocument; fwin = frame.contentWindow; } catch (e) { fdoc = null; }
+    $('pvLoad').hidden = true;
+    if (!fdoc) { hint('Die Vorschau kann hier nicht gesteuert werden.'); return; }
+    fdoc.documentElement.classList.toggle('qk-pick', S.pick);
+    fwin.addEventListener('click', onFrameClick, true);
+    fdoc.addEventListener('mouseover', function (e) { var el = e.target.closest && e.target.closest('[data-qk]'); setHover(el ? el.getAttribute('data-qk') : null, 'frame'); });
+    fdoc.addEventListener('mouseleave', function () { setHover(null, 'frame'); });
+    // Projektfenster usw.: neu eingefügte Elemente korrigieren
+    new fwin.MutationObserver(function (ms) {
+      var els = [];
+      ms.forEach(function (m) {
+        m.addedNodes.forEach(function (n) {
+          if (n.nodeType !== 1 || (m.target.closest && m.target.closest('[data-qk]'))) return;
+          if (n.hasAttribute('data-qk')) els.push(n);
+          n.querySelectorAll('[data-qk]').forEach(function (e) { els.push(e); });
+        });
+      });
+      els.forEach(applyEl);
+      if (els.length) markSel();
+    }).observe(fdoc.body, { childList: true, subtree: true });
+    applyAll();
+    markSel();
+    if (S.sel && S.listOf[S.sel]) setTimeout(function () { scrollFrameTo(S.sel); }, 400);
+  }
+  function onFrameClick(e) {
+    if (bypass) return;
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (S.pick) {
+      var el = e.target.closest && e.target.closest('[data-qk]');
+      e.preventDefault(); e.stopPropagation();
+      if (el) { var k = el.getAttribute('data-qk'); if (S.items[k]) { selectItem(k, 'frame'); return; } }
+      if (a) followLink(a);
+      return;
+    }
+    // Bedienen: Links zu anderen Seiten im Artefakt öffnen, externe/mailto nicht
+    if (a && !a.hasAttribute('data-open')) {
+      var href = a.getAttribute('href') || '';
+      if (href.charAt(0) === '#') return;
+      e.preventDefault();
+      followLink(a);
+    }
+  }
+  function followLink(a) {
+    var href = a.getAttribute('href') || '';
+    if (href.indexOf(SITE) !== 0) return;
+    var rel = href.slice(SITE.length).split(/[?#]/)[0];
+    var p = S.data.seiten.find(function (x) { return x.pfad === rel; });
+    if (p) goPage(p.id);
+  }
+  function nodesFor(k) {
+    if (!fdoc) return [];
+    var sel = '[data-qk="' + k + '"]';
+    var list = Array.prototype.slice.call(fdoc.querySelectorAll(sel));
+    fdoc.querySelectorAll('template').forEach(function (t) { list = list.concat(Array.prototype.slice.call(t.content.querySelectorAll(sel))); });
+    return list;
+  }
+  function setEl(el, it, want) {
+    if (it.typ === 'platzhalter') { el.setAttribute('placeholder', want); return; }
+    if (!origHtml.has(el)) origHtml.set(el, el.innerHTML);
+    if (want === it.text) { if (el.innerHTML !== origHtml.get(el)) el.innerHTML = origHtml.get(el); return; }
+    el.innerHTML = origHtml.get(el);
+    Q.apply(el, want);
+  }
+  function applyOne(k) {
+    var it = S.items[k];
+    if (!it || it.typ === 'bild' || it.typ === 'video') return;
+    var want = S.ver === 'korr' ? curText(k) : it.text;
+    nodesFor(k).forEach(function (el) { setEl(el, it, want); });
+  }
+  function applyEl(el) {
+    var k = el.getAttribute('data-qk'), it = S.items[k];
+    if (!it || it.typ === 'bild' || it.typ === 'video') return;
+    var want = S.editing === k && S.draft != null ? S.draft : S.ver === 'korr' ? curText(k) : it.text;
+    if (want !== it.text) setEl(el, it, want);
+  }
+  function applyAll() {
+    if (!fdoc) return;
+    Object.keys(S.items).forEach(function (k) {
+      var want = S.ver === 'korr' ? curText(k) : S.items[k].text;
+      if (applied[k] === want) return;
+      if (applied[k] === undefined && want === S.items[k].text) { applied[k] = want; return; }
+      applyOne(k); applied[k] = want;
+    });
+  }
+  function previewText(k, text) {
+    var it = S.items[k];
+    nodesFor(k).forEach(function (el) {
+      setEl(el, it, text);
+    });
+    applied[k] = text;
+  }
+  function markSel() {
+    if (!fdoc) return;
+    fdoc.querySelectorAll('.qk-sel').forEach(function (e) { e.classList.remove('qk-sel'); });
+    if (S.sel) nodesFor(S.sel).forEach(function (e) { if (e.classList) e.classList.add('qk-sel'); });
+  }
+  function visible(el) { return el.getClientRects().length > 0 && fwin.getComputedStyle(el).visibility !== 'hidden'; }
+  function scrollFrameTo(k) {
+    if (!fdoc) return;
+    var it = S.items[k];
+    var els = nodesFor(k).filter(function (e) { return e.isConnected; });
+    var el = els.find(visible);
+    if (!el && it && it.fenster) {
+      var opener = fdoc.querySelector('[data-open="' + it.fenster + '"]');
+      if (opener) { bypass = true; opener.click(); bypass = false; setTimeout(function () { markSel(); var e2 = nodesFor(k).filter(function (e) { return e.isConnected; }).find(visible); if (e2) e2.scrollIntoView({ block: 'center' }); }, 450); return; }
+    }
+    if (!el) {
+      hint(it && it.unsichtbar ? 'Dieser Text ist nur für Screenreader und nicht sichtbar.' : it && S.listOf[k] === GLOBAL ? 'Dieser Text steht im Menü oder ist in dieser Ansicht ausgeblendet.' : 'Dieser Text ist in dieser Ansicht ausgeblendet.');
+      return;
+    }
+    var L = fwin.__lenis;
+    if (L && L.scrollTo) L.scrollTo(el, { offset: -fwin.innerHeight * 0.3, duration: 0.7 });
+    else el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  }
+  var hintT;
+  function hint(t) { var h = $('pvHint'); h.textContent = t; h.hidden = false; clearTimeout(hintT); hintT = setTimeout(function () { h.hidden = true; }, 3200); }
+
+  // Skalierung
+  function fit() {
+    var st = $('stage'), box = $('frameBox');
+    var W = S.dev === 'mobil' ? 390 : 1440;
+    var aw = st.clientWidth - 32, ah = st.clientHeight - 16;
+    if (aw <= 0 || ah <= 0) return;
+    var s = Math.min(1, aw / W);
+    box.style.width = Math.round(W * s) + 'px';
+    box.style.height = ah + 'px';
+    frame.style.width = W + 'px';
+    frame.style.height = Math.round(ah / s) + 'px';
+    frame.style.transform = 'scale(' + s + ')';
+  }
+  window.addEventListener('resize', fit);
+
+  // ---------- Auswahl ----------
+  function setHover(k, from) {
+    if (S.hover === k) return;
+    if (fdoc) fdoc.querySelectorAll('.qk-hov').forEach(function (e) { e.classList.remove('qk-hov'); });
+    document.querySelectorAll('.card.hov').forEach(function (e) { e.classList.remove('hov'); });
+    S.hover = k;
+    if (!k) return;
+    if (from === 'list') nodesFor(k).forEach(function (e) { if (e.classList) e.classList.add('qk-hov'); });
+    else { var c = cardEl(k); if (c) c.classList.add('hov'); }
+  }
+  function cardEl(k) { return document.querySelector('.card[data-k="' + CSS.escape(k) + '"]'); }
+  function selectItem(k, from) {
+    var lid = S.listOf[k];
+    if (S.editing && S.editing !== k) cancelEdit();
+    var listChanged = lid && lid !== S.list;
+    var full = listChanged || S.tab !== 'texte' || (S.filter !== 'alle' && statusOf(k) !== S.filter);
+    if (listChanged) { S.list = lid; }
+    if (S.filter !== 'alle' && statusOf(k) !== S.filter) S.filter = 'alle';
+    if (full) { S.sel = k; S.tab = 'texte'; renderAll(); markSel(); }
+    else setSel(k);
+    var c = cardEl(k);
+    if (c && from === 'frame') { c.scrollIntoView({ block: 'center', behavior: 'smooth' }); if (window.innerWidth <= 860) setMView('korr'); }
+    if (from === 'list') scrollFrameTo(k);
+    loadHist(k);
+  }
+  function setSel(k) {
+    var old = S.sel;
+    S.sel = k;
+    if (old && old !== k) refreshCard(old);
+    if (k) refreshCard(k);
+    markSel();
+  }
+  function loadHist(k) {
+    S.store.history(k).then(function (h) {
+      S.hist[k] = h.sort(function (a, b) { return b.am - a.am; });
+      if (S.sel === k && S.editing !== k) refreshCard(k);
+    }).catch(function () {});
+  }
+
+  // ---------- Darstellung: Spalte ----------
+  function renderAll() { renderTabs(); renderSub(); renderBody(); renderFoot(); renderSelect(); }
+  function renderTabs() {
+    document.querySelectorAll('.tabs [data-tab]').forEach(function (b) { b.setAttribute('aria-selected', String(b.getAttribute('data-tab') === S.tab)); });
+    var c = counts(S.list);
+    $('cntTexte').textContent = c.n;
+    var n = S.notes.filter(function (x) { return !x.erledigt && (x.seite === S.list || x.seite === 'allgemein'); }).length;
+    $('cntNotes').textContent = n ? n : '';
+  }
+  function renderSub() {
+    var sub = $('sub');
+    if (S.tab !== 'texte') { sub.hidden = true; return; }
+    sub.hidden = false;
+    var c = counts(S.list);
+    var f = [['alle', 'Alle', c.n], ['offen', 'Offen', c.offen], ['edit', 'Geändert', c.edit], ['unsure', 'Unsicher', c.unsure], ['ok', 'Freigegeben', c.ok]];
+    sub.innerHTML = barHtml(c) +
+      '<div class="filters">' + f.map(function (x) {
+        return '<button class="chip" data-f="' + x[0] + '" aria-pressed="' + (S.filter === x[0]) + '">' + (x[0] !== 'alle' ? '<i class="d-' + x[0] + '"></i>' : '') + x[1] + ' ' + x[2] + '</button>';
+      }).join('') + '</div>' +
+      '<div class="sub-row"><span>' + (c.n - c.offen) + ' von ' + c.n + ' geprüft</span>' +
+      '<button class="link" id="bulkOk"' + (c.offen ? '' : ' disabled') + '>Alle offenen freigeben</button></div>';
+  }
+  function cardHtml(it) {
+    var k = it.k, st = statusOf(k), r = S.recs[k], sel = S.sel === k, ed = S.editing === k;
+    var media = it.typ === 'bild' || it.typ === 'video';
+    var h = '<article class="card st-' + st + (sel ? ' sel' : '') + '" data-k="' + esc(k) + '">';
+    if (media) {
+      h += '<div class="c-img" data-go>' + (it.bild ? '<img alt="" loading="lazy" src="' + esc(SITE + it.bild) + '">' : '') + '<span>' + (it.typ === 'video' ? 'Video' : 'Bild') + (it.text ? ': ' + esc(it.text) : '') + '</span></div>';
+    } else {
+      var big = /^h[1-3]$/.test(it.tag);
+      var tag = it.typ === 'platzhalter' ? 'Platzhalter' : it.unsichtbar ? 'Nur Screenreader' : it.link ? 'Link' : '';
+      h += '<div class="c-text' + (big ? ' big' : '') + '" data-go>' + (tag ? '<span class="tag">' + tag + '</span>' : '') + esc(curText(k)) + '</div>';
+    }
+    if (ed) {
+      var val = S.draft != null ? S.draft : (media ? (r && r.notiz) || '' : curText(k));
+      h += '<div class="ed">' +
+        '<textarea id="edText" rows="' + Math.min(10, Math.max(2, Math.ceil(val.length / 42) + (val.split('\n').length - 1))) + '" aria-label="' + (media ? 'Was soll mit dem Bild passieren?' : 'Neuer Text') + '" placeholder="' + (media ? 'Was soll mit dem Bild passieren?' : '') + '">' + esc(val) + '</textarea>' +
+        (media ? '' : '<input class="field" id="edNote" placeholder="Begründung (optional)" value="' + esc((r && r.status === 'edit' && r.notiz) || '') + '">') +
+        '<div class="row"><button class="btn pri" data-a="save">Speichern</button><button class="btn" data-a="cancel">Abbrechen</button>' +
+        (!media && r && r.status === 'edit' ? '<button class="link" data-a="restore">Originaltext wiederherstellen</button>' : '') + '</div></div>';
+    } else {
+      h += '<div class="c-row"><span class="c-meta">' + (r ? LBL[st] + ' · ' + esc(nameOf(r)) + ', ' + when(r.am) : '') + (r && r.umgesetzt ? ' · umgesetzt' : '') + '</span>' +
+        '<span class="acts" role="group" aria-label="Status">' +
+        '<button data-a="ok" aria-pressed="' + (st === 'ok') + '">' + ICON.ok + 'Freigeben</button>' +
+        '<button data-a="edit" aria-pressed="' + (st === 'edit') + '">' + ICON.edit + 'Ändern</button>' +
+        '<button data-a="unsure" aria-pressed="' + (st === 'unsure') + '">' + ICON.unsure + 'Unsicher</button></span></div>';
+      if (r && r.status === 'edit' && !media && r.text !== it.text) h += '<div class="c-orig">Original: <del>' + esc(it.text) + '</del></div>';
+      if (r && r.notiz) h += '<div class="c-note"><b>' + (st === 'unsure' ? 'Unklar: ' : 'Notiz: ') + '</b>' + esc(r.notiz) + '</div>';
+      if (sel && st === 'unsure') h += '<input class="field" id="unsNote" placeholder="Was ist unklar? (optional, Enter speichert)" value="' + esc((r && r.notiz) || '') + '">';
+      if (sel) {
+        var rel = S.rel[S.listOf[k]];
+        if (rel && r && r.am > rel.am) h += '<div class="c-warn">Nach der Freigabe zur Umsetzung geändert.</div>';
+        var hs = S.hist[k] || [];
+        if (hs.length > 1) h += '<div class="c-hist">' + hs.slice(0, 6).map(function (e) { return '<span>' + when(e.am) + ' · ' + esc(nameOf(e)) + ': ' + (LBL[e.status] || e.status) + (e.status === 'edit' && e.text ? ' „' + esc(e.text.length > 60 ? e.text.slice(0, 60) + '…' : e.text) + '“' : '') + '</span>'; }).join('') + '</div>';
+        if (r) h += '<div><button class="link" data-a="reset">Auf „Offen“ zurücksetzen</button></div>';
+      }
+    }
+    return h + '</article>';
+  }
+  function visibleItems() {
+    return listItems(S.list).filter(function (it) { return S.filter === 'alle' || statusOf(it.k) === S.filter; });
+  }
+  function renderBody() {
+    var sc = $('scroll');
+    if (S.tab === 'texte') {
+      var items = visibleItems();
+      if (!items.length) { sc.innerHTML = '<div class="empty">' + (S.filter === 'alle' ? 'Auf dieser Seite gibt es keine Texte.' : 'Keine Texte mit diesem Status.') + '</div>'; return; }
+      var h = '<div class="list">', g = null;
+      items.forEach(function (it) {
+        if (it.gruppe !== g) { g = it.gruppe; h += '<div class="grp">' + esc(g) + '</div>'; }
+        h += cardHtml(it);
+      });
+      sc.innerHTML = h + '</div>';
+      if (S.editing) focusEditor();
+    } else if (S.tab === 'anregungen') renderNotes(sc);
+    else renderOverview(sc);
+  }
+  function refreshCard(k) {
+    var c = cardEl(k);
+    if (!c) return;
+    var it = S.items[k];
+    if (S.filter !== 'alle' && statusOf(k) !== S.filter && S.sel !== k) { c.remove(); return; }
+    var tmp = document.createElement('div');
+    tmp.innerHTML = cardHtml(it);
+    c.replaceWith(tmp.firstChild);
+  }
+  function focusEditor() {
+    var t = $('edText');
+    if (t && document.activeElement !== t) { t.focus(); t.setSelectionRange(t.value.length, t.value.length); }
+  }
+  function renderFoot() {
+    var f = $('foot');
+    if (S.tab !== 'texte') { f.hidden = true; return; }
+    f.hidden = false;
+    var rel = S.rel[S.list], c = counts(S.list);
+    var changedAfter = rel && listItems(S.list).some(function (it) { var r = S.recs[it.k]; return r && r.am > rel.am; });
+    var state = rel ? '<span class="state ' + (changedAfter ? 'warn' : 'done') + '">' + (changedAfter ? 'Freigegeben, danach geändert' : 'Zur Umsetzung freigegeben') + ' · ' + when(rel.am) + '</span>'
+      : '<span class="state">' + (c.offen ? c.offen + ' Texte noch offen' : c.unsure ? c.unsure + ' unsicher' : 'Alles geprüft') + '</span>';
+    var btn = '';
+    if (S.owner && S.store && S.store.kind === 'db') {
+      btn = rel ? (changedAfter ? '<button class="btn ok" data-rel="set">Erneut freigeben</button>' : '<button class="link" data-rel="del">Freigabe zurücknehmen</button>')
+        : '<button class="btn ok" data-rel="set">Zur Umsetzung freigeben</button>';
+    }
+    f.innerHTML = '<div class="rel">' + state + btn + '</div>';
+  }
+  function renderSelect() {
+    var sel = $('pageSel');
+    sel.innerHTML = S.lists.map(function (l) {
+      var c = counts(l.id);
+      var mark = S.rel[l.id] ? ' ✓' : '';
+      return '<option value="' + l.id + '">' + esc(l.titel) + ' (' + (c.n - c.offen) + '/' + c.n + ')' + mark + '</option>';
+    }).join('');
+    sel.value = S.list;
+  }
+  function renderNotes(sc) {
+    var here = S.notes.filter(function (n) { return n.seite === S.list || n.seite === 'allgemein'; }).sort(function (a, b) { return (a.erledigt - b.erledigt) || b.am - a.am; });
+    var title = S.lists.find(function (l) { return l.id === S.list; }).titel;
+    var h = '<div class="notes"><div class="n-form">' +
+      '<textarea class="field" id="noteText" rows="3" placeholder="Anregung, Idee oder Frage …"></textarea>' +
+      '<div class="ed"><div class="row"><div class="seg" role="group" aria-label="Bezug"><button data-ns="seite" aria-pressed="true">' + esc(title) + '</button><button data-ns="allgemein" aria-pressed="false">Allgemein</button></div>' +
+      '<button class="btn pri" id="noteAdd">Hinzufügen</button></div></div></div>';
+    if (!here.length) h += '<div class="empty">Noch keine Anregungen zu dieser Seite.</div>';
+    here.forEach(function (n) {
+      var mine = (n.von && n.von === S.me.id) || S.store.kind === 'local';
+      h += '<div class="n-item' + (n.erledigt ? ' done' : '') + '"><div class="n-text">' + esc(n.text) + '</div><div class="n-meta"><span>' + esc(nameOf(n)) + ' · ' + when(n.am) + (n.seite === 'allgemein' ? ' · Allgemein' : '') + '</span>' +
+        (S.owner || mine ? '<button class="link" data-n="done" data-id="' + esc(n.id) + '">' + (n.erledigt ? 'Wieder öffnen' : 'Erledigt') + '</button>' : '') +
+        (S.owner || mine ? '<button class="link" data-n="del" data-id="' + esc(n.id) + '">Löschen</button>' : '') + '</div></div>';
+    });
+    sc.innerHTML = h + '</div>';
+  }
+  function renderOverview(sc) {
+    var tot = { ok: 0, edit: 0, unsure: 0, offen: 0, n: 0 }, rels = 0;
+    var rows = S.lists.map(function (l) {
+      var c = counts(l.id);
+      Object.keys(tot).forEach(function (x) { tot[x] += c[x]; });
+      var rel = S.rel[l.id];
+      if (rel) rels++;
+      var notes = S.notes.filter(function (n) { return n.seite === l.id && !n.erledigt; }).length;
+      return '<div class="ov-row' + (l.id === S.list ? ' cur' : '') + '" data-pg="' + l.id + '" tabindex="0" role="button"><span class="ov-name">' + esc(l.titel) + '</span><span class="ov-num">' + (c.n - c.offen) + ' / ' + c.n + '</span>' + barHtml(c) +
+        '<div class="ov-st"><span><i class="dot d-ok"></i> ' + c.ok + '</span><span><i class="dot d-edit"></i> ' + c.edit + '</span><span><i class="dot d-unsure"></i> ' + c.unsure + '</span>' + (notes ? '<span>' + notes + ' Anregung' + (notes > 1 ? 'en' : '') + '</span>' : '') +
+        (rel ? '<span class="rel-ok">Umsetzung freigegeben</span>' : '') + '</div></div>';
+    }).join('');
+    var gen = S.notes.filter(function (n) { return n.seite === 'allgemein' && !n.erledigt; }).length;
+    var h = '<div class="ov-tot"><h3>' + (tot.n - tot.offen) + ' von ' + tot.n + ' geprüft</h3>' + barHtml(tot) +
+      '<div class="ov-st"><span><i class="dot d-ok"></i> ' + tot.ok + ' freigegeben</span><span><i class="dot d-edit"></i> ' + tot.edit + ' geändert</span><span><i class="dot d-unsure"></i> ' + tot.unsure + ' unsicher</span><span>' + rels + ' von ' + S.lists.length + ' Seiten zur Umsetzung freigegeben</span>' + (gen ? '<span>' + gen + ' allgemeine Anregungen</span>' : '') + '</div></div>';
+    h += '<div class="ov">' + rows + '</div>';
+    h += '<div class="ov-tools">';
+    if (S.owner && S.store.kind === 'db') {
+      h += '<div class="row"><button class="btn ok" id="relAll">Alle Seiten zur Umsetzung freigeben</button></div>' +
+        '<div>Korrekturen von Personen ohne Zugang einlesen:</div><div class="row"><label class="btn" for="impFile">Datei wählen</label><input type="file" id="impFile" accept=".json,application/json" hidden><button class="link" id="impPaste">Text einfügen</button></div>';
+    } else if (S.store.kind === 'local') {
+      h += '<div>Ihre Korrekturen liegen nur in diesem Browser. Senden Sie sie am Ende an Melvin.</div><div class="row"><button class="btn pri" id="expBtn">Korrekturen exportieren</button></div>';
+    } else {
+      h += '<div>Die Umsetzung gibt Melvin je Seite frei.</div>';
+    }
+    sc.innerHTML = h + '</div>';
+  }
+  function renderBanner() {
+    var b = $('banner');
+    if (!S.store || S.store.kind !== 'local') { b.innerHTML = ''; return; }
+    var n = myName();
+    b.innerHTML = '<div class="banner"><div>Ihre Korrekturen werden nur in diesem Browser gespeichert. Exportieren Sie sie am Ende unter „Übersicht“ und senden Sie die Datei an Melvin.</div>' +
+      (n ? '' : '<div class="row"><input id="nameIn" placeholder="Ihr Name" aria-label="Ihr Name"><button class="btn" id="nameOk">Speichern</button></div>') + '</div>';
+  }
+  function askName() { renderBanner(); var i = $('nameIn'); if (i) { i.focus(); toast('Bitte zuerst Ihren Namen eintragen.'); } }
+
+  // Personen auflösen
+  var userApi = null;
+  function resolveNames() {
+    if (!userApi) return;
+    var ids = {};
+    Object.values(S.recs).forEach(function (r) { if (r.von) ids[r.von] = 1; });
+    S.notes.forEach(function (r) { if (r.von) ids[r.von] = 1; });
+    Object.values(S.hist).forEach(function (h) { h.forEach(function (r) { if (r.von) ids[r.von] = 1; }); });
+    var list = Object.keys(ids).filter(function (i) { return !(i in S.names); });
+    if (!list.length) return;
+    userApi.profiles(list).then(function (ps) {
+      var changed = false;
+      list.forEach(function (i) { var nm = (ps[i] && ps[i].name) || ''; if (S.names[i] !== nm) { S.names[i] = nm; changed = true; } });
+      if (changed && !S.editing) renderBody();
+    });
+  }
+
+  var dataReady = false;
+  function onData(changed, what) {
+    if (!dataReady) return;
+    resolveNames();
+    if (what === 'notes') { renderTabs(); if (S.tab !== 'texte') renderBody(); return; }
+    if (what === 'rel') { renderFoot(); renderSelect(); if (S.tab === 'uebersicht') renderBody(); return; }
+    // Texte
+    if (S.editing && changed && changed[S.editing]) toast('Dieser Text wurde gerade von jemand anderem geändert.');
+    renderSub(); renderFoot(); renderSelect(); renderTabs();
+    if (S.tab === 'texte') {
+      if (!changed || what === 'all') { if (!S.editing) renderBody(); }
+      else Object.keys(changed).forEach(function (k) { if (k !== S.editing) refreshCard(k); });
+    } else renderBody();
+    applyAll();
+  }
+
+  // ---------- Ereignisse ----------
+  document.addEventListener('click', function (e) {
+    var t = e.target;
+    var tab = t.closest('[data-tab]');
+    if (tab) { setTab(tab.getAttribute('data-tab')); return; }
+    var fb = t.closest('[data-f]');
+    if (fb) { S.filter = fb.getAttribute('data-f'); savePref(); renderSub(); renderBody(); return; }
+    var dev = t.closest('[data-dev]');
+    if (dev) { S.dev = dev.getAttribute('data-dev'); savePref(); syncSegs(); fit(); return; }
+    var ver = t.closest('[data-ver]');
+    if (ver) { S.ver = ver.getAttribute('data-ver'); syncSegs(); applyAll(); return; }
+    var pk = t.closest('[data-pick]');
+    if (pk) { S.pick = pk.getAttribute('data-pick') === '1'; syncSegs(); if (fdoc) fdoc.documentElement.classList.toggle('qk-pick', S.pick); return; }
+    var mv = t.closest('#mtabs [data-v]');
+    if (mv) { setMView(mv.getAttribute('data-v')); return; }
+    var pg = t.closest('[data-pg]');
+    if (pg) { goList(pg.getAttribute('data-pg')); setTab('texte'); return; }
+    var ns = t.closest('[data-ns]');
+    if (ns) { document.querySelectorAll('[data-ns]').forEach(function (b) { b.setAttribute('aria-pressed', String(b === ns)); }); return; }
+    var card = t.closest('.card');
+    if (card) {
+      var k = card.getAttribute('data-k');
+      var a = t.closest('[data-a]');
+      if (a) { onAct(k, a.getAttribute('data-a')); return; }
+      if (t.closest('[data-go]') || !t.closest('input, textarea, button')) { if (S.sel !== k) selectItem(k, 'list'); else scrollFrameTo(k); }
+      return;
+    }
+    if (t.closest('#bulkOk')) { bulkOk(t.closest('#bulkOk')); return; }
+    var rel = t.closest('[data-rel]');
+    if (rel) { onRel(rel.getAttribute('data-rel')); return; }
+    if (t.closest('#relAll')) { relAll(); return; }
+    if (t.closest('#noteAdd')) { addNote(); return; }
+    var nb = t.closest('[data-n]');
+    if (nb) { var id = nb.getAttribute('data-id'); var n = S.notes.find(function (x) { return x.id === id; }); if (!n) return; if (nb.getAttribute('data-n') === 'done') S.store.updNote(id, { erledigt: !n.erledigt }).catch(writeFail); else S.store.delNote(id).catch(writeFail); return; }
+    if (t.closest('#expBtn')) { exportLocal(); return; }
+    if (t.closest('#impPaste')) { importPaste(); return; }
+    if (t.closest('#nameOk')) { var v = ($('nameIn').value || '').trim(); if (v) { keep('qk-name', v); renderBanner(); toast('Danke, ' + v + '.'); } return; }
+    if (t.closest('#prevPg') || t.closest('#nextPg')) { var i = S.lists.findIndex(function (l) { return l.id === S.list; }); var j = (i + (t.closest('#nextPg') ? 1 : -1) + S.lists.length) % S.lists.length; goList(S.lists[j].id); return; }
+  });
+  document.addEventListener('change', function (e) {
+    if (e.target.id === 'pageSel') goList(e.target.value);
+    if (e.target.id === 'impFile' && e.target.files[0]) { e.target.files[0].text().then(importText); e.target.value = ''; }
+  });
+  document.addEventListener('input', function (e) {
+    if (e.target.id === 'edText' && S.editing) {
+      S.draft = e.target.value;
+      var it = S.items[S.editing];
+      if (it.typ !== 'bild' && it.typ !== 'video') { clearTimeout(S._pt); var k = S.editing, v = S.draft; S._pt = setTimeout(function () { previewText(k, v); }, 200); }
+    }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.target.id === 'edText' && e.key === 'Enter' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); onAct(S.editing, 'save'); }
+    if ((e.target.id === 'edText' || e.target.id === 'edNote') && e.key === 'Escape') { e.preventDefault(); onAct(S.editing, 'cancel'); }
+    if (e.target.id === 'unsNote' && e.key === 'Enter') { e.preventDefault(); setStatus(S.sel, 'unsure', { notiz: e.target.value.trim() }); }
+    if (e.target.id === 'nameIn' && e.key === 'Enter') { $('nameOk').click(); }
+    if (e.target.classList && e.target.classList.contains('ov-row') && e.key === 'Enter') e.target.click();
+  });
+  document.addEventListener('focusout', function (e) {
+    if (e.target.id === 'unsNote' && S.sel && statusOf(S.sel) === 'unsure') {
+      var v = e.target.value.trim(), r = S.recs[S.sel];
+      if (v !== ((r && r.notiz) || '')) setStatus(S.sel, 'unsure', { notiz: v });
+    }
+  });
+  document.addEventListener('mouseover', function (e) { var c = e.target.closest && e.target.closest('.card'); setHover(c ? c.getAttribute('data-k') : null, 'list'); });
+  window.addEventListener('hashchange', function () { var h = location.hash.slice(1); if (h && h !== S.list && S.lists.some(function (l) { return l.id === h; })) goList(h, true); });
+
+  function syncSegs() {
+    document.querySelectorAll('[data-dev]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-dev') === S.dev)); });
+    document.querySelectorAll('[data-ver]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-ver') === S.ver)); });
+    document.querySelectorAll('[data-pick]').forEach(function (b) { b.setAttribute('aria-pressed', String((b.getAttribute('data-pick') === '1') === S.pick)); });
+  }
+  function setMView(v) {
+    $('app').setAttribute('data-mview', v);
+    document.querySelectorAll('#mtabs [data-v]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-v') === v)); });
+    if (v === 'vorschau') requestAnimationFrame(fit);
+  }
+  function setTab(t) { S.tab = t; if (S.editing) cancelEdit(true); renderAll(); $('scroll').scrollTop = 0; }
+  function goList(id, fromHash) {
+    if (S.editing) cancelEdit(true);
+    S.list = id; S.sel = null;
+    var page = id === GLOBAL ? (S.page || 'start') : id;
+    if (!fromHash) { try { history.replaceState(null, '', '#' + id); } catch (e) { location.hash = id; } }
+    keep('qk-list', id);
+    renderAll();
+    $('scroll').scrollTop = 0;
+    if (page !== S.page || !fdoc) { S.page = page; loadPage(page); }
+  }
+  function goPage(id) { goList(id); }
+
+  function onAct(k, a) {
+    var it = S.items[k];
+    var media = it.typ === 'bild' || it.typ === 'video';
+    if (S.store.kind === 'laden') { toast('Noch nicht verbunden. Bitte einen Moment warten.'); return; }
+    if (a === 'ok') { if (statusOf(k) === 'ok') resetRec(k); else setStatus(k, 'ok'); return; }
+    if (a === 'unsure') { if (statusOf(k) === 'unsure') resetRec(k); else setStatus(k, 'unsure').then(function () { var i = $('unsNote'); if (i) i.focus(); }); setSel(k); return; }
+    if (a === 'edit') { if (S.editing && S.editing !== k) cancelEdit(); S.editing = k; S.draft = null; setSel(k); focusEditor(); scrollFrameTo(k); loadHist(k); return; }
+    if (a === 'cancel') { cancelEdit(); return; }
+    if (a === 'restore') { var t = $('edText'); t.value = it.text; S.draft = it.text; previewText(k, it.text); return; }
+    if (a === 'reset') { resetRec(k); return; }
+    if (a === 'save') {
+      var v = ($('edText').value || '').replace(/\r/g, '').replace(/[ \t]+\n/g, '\n').trim();
+      var note = $('edNote') ? $('edNote').value.trim() : '';
+      S.editing = null; S.draft = null;
+      if (media) { if (v) setStatus(k, 'edit', { notiz: v }); else refreshCard(k); return; }
+      if (!v || v === it.text) { if (S.recs[k] && S.recs[k].status === 'edit') resetRec(k); else refreshCard(k); applied[k] = undefined; applyOne(k); return; }
+      setStatus(k, 'edit', { text: v, notiz: note }).then(function () { applied[k] = undefined; applyAll(); });
+      refreshCard(k);
+    }
+  }
+  function cancelEdit(silent) {
+    var k = S.editing;
+    S.editing = null; S.draft = null;
+    if (!k) return;
+    applied[k] = undefined; applyOne(k); applied[k] = S.ver === 'korr' ? curText(k) : S.items[k].text;
+    if (!silent) refreshCard(k);
+  }
+  function bulkOk(btn) {
+    var open = listItems(S.list).filter(function (it) { return statusOf(it.k) === 'offen'; });
+    if (!open.length) return;
+    if (btn.getAttribute('data-sure') !== '1') { btn.setAttribute('data-sure', '1'); btn.textContent = open.length + ' Texte freigeben? Zum Bestätigen erneut klicken'; setTimeout(function () { if (btn.isConnected) { btn.removeAttribute('data-sure'); btn.textContent = 'Alle offenen freigeben'; } }, 5000); return; }
+    if (S.store.kind === 'local' && !myName()) { askName(); return; }
+    btn.disabled = true; btn.textContent = 'Wird gespeichert …';
+    var i = 0, fails = 0;
+    function next() {
+      var batch = open.slice(i, i + 6); i += 6;
+      if (!batch.length) {
+        S.store.log(stamp({ k: '*', seite: S.list, status: 'ok', anzahl: open.length - fails }));
+        toast((open.length - fails) + ' Texte freigegeben');
+        return;
+      }
+      Promise.all(batch.map(function (it) { return S.store.setRec(it.k, stamp({ seite: S.list, status: 'ok', orig: it.text })).catch(function (e) { fails++; if (fails === 1) writeFail(e); }); })).then(next);
+    }
+    next();
+  }
+  function onRel(a) {
+    if (!S.owner) return;
+    var c = counts(S.list);
+    if (a === 'set') S.store.setRel(S.list, { von: S.me.id, am: Date.now(), stand: c }).then(function () { toast('Zur Umsetzung freigegeben'); }).catch(writeFail);
+    else S.store.delRel(S.list).catch(writeFail);
+  }
+  function relAll() {
+    var b = $('relAll');
+    if (b.getAttribute('data-sure') !== '1') { b.setAttribute('data-sure', '1'); b.textContent = 'Wirklich alle Seiten freigeben? Erneut klicken'; return; }
+    b.disabled = true;
+    var ids = S.lists.map(function (l) { return l.id; });
+    (function step(i) {
+      if (i >= ids.length) { toast('Alle Seiten zur Umsetzung freigegeben'); return; }
+      S.store.setRel(ids[i], { von: S.me.id, am: Date.now(), stand: counts(ids[i]) }).catch(writeFail).then(function () { step(i + 1); });
+    })(0);
+  }
+  function addNote() {
+    var t = ($('noteText').value || '').trim();
+    if (!t) { $('noteText').focus(); return; }
+    if (S.store.kind === 'local' && !myName()) { askName(); return; }
+    var scope = document.querySelector('[data-ns][aria-pressed="true"]').getAttribute('data-ns');
+    S.store.addNote(stamp({ seite: scope === 'allgemein' ? 'allgemein' : S.list, text: t, erledigt: false })).then(function () { toast('Anregung gespeichert'); }).catch(writeFail);
+    $('noteText').value = '';
+  }
+
+  // ---------- Export und Import (ohne Zugang) ----------
+  var dl = null;
+  function exportLocal() {
+    var L = S.store.raw();
+    var payload = JSON.stringify({ quelle: 'quirling-korrektur', name: myName(), am: Date.now(), texte: L.texte, anregungen: L.anregungen }, null, 1);
+    var fn = 'Korrektur-' + (myName() || 'Quirling').replace(/[^A-Za-z0-9ÄÖÜäöüß-]+/g, '-') + '.json';
+    var show = function () { modal('Korrekturen exportieren', 'Kopieren Sie den Text und senden Sie ihn per E-Mail an Melvin.', payload, true); };
+    if (dl) dl.save({ filename: fn, data: payload }).then(function () { toast('Datei gespeichert. Bitte an Melvin senden.'); }, function (e) { if (!e || e.code !== 'declined') show(); });
+    else show();
+  }
+  function importPaste() { modal('Korrekturen einlesen', 'Fügen Sie den exportierten Text ein.', '', false, importText); }
+  function importText(txt) {
+    var d;
+    try { d = JSON.parse(txt); } catch (e) { toast('Das ist keine gültige Korrektur-Datei.'); return; }
+    if (!d || d.quelle !== 'quirling-korrektur') { toast('Das ist keine gültige Korrektur-Datei.'); return; }
+    var name = d.name || 'Ohne Namen', n = 0, keys = Object.keys(d.texte || {});
+    (function step(i) {
+      if (i >= keys.length) {
+        (d.anregungen || []).forEach(function (a) { S.store.addNote({ seite: a.seite, text: a.text, am: a.am || Date.now(), vonName: name, erledigt: false }); });
+        toast(n + ' Korrekturen von ' + name + ' übernommen');
+        return;
+      }
+      var k = keys[i], r = d.texte[k], cur = S.recs[k];
+      if (!S.items[k] || (cur && cur.am >= r.am)) return step(i + 1);
+      var rec = Object.assign({}, r, { vonName: name }); delete rec.von;
+      S.store.setRec(k, rec).then(function () { n++; S.store.log({ k: k, seite: rec.seite, status: rec.status, text: rec.text || null, notiz: rec.notiz || null, am: rec.am, vonName: name }); step(i + 1); }, function (e) { writeFail(e); });
+    })(0);
+  }
+  function modal(title, text, value, copy, onOk) {
+    var m = document.createElement('div');
+    m.className = 'modal';
+    m.innerHTML = '<div role="dialog" aria-modal="true" aria-label="' + esc(title) + '"><h3>' + esc(title) + '</h3><p>' + esc(text) + '</p><textarea id="mText"' + (copy ? ' readonly' : '') + '>' + esc(value) + '</textarea><div class="row"><button class="btn" data-m="close">Schließen</button>' + (copy ? '<button class="btn pri" data-m="copy">Kopieren</button>' : '<button class="btn pri" data-m="ok">Einlesen</button>') + '</div></div>';
+    $('layer').appendChild(m);
+    var ta = m.querySelector('textarea');
+    if (copy) ta.select(); else ta.focus();
+    m.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-m]');
+      if (e.target === m || (b && b.getAttribute('data-m') === 'close')) { m.remove(); return; }
+      if (!b) return;
+      if (b.getAttribute('data-m') === 'copy') {
+        var done = function () { toast('Kopiert'); };
+        try { navigator.clipboard.writeText(ta.value).then(done, function () { ta.select(); toast('Bitte mit Strg+C kopieren'); }); } catch (err) { ta.select(); }
+      } else { onOk(ta.value); m.remove(); }
+    });
+  }
+
+  // ---------- Start ----------
+  fetch('texte.json').then(function (r) { return r.json(); }).then(function (d) {
+    S.data = d;
+    S.lists = d.seiten.map(function (p) { return { id: p.id, titel: p.titel, items: p.eintraege }; });
+    S.lists.push({ id: GLOBAL, titel: 'Kopf- und Fußzeile', items: d.global });
+    S.lists.forEach(function (l) { l.items.forEach(function (it) { S.items[it.k] = it; S.listOf[it.k] = l.id; }); });
+    var h = location.hash.slice(1), last = load('qk-list');
+    S.list = S.lists.some(function (l) { return l.id === h; }) ? h : S.lists.some(function (l) { return l.id === last; }) ? last : 'start';
+    S.page = S.list === GLOBAL ? 'start' : S.list;
+    syncSegs(); fit();
+    dataReady = true;
+    renderAll();
+    loadPage(S.page);
+    connect();
+  }).catch(function () { $('scroll').innerHTML = '<div class="empty">Die Texte konnten nicht geladen werden. Bitte die Seite neu laden.</div>'; });
+
+  function connect() {
+    var c = window.claude;
+    if (!c || !c.use) { goLocal(); return; }
+    Promise.all([c.use('db'), c.use('user'), c.use('downloads')]).then(function (r) {
+      var db = r[0], user = r[1];
+      dl = r[2];
+      userApi = user;
+      var who = user ? user.me() : Promise.resolve(null);
+      var canW = user ? user.can('data.write') : Promise.resolve(null);
+      Promise.all([who, canW]).then(function (x) {
+        var me = x[0];
+        if (me) { S.me = me; S.owner = !!me.isOwner; }
+        if (me && me.id) $('who').innerHTML = '<img alt="" src="' + esc(me.avatarUrl) + '"><b></b>', $('who').querySelector('b').textContent = me.name || 'Sie';
+        if (db && x[1] !== false && me && me.id) { S.store = dbStore(db); S.store.watch(); }
+        else goLocal();
+        renderAll();
+      });
+    });
+  }
+  new ResizeObserver(fit).observe($('stage'));
+})();
+</script>
