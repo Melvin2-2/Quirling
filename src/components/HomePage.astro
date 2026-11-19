@@ -2083,10 +2083,10 @@ const werte = [
     if (!arrow || !head || !note) return;
     const f = (n: number) => n.toFixed(1);
     // gekritzelter Pfeil: von der Handschrift links unten bis knapp unter das Kinn, leicht zittrig
-    const sx = cx - r * 2.3;
+    const sx = cx - r * 2.1;
     const sy = cy + r * 2.75;
-    const ex = cx - r * 0.55;
-    const ey = cy + r * 0.95;
+    const ex = cx - r * 0.18;
+    const ey = cy + r * 0.92;
     arrow.setAttribute(
       'd',
       `M ${f(sx)} ${f(sy)} C ${f(sx + r * 0.05)} ${f(sy - r * 0.55)}, ${f(sx + r * 0.35)} ${f(sy - r * 1.15)}, ${f(sx + r * 0.85)} ${f(sy - r * 1.35)} ` +
