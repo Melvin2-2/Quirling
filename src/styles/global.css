@@ -141,6 +141,10 @@ h4 {
   /* Überschriften einheitlich kräftig: der zweite Teil übernimmt die Stärke */
   font-weight: inherit;
 }
+/* Abstand vom Seitenkopf zum Inhalt einheitlich kompakter */
+.phero + section {
+  padding-top: clamp(2.5rem, 4.6vw, 4.25rem) !important;
+}
 .c-blue {
   color: var(--blue-text);
 }
