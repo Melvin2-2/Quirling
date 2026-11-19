@@ -166,8 +166,8 @@ const anliegen = ['Neubau', 'Rohbau', 'Schlüsselfertig', 'Umbau & Sanierung', '
     color: var(--navy-text);
   }
   .note {
-    font-size: 1rem;
-    font-weight: 300;
+    font-size: 1.2rem;
+    font-weight: 400;
     color: var(--ink-3);
   }
   .side {
@@ -257,6 +257,14 @@ const anliegen = ['Neubau', 'Rohbau', 'Schlüsselfertig', 'Umbau & Sanierung', '
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
+  }
+  .chips legend {
+    font-family: var(--font-head) !important;
+    font-stretch: 68%;
+    font-weight: 800;
+    font-size: clamp(1.3rem, 1.8vw, 1.6rem) !important;
+    letter-spacing: 0.01em !important;
+    color: #fff !important;
   }
   .chips legend,
   .f > span:first-child {
