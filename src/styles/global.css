@@ -17,7 +17,7 @@
   --blue-600: #2f3c8c;
   --blue-800: #1f2861;
   --navy: #22294d;
-  /* Seitenköpfe und Menü: das bisherige, kräftigere Dunkelblau */
+  /* Dunkle Flächen (Seitenköpfe, Menü, dunkle Sections, Footer): das kräftigere Dunkelblau */
   --navy-hero: #121735;
   --grey: #868484;
   --grey-300: #c9c7c3;
@@ -221,7 +221,7 @@ p:last-child {
   background: var(--stone-100);
 }
 .on-dark {
-  background: var(--navy);
+  background: var(--navy-hero);
   color: var(--white);
 }
 .on-dark .lead,
