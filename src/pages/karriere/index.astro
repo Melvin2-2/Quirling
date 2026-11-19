@@ -416,9 +416,15 @@ const mailFor = (titel: string) => `mailto:${firma.email}?subject=${encodeURICom
     grid-column: 1 / -1;
   }
   /* lange Listen über die volle Breite in zwei Spalten */
+  /* in Spalten von oben nach unten, damit kurze Punkte neben langen keine Lücken lassen */
   .job-part.is-wide .job-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    display: block;
+    columns: 2;
     column-gap: 2.4rem;
+  }
+  .job-part.is-wide .job-list li {
+    break-inside: avoid;
+    margin-bottom: 0.5rem;
   }
   .job-list {
     list-style: none;
@@ -454,9 +460,11 @@ const mailFor = (titel: string) => `mailto:${firma.email}?subject=${encodeURICom
   }
   @media (max-width: 560px) {
     .vorteile,
-    .job-cols,
-    .job-part.is-wide .job-list {
+    .job-cols {
       grid-template-columns: minmax(0, 1fr);
+    }
+    .job-part.is-wide .job-list {
+      columns: 1;
     }
     .job summary {
       grid-template-columns: minmax(0, 1fr);
