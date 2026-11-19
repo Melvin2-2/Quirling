@@ -43,7 +43,7 @@ export const rohbau: LeistungDaten = {
   ],
   eigenAlt: 'Systemschalung mit Quirling-Logo auf einer Baustelle',
   refsLabel: 'Alle Rohbau-Referenzen',
-  cta: ['Sie planen einen Rohbau', 'in der Metropolregion Hamburg?'],
+  cta: ['Sie planen einen Rohbau?'],
   ctaBtn: 'Rohbau anfragen',
 };
 
@@ -85,7 +85,7 @@ export const schluesselfertig: LeistungDaten = {
   ],
   eigenAlt: 'Schlüsselfertig gebautes Doppelhaus am Tegelweg',
   refsLabel: 'Alle schlüsselfertigen Referenzen',
-  cta: ['Sie planen ein Haus', 'in der Metropolregion Hamburg?'],
+  cta: ['Sie planen ein Haus?'],
   ctaBtn: 'Neubau anfragen',
 };
 
@@ -127,6 +127,6 @@ export const umbau: LeistungDaten = {
   ],
   eigenAlt: 'Umgebaute Stadtvilla in der Oberstraße',
   refsLabel: 'Alle Umbau-Referenzen',
-  cta: ['Sie planen einen Umbau', 'in der Metropolregion Hamburg?'],
+  cta: ['Sie planen einen Umbau?'],
   ctaBtn: 'Umbau anfragen',
 };

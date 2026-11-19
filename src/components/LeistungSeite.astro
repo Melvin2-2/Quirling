@@ -32,7 +32,7 @@ export interface LeistungDaten {
   eigenAlt: string;
   eigenPos?: string;
   refsLabel: string;
-  cta: [string, string];
+  cta: [string] | [string, string];
   ctaBtn: string;
 }
 interface Props {
@@ -155,7 +155,7 @@ const andere = await Promise.all(
   <section class="rb-more">
     <div class="container">
       <div class="rb-cta">
-        <p class="rb-cta-t">{d.cta[0]}<br />{d.cta[1]}</p>
+        <p class="rb-cta-t">{d.cta[0]}{d.cta[1] && <><br />{d.cta[1]}</>}</p>
         <a class="rb-btn" href={url('/kontakt/')}><span>{d.ctaBtn}</span><Icon name="arrow" /></a>
       </div>
       <h2 class="rb-more-h">Auch das bauen wir.</h2>
