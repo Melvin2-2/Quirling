@@ -1,6 +1,7 @@
-# Umsetzung Audit, Stand Runde 3
+# Umsetzung Audit, veröffentlicht am 19.11.2026
 
-Lokaler Arbeitsstand: Branch `umsetzung/audit-runde-1` (nicht gepusht, nicht live), Runde 1 und 2.
+Veröffentlicht auf `claude/ecstatic-clarke-jrzy4h` (GitHub Pages): 14 Punkte aus Runde 1 und 2.
+Zurückgestellt: KONTAKT-01 (Bestätigung nach dem Absenden, Knopf „Anfrage senden“). Liegt als Commit in `audit/umsetzung/runde1.mbox` und wird mit dem Formulardienst eingespielt.
 Sicherung als Patch-Serie: `audit/umsetzung/runde1.mbox` (je Maßnahme ein Commit, ID in der Nachricht).
 
 ## Umgesetzt (Freigabe aus der Abnahme)
@@ -25,4 +26,4 @@ SEO-04 (Vorschaubild public/og/quirling.jpg), KONTAKT-01 (Bestätigung, Formular
 - RECHT-01, RECHT-02: Texte vom Kunden („kommt“)
 - Formspree-Adresse vom Kunden (KONTAKT-01), danach eintragen und testen
 - Datenschutz: Formspree nennen, AVV/DPA (RECHT-01)
-- Veröffentlichung nur nach ausdrücklicher Freigabe.
+- Formular (KONTAKT-01) auf Wunsch zurückgestellt.
