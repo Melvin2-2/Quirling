@@ -343,7 +343,7 @@ p:last-child {
   font-family: var(--font-head);
   font-stretch: 120%;
   font-weight: 700;
-  font-size: 0.8rem;
+  font-size: 0.875rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   text-decoration: none;
@@ -598,7 +598,7 @@ html.typo-c .lt {
   gap: 0.7rem;
   font-family: var(--font-mono);
   font-weight: 500;
-  font-size: 0.8rem;
+  font-size: 0.875rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--blue-text);
