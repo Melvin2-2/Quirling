@@ -3,7 +3,6 @@ import { Image } from 'astro:assets';
 import Base from '~/layouts/Base.astro';
 import PageHero from '~/components/PageHero.astro';
 import Icon from '~/components/Icon.astro';
-import QHammer from '~/components/QHammer.astro';
 import { url } from '~/lib/url';
 import mannschaft from '~/assets/team/baustellenteam.jpg';
 import kopfbild from '~/assets/site/baustelle-team.jpg';
@@ -61,7 +60,6 @@ const personen = [
         sich aufeinander verlassen können. Sie sind der Grund, warum unsere Bauten stehen.
       </p>
       <div class="crew-cta">
-        <span class="crew-h"><QHammer class="crew-hammer" color="#313e97" highlight="#9aa6ee" />Bock auf Beton?</span>
         <a class="crew-btn" href={url('/karriere/')}><span>Mit anpacken</span><Icon name="arrow" /></a>
       </div>
     </div>
@@ -209,26 +207,10 @@ const personen = [
   .crew-cta {
     display: flex;
     align-items: center;
+    justify-content: flex-start;
     flex-wrap: wrap;
     gap: 1rem 1.5rem;
     margin-top: 0.8rem;
-  }
-  .crew-h {
-    display: flex;
-    align-items: center;
-    gap: 0.55rem;
-    font-family: var(--font-head);
-    font-stretch: 68%;
-    font-weight: 800;
-    text-transform: uppercase;
-    font-size: clamp(1.6rem, 2.2vw, 2.1rem);
-    line-height: 1;
-    white-space: nowrap;
-    color: var(--blue-text);
-  }
-  .crew-cta :global(.crew-hammer) {
-    width: 1em;
-    height: 1em;
   }
   .crew-btn {
     display: inline-flex;
@@ -282,9 +264,6 @@ const personen = [
   @media (max-width: 560px) {
     .people {
       grid-template-columns: minmax(0, 1fr);
-    }
-    .crew-h {
-      font-size: 1.8rem;
     }
   }
 </style>
