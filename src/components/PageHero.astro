@@ -25,8 +25,12 @@ interface Props {
   imagePosition?: string;
   /** 'right' (Standard): Bild nur rechts neben der Navy-Fläche. 'full': Bild über die ganze Breite */
   imageSide?: 'full' | 'right';
+  /** Titel immer genau zweizeilig: Größe richtet sich nach der längsten Zeile */
+  fit?: boolean;
 }
-const { eyebrow, title, titleLight, intro, image, imageAlt = '', crumbs = [], size = 'large', imagePosition, imageSide = 'right' } = Astro.props;
+const { eyebrow, title, titleLight, intro, image, imageAlt = '', crumbs = [], size = 'large', imagePosition, imageSide = 'right', fit = false } = Astro.props;
+// längste Zeile in Zeichen (ohne weiche Trennung) für die Größenberechnung
+const fitChars = Math.max(title.replace(/\u00ad/g, '').length, (titleLight ?? '').replace(/\u00ad/g, '').length);
 ---
 
 <section class:list={['phero', `phero-${size}`, { 'no-image': !image, 'img-right': imageSide === 'right' }]}>
@@ -50,7 +54,7 @@ const { eyebrow, title, titleLight, intro, image, imageAlt = '', crumbs = [], si
       )
     }
     {eyebrow && <p class="label">{eyebrow}</p>}
-    <h1 class="phero-title">
+    <h1 class:list={['phero-title', { fit }]} style={fit ? `--n:${fitChars}` : undefined}>
       {title}
       {titleLight && <span class="lt">{titleLight}</span>}
     </h1>
@@ -151,6 +155,17 @@ const { eyebrow, title, titleLight, intro, image, imageAlt = '', crumbs = [], si
     line-height: 0.97;
     letter-spacing: -0.005em;
     max-width: min(48vw, 760px);
+  }
+  /* zweizeilig: jede Zeile bleibt zusammen und endet mit Abstand vor der schrägen Kante */
+  .phero-title.fit {
+    white-space: nowrap;
+    overflow-wrap: normal;
+    font-size: min(clamp(3rem, 6.6vw, 7rem), calc(min(48vw, 760px) * 0.92 / (var(--n) * 0.52)));
+  }
+  @media (max-width: 900px) {
+    .phero-title.fit {
+      font-size: min(clamp(2.4rem, 9vw, 4rem), calc((100vw - 2 * var(--gutter)) / (var(--n) * 0.52)));
+    }
   }
   .phero-title .lt {
     display: block;
